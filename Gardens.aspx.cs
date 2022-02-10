@@ -44,7 +44,6 @@ public partial class Gardens : System.Web.UI.Page
         ddlunitmeasurement.Items.Insert(0, new ListItem("Seçin", "-1"));
         ddlunitmeasurement.SelectedIndex = 0;
     }
-
     protected void lnkEdit_Click(object sender, EventArgs e)
     {
         componentsload();
