@@ -7,7 +7,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-public partial class Gardens : System.Web.UI.Page
+public partial class Zones : System.Web.UI.Page
 {
     Methods _db = new Methods();
     protected void Page_Load(object sender, EventArgs e)
@@ -18,19 +18,18 @@ public partial class Gardens : System.Web.UI.Page
     void ClearComponents()
     {
         cmbregistertime.Text = "";
-        txtgardenname.Text = "";
-        txtgardenarea.Text = "";
-        txtadress.Text = "";
+        txtzonename.Text = "";
+        txtzonearea.Text = "";
         txtnotes.Text = "";
         lblPopError.Text = "";
     }
     void _loadGridFromDb()
     {
-        DataTable dtgarden = _db.GetGardens();
-        if (dtgarden != null)
+        DataTable dtzones = _db.GetZones();
+        if (dtzones != null)
         {
             Grid.SettingsPager.Summary.Text = "Cari səhifə: {0}, Ümumi səhifələrin sayı: {1}, Tapılmış məlumatların sayı: {2}";
-            Grid.DataSource = dtgarden;
+            Grid.DataSource = dtzones;
             Grid.DataBind();
         }
     }
@@ -43,12 +42,21 @@ public partial class Gardens : System.Web.UI.Page
         ddlunitmeasurement.DataBind();
         ddlunitmeasurement.Items.Insert(0, new ListItem("Seçin", "-1"));
         ddlunitmeasurement.SelectedIndex = 0;
+
+
+        DataTable dt5 = _db.GetGardens();
+        ddlgardens.DataValueField = "GardenID";
+        ddlgardens.DataTextField = "GardenName";
+        ddlgardens.DataSource = dt5;
+        ddlgardens.DataBind();
+        ddlgardens.Items.Insert(0, new ListItem("Seçin", "-1"));
+        ddlgardens.SelectedIndex = 0;
     }
     protected void lnkEdit_Click(object sender, EventArgs e)
     {
         componentsload();
         int id = (sender as LinkButton).CommandArgument.ToParseInt();
-        DataTable dt = _db.GetGardenById(id: id);
+        DataTable dt = _db.GetZoneById(id: id);
         DateTime datevalue;
         if (DateTime.TryParse(dt.Rows[0]["RegisterTime"].ToParseStr(), out datevalue))
         {
@@ -58,10 +66,10 @@ public partial class Gardens : System.Web.UI.Page
         {
             cmbregistertime.Text = "";
         }
-        txtgardenname.Text = dt.Rows[0]["GardenName"].ToParseStr();
-        txtgardenarea.Text = dt.Rows[0]["GardenArea"].ToParseStr();
+        txtzonename.Text = dt.Rows[0]["ZonaName"].ToParseStr();
+        txtzonearea.Text = dt.Rows[0]["ZonaArea"].ToParseStr();
+        ddlgardens.SelectedValue = dt.Rows[0]["GardenID"].ToParseStr();
         ddlunitmeasurement.SelectedValue = dt.Rows[0]["UnitMeasurementID"].ToParseStr();
-        txtadress.Text = dt.Rows[0]["Address"].ToParseStr();
         txtnotes.Text = dt.Rows[0]["Notes"].ToParseStr();
 
         btnSave.CommandName = "update";
@@ -71,7 +79,7 @@ public partial class Gardens : System.Web.UI.Page
     protected void lnkDelete_Click(object sender, EventArgs e)
     {
         int _id = (sender as LinkButton).CommandArgument.ToParseInt();
-        Types.ProsesType val = _db.DeleteGarden(id: _id);
+        Types.ProsesType val = _db.DeleteZone(id: _id);
         _loadGridFromDb();
     }
     protected void LnkPnlMenu_Click(object sender, EventArgs e)
@@ -93,25 +101,26 @@ public partial class Gardens : System.Web.UI.Page
         Types.ProsesType val = Types.ProsesType.Error;
         if (btnSave.CommandName == "insert")
         {
-            val = _db.GardensInsert(RegisterTime: cmbregistertime.Text.ToParseStr(),
-                GardenName: txtgardenname.Text.ToParseStr(),
-                GardenArea: txtgardenarea.Text.ToParseStr(),
+            val = _db.ZoneInsert(RegisterTime: cmbregistertime.Text.ToParseStr(),
+                GardenID: ddlgardens.SelectedValue.ToParseInt(),
+                ZonaName: txtzonename.Text.ToParseStr(),
+                ZonaArea: txtzonearea.Text.ToParseStr(),
                 UnitMeasurementID: ddlunitmeasurement.SelectedValue.ToParseInt(),
-                Address: txtadress.Text.ToParseStr(),
                 Notes: txtnotes.Text.ToParseStr()
                 );
         }
         else
         {
-            val = _db.GardensUpdate(GardenID: btnSave.CommandArgument.ToParseInt(),
-                RegisterTime: cmbregistertime.Text.ToParseStr(),
-    GardenName: txtgardenname.Text.ToParseStr(),
-    GardenArea: txtgardenarea.Text.ToParseStr(),
-    UnitMeasurementID: ddlunitmeasurement.SelectedValue.ToParseInt(),
-    Address: txtadress.Text.ToParseStr(),
-    Notes: txtnotes.Text.ToParseStr());
+            val = _db.ZoneUpdate(ZoneID: btnSave.CommandArgument.ToParseInt(),
+               RegisterTime: cmbregistertime.Text.ToParseStr(),
+                GardenID: ddlgardens.SelectedValue.ToParseInt(),
+                ZonaName: txtzonename.Text.ToParseStr(),
+                ZonaArea: txtzonearea.Text.ToParseStr(),
+                UnitMeasurementID: ddlunitmeasurement.SelectedValue.ToParseInt(),
+                Notes: txtnotes.Text.ToParseStr()
+                );
 
-       
+
         }
 
         if (val == Types.ProsesType.Error)

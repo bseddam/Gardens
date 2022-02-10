@@ -260,7 +260,7 @@ PhoneNumbers=@PhoneNumbers, Email=@Email, Adress=@Adress,Notes=@Notes,UpdateTime
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"select  row_number() over(order by UnitMeasurementID desc) sn,
-[UnitMeasurementID],[UnitMeasurementName],[InsertTime],[UpdateTime],[DeleteTime] FROM [UnitMeasurements]
+UnitMeasurementID,UnitMeasurementName,InsertTime,UpdateTime,DeleteTime FROM UnitMeasurements
   where DeleteTime is null", SqlConn);
             da.Fill(dt);
             return dt;
@@ -279,8 +279,8 @@ PhoneNumbers=@PhoneNumbers, Email=@Email, Adress=@Adress,Notes=@Notes,UpdateTime
         try
         {
             DataTable dt = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter(@"select  row_number() over(order by GardenID desc) sn,
-GardenID,UserID,RegisterTime,GardenName,GardenArea,u.UnitMeasurementName,Address,Notes
+            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by GardenID desc) sn,
+GardenID,UserID,RegisterTime,GardenName,GardenArea,u.UnitMeasurementName,Address,Notes 
   from Gardens g left join UnitMeasurements u on g.UnitMeasurementID=u.UnitMeasurementID 
   where g.DeleteTime is null", SqlConn);
             da.Fill(dt);
@@ -376,6 +376,136 @@ Address=@Address,Notes=@Notes,UpdateTime=getdate() where GardenID=@GardenID", Sq
 
         SqlCommand cmd = new SqlCommand(@"Update Gardens set deletetime=getdate(),UserID=@UserID where GardenID=@GardenID;", SqlConn);
         cmd.Parameters.AddWithValue("@GardenID", id);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            //LogInsert(Utils.Tables.pages, Utils.LogType.delete, String.Format("IndicatorsDelete () "), ex.Message, "", true);
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+
+
+
+
+
+    public DataTable GetZones()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by ZoneID desc) sn,
+ZoneID,z.UserID,z.RegisterTime,g.GardenName,ZonaName,ZonaArea,z.UnitMeasurementID,u.UnitMeasurementName,z.Notes
+FROM Zones z left join Gardens g on g.GardenID=z.GardenID 
+left join UnitMeasurements u on z.UnitMeasurementID=u.UnitMeasurementID 
+where z.DeleteTime is null", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+    public DataTable GetZoneById(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by ZoneID desc) sn,
+ZoneID,z.UserID,z.RegisterTime,g.GardenName,ZonaName,ZonaArea,z.GardenID,z.UnitMeasurementID,u.UnitMeasurementName,z.Notes
+from Zones z  left join Gardens g on g.GardenID=z.GardenID 
+left join UnitMeasurements u on z.UnitMeasurementID=u.UnitMeasurementID 
+where z.DeleteTime is null and z.ZoneID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+    public Types.ProsesType ZoneInsert(string RegisterTime,int GardenID, string ZonaName, string ZonaArea,
+        int UnitMeasurementID, string Notes)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"insert into Zones 
+(UserID,RegisterTime,GardenID,ZonaName,ZonaArea,UnitMeasurementID,Notes) 
+values (@UserID,@RegisterTime,@GardenID,@ZonaName,@ZonaArea,@UnitMeasurementID,@Notes)", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        cmd.Parameters.AddWithValue("@GardenID", GardenID);
+        cmd.Parameters.AddWithValue("@ZonaName", ZonaName);
+        cmd.Parameters.AddWithValue("@ZonaArea", ConvertTypes.ToParseFloat(ZonaArea));
+        cmd.Parameters.AddWithValue("@UnitMeasurementID", UnitMeasurementID);
+        cmd.Parameters.AddWithValue("@Notes", Notes);
+
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+    public Types.ProsesType ZoneUpdate(int ZoneID, string RegisterTime, int GardenID, string ZonaName, string ZonaArea,
+        int UnitMeasurementID, string Notes)
+    {
+        SqlCommand cmd = new SqlCommand(@"update Zones set UserID=@UserID,RegisterTime=@RegisterTime,
+GardenID=@GardenID, ZonaName=@ZonaName, ZonaArea=@ZonaArea,
+UnitMeasurementID=@UnitMeasurementID,Notes=@Notes,UpdateTime=getdate() where ZoneID=@ZoneID", SqlConn);
+
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@ZoneID", ZoneID);
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+
+        cmd.Parameters.AddWithValue("@GardenID", GardenID);
+        cmd.Parameters.AddWithValue("@ZonaName", ZonaName);
+        cmd.Parameters.AddWithValue("@ZonaArea", ConvertTypes.ToParseFloat(ZonaArea));
+        cmd.Parameters.AddWithValue("@UnitMeasurementID", UnitMeasurementID);
+        cmd.Parameters.AddWithValue("@Notes", Notes);
+
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+    public Types.ProsesType DeleteZone(int id)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"Update Zones set deletetime=getdate(),UserID=@UserID where ZoneID=@ZoneID;", SqlConn);
+        cmd.Parameters.AddWithValue("@ZoneID", id);
         cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
         try
         {
