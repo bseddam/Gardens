@@ -7,7 +7,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-public partial class Structure : System.Web.UI.Page
+public partial class Companies : System.Web.UI.Page
 {
     Methods _db = new Methods();
     protected void Page_Load(object sender, EventArgs e)
@@ -29,11 +29,11 @@ public partial class Structure : System.Web.UI.Page
     }
     void _loadGridFromDb()
     {
-        DataTable dtstructure = _db.GetCompanies();
-        if (dtstructure != null)
+        DataTable dtcompany = _db.GetCompanies();
+        if (dtcompany != null)
         {
             Grid.SettingsPager.Summary.Text = "Cari səhifə: {0}, Ümumi səhifələrin sayı: {1}, Tapılmış məlumatların sayı: {2}";
-            Grid.DataSource = dtstructure;
+            Grid.DataSource = dtcompany;
             Grid.DataBind();
         }
     }
