@@ -120,7 +120,7 @@
                                         <div class="row mb-2">
                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Bağ adı</label>
                                             <div class="col-sm-7">
-                                                <asp:TextBox ID="txtgardenname" runat="server" class="form-control mb-0 mt-0" Height="50px" placeholder="Mətni daxil edin..."></asp:TextBox>
+                                                <asp:TextBox ID="txtgardenname" runat="server" class="form-control"  placeholder="Mətni daxil edin..."></asp:TextBox>
                                                 <asp:RegularExpressionValidator ValidationGroup="qrup1" Display="Dynamic" ControlToValidate="txtgardenname" ID="RegularExpressionValidator2" ValidationExpression="^[\s\S]{3,500}$" runat="server" ForeColor="Red" ErrorMessage="Mətn 3 simvoldan cox olmalıdır."></asp:RegularExpressionValidator>
                                                 <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txtgardenname" ID="RequiredFieldValidator1" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>
 
@@ -130,7 +130,7 @@
                                         <div class="row mb-2">
                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Sahəsi</label>
                                             <div class="col-sm-7">
-                                                <asp:TextBox ID="txtgardenarea" Height="50px" class="form-control mb-0 mt-0" runat="server" placeholder="Mətni daxil edin...">
+                                                <asp:TextBox ID="txtgardenarea"  class="form-control" runat="server" placeholder="Mətni daxil edin...">
                                                 </asp:TextBox>
                                                 <%--asp:RegularExpressionValidator ValidationGroup="qrup1" Display="Dynamic" ControlToValidate="txtmovzuadi" ID="RegularExpressionValidator2" ValidationExpression="^[\s\S]{3,500}$" runat="server" ForeColor="Red" ErrorMessage="Mətn 3 simvoldan cox olmalıdır."></asp:RegularExpressionValidator>--%>
                                                 <%--<asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txtmovzuadi" ID="RequiredFieldValidator1" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>--%>
@@ -148,7 +148,7 @@
                                         <div class="row mb-2">
                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ünvanı</label>
                                             <div class="col-sm-7">
-                                                <asp:TextBox ID="txtadress" Height="50px" class="form-control mb-0 mt-0" runat="server" placeholder="Mətni daxil edin..." TextMode="MultiLine">
+                                                <asp:TextBox ID="txtadress"  class="form-control" runat="server" placeholder="Mətni daxil edin..." TextMode="MultiLine">
                                                 </asp:TextBox>
                                                 <%--<asp:RegularExpressionValidator ValidationGroup="qrup1" Display="Dynamic" ControlToValidate="txtdissetantadi" ID="RegularExpressionValidator1" ValidationExpression="^[\s\S]{3,500}$" runat="server" ForeColor="Red" ErrorMessage="Mətn 3 simvoldan cox olmalıdır."></asp:RegularExpressionValidator>--%>
                                                 <%--<asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txtdissetantadi" ID="RequiredFieldValidator2" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>--%>
@@ -158,7 +158,7 @@
                                         <div class="row mb-2">
                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Qeyd</label>
                                             <div class="col-sm-7">
-                                                <asp:TextBox ID="txtnotes" Height="50px" class="form-control mb-0 mt-0" runat="server" placeholder="Mətni daxil edin..." TextMode="MultiLine">
+                                                <asp:TextBox ID="txtnotes"  class="form-control" runat="server" placeholder="Mətni daxil edin..." TextMode="MultiLine">
                                                 </asp:TextBox>
                                                 <%--<asp:RegularExpressionValidator ValidationGroup="qrup1" Display="Dynamic" ControlToValidate="txtdissetantadi" ID="RegularExpressionValidator1" ValidationExpression="^[\s\S]{3,500}$" runat="server" ForeColor="Red" ErrorMessage="Mətn 3 simvoldan cox olmalıdır."></asp:RegularExpressionValidator>--%>
                                                 <%--<asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txtdissetantadi" ID="RequiredFieldValidator2" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>--%>

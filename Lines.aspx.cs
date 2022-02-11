@@ -19,17 +19,17 @@ public partial class Lines : System.Web.UI.Page
     {
         cmbregistertime.Text = "";
         txtlinename.Text = "";
-        txtsectorarea.Text = "";
+        txtlinearea.Text = "";
         txtnotes.Text = "";
         lblPopError.Text = "";
     }
     void _loadGridFromDb()
     {
-        DataTable dtsector = _db.GetSectors();
-        if (dtsector != null)
+        DataTable dtline = _db.GetLines();
+        if (dtline != null)
         {
             Grid.SettingsPager.Summary.Text = "Cari səhifə: {0}, Ümumi səhifələrin sayı: {1}, Tapılmış məlumatların sayı: {2}";
-            Grid.DataSource = dtsector;
+            Grid.DataSource = dtline;
             Grid.DataBind();
         }
     }
@@ -73,6 +73,18 @@ public partial class Lines : System.Web.UI.Page
         ddlgardens.Items.Insert(0, new ListItem("Seçin", "-1"));
         ddlgardens.SelectedIndex = 0;
 
+
+        DataTable dt1 = _db.GetTreeTypes();
+        ddltreetype.DataValueField = "TreeTypeID";
+        ddltreetype.DataTextField = "TreeTypeName";
+        ddltreetype.DataSource = dt1;
+        ddltreetype.DataBind();
+        ddltreetype.Items.Insert(0, new ListItem("Seçin", "-1"));
+        ddltreetype.SelectedIndex = 0;
+
+
+        
+
         zonacomponentload();
         sectorcomponentload();
     }
@@ -81,7 +93,7 @@ public partial class Lines : System.Web.UI.Page
         componentsload();
 
         int id = (sender as LinkButton).CommandArgument.ToParseInt();
-        DataTable dt = _db.GetSectorById(id: id);
+        DataTable dt = _db.GetLineById(id: id);
         DateTime datevalue;
         if (DateTime.TryParse(dt.Rows[0]["RegisterTime"].ToParseStr(), out datevalue))
         {
@@ -91,14 +103,15 @@ public partial class Lines : System.Web.UI.Page
         {
             cmbregistertime.Text = "";
         }
-        txtlinename.Text = dt.Rows[0]["SectorName"].ToParseStr();
-        txtsectorarea.Text = dt.Rows[0]["SectorArea"].ToParseStr();
+        txtlinename.Text = dt.Rows[0]["LineName"].ToParseStr();
+        txtlinearea.Text = dt.Rows[0]["LineArea"].ToParseStr();
         ddlgardens.SelectedValue = dt.Rows[0]["GardenID"].ToParseStr();
         zonacomponentload();
         ddlzone.SelectedValue = dt.Rows[0]["ZoneID"].ToParseStr();
         sectorcomponentload();
         ddlsector.SelectedValue = dt.Rows[0]["SectorID"].ToParseStr();
         ddlunitmeasurement.SelectedValue = dt.Rows[0]["UnitMeasurementID"].ToParseStr();
+        ddltreetype.SelectedValue = dt.Rows[0]["TreeTypeID"].ToParseStr();
         txtnotes.Text = dt.Rows[0]["Notes"].ToParseStr();
 
         btnSave.CommandName = "update";
@@ -108,7 +121,7 @@ public partial class Lines : System.Web.UI.Page
     protected void lnkDelete_Click(object sender, EventArgs e)
     {
         int _id = (sender as LinkButton).CommandArgument.ToParseInt();
-        Types.ProsesType val = _db.DeleteSector(id: _id);
+        Types.ProsesType val = _db.DeleteLine(id: _id);
         _loadGridFromDb();
     }
     protected void LnkPnlMenu_Click(object sender, EventArgs e)
@@ -130,24 +143,30 @@ public partial class Lines : System.Web.UI.Page
         Types.ProsesType val = Types.ProsesType.Error;
         if (btnSave.CommandName == "insert")
         {
-            val = _db.SectorInsert(RegisterTime: cmbregistertime.Text.ToParseStr(),
-                ZoneID: ddlzone.SelectedValue.ToParseInt(),
-                SectorName: txtlinename.Text.ToParseStr(),
-                SectorArea: txtsectorarea.Text.ToParseStr(),
+            val = _db.LineInsert(RegisterTime: cmbregistertime.Text.ToParseStr(),
+                LineName: txtlinename.Text.ToParseStr(), 
+                TreeTypeID: ddltreetype.SelectedValue.ToParseInt(),
+                LineArea: txtlinearea.Text.ToParseStr(),
+                SectorID: ddlsector.SelectedValue.ToParseInt(),
                 UnitMeasurementID: ddlunitmeasurement.SelectedValue.ToParseInt(),
+                TreeCount: txttreecount.Text.ToParseInt(),
+                Sowingtime: cmbsowingtime.Text.ToParseStr(),
                 Notes: txtnotes.Text.ToParseStr()
                 );
         }
         else
         {
-            val = _db.SectorUpdate(SectorID: btnSave.CommandArgument.ToParseInt(),
+            val = _db.LineUpdate(LineID: btnSave.CommandArgument.ToParseInt(),
                 RegisterTime: cmbregistertime.Text.ToParseStr(),
-                ZoneID: ddlgardens.SelectedValue.ToParseInt(),
-                SectorName: txtlinename.Text.ToParseStr(),
-                SectorArea: txtsectorarea.Text.ToParseStr(),
+                LineName: txtlinename.Text.ToParseStr(),
+                TreeTypeID: ddltreetype.SelectedValue.ToParseInt(),
+                LineArea: txtlinearea.Text.ToParseStr(),
+                SectorID: ddlsector.SelectedValue.ToParseInt(),
                 UnitMeasurementID: ddlunitmeasurement.SelectedValue.ToParseInt(),
+                TreeCount: txttreecount.Text.ToParseInt(),
+                Sowingtime: cmbsowingtime.Text.ToParseStr(),
                 Notes: txtnotes.Text.ToParseStr()
-                );
+                ) ;
         }
 
         if (val == Types.ProsesType.Error)
