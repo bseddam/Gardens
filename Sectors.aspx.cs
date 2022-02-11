@@ -7,7 +7,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-public partial class Zones : System.Web.UI.Page
+public partial class Sectors : System.Web.UI.Page
 {
     Methods _db = new Methods();
     protected void Page_Load(object sender, EventArgs e)
@@ -18,20 +18,30 @@ public partial class Zones : System.Web.UI.Page
     void ClearComponents()
     {
         cmbregistertime.Text = "";
-        txtzonename.Text = "";
-        txtzonearea.Text = "";
+        txtsectorname.Text = "";
+        txtsectorarea.Text = "";
         txtnotes.Text = "";
         lblPopError.Text = "";
     }
     void _loadGridFromDb()
     {
-        DataTable dtzones = _db.GetZones();
-        if (dtzones != null)
+        DataTable dtsector = _db.GetSectors();
+        if (dtsector != null)
         {
             Grid.SettingsPager.Summary.Text = "Cari səhifə: {0}, Ümumi səhifələrin sayı: {1}, Tapılmış məlumatların sayı: {2}";
-            Grid.DataSource = dtzones;
+            Grid.DataSource = dtsector;
             Grid.DataBind();
         }
+    }
+    void zonacomponentload(int GardenID)
+    {
+        DataTable dt6 = _db.GetZonesByGardenID(ddlgardens.SelectedValue.ToParseInt());
+        ddlzone.DataValueField = "ZoneID";
+        ddlzone.DataTextField = "ZoneName";
+        ddlzone.DataSource = dt6;
+        ddlzone.DataBind();
+        ddlzone.Items.Insert(0, new ListItem("Seçin", "-1"));
+        ddlzone.SelectedIndex = 0;
     }
     void componentsload()
     {
@@ -51,12 +61,15 @@ public partial class Zones : System.Web.UI.Page
         ddlgardens.DataBind();
         ddlgardens.Items.Insert(0, new ListItem("Seçin", "-1"));
         ddlgardens.SelectedIndex = 0;
+
+        zonacomponentload(ddlgardens.SelectedValue.ToParseInt());
     }
     protected void lnkEdit_Click(object sender, EventArgs e)
     {
         componentsload();
+       
         int id = (sender as LinkButton).CommandArgument.ToParseInt();
-        DataTable dt = _db.GetZoneById(id: id);
+        DataTable dt = _db.GetSectorById(id: id);
         DateTime datevalue;
         if (DateTime.TryParse(dt.Rows[0]["RegisterTime"].ToParseStr(), out datevalue))
         {
@@ -66,9 +79,11 @@ public partial class Zones : System.Web.UI.Page
         {
             cmbregistertime.Text = "";
         }
-        txtzonename.Text = dt.Rows[0]["ZoneName"].ToParseStr();
-        txtzonearea.Text = dt.Rows[0]["ZoneArea"].ToParseStr();
+        txtsectorname.Text = dt.Rows[0]["SectorName"].ToParseStr();
+        txtsectorarea.Text = dt.Rows[0]["SectorArea"].ToParseStr();
         ddlgardens.SelectedValue = dt.Rows[0]["GardenID"].ToParseStr();
+        zonacomponentload(ddlgardens.SelectedValue.ToParseInt());
+        ddlzone.SelectedValue = dt.Rows[0]["ZoneID"].ToParseStr();
         ddlunitmeasurement.SelectedValue = dt.Rows[0]["UnitMeasurementID"].ToParseStr();
         txtnotes.Text = dt.Rows[0]["Notes"].ToParseStr();
 
@@ -79,7 +94,7 @@ public partial class Zones : System.Web.UI.Page
     protected void lnkDelete_Click(object sender, EventArgs e)
     {
         int _id = (sender as LinkButton).CommandArgument.ToParseInt();
-        Types.ProsesType val = _db.DeleteZone(id: _id);
+        Types.ProsesType val = _db.DeleteSector(id: _id);
         _loadGridFromDb();
     }
     protected void LnkPnlMenu_Click(object sender, EventArgs e)
@@ -101,26 +116,24 @@ public partial class Zones : System.Web.UI.Page
         Types.ProsesType val = Types.ProsesType.Error;
         if (btnSave.CommandName == "insert")
         {
-            val = _db.ZoneInsert(RegisterTime: cmbregistertime.Text.ToParseStr(),
-                GardenID: ddlgardens.SelectedValue.ToParseInt(),
-                ZoneName: txtzonename.Text.ToParseStr(),
-                ZoneArea: txtzonearea.Text.ToParseStr(),
+            val = _db.SectorInsert(RegisterTime: cmbregistertime.Text.ToParseStr(),
+                ZoneID: ddlzone.SelectedValue.ToParseInt(),
+                SectorName: txtsectorname.Text.ToParseStr(),
+                SectorArea: txtsectorarea.Text.ToParseStr(),
                 UnitMeasurementID: ddlunitmeasurement.SelectedValue.ToParseInt(),
                 Notes: txtnotes.Text.ToParseStr()
                 );
         }
         else
         {
-            val = _db.ZoneUpdate(ZoneID: btnSave.CommandArgument.ToParseInt(),
-               RegisterTime: cmbregistertime.Text.ToParseStr(),
-                GardenID: ddlgardens.SelectedValue.ToParseInt(),
-                ZoneName: txtzonename.Text.ToParseStr(),
-                ZoneArea: txtzonearea.Text.ToParseStr(),
+            val = _db.SectorUpdate(SectorsID: btnSave.CommandArgument.ToParseInt(),
+                RegisterTime: cmbregistertime.Text.ToParseStr(),
+                ZoneID: ddlgardens.SelectedValue.ToParseInt(),
+                SectorName: txtsectorname.Text.ToParseStr(),
+                SectorArea: txtsectorarea.Text.ToParseStr(),
                 UnitMeasurementID: ddlunitmeasurement.SelectedValue.ToParseInt(),
                 Notes: txtnotes.Text.ToParseStr()
                 );
-
-
         }
 
         if (val == Types.ProsesType.Error)
@@ -135,5 +148,10 @@ public partial class Zones : System.Web.UI.Page
     protected void btnCancel_Click(object sender, EventArgs e)
     {
         popupEdit.ShowOnPageLoad = false;
+    }
+    
+    protected void ddlgardens_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        zonacomponentload(ddlgardens.SelectedValue.ToParseInt());
     }
 }
