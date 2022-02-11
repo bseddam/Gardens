@@ -1,4 +1,5 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="Sectors.aspx.cs" Inherits="Sectors" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="Lines.aspx.cs" Inherits="Lines" %>
+
 
 <%@ Register Assembly="DevExpress.Web.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web" TagPrefix="dx" %>
 
@@ -122,9 +123,9 @@
 
 
                                         <div class="row mb-2">
-                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Sektor adı</label>
+                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Sıra adı</label>
                                             <div class="col-sm-7">
-                                                <asp:TextBox ID="txtsectorname" runat="server" class="form-control mb-0 mt-0" Height="50px" placeholder="Mətni daxil edin..."></asp:TextBox>
+                                                <asp:TextBox ID="txtlinename" runat="server" class="form-control mb-0 mt-0" Height="50px" placeholder="Mətni daxil edin..."></asp:TextBox>
                                                 <asp:RegularExpressionValidator ValidationGroup="qrup1" Display="Dynamic" ControlToValidate="txtsectorname" ID="RegularExpressionValidator2" ValidationExpression="^[\s\S]{3,500}$" runat="server" ForeColor="Red" ErrorMessage="Mətn 3 simvoldan cox olmalıdır."></asp:RegularExpressionValidator>
                                                 <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txtsectorname" ID="RequiredFieldValidator1" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>
 
@@ -143,8 +144,15 @@
                                         <div class="row mb-2">
                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Zona</label>
                                             <div class="col-sm-7">
-                                                <asp:DropDownList ID="ddlzone" class="form-control" runat="server"></asp:DropDownList>
+                                                <asp:DropDownList ID="ddlzone" class="form-control" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlzone_SelectedIndexChanged"></asp:DropDownList>
                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="ddlzone" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
+                                            </div>
+                                        </div>
+                                      <div class="row mb-2">
+                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Sektor</label>
+                                            <div class="col-sm-7">
+                                                <asp:DropDownList ID="ddlsector" class="form-control" runat="server"></asp:DropDownList>
+                                               <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="ddlsector" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
                                             </div>
                                         </div>
 

@@ -7,7 +7,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-public partial class Sectors : System.Web.UI.Page
+public partial class Lines : System.Web.UI.Page
 {
     Methods _db = new Methods();
     protected void Page_Load(object sender, EventArgs e)
@@ -18,7 +18,7 @@ public partial class Sectors : System.Web.UI.Page
     void ClearComponents()
     {
         cmbregistertime.Text = "";
-        txtsectorname.Text = "";
+        txtlinename.Text = "";
         txtsectorarea.Text = "";
         txtnotes.Text = "";
         lblPopError.Text = "";
@@ -33,6 +33,17 @@ public partial class Sectors : System.Web.UI.Page
             Grid.DataBind();
         }
     }
+    void sectorcomponentload()
+    {
+        DataTable dt6 = _db.GetSectorsByZoneID(ddlzone.SelectedValue.ToParseInt());
+        ddlsector.DataValueField = "SectorID";
+        ddlsector.DataTextField = "SectorName";
+        ddlsector.DataSource = dt6;
+        ddlsector.DataBind();
+        ddlsector.Items.Insert(0, new ListItem("Seçin", "-1"));
+        ddlsector.SelectedIndex = 0;
+    }
+
     void zonacomponentload()
     {
         DataTable dt6 = _db.GetZonesByGardenID(ddlgardens.SelectedValue.ToParseInt());
@@ -63,11 +74,12 @@ public partial class Sectors : System.Web.UI.Page
         ddlgardens.SelectedIndex = 0;
 
         zonacomponentload();
+        sectorcomponentload();
     }
     protected void lnkEdit_Click(object sender, EventArgs e)
     {
         componentsload();
-       
+
         int id = (sender as LinkButton).CommandArgument.ToParseInt();
         DataTable dt = _db.GetSectorById(id: id);
         DateTime datevalue;
@@ -79,11 +91,13 @@ public partial class Sectors : System.Web.UI.Page
         {
             cmbregistertime.Text = "";
         }
-        txtsectorname.Text = dt.Rows[0]["SectorName"].ToParseStr();
+        txtlinename.Text = dt.Rows[0]["SectorName"].ToParseStr();
         txtsectorarea.Text = dt.Rows[0]["SectorArea"].ToParseStr();
         ddlgardens.SelectedValue = dt.Rows[0]["GardenID"].ToParseStr();
         zonacomponentload();
         ddlzone.SelectedValue = dt.Rows[0]["ZoneID"].ToParseStr();
+        sectorcomponentload();
+        ddlsector.SelectedValue = dt.Rows[0]["SectorID"].ToParseStr();
         ddlunitmeasurement.SelectedValue = dt.Rows[0]["UnitMeasurementID"].ToParseStr();
         txtnotes.Text = dt.Rows[0]["Notes"].ToParseStr();
 
@@ -118,7 +132,7 @@ public partial class Sectors : System.Web.UI.Page
         {
             val = _db.SectorInsert(RegisterTime: cmbregistertime.Text.ToParseStr(),
                 ZoneID: ddlzone.SelectedValue.ToParseInt(),
-                SectorName: txtsectorname.Text.ToParseStr(),
+                SectorName: txtlinename.Text.ToParseStr(),
                 SectorArea: txtsectorarea.Text.ToParseStr(),
                 UnitMeasurementID: ddlunitmeasurement.SelectedValue.ToParseInt(),
                 Notes: txtnotes.Text.ToParseStr()
@@ -129,7 +143,7 @@ public partial class Sectors : System.Web.UI.Page
             val = _db.SectorUpdate(SectorID: btnSave.CommandArgument.ToParseInt(),
                 RegisterTime: cmbregistertime.Text.ToParseStr(),
                 ZoneID: ddlgardens.SelectedValue.ToParseInt(),
-                SectorName: txtsectorname.Text.ToParseStr(),
+                SectorName: txtlinename.Text.ToParseStr(),
                 SectorArea: txtsectorarea.Text.ToParseStr(),
                 UnitMeasurementID: ddlunitmeasurement.SelectedValue.ToParseInt(),
                 Notes: txtnotes.Text.ToParseStr()
@@ -149,9 +163,14 @@ public partial class Sectors : System.Web.UI.Page
     {
         popupEdit.ShowOnPageLoad = false;
     }
-    
+
     protected void ddlgardens_SelectedIndexChanged(object sender, EventArgs e)
     {
         zonacomponentload();
+    }
+
+    protected void ddlzone_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        sectorcomponentload();
     }
 }

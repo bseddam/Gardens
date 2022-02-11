@@ -557,8 +557,8 @@ UnitMeasurementID=@UnitMeasurementID,Notes=@Notes,UpdateTime=getdate() where Zon
         try
         {
             DataTable dt = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by SectorsID desc) sn,
-s.SectorsID
+            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by SectorID desc) sn,
+s.SectorID
       ,s.UserID
       ,s.RegisterTime
       ,SectorName
@@ -584,14 +584,14 @@ where s.DeleteTime is null and z.DeleteTime is null and g.DeleteTime is null and
         try
         {
             DataTable dt = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by SectorsID desc) sn,
-s.SectorsID,s.UserID,s.RegisterTime,SectorName,s.ZoneID,SectorArea,s.UnitMeasurementID,s.Notes,g.GardenID,
+            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by SectorID desc) sn,
+s.SectorID,s.UserID,s.RegisterTime,SectorName,s.ZoneID,SectorArea,s.UnitMeasurementID,s.Notes,g.GardenID,
 g.GardenName,ZoneName,u.UnitMeasurementName FROM Sectors s 
 inner join Zones z on s.ZoneID=z.ZoneID
 inner join Gardens g on g.GardenID=z.GardenID 
 inner join UnitMeasurements u on s.UnitMeasurementID=u.UnitMeasurementID 
 where s.DeleteTime is null and z.DeleteTime is null and g.DeleteTime is null and u.DeleteTime is null 
-and s.SectorsID=@id", SqlConn);
+and s.SectorID=@id", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
             da.Fill(dt);
             return dt;
@@ -632,14 +632,14 @@ values (@UserID,@RegisterTime,@ZoneID,@SectorName,@SectorArea,@UnitMeasurementID
             cmd.Dispose();
         }
     }
-    public Types.ProsesType SectorUpdate(int SectorsID, string RegisterTime, int ZoneID, string SectorName, string SectorArea,
+    public Types.ProsesType SectorUpdate(int SectorID, string RegisterTime, int ZoneID, string SectorName, string SectorArea,
         int UnitMeasurementID, string Notes)
     {
         SqlCommand cmd = new SqlCommand(@"update Sectors set UserID=@UserID,RegisterTime=@RegisterTime,
 ZoneID=@ZoneID, SectorName=@SectorName, SectorArea=@SectorArea,
-UnitMeasurementID=@UnitMeasurementID,Notes=@Notes,UpdateTime=getdate() where SectorsID=@SectorsID", SqlConn);
+UnitMeasurementID=@UnitMeasurementID,Notes=@Notes,UpdateTime=getdate() where SectorID=@SectorID", SqlConn);
 
-        cmd.Parameters.AddWithValue("@SectorsID", SectorsID);
+        cmd.Parameters.AddWithValue("@SectorID", SectorID);
         cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
         cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
         cmd.Parameters.AddWithValue("@ZoneID", ZoneID);
@@ -667,8 +667,8 @@ UnitMeasurementID=@UnitMeasurementID,Notes=@Notes,UpdateTime=getdate() where Sec
     public Types.ProsesType DeleteSector(int id)
     {
 
-        SqlCommand cmd = new SqlCommand(@"Update Sectors set deletetime=getdate(),UserID=@UserID where SectorsID=@SectorsID;", SqlConn);
-        cmd.Parameters.AddWithValue("@SectorsID", id);
+        SqlCommand cmd = new SqlCommand(@"Update Sectors set deletetime=getdate(),UserID=@UserID where SectorID=@SectorID;", SqlConn);
+        cmd.Parameters.AddWithValue("@SectorID", id);
         cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
         try
         {
@@ -687,6 +687,45 @@ UnitMeasurementID=@UnitMeasurementID,Notes=@Notes,UpdateTime=getdate() where Sec
             cmd.Dispose();
         }
     }
+    public DataTable GetSectorsByZoneID(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by SectorID desc) sn,
+s.SectorID
+      ,s.UserID
+      ,s.RegisterTime
+      ,SectorName
+      ,s.ZoneID
+      ,SectorArea
+      ,s.UnitMeasurementID
+      ,s.Notes,g.GardenID,g.GardenName,ZoneName,u.UnitMeasurementName
+FROM Sectors s 
+inner join Zones z on s.ZoneID=z.ZoneID
+inner join Gardens g on g.GardenID=z.GardenID 
+inner join UnitMeasurements u on s.UnitMeasurementID=u.UnitMeasurementID 
+where s.DeleteTime is null and z.DeleteTime is null and g.DeleteTime is null and u.DeleteTime is null
+and z.ZoneID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
 
 
 }
