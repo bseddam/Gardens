@@ -10,7 +10,7 @@
     <section id="about" class="about section-bg">
         <div class="container">
 
-            <asp:LinkButton ID="btnAdd" runat="server" CommandArgument="add" OnClick="LnkPnlMenu_Click" CssClass="btn btn-dark">Yeni</asp:LinkButton>
+            <asp:LinkButton ID="btnAdd" runat="server" CommandArgument="add" OnClick="LnkPnlMenu_Click" CssClass="btn btn-dark">Yeni sıra əlavə et</asp:LinkButton>
 
             <div class="row">
                 <div class="col-12">
@@ -174,7 +174,7 @@
                                        <div class="row mb-2">
                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ağac sayı</label>
                                             <div class="col-sm-7">
-                                                <asp:TextBox ID="txttreecount"  class="form-control" runat="server" placeholder="Mətni daxil edin...">
+                                                <asp:TextBox ID="txttreecount"  class="form-control" runat="server" placeholder="Mətni daxil edin..." TextMode="Number">
                                                 </asp:TextBox>
                                                 <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txttreecount" ID="RequiredsFieldValidator21" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>
                                             </div>
@@ -193,6 +193,7 @@
                                             <div class="col-sm-7">
                                                 <asp:TextBox ID="txtlinearea"  class="form-control" runat="server" placeholder="Mətni daxil edin...">
                                                 </asp:TextBox>
+                                                <asp:CompareValidator ID="cv6" runat="server" ControlToValidate="txtlinearea" ErrorMessage="Format düzgün deyil." Operator="DataTypeCheck" Type="Double" ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red" />
                                             </div>
                                         </div>
                                         <div class="row mb-2">

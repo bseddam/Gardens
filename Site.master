@@ -68,7 +68,7 @@
               <li><a href="#">Kadrlar</a></li>
               <li><a href="#">Texnikalar</a></li>
               <li><a href="#">Suvarma sistemləri</a></li>
-              <li><a href="#">Məhsullar</a></li>
+              <li><a href="#">Mallar</a></li>
               <li class="dropdown"><a href="#"><span>Kateqoriyalar</span> <i class="bi bi-chevron-right"></i></a>
                 <ul>
                   <li><a href="Structure.aspx">Struktur</a></li>
