@@ -9,7 +9,7 @@
     <section id="about" class="about section-bg">
         <div class="container">
 
-            <asp:LinkButton ID="btnAdd" runat="server" CommandArgument="add" OnClick="LnkPnlMenu_Click" CssClass="btn btn-dark">Yeni sıra əlavə et</asp:LinkButton>
+            <asp:LinkButton ID="btnAdd" runat="server" CommandArgument="add" OnClick="LnkPnlMenu_Click" CssClass="btn btn-dark">Yeni mal əlavə et</asp:LinkButton>
 
             <div class="row">
                 <div class="col-12">
@@ -90,7 +90,7 @@
 
                                 <dx:GridViewDataColumn VisibleIndex="1">
                                     <DataItemTemplate>
-                                        <asp:LinkButton ID="lnkEdit" OnClick="lnkEdit_Click" CommandArgument='<%#Eval("LineID") %>' Text="Düzəliş" runat="server" />
+                                        <asp:LinkButton ID="lnkEdit" OnClick="lnkEdit_Click" CommandArgument='<%#Eval("ProductID") %>' Text="Düzəliş" runat="server" />
                                     </DataItemTemplate>
                                 </dx:GridViewDataColumn>
 
@@ -98,7 +98,7 @@
 
                                 <dx:GridViewDataColumn VisibleIndex="1">
                                     <DataItemTemplate>
-                                        <asp:LinkButton ID="lnkDelete" OnClick="lnkDelete_Click" OnClientClick="return confirm('Silmək istədiyinizə əminsinizmi?');" CommandArgument='<%#Eval("LineID") %>' Text="Sil" runat="server" />
+                                        <asp:LinkButton ID="lnkDelete" OnClick="lnkDelete_Click" OnClientClick="return confirm('Silmək istədiyinizə əminsinizmi?');" CommandArgument='<%#Eval("ProductID") %>' Text="Sil" runat="server" />
                                     </DataItemTemplate>
                                 </dx:GridViewDataColumn>
 
@@ -153,7 +153,7 @@
                                         <div class="row mb-2">
                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Malın növü</label>
                                             <div class="col-sm-7">
-                                                <asp:DropDownList ID="ddlProductType" class="form-control" runat="server" ></asp:DropDownList>
+                                                <asp:DropDownList ID="ddlproducttype" class="form-control" runat="server" ></asp:DropDownList>
                                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator21" runat="server" ControlToValidate="ddlProductType" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
                                             </div>
                                         </div>

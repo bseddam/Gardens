@@ -947,7 +947,7 @@ m.DeleteTime is null and u.DeleteTime is null and p.ProductID=@id", SqlConn);
     }
    
     public Types.ProsesType ProductInsert(string RegisterTime, string ProductsName, int ProductTypeID, 
-        string BrandID,int ModelID,string Code, string UnitMeasurementID, string Price,
+        int BrandID,int ModelID,string Code, int UnitMeasurementID, string Price,
         string PriceDiscount, string Notes)
     {
 
@@ -984,7 +984,7 @@ PriceDiscount,Notes) values (@UserID,@RegisterTime,@ProductsName,@ProductTypeID,
         }
     }
     public Types.ProsesType ProductUpdate(int ProductID, string RegisterTime, string ProductsName, int ProductTypeID,
-        string BrandID, int ModelID, string Code, string UnitMeasurementID, string Price,
+        int BrandID, int ModelID, string Code, int UnitMeasurementID, string Price,
         string PriceDiscount, string Notes)
     {
         SqlCommand cmd = new SqlCommand(@"update Products set UserID=@UserID,RegisterTime=@RegisterTime,

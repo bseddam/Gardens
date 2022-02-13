@@ -20,8 +20,10 @@ public partial class Products : System.Web.UI.Page
         cmbregistertime.Text = "";
         txtproductname.Text = "";
         txtprice.Text = "";
+        txtpricediscount.Text = "";
         txtnotes.Text = "";
         lblPopError.Text = "";
+        txtcode.Text = "";
     }
     void _loadGridFromDb()
     {
@@ -65,12 +67,12 @@ public partial class Products : System.Web.UI.Page
 
 
         DataTable dt7 = _db.GetProductTypes();
-        ddlProductType.DataValueField = "ProductTypeID";
-        ddlProductType.DataTextField = "ProductTypeName";
-        ddlProductType.DataSource = dt7;
-        ddlProductType.DataBind();
-        ddlProductType.Items.Insert(0, new ListItem("Seçin", "-1"));
-        ddlProductType.SelectedIndex = 0;
+        ddlproducttype.DataValueField = "ProductTypeID";
+        ddlproducttype.DataTextField = "ProductTypeName";
+        ddlproducttype.DataSource = dt7;
+        ddlproducttype.DataBind();
+        ddlproducttype.Items.Insert(0, new ListItem("Seçin", "-1"));
+        ddlproducttype.SelectedIndex = 0;
 
 
 
@@ -82,7 +84,7 @@ public partial class Products : System.Web.UI.Page
         componentsload();
 
         int id = (sender as LinkButton).CommandArgument.ToParseInt();
-        DataTable dt = _db.GetLineById(id: id);
+        DataTable dt = _db.GetProductById(id: id);
         DateTime datevalue;
         if (DateTime.TryParse(dt.Rows[0]["RegisterTime"].ToParseStr(), out datevalue))
         {
@@ -92,15 +94,15 @@ public partial class Products : System.Web.UI.Page
         {
             cmbregistertime.Text = "";
         }
-        txtproductname.Text = dt.Rows[0]["LineName"].ToParseStr();
-        txtprice.Text = dt.Rows[0]["LineArea"].ToParseStr();
-     
-      
-        ddlbrand.SelectedValue = dt.Rows[0]["ZoneID"].ToParseStr();
+        txtproductname.Text = dt.Rows[0]["ProductsName"].ToParseStr();
+        ddlproducttype.SelectedValue = dt.Rows[0]["ProductTypeID"].ToParseStr();
+        ddlbrand.SelectedValue = dt.Rows[0]["BrandID"].ToParseStr();
         modelcomponentload();
-        ddlmodel.SelectedValue = dt.Rows[0]["SectorID"].ToParseStr();
+        ddlmodel.SelectedValue = dt.Rows[0]["ModelID"].ToParseStr();
+        txtcode.Text = dt.Rows[0]["Code"].ToParseStr();
         ddlunitmeasurement.SelectedValue = dt.Rows[0]["UnitMeasurementID"].ToParseStr();
-      
+        txtprice.Text = dt.Rows[0]["Price"].ToParseStr();
+        txtpricediscount.Text = dt.Rows[0]["PriceDiscount"].ToParseStr();
         txtnotes.Text = dt.Rows[0]["Notes"].ToParseStr();
 
         btnSave.CommandName = "update";
@@ -110,7 +112,7 @@ public partial class Products : System.Web.UI.Page
     protected void lnkDelete_Click(object sender, EventArgs e)
     {
         int _id = (sender as LinkButton).CommandArgument.ToParseInt();
-        Types.ProsesType val = _db.DeleteLine(id: _id);
+        Types.ProsesType val = _db.DeleteProduct(id: _id);
         _loadGridFromDb();
     }
     protected void LnkPnlMenu_Click(object sender, EventArgs e)
@@ -130,33 +132,35 @@ public partial class Products : System.Web.UI.Page
     {
         lblPopError.Text = "";
         Types.ProsesType val = Types.ProsesType.Error;
-        //if (btnSave.CommandName == "insert")
-        //{
-        //    val = _db.LineInsert(RegisterTime: cmbregistertime.Text.ToParseStr(),
-        //        LineName: txtproductname.Text.ToParseStr(),
-        //        TreeTypeID: ddltreetype.SelectedValue.ToParseInt(),
-        //        LineArea: txtprice.Text.ToParseStr(),
-        //        SectorID: ddlmodel.SelectedValue.ToParseInt(),
-        //        UnitMeasurementID: ddlunitmeasurement.SelectedValue.ToParseInt(),
-        //        TreeCount: txttreecount.Text.ToParseInt(),
-        //        Sowingtime: cmbsowingtime.Text.ToParseStr(),
-        //        Notes: txtnotes.Text.ToParseStr()
-        //        );
-        //}
-        //else
-        //{
-        //    val = _db.LineUpdate(LineID: btnSave.CommandArgument.ToParseInt(),
-        //        RegisterTime: cmbregistertime.Text.ToParseStr(),
-        //        LineName: txtproductname.Text.ToParseStr(),
-        //        TreeTypeID: ddltreetype.SelectedValue.ToParseInt(),
-        //        LineArea: txtprice.Text.ToParseStr(),
-        //        SectorID: ddlmodel.SelectedValue.ToParseInt(),
-        //        UnitMeasurementID: ddlunitmeasurement.SelectedValue.ToParseInt(),
-        //        TreeCount: txttreecount.Text.ToParseInt(),
-        //        Sowingtime: cmbsowingtime.Text.ToParseStr(),
-        //        Notes: txtnotes.Text.ToParseStr()
-        //        );
-        //}
+        if (btnSave.CommandName == "insert")
+        {
+            val = _db.ProductInsert(RegisterTime: cmbregistertime.Text.ToParseStr(),
+                ProductsName: txtproductname.Text.ToParseStr(),
+                ProductTypeID: ddlproducttype.SelectedValue.ToParseInt(),
+                BrandID: ddlbrand.SelectedValue.ToParseInt(),
+                ModelID: ddlmodel.SelectedValue.ToParseInt(),
+                Code: txtcode.Text.ToParseStr(),
+                UnitMeasurementID: ddlunitmeasurement.SelectedValue.ToParseInt(),
+                Price: txtprice.Text.ToParseStr(),
+                PriceDiscount: txtpricediscount.Text.ToParseStr(),
+                Notes: txtnotes.Text.ToParseStr()
+                );
+        }
+        else
+        {
+            val = _db.ProductUpdate(ProductID: btnSave.CommandArgument.ToParseInt(),
+                RegisterTime: cmbregistertime.Text.ToParseStr(),
+                ProductsName: txtproductname.Text.ToParseStr(),
+                ProductTypeID: ddlproducttype.SelectedValue.ToParseInt(),
+                BrandID: ddlbrand.SelectedValue.ToParseInt(),
+                ModelID: ddlmodel.SelectedValue.ToParseInt(),
+                Code: txtcode.Text.ToParseStr(),
+                UnitMeasurementID: ddlunitmeasurement.SelectedValue.ToParseInt(),
+                Price: txtprice.Text.ToParseStr(),
+                PriceDiscount: txtpricediscount.Text.ToParseStr(),
+                Notes: txtnotes.Text.ToParseStr()
+                );
+        }
 
         if (val == Types.ProsesType.Error)
         {
@@ -174,10 +178,6 @@ public partial class Products : System.Web.UI.Page
 
    
 
-    protected void ddlzone_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        
-    }
 
    
 
