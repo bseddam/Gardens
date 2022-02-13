@@ -898,6 +898,210 @@ where LineID=@LineID;", SqlConn);
 
 
 
+    public DataTable GetProducts()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by ProductID desc) sn,
+       [ProductID],p.[UserID],[RegisterTime],[ProductsName],p.[ProductTypeID],pt.ProductTypeName
+      ,p.[BrandID],b.BrandName,p.[ModelID],m.ModelName,[Code],p.[UnitMeasurementID] ,u.UnitMeasurementName
+      ,[Price],[PriceDiscount],[Notes] from [Products] p 
+  inner join ProductTypes pt on p.ProductTypeID=pt.ProductTypeID 
+  inner join Brands b on p.BrandID=b.BrandID
+  inner join Models m on p.ModelID=m.ModelID
+  inner join UnitMeasurements u on p.UnitMeasurementID=u.UnitMeasurementID 
+  where p.DeleteTime is null and pt.DeleteTime is null and b.DeleteTime is null and 
+m.DeleteTime is null and u.DeleteTime is null", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+    public DataTable GetProductById(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by ProductID desc) sn,
+       [ProductID],p.[UserID],[RegisterTime],[ProductsName],p.[ProductTypeID],pt.ProductTypeName
+      ,p.[BrandID],b.BrandName,p.[ModelID],m.ModelName,[Code],p.[UnitMeasurementID] ,u.UnitMeasurementName
+      ,[Price],[PriceDiscount],[Notes] from [Products] p 
+  inner join ProductTypes pt on p.ProductTypeID=pt.ProductTypeID 
+  inner join Brands b on p.BrandID=b.BrandID
+  inner join Models m on p.ModelID=m.ModelID
+  inner join UnitMeasurements u on p.UnitMeasurementID=u.UnitMeasurementID 
+  where p.DeleteTime is null and pt.DeleteTime is null and b.DeleteTime is null and 
+m.DeleteTime is null and u.DeleteTime is null and p.ProductID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+   
+    public Types.ProsesType ProductInsert(string RegisterTime, string ProductsName, int ProductTypeID, 
+        string BrandID,int ModelID,string Code, string UnitMeasurementID, string Price,
+        string PriceDiscount, string Notes)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"insert into Products 
+(UserID,RegisterTime,ProductsName,ProductTypeID,BrandID,ModelID,Code,UnitMeasurementID,Price,
+PriceDiscount,Notes) values (@UserID,@RegisterTime,@ProductsName,@ProductTypeID,@BrandID,@ModelID,
+@Code,@UnitMeasurementID,@Price,@PriceDiscount,@Notes)", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        cmd.Parameters.AddWithValue("@ProductsName", ProductsName);
+        cmd.Parameters.AddWithValue("@ProductTypeID", ProductTypeID);
+        cmd.Parameters.AddWithValue("@BrandID", BrandID);
+        cmd.Parameters.AddWithValue("@ModelID", ModelID);
+        cmd.Parameters.AddWithValue("@Code", Code);
+        cmd.Parameters.AddWithValue("@UnitMeasurementID", UnitMeasurementID);
+        cmd.Parameters.AddWithValue("@Price", Price);
+        cmd.Parameters.AddWithValue("@PriceDiscount", PriceDiscount);
+        cmd.Parameters.AddWithValue("@Notes", Notes);
+
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+    public Types.ProsesType ProductUpdate(int ProductID, string RegisterTime, string ProductsName, int ProductTypeID,
+        string BrandID, int ModelID, string Code, string UnitMeasurementID, string Price,
+        string PriceDiscount, string Notes)
+    {
+        SqlCommand cmd = new SqlCommand(@"update Products set UserID=@UserID,RegisterTime=@RegisterTime,
+ProductsName=@ProductsName, ProductTypeID=@ProductTypeID, BrandID=@BrandID,ModelID=@ModelID,
+Code=@Code,UnitMeasurementID=@UnitMeasurementID,Price=@Price,PriceDiscount=@PriceDiscount,Notes=@Notes,UpdateTime=getdate() 
+where ProductID=@ProductID", SqlConn);
+        
+        cmd.Parameters.AddWithValue("@ProductID", ProductID);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        cmd.Parameters.AddWithValue("@ProductsName", ProductsName);
+        cmd.Parameters.AddWithValue("@ProductTypeID", ProductTypeID);
+        cmd.Parameters.AddWithValue("@BrandID", BrandID);
+        cmd.Parameters.AddWithValue("@ModelID", ModelID);
+        cmd.Parameters.AddWithValue("@Code", Code);
+        cmd.Parameters.AddWithValue("@UnitMeasurementID", UnitMeasurementID);
+        cmd.Parameters.AddWithValue("@Price", Price);
+        cmd.Parameters.AddWithValue("@PriceDiscount", PriceDiscount);
+        cmd.Parameters.AddWithValue("@Notes", Notes);
+
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+    public Types.ProsesType DeleteProduct(int id)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"Update Products set deletetime=getdate(),UserID=@UserID 
+where ProductID=@ProductID;", SqlConn);
+        cmd.Parameters.AddWithValue("@ProductID", id);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            //LogInsert(Utils.Tables.pages, Utils.LogType.delete, String.Format("IndicatorsDelete () "), ex.Message, "", true);
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
 
 
+
+
+
+
+
+
+    public DataTable GetBrands()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [BrandID] desc) sn,
+[BrandID],[UserID],[BrandName],[InsertTime],[UpdateTime],[DeleteTime] 
+  from [Brands]   where DeleteTime is null", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+    public DataTable GetModelByID(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [ModelID] desc) sn,
+[ModelID],[UserID],[BrandID],[ModelName],[InsertTime],[UpdateTime],[DeleteTime]
+  FROM [Gardens].[dbo].[Models]   where DeleteTime is null and ModelID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+    public DataTable GetProductTypes()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [ProductTypeID] desc) sn,
+[ProductTypeID],[UserID],[ProductTypeName],[InsertTime],[UpdateTime],[DeleteTime]
+  from [ProductTypes]   where DeleteTime is null", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
 }

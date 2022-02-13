@@ -25,35 +25,26 @@ public partial class Products : System.Web.UI.Page
     }
     void _loadGridFromDb()
     {
-        DataTable dtline = _db.GetLines();
-        if (dtline != null)
+        DataTable dtproduct = _db.GetProducts();
+        if (dtproduct != null)
         {
             Grid.SettingsPager.Summary.Text = "Cari səhifə: {0}, Ümumi səhifələrin sayı: {1}, Tapılmış məlumatların sayı: {2}";
-            Grid.DataSource = dtline;
+            Grid.DataSource = dtproduct;
             Grid.DataBind();
         }
     }
-    void sectorcomponentload()
+    void modelcomponentload()
     {
-        DataTable dt6 = _db.GetSectorsByZoneID(ddlbrand.SelectedValue.ToParseInt());
-        ddlmodel.DataValueField = "SectorID";
-        ddlmodel.DataTextField = "SectorName";
+        DataTable dt6 = _db.GetModelByID(ddlbrand.SelectedValue.ToParseInt());
+        ddlmodel.DataValueField = "ModelID";
+        ddlmodel.DataTextField = "ModelName";
         ddlmodel.DataSource = dt6;
         ddlmodel.DataBind();
         ddlmodel.Items.Insert(0, new ListItem("Seçin", "-1"));
         ddlmodel.SelectedIndex = 0;
     }
 
-    void zonacomponentload()
-    {
-        DataTable dt6 = _db.GetZonesByGardenID(ddl.SelectedValue.ToParseInt());
-        ddlbrand.DataValueField = "ZoneID";
-        ddlbrand.DataTextField = "ZoneName";
-        ddlbrand.DataSource = dt6;
-        ddlbrand.DataBind();
-        ddlbrand.Items.Insert(0, new ListItem("Seçin", "-1"));
-        ddlbrand.SelectedIndex = 0;
-    }
+
     void componentsload()
     {
         DataTable dt4 = _db.GetUnitMeasurements();
@@ -64,29 +55,27 @@ public partial class Products : System.Web.UI.Page
         ddlunitmeasurement.Items.Insert(0, new ListItem("Seçin", "-1"));
         ddlunitmeasurement.SelectedIndex = 0;
 
+        DataTable dt6 = _db.GetBrands();
+        ddlbrand.DataValueField = "BrandID";
+        ddlbrand.DataTextField = "BrandName";
+        ddlbrand.DataSource = dt6;
+        ddlbrand.DataBind();
+        ddlbrand.Items.Insert(0, new ListItem("Seçin", "-1"));
+        ddlbrand.SelectedIndex = 0;
 
-        DataTable dt5 = _db.GetGardens();
-        ddl.DataValueField = "GardenID";
-        ddl.DataTextField = "GardenName";
-        ddl.DataSource = dt5;
-        ddl.DataBind();
-        ddl.Items.Insert(0, new ListItem("Seçin", "-1"));
-        ddl.SelectedIndex = 0;
 
-
-        DataTable dt1 = _db.GetTreeTypes();
-        ddltreetype.DataValueField = "TreeTypeID";
-        ddltreetype.DataTextField = "TreeTypeName";
-        ddltreetype.DataSource = dt1;
-        ddltreetype.DataBind();
-        ddltreetype.Items.Insert(0, new ListItem("Seçin", "-1"));
-        ddltreetype.SelectedIndex = 0;
-
+        DataTable dt7 = _db.GetProductTypes();
+        ddlProductType.DataValueField = "ProductTypeID";
+        ddlProductType.DataTextField = "ProductTypeName";
+        ddlProductType.DataSource = dt7;
+        ddlProductType.DataBind();
+        ddlProductType.Items.Insert(0, new ListItem("Seçin", "-1"));
+        ddlProductType.SelectedIndex = 0;
 
 
 
-        zonacomponentload();
-        sectorcomponentload();
+
+        modelcomponentload();
     }
     protected void lnkEdit_Click(object sender, EventArgs e)
     {
@@ -105,13 +94,13 @@ public partial class Products : System.Web.UI.Page
         }
         txtproductname.Text = dt.Rows[0]["LineName"].ToParseStr();
         txtprice.Text = dt.Rows[0]["LineArea"].ToParseStr();
-        ddl.SelectedValue = dt.Rows[0]["GardenID"].ToParseStr();
-        zonacomponentload();
+     
+      
         ddlbrand.SelectedValue = dt.Rows[0]["ZoneID"].ToParseStr();
-        sectorcomponentload();
+        modelcomponentload();
         ddlmodel.SelectedValue = dt.Rows[0]["SectorID"].ToParseStr();
         ddlunitmeasurement.SelectedValue = dt.Rows[0]["UnitMeasurementID"].ToParseStr();
-        ddltreetype.SelectedValue = dt.Rows[0]["TreeTypeID"].ToParseStr();
+      
         txtnotes.Text = dt.Rows[0]["Notes"].ToParseStr();
 
         btnSave.CommandName = "update";
@@ -141,33 +130,33 @@ public partial class Products : System.Web.UI.Page
     {
         lblPopError.Text = "";
         Types.ProsesType val = Types.ProsesType.Error;
-        if (btnSave.CommandName == "insert")
-        {
-            val = _db.LineInsert(RegisterTime: cmbregistertime.Text.ToParseStr(),
-                LineName: txtproductname.Text.ToParseStr(),
-                TreeTypeID: ddltreetype.SelectedValue.ToParseInt(),
-                LineArea: txtprice.Text.ToParseStr(),
-                SectorID: ddlmodel.SelectedValue.ToParseInt(),
-                UnitMeasurementID: ddlunitmeasurement.SelectedValue.ToParseInt(),
-                TreeCount: txttreecount.Text.ToParseInt(),
-                Sowingtime: cmbsowingtime.Text.ToParseStr(),
-                Notes: txtnotes.Text.ToParseStr()
-                );
-        }
-        else
-        {
-            val = _db.LineUpdate(LineID: btnSave.CommandArgument.ToParseInt(),
-                RegisterTime: cmbregistertime.Text.ToParseStr(),
-                LineName: txtproductname.Text.ToParseStr(),
-                TreeTypeID: ddltreetype.SelectedValue.ToParseInt(),
-                LineArea: txtprice.Text.ToParseStr(),
-                SectorID: ddlmodel.SelectedValue.ToParseInt(),
-                UnitMeasurementID: ddlunitmeasurement.SelectedValue.ToParseInt(),
-                TreeCount: txttreecount.Text.ToParseInt(),
-                Sowingtime: cmbsowingtime.Text.ToParseStr(),
-                Notes: txtnotes.Text.ToParseStr()
-                );
-        }
+        //if (btnSave.CommandName == "insert")
+        //{
+        //    val = _db.LineInsert(RegisterTime: cmbregistertime.Text.ToParseStr(),
+        //        LineName: txtproductname.Text.ToParseStr(),
+        //        TreeTypeID: ddltreetype.SelectedValue.ToParseInt(),
+        //        LineArea: txtprice.Text.ToParseStr(),
+        //        SectorID: ddlmodel.SelectedValue.ToParseInt(),
+        //        UnitMeasurementID: ddlunitmeasurement.SelectedValue.ToParseInt(),
+        //        TreeCount: txttreecount.Text.ToParseInt(),
+        //        Sowingtime: cmbsowingtime.Text.ToParseStr(),
+        //        Notes: txtnotes.Text.ToParseStr()
+        //        );
+        //}
+        //else
+        //{
+        //    val = _db.LineUpdate(LineID: btnSave.CommandArgument.ToParseInt(),
+        //        RegisterTime: cmbregistertime.Text.ToParseStr(),
+        //        LineName: txtproductname.Text.ToParseStr(),
+        //        TreeTypeID: ddltreetype.SelectedValue.ToParseInt(),
+        //        LineArea: txtprice.Text.ToParseStr(),
+        //        SectorID: ddlmodel.SelectedValue.ToParseInt(),
+        //        UnitMeasurementID: ddlunitmeasurement.SelectedValue.ToParseInt(),
+        //        TreeCount: txttreecount.Text.ToParseInt(),
+        //        Sowingtime: cmbsowingtime.Text.ToParseStr(),
+        //        Notes: txtnotes.Text.ToParseStr()
+        //        );
+        //}
 
         if (val == Types.ProsesType.Error)
         {
@@ -183,13 +172,17 @@ public partial class Products : System.Web.UI.Page
         popupEdit.ShowOnPageLoad = false;
     }
 
-    protected void ddlgardens_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        zonacomponentload();
-    }
+   
 
     protected void ddlzone_SelectedIndexChanged(object sender, EventArgs e)
     {
-        sectorcomponentload();
+        
+    }
+
+   
+
+    protected void ddlbrand_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        modelcomponentload();
     }
 }

@@ -50,30 +50,30 @@
                                 <dx:GridViewDataColumn Caption="Qeydiyyat tarixi" FieldName="RegisterTime" VisibleIndex="1">
                                     <EditFormSettings VisibleIndex="1" />
                                 </dx:GridViewDataColumn>
-                                <dx:GridViewDataColumn Caption="Bağ adı" FieldName="GardenName" VisibleIndex="1">
+                                <dx:GridViewDataColumn Caption="Malın adı" FieldName="ProductsName" VisibleIndex="1">
                                     <EditFormSettings VisibleIndex="1" />
                                 </dx:GridViewDataColumn>
-                                <dx:GridViewDataColumn Caption="Zona adı" FieldName="ZoneName" VisibleIndex="1">
-                                    <EditFormSettings VisibleIndex="1" />
-                                </dx:GridViewDataColumn>
-
-                                <dx:GridViewDataColumn Caption="Sektor adı" FieldName="SectorName" VisibleIndex="1">
+                                <dx:GridViewDataColumn Caption="Malın növü" FieldName="ProductTypeName" VisibleIndex="1">
                                     <EditFormSettings VisibleIndex="1" />
                                 </dx:GridViewDataColumn>
 
-                                <dx:GridViewDataColumn Caption="Sıra adı" FieldName="LineName" VisibleIndex="1">
+                                <dx:GridViewDataColumn Caption="Marka" FieldName="BrandName" VisibleIndex="1">
                                     <EditFormSettings VisibleIndex="1" />
                                 </dx:GridViewDataColumn>
-                                <dx:GridViewDataColumn Caption="Ağac sayı" FieldName="TreeCount" VisibleIndex="1">
+
+                                <dx:GridViewDataColumn Caption="Model" FieldName="ModelName" VisibleIndex="1">
                                     <EditFormSettings VisibleIndex="1" />
                                 </dx:GridViewDataColumn>
-                                <dx:GridViewDataColumn Caption="Əkilmə vaxtı" FieldName="Sowingtime" VisibleIndex="1">
+                                <dx:GridViewDataColumn Caption="Malın kodu" FieldName="Code" VisibleIndex="1">
                                     <EditFormSettings VisibleIndex="1" />
                                 </dx:GridViewDataColumn>
-                                <dx:GridViewDataColumn Caption="Ümumi sahəsi" FieldName="LineArea" VisibleIndex="1">
+                                <dx:GridViewDataColumn Caption="Ölüçü vahidi" FieldName="UnitMeasurementName" VisibleIndex="1">
                                     <EditFormSettings VisibleIndex="1" />
                                 </dx:GridViewDataColumn>
-                                <dx:GridViewDataColumn Caption="Ölçü vahidi" FieldName="UnitMeasurementName" VisibleIndex="1">
+                                <dx:GridViewDataColumn Caption="Qiyməti" FieldName="Price" VisibleIndex="1">
+                                    <EditFormSettings VisibleIndex="1" />
+                                </dx:GridViewDataColumn>
+                                <dx:GridViewDataColumn Caption="Endirimli qiyməti" FieldName="PriceDiscount" VisibleIndex="1">
                                     <EditFormSettings VisibleIndex="1" />
                                 </dx:GridViewDataColumn>
 
@@ -134,8 +134,8 @@
                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Malın adı</label>
                                             <div class="col-sm-7">
                                                 <asp:TextBox ID="txtproductname" runat="server" class="form-control"  placeholder="Mətni daxil edin..."></asp:TextBox>
-                                                <asp:RegularExpressionValidator ValidationGroup="qrup1" Display="Dynamic" ControlToValidate="txtlinename" ID="RegularExpressionValidator2" ValidationExpression="^[\s\S]{3,500}$" runat="server" ForeColor="Red" ErrorMessage="Mətn 3 simvoldan cox olmalıdır."></asp:RegularExpressionValidator>
-                                                <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txtlinename" ID="RequiredFieldValidator1" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>
+                                                <asp:RegularExpressionValidator ValidationGroup="qrup1" Display="Dynamic" ControlToValidate="txtproductname" ID="RegularExpressionValidator2" ValidationExpression="^[\s\S]{3,500}$" runat="server" ForeColor="Red" ErrorMessage="Mətn 3 simvoldan cox olmalıdır."></asp:RegularExpressionValidator>
+                                                <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txtproductname" ID="RequiredFieldValidator1" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>
 
                                             </div>
                                         </div>
@@ -153,14 +153,14 @@
                                         <div class="row mb-2">
                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Malın növü</label>
                                             <div class="col-sm-7">
-                                                <asp:DropDownList ID="ddlProductType" class="form-control" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlgardens_SelectedIndexChanged"></asp:DropDownList>
+                                                <asp:DropDownList ID="ddlProductType" class="form-control" runat="server" ></asp:DropDownList>
                                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator21" runat="server" ControlToValidate="ddlProductType" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
                                             </div>
                                         </div>
                                         <div class="row mb-2">
                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Markası</label>
                                             <div class="col-sm-7">
-                                                <asp:DropDownList ID="ddlbrand" class="form-control" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlzone_SelectedIndexChanged"></asp:DropDownList>
+                                                <asp:DropDownList ID="ddlbrand" class="form-control" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlbrand_SelectedIndexChanged"></asp:DropDownList>
                                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="ddlbrand" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
                                             </div>
                                         </div>
@@ -168,10 +168,16 @@
                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Modeli</label>
                                             <div class="col-sm-7">
                                                 <asp:DropDownList ID="ddlmodel" class="form-control" runat="server"></asp:DropDownList>
-                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="ddlsector" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
+                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="ddlmodel" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
                                             </div>
                                         </div>
-                                    
+                                        <div class="row mb-2">
+                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ölçü vahidi</label>
+                                            <div class="col-sm-7">
+                                                <asp:DropDownList ID="ddlunitmeasurement" class="form-control" runat="server"></asp:DropDownList>
+                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" ControlToValidate="ddlunitmeasurement" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
+                                            </div>
+                                        </div>
                                        
                                         <div class="row mb-2">
                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Qiyməti</label>
@@ -182,7 +188,7 @@
                                             </div>
                                         </div>
                                         <div class="row mb-2">
-                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Qiyməti</label>
+                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Endirimli qiyməti</label>
                                             <div class="col-sm-7">
                                                 <asp:TextBox ID="txtpricediscount"  class="form-control" runat="server" placeholder="Mətni daxil edin...">
                                                 </asp:TextBox>
