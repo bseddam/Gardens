@@ -260,7 +260,7 @@ PhoneNumbers=@PhoneNumbers, Email=@Email, Adress=@Adress,Notes=@Notes,UpdateTime
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"select  row_number() over(order by UnitMeasurementID desc) sn,
-UnitMeasurementID,UnitMeasurementName,InsertTime,UpdateTime,DeleteTime FROM UnitMeasurements
+RegisterTime,UnitMeasurementID,UnitMeasurementName,InsertTime,UpdateTime,DeleteTime FROM UnitMeasurements
   where DeleteTime is null", SqlConn);
             da.Fill(dt);
             return dt;
@@ -270,6 +270,109 @@ UnitMeasurementID,UnitMeasurementName,InsertTime,UpdateTime,DeleteTime FROM Unit
             return null;
         }
     }
+    public DataTable GetUnitMeasurementByID(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select  row_number() over(order by UnitMeasurementID desc) sn,
+RegisterTime,UnitMeasurementID,UnitMeasurementName,InsertTime,UpdateTime,DeleteTime FROM UnitMeasurements
+  where DeleteTime is null  and UnitMeasurementID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+    public Types.ProsesType UnitMeasurementInsert(string RegisterTime, string UnitMeasurementName)
+    {
+        SqlCommand cmd = new SqlCommand(@"insert into UnitMeasurements 
+(UserID,RegisterTime,UnitMeasurementName) values (@UserID,@RegisterTime,@UnitMeasurementName)", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        cmd.Parameters.AddWithValue("@UnitMeasurementName", UnitMeasurementName);
+       
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+    public Types.ProsesType UnitMeasurementUpdate(int UnitMeasurementID, string RegisterTime, string UnitMeasurementName)
+    {
+        SqlCommand cmd = new SqlCommand(@"update UnitMeasurements set UserID=@UserID,RegisterTime=@RegisterTime,
+UnitMeasurementName=@UnitMeasurementName,UpdateTime=getdate() where UnitMeasurementID=@UnitMeasurementID", SqlConn);
+        cmd.Parameters.AddWithValue("@UnitMeasurementID", UnitMeasurementID);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        cmd.Parameters.AddWithValue("@UnitMeasurementName", UnitMeasurementName);
+
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+    public Types.ProsesType DeleteUnitMeasurement(int id)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"Update UnitMeasurements set deletetime=getdate(),
+UserID=@UserID where UnitMeasurementID=@UnitMeasurementID;", SqlConn);
+        cmd.Parameters.AddWithValue("@UnitMeasurementID", id);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            //LogInsert(Utils.Tables.pages, Utils.LogType.delete, String.Format("IndicatorsDelete () "), ex.Message, "", true);
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -721,17 +824,27 @@ and z.ZoneID=@id", SqlConn);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
     public DataTable GetTreeTypes()
     {
         try
         {
             DataTable dt = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter(@"SELECT [TreeTypeID]
-      ,[UserID]
-      ,[TreeTypeName]
-      ,[InsertTime]
-      ,[UpdateTime]
-      ,[DeleteTime]
+            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by TreeTypeID desc) sn, 
+[TreeTypeID]
+      ,[UserID],RegisterTime,[TreeTypeName],[InsertTime],[UpdateTime],[DeleteTime]
   FROM [TreeTypes] where DeleteTime is null", SqlConn);
             da.Fill(dt);
             return dt;
@@ -741,6 +854,116 @@ and z.ZoneID=@id", SqlConn);
             return null;
         }
     }
+
+
+    public DataTable GetTreeTypesByID(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by TreeTypeID desc) sn, 
+[TreeTypeID]
+      ,[UserID],RegisterTime,[TreeTypeName],[InsertTime],[UpdateTime],[DeleteTime]
+  FROM [TreeTypes] where DeleteTime is null and TreeTypeID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+    public Types.ProsesType TreeTypeInsert(string RegisterTime, string TreeTypeName)
+    {
+        SqlCommand cmd = new SqlCommand(@"insert into TreeTypes 
+(UserID,RegisterTime,TreeTypeName) values (@UserID,@RegisterTime,@TreeTypeName)", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        cmd.Parameters.AddWithValue("@TreeTypeName", TreeTypeName);
+
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+    public Types.ProsesType TreeTypeUpdate(int TreeTypeID, string RegisterTime, string TreeTypeName)
+    {
+        SqlCommand cmd = new SqlCommand(@"update TreeTypes set UserID=@UserID,RegisterTime=@RegisterTime,
+TreeTypeName=@TreeTypeName,UpdateTime=getdate() where TreeTypeID=@TreeTypeID", SqlConn);
+        cmd.Parameters.AddWithValue("@TreeTypeID", TreeTypeID);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        cmd.Parameters.AddWithValue("@TreeTypeName", TreeTypeName);
+
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+    public Types.ProsesType DeleteTreeType(int id)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"Update TreeTypes set deletetime=getdate(),UserID=@UserID 
+where TreeTypeID=@TreeTypeID;", SqlConn);
+        cmd.Parameters.AddWithValue("@TreeTypeID", id);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            //LogInsert(Utils.Tables.pages, Utils.LogType.delete, String.Format("IndicatorsDelete () "), ex.Message, "", true);
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1305,7 +1528,7 @@ where ModelID=@ModelID;", SqlConn);
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [ProductTypeID] desc) sn,
-[ProductTypeID],[UserID],[ProductTypeName],[InsertTime],[UpdateTime],[DeleteTime]
+[ProductTypeID],RegisterTime,[UserID],[ProductTypeName],[InsertTime],[UpdateTime],[DeleteTime]
   from [ProductTypes]   where DeleteTime is null", SqlConn);
             da.Fill(dt);
             return dt;
@@ -1315,4 +1538,97 @@ where ModelID=@ModelID;", SqlConn);
             return null;
         }
     }
+    public DataTable GetProductTypeByID(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [ProductTypeID] desc) sn,
+[ProductTypeID],RegisterTime,[UserID],[ProductTypeName],[InsertTime],[UpdateTime],[DeleteTime]
+  from [ProductTypes]   where DeleteTime is null and ProductTypeID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+   
+    public Types.ProsesType ProductTypeInsert(string RegisterTime, string ProductTypeName)
+    {
+        SqlCommand cmd = new SqlCommand(@"insert into ProductTypes 
+(UserID,RegisterTime,ProductTypeName) values (@UserID,@RegisterTime,@ProductTypeName)", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        cmd.Parameters.AddWithValue("@ProductTypeName", ProductTypeName);
+
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+    public Types.ProsesType ProductTypeUpdate(int ProductTypeID, string RegisterTime, string ProductTypeName)
+    {
+        SqlCommand cmd = new SqlCommand(@"update ProductTypes set UserID=@UserID,RegisterTime=@RegisterTime,
+ProductTypeName=@ProductTypeName,UpdateTime=getdate() where ProductTypeID=@ProductTypeID", SqlConn);
+        cmd.Parameters.AddWithValue("@ProductTypeID", ProductTypeID);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        cmd.Parameters.AddWithValue("@ProductTypeName", ProductTypeName);
+
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+    public Types.ProsesType DeleteProductType(int id)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"Update ProductTypes set deletetime=getdate(),UserID=@UserID 
+where ProductTypeID=@ProductTypeID;", SqlConn);
+        cmd.Parameters.AddWithValue("@ProductTypeID", id);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            //LogInsert(Utils.Tables.pages, Utils.LogType.delete, String.Format("IndicatorsDelete () "), ex.Message, "", true);
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
 }

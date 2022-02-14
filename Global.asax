@@ -14,6 +14,12 @@
         routes.MapPageRoute("lines", "lines", "~/Lines.aspx");
         routes.MapPageRoute("brands", "brands", "~/Brands.aspx");
         routes.MapPageRoute("models", "models", "~/Models.aspx");
+        routes.MapPageRoute("unitmeasurements", "unitmeasurements", "~/UnitMeasurements.aspx");
+        routes.MapPageRoute("treetypes", "treetypes", "~/TreeTypes.aspx");
+        routes.MapPageRoute("producttypes", "producttypes", "~/ProductTypes.aspx");
+
+        
+     
     }
 
     void Application_End(object sender, EventArgs e)
