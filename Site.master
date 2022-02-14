@@ -63,13 +63,13 @@
             <ul>
  
 
-                 <li><a href="Structure.aspx">Struktur</a></li>
+                 <li><a href="#">Struktur</a></li>
                   <li><a href="#">Vəzifələr</a></li>
                   <li><a href="#">Məhsul növü</a></li>                  
                   <li><a href="#">Görüləcək işlər</a></li>
                   <li><a href="#">Ağac növləri</a></li>
-                  <li><a href="#">Texnika markaları</a></li>
-                  <li><a href="#">Texnika modeli</a></li>
+                  <li><a href="/brands">Markalar</a></li>
+                  <li><a href="#">Modeller</a></li>
                   <li><a href="#">Texnika statusu</a></li>
                   <li><a href="#">Ölçü vahidləri</a></li>
               
@@ -78,11 +78,11 @@
 
             <li class="dropdown"><a href="Mallar.aspx"><span>Məlumatlar</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
-              <li><a href="Companies.aspx">Şirkətlər</a></li>
-              <li><a href="Gardens.aspx">Bağlar</a></li>
-              <li><a href="Zones.aspx">Zonalar</a></li>
-              <li><a href="Sectors.aspx"">Sektorlar</a></li>
-              <li><a href="Lines.aspx">Sıralar</a></li>
+              <li><a href="/companies">Şirkətlər</a></li>
+              <li><a href="/garden">Bağlar</a></li>
+              <li><a href="/zones">Zonalar</a></li>
+              <li><a href="/sectors">Sektorlar</a></li>
+              <li><a href="/lines">Sıralar</a></li>
               <li><a href="#">Kadrlar</a></li>
               <li><a href="#">Texnikalar</a></li>
               <li><a href="#">Suvarma sistemləri</a></li>

@@ -7,8 +7,12 @@
         // Code that runs on application startup
         System.Web.Routing.RouteCollection routes = System.Web.Routing.RouteTable.Routes;
         routes.MapPageRoute("home", "home", "~/Default.aspx");
-        routes.MapPageRoute("structure", "structure", "~/Structure.aspx");
-        routes.MapPageRoute("gardens", "gardens", "~/Gardens.aspx");
+        routes.MapPageRoute("companies", "companies", "~/Companies.aspx");
+        routes.MapPageRoute("garden", "garden", "~/Gardens.aspx");
+        routes.MapPageRoute("zones", "zones", "~/Zones.aspx");
+        routes.MapPageRoute("sectors", "sectors", "~/Sectors.aspx");
+        routes.MapPageRoute("lines", "lines", "~/Lines.aspx");
+        routes.MapPageRoute("brands", "brands", "~/Brands.aspx");
     }
 
     void Application_End(object sender, EventArgs e)

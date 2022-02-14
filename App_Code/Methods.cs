@@ -904,7 +904,7 @@ where LineID=@LineID;", SqlConn);
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by ProductID desc) sn,
-       [ProductID],p.[UserID],[RegisterTime],[ProductsName],p.[ProductTypeID],pt.ProductTypeName
+       [ProductID],p.[UserID],p.[RegisterTime],[ProductsName],p.[ProductTypeID],pt.ProductTypeName
       ,p.[BrandID],b.BrandName,p.[ModelID],m.ModelName,[Code],p.[UnitMeasurementID] ,u.UnitMeasurementName
       ,[Price],[PriceDiscount],[Notes] from [Products] p 
   inner join ProductTypes pt on p.ProductTypeID=pt.ProductTypeID 
@@ -927,7 +927,7 @@ m.DeleteTime is null and u.DeleteTime is null", SqlConn);
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by ProductID desc) sn,
-       [ProductID],p.[UserID],[RegisterTime],[ProductsName],p.[ProductTypeID],pt.ProductTypeName
+       [ProductID],p.[UserID],p.[RegisterTime],[ProductsName],p.[ProductTypeID],pt.ProductTypeName
       ,p.[BrandID],b.BrandName,p.[ModelID],m.ModelName,[Code],p.[UnitMeasurementID] ,u.UnitMeasurementName
       ,[Price],[PriceDiscount],[Notes] from [Products] p 
   inner join ProductTypes pt on p.ProductTypeID=pt.ProductTypeID 
@@ -1059,8 +1059,8 @@ where ProductID=@ProductID;", SqlConn);
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [BrandID] desc) sn,
-[BrandID],[UserID],[BrandName],[InsertTime],[UpdateTime],[DeleteTime] 
-  from [Brands]   where DeleteTime is null", SqlConn);
+b.RegisterTime,[BrandID],[BrandName],p.ProductTypeName
+  from [Brands] b inner join ProductTypes p on b.ProductTypeID=p.ProductTypeID where b.DeleteTime is null", SqlConn);
             da.Fill(dt);
             return dt;
         }
@@ -1069,6 +1069,114 @@ where ProductID=@ProductID;", SqlConn);
             return null;
         }
     }
+
+    public DataTable GetBrandsByID(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [BrandID] desc) sn,
+b.RegisterTime,[BrandID],[BrandName],b.ProductTypeID,p.ProductTypeName
+  from [Brands] b inner join ProductTypes p on b.ProductTypeID=p.ProductTypeID where b.DeleteTime is null
+and p.DeleteTime is null and BrandID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+    public Types.ProsesType BrandInsert(string RegisterTime, string BrandName, int ProductTypeID)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"insert into Brands 
+(UserID,RegisterTime,BrandName,ProductTypeID) values 
+(@UserID,@RegisterTime,@BrandName,@ProductTypeID)", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        cmd.Parameters.AddWithValue("@BrandName", BrandName);
+        cmd.Parameters.AddWithValue("@ProductTypeID", ProductTypeID);
+
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+    public Types.ProsesType BrandUpdate(int BrandID, string RegisterTime, string BrandName, int ProductTypeID)
+    {
+        SqlCommand cmd = new SqlCommand(@"update Brands set UserID=@UserID,RegisterTime=@RegisterTime,
+BrandName=@BrandName, ProductTypeID=@ProductTypeID,UpdateTime=getdate() 
+where BrandID=@BrandID", SqlConn);
+
+        cmd.Parameters.AddWithValue("@BrandID", BrandID);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        cmd.Parameters.AddWithValue("@BrandName", BrandName);
+        cmd.Parameters.AddWithValue("@ProductTypeID", ProductTypeID);
+        
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+    public Types.ProsesType DeleteBrand(int id)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"Update Brands set deletetime=getdate(),UserID=@UserID 
+where BrandID=@BrandID;", SqlConn);
+        cmd.Parameters.AddWithValue("@BrandID", id);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            //LogInsert(Utils.Tables.pages, Utils.LogType.delete, String.Format("IndicatorsDelete () "), ex.Message, "", true);
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+
+
+
+
+
+
+
+
 
     public DataTable GetModelByID(int id)
     {
