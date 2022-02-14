@@ -1069,7 +1069,6 @@ b.RegisterTime,[BrandID],[BrandName],p.ProductTypeName
             return null;
         }
     }
-
     public DataTable GetBrandsByID(int id)
     {
         try
@@ -1088,7 +1087,6 @@ and p.DeleteTime is null and BrandID=@id", SqlConn);
             return null;
         }
     }
-
     public Types.ProsesType BrandInsert(string RegisterTime, string BrandName, int ProductTypeID)
     {
 
@@ -1176,7 +1174,22 @@ where BrandID=@BrandID;", SqlConn);
 
 
 
-
+    public DataTable GetModels()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [ModelID] desc) sn,
+m.RegisterTime,[ModelID],m.[BrandID],b.BrandName,[ModelName] FROM [Models] m 
+inner join Brands b on m.BrandID=b.BrandID where m.DeleteTime is null and b.DeleteTime is null ", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
 
     public DataTable GetModelByID(int id)
     {
@@ -1184,8 +1197,8 @@ where BrandID=@BrandID;", SqlConn);
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [ModelID] desc) sn,
-[ModelID],[UserID],[BrandID],[ModelName],[InsertTime],[UpdateTime],[DeleteTime]
-  FROM [Gardens].[dbo].[Models]   where DeleteTime is null and ModelID=@id", SqlConn);
+m.RegisterTime,[ModelID],m.[BrandID],b.BrandName,[ModelName] FROM [Models] m 
+inner join Brands b on m.BrandID=b.BrandID where m.DeleteTime is null and b.DeleteTime is null and ModelID=@id", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
             da.Fill(dt);
             return dt;
@@ -1195,6 +1208,96 @@ where BrandID=@BrandID;", SqlConn);
             return null;
         }
     }
+    public Types.ProsesType ModelInsert(string RegisterTime, string ModelName, int BrandID)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"insert into Models 
+(UserID,RegisterTime,ModelName,BrandID) values 
+(@UserID,@RegisterTime,@ModelName,@BrandID)", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        cmd.Parameters.AddWithValue("@ModelName", ModelName);
+        cmd.Parameters.AddWithValue("@BrandID", BrandID);
+
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+    public Types.ProsesType ModelUpdate(int ModelID, string RegisterTime, string ModelName, int BrandID)
+    {
+        SqlCommand cmd = new SqlCommand(@"update Models set UserID=@UserID,RegisterTime=@RegisterTime,
+ModelName=@ModelName, BrandID=@BrandID,UpdateTime=getdate() 
+where ModelID=@ModelID", SqlConn);
+
+        cmd.Parameters.AddWithValue("@ModelID", ModelID);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        cmd.Parameters.AddWithValue("@ModelName", ModelName);
+        cmd.Parameters.AddWithValue("@BrandID", BrandID);
+
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+    public Types.ProsesType DeleteModel(int id)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"Update Models set deletetime=getdate(),UserID=@UserID 
+where ModelID=@ModelID;", SqlConn);
+        cmd.Parameters.AddWithValue("@ModelID", id);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            //LogInsert(Utils.Tables.pages, Utils.LogType.delete, String.Format("IndicatorsDelete () "), ex.Message, "", true);
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
 
     public DataTable GetProductTypes()
     {
