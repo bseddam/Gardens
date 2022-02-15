@@ -1875,13 +1875,6 @@ where DeleteTime is null", SqlConn);
     }
 
 
-    
-
-
-
-
-
-
     public DataTable GetTechniqueById(int id)
     {
         try
@@ -2477,6 +2470,190 @@ left join WorkStatus j on j.WorkStatusID=c.WorkStatusID where c.DeleteTime is nu
             cmd.Dispose();
         }
     }
+
+
+
+
+
+
+    //Kadrlar uzre emeliyyat
+    public DataTable GetOperationCadre()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select ROW_NUMBER() over( order by w.WorkDoneID) sn,
+c.Name+' '+c.Sname+' '+c.FName fullname, s.WorkName,
+g.GardenName,z.ZonaName,sc.SectorName,l.LineName,w.TreeCount,
+w.Notes,w.RegstrTime,w.WorkDoneID,w.UserID,w.LinesID,w.CadreID,
+g.GardenID,z.ZoneID,sc.SectorsID
+from WorkDone w
+left join Cadres c on c.CadreID=w.CadreID
+left join Works s on s.WorkID=w.WorkID
+left join Lines l on l.LineID=w.LinesID
+left join Sectors sc on sc.SectorsID=l.SektorID
+left join Zones z on z.ZoneID=sc.ZonaID
+left join Gardens g on g.GardenID=z.GardenID where w.DeleteTime is null ", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+    public Types.ProsesType DeleteOperationCadre(int id)
+    {
+        SqlCommand cmd = new SqlCommand(@"Update WorkDone set DeleteTime=GetDate() where WorkDoneID=@id ", SqlConn);
+        cmd.Parameters.AddWithValue("@id", id);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+
+    //-------Texnikalar uzre emeliyyat
+
+    public DataTable GetOperationTechniques()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select ROW_NUMBER() over( order by w.TechniquesWorkDoneID) sn,
+t.TechniquesName, s.WorkName,g.GardenName,z.ZonaName,sc.SectorName,
+l.LineName,w.Odometer,w.FactualCount,w.OfficialCount,
+w.Note,w.RegstrTime,w.TechniquesWorkDoneID,w.UserID,w.LineID,w.WorkID,
+g.GardenID,z.ZoneID,sc.SectorsID
+from TechniquesWorkDone w
+left join Techniques t on t.TechniquesID=w.TechniquesID
+left join Works s on s.WorkID=w.WorkID
+left join Lines l on l.LineID=w.LineID
+left join Sectors sc on sc.SectorsID=l.SektorID
+left join Zones z on z.ZoneID=sc.ZonaID
+left join Gardens g on g.GardenID=z.GardenID where w.DeleteTime is null", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+    public Types.ProsesType DeleteOperationTechniques(int id)
+    {
+        SqlCommand cmd = new SqlCommand(@"Update TechniquesWorkDone set DeleteTime=GetDate() where TechniquesWorkDoneID=@id ", SqlConn);
+        cmd.Parameters.AddWithValue("@id", id);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+    public DataTable GetTechniquesWorkDoneById(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select * from TechniquesWorkDone where TechniquesWorkDoneID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+
+    //-------Suvarma sistemleri uzre emeliyyat
+
+    public DataTable GetOperationWateringSystems()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select ROW_NUMBER() over( order by w.WateringSystemWorkID) sn,
+wt.WateringSystemName, g.GardenName,Ws.StatusExitEntry, w.WateringSystemSize,um.UnitMeasurementName,w.Note,w.RegstrTime,w.WateringSystemWorkID,
+w.UserID,w.UnitMeasurementID,w.WateringSystemGardenID,g.GardenID
+from WateringSystemWork w
+left join WateringSystemGarden s on s.WateringSystemGardenID=w.WateringSystemGardenID
+left join Gardens g on g.GardenID=s.GardenID
+left join WateringSystems wt on wt.WateringSystemID=s.WateringSystemID
+left join WateringSystemStatus Ws on Ws.StatusID=W.EntryExitStatus
+left join UnitMeasurements um on um.UnitMeasurementID=W.UnitMeasurementID
+where w.DeleteTime is null", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+    public Types.ProsesType DeleteOperationWateringSystems(int id)
+    {
+        SqlCommand cmd = new SqlCommand(@"Update WateringSystemWork set DeleteTime=GetDate() where WateringSystemWorkID=@id ", SqlConn);
+        cmd.Parameters.AddWithValue("@id", id);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+    public DataTable GetOperationWateringSystemsById(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select * from WateringSystemWork where WateringSystemWorkID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
 
 
 

@@ -24,8 +24,11 @@
         routes.MapPageRoute("structure", "structure", "~/Structure.aspx");
         routes.MapPageRoute("technique", "technique", "~/Technique.aspx");
         routes.MapPageRoute("wateringsystems", "wateringsystems", "~/WateringSystems.aspx");
-        
-     
+        routes.MapPageRoute("operationwateringsystems", "operationwateringsystems", "~/OperationWateringSystems.aspx");
+        routes.MapPageRoute("operationtechniques", "operationtechniques", "~/OperationTechniques.aspx");
+        routes.MapPageRoute("operationcadres", "operationcadres", "~/OperationCadres.aspx");
+
+
     }
 
     void Application_End(object sender, EventArgs e)

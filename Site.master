@@ -92,9 +92,9 @@
           </li>
             <li class="dropdown"><a href="#"><span>Əməliyyatlar</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
-              <li><a href="#">Kadrlar</a></li>
-              <li><a href="#">Texnikalar</a></li>
-              <li><a href="#">Suvarma sistemləri</a></li>
+              <li><a href="/operationcadres">Kadrlar</a></li>
+              <li><a href="/operationtechniques">Texnikalar</a></li>
+              <li><a href="/operationwateringsystems">Suvarma sistemləri</a></li>
               <li><a href="#">Anbar</a></li>              
             </ul>
           </li>

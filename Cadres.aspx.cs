@@ -121,13 +121,13 @@ public partial class Cadres : System.Web.UI.Page
         {
             dtJobExitDate.Text = "";
         }
-        cmStatusJobName.Value = dt.Rows[0]["WorkStatusName"].ToParseStr();
+        cmStatusJobName.Value = dt.Rows[0]["WorkStatusID"].ToParseStr();
         Session["imgpath"] = dt.Rows[0]["Photo"].ToParseStr();
         imgUser.ImageUrl = @"imgCadres\" + dt.Rows[0]["Photo"].ToParseStr();
         DateTime datevalue3;
-        if (DateTime.TryParse(dt.Rows[0]["RegstrDate"].ToParseStr(), out datevalue3))
+        if (DateTime.TryParse(dt.Rows[0]["RegisterTime"].ToParseStr(), out datevalue3))
         {
-            dtRegstrDate.Text = DateTime.Parse(dt.Rows[0]["RegstrDate"].ToParseStr()).ToString("dd.MM.yyyy");
+            dtRegstrDate.Text = DateTime.Parse(dt.Rows[0]["RegisterTime"].ToParseStr()).ToString("dd.MM.yyyy");
         }
         else
         {
