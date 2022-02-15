@@ -58,7 +58,7 @@
       <nav id="navbar" class="navbar">
         <ul>
           <li><a class="nav-link scrollto active" href="Default.aspx">Ana səhifə</a></li>
-                        <li class="dropdown"><a href="Mallar.aspx"><span>Kateqoriyalar</span> 
+                        <li class="dropdown"><a href="#"><span>Kateqoriyalar</span> 
                             <i class="bi bi-chevron-down"></i></a>
             <ul>
  
@@ -66,7 +66,7 @@
                  <li><a href="#">Struktur</a></li>
                   <li><a href="#">Vəzifələr</a></li>
                   <li><a href="/producttypes">Məhsul növü</a></li>                  
-                  <li><a href="#">İşlər</a></li>
+                  <li><a href="/works">İşlər</a></li>
                   <li><a href="/treetypes">Ağac növləri</a></li>
                   <li><a href="/brands">Markalar</a></li>
                   <li><a href="/models">Modeller</a></li>
@@ -75,7 +75,7 @@
             </ul>
           </li>
 
-            <li class="dropdown"><a href="Mallar.aspx"><span>Məlumatlar</span> <i class="bi bi-chevron-down"></i></a>
+            <li class="dropdown"><a href="#"><span>Məlumatlar</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
               <li><a href="/companies">Şirkətlər</a></li>
               <li><a href="/garden">Bağlar</a></li>
@@ -90,7 +90,7 @@
               
             </ul>
           </li>
-            <li class="dropdown"><a href="Mallar.aspx"><span>Əməliyyatlar</span> <i class="bi bi-chevron-down"></i></a>
+            <li class="dropdown"><a href="#"><span>Əməliyyatlar</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
               <li><a href="#">Kadrlar</a></li>
               <li><a href="#">Texnikalar</a></li>
@@ -98,7 +98,7 @@
               <li><a href="#">Anbar</a></li>              
             </ul>
           </li>
-            <li class="dropdown"><a href="Mallar.aspx"><span>Axtarış</span> <i class="bi bi-chevron-down"></i></a>
+            <li class="dropdown"><a href="#"><span>Axtarış</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
               <li><a href="#">Şirkətlər</a></li>
               <li><a href="#">Bağlar</a></li>
@@ -108,7 +108,7 @@
               <li><a href="#">Anbar</a></li>
             </ul>
           </li>
-            <li class="dropdown"><a href="Mallar.aspx"><span>Hesabat</span> <i class="bi bi-chevron-down"></i></a>
+            <li class="dropdown"><a href="#"><span>Hesabat</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
               <li><a href="#">Şirkətlər</a></li>
               <li><a href="#">Bağlar</a></li>

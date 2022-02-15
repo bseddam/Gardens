@@ -128,7 +128,7 @@ public partial class Sectors : System.Web.UI.Page
         {
             val = _db.SectorUpdate(SectorID: btnSave.CommandArgument.ToParseInt(),
                 RegisterTime: cmbregistertime.Text.ToParseStr(),
-                ZoneID: ddlgardens.SelectedValue.ToParseInt(),
+                ZoneID: ddlzone.SelectedValue.ToParseInt(),
                 SectorName: txtsectorname.Text.ToParseStr(),
                 SectorArea: txtsectorarea.Text.ToParseStr(),
                 UnitMeasurementID: ddlunitmeasurement.SelectedValue.ToParseInt(),

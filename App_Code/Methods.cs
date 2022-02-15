@@ -366,24 +366,13 @@ UserID=@UserID where UnitMeasurementID=@UnitMeasurementID;", SqlConn);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
     public DataTable GetGardens()
     {
         try
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by GardenID desc) sn,
-GardenID,UserID,RegisterTime,GardenName,GardenArea,u.UnitMeasurementName,Address,Notes 
+GardenID,g.RegisterTime,GardenName,GardenArea,u.UnitMeasurementName,Address,Notes 
 from Gardens g inner join UnitMeasurements u on g.UnitMeasurementID=u.UnitMeasurementID 
 where  g.DeleteTime is null and u.DeleteTime is null", SqlConn);
             da.Fill(dt);
@@ -399,9 +388,10 @@ where  g.DeleteTime is null and u.DeleteTime is null", SqlConn);
         try
         {
             DataTable dt = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter(@"select  row_number() over(order by GardenID desc) sn,
-GardenID,UserID,RegisterTime,GardenName,GardenArea,UnitMeasurementID,Address,Notes,InsertTime,UpdateTime,DeleteTime
-  from Gardens where DeleteTime is null and GardenID=@id", SqlConn);
+            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by GardenID desc) sn,
+GardenID,g.RegisterTime,GardenName,GardenArea,u.UnitMeasurementName,Address,Notes 
+from Gardens g inner join UnitMeasurements u on g.UnitMeasurementID=u.UnitMeasurementID 
+where  g.DeleteTime is null and u.DeleteTime is null and GardenID=@id", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
             da.Fill(dt);
             return dt;
@@ -503,6 +493,14 @@ Address=@Address,Notes=@Notes,UpdateTime=getdate() where GardenID=@GardenID", Sq
 
 
 
+
+
+
+
+
+
+
+
     public DataTable GetZones()
     {
         try
@@ -531,25 +529,6 @@ ZoneID,z.UserID,z.RegisterTime,g.GardenName,ZoneName,ZoneArea,z.GardenID,z.UnitM
 z.Notes from Zones z  inner join Gardens g on g.GardenID=z.GardenID 
 inner join UnitMeasurements u on z.UnitMeasurementID=u.UnitMeasurementID 
 where z.DeleteTime is null and g.DeleteTime is null and u.DeleteTime is null and z.ZoneID=@id", SqlConn);
-            da.SelectCommand.Parameters.AddWithValue("id", id);
-            da.Fill(dt);
-            return dt;
-        }
-        catch (Exception ex)
-        {
-            return null;
-        }
-    }
-    public DataTable GetZonesByGardenID(int id)
-    {
-        try
-        {
-            DataTable dt = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by ZoneID desc) sn,
-ZoneID,z.UserID,z.RegisterTime,g.GardenName,ZoneName,ZoneArea,z.UnitMeasurementID,u.UnitMeasurementName,
-z.Notes,g.GardenID FROM Zones z inner join Gardens g on g.GardenID=z.GardenID 
-inner join UnitMeasurements u on z.UnitMeasurementID=u.UnitMeasurementID 
-where z.DeleteTime is null and g.DeleteTime is null and u.DeleteTime is null and g.GardenID=@id", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
             da.Fill(dt);
             return dt;
@@ -644,6 +623,25 @@ UnitMeasurementID=@UnitMeasurementID,Notes=@Notes,UpdateTime=getdate() where Zon
         {
             cmd.Connection.Close();
             cmd.Dispose();
+        }
+    }
+    public DataTable GetZonesByGardenID(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by ZoneID desc) sn,
+ZoneID,z.UserID,z.RegisterTime,g.GardenName,ZoneName,ZoneArea,z.UnitMeasurementID,u.UnitMeasurementName,
+z.Notes,g.GardenID FROM Zones z inner join Gardens g on g.GardenID=z.GardenID 
+inner join UnitMeasurements u on z.UnitMeasurementID=u.UnitMeasurementID 
+where z.DeleteTime is null and g.DeleteTime is null and u.DeleteTime is null and g.GardenID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
         }
     }
 
@@ -854,8 +852,6 @@ and z.ZoneID=@id", SqlConn);
             return null;
         }
     }
-
-
     public DataTable GetTreeTypesByID(int id)
     {
         try
@@ -1168,7 +1164,6 @@ m.DeleteTime is null and u.DeleteTime is null and p.ProductID=@id", SqlConn);
             return null;
         }
     }
-   
     public Types.ProsesType ProductInsert(string RegisterTime, string ProductsName, int ProductTypeID, 
         int BrandID,int ModelID,string Code, int UnitMeasurementID, string Price,
         string PriceDiscount, string Notes)
@@ -1628,6 +1623,171 @@ where ProductTypeID=@ProductTypeID;", SqlConn);
         {
             cmd.Connection.Close();
             cmd.Dispose();
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+    public DataTable GetWorks()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by WorkID desc) sn,
+[WorkID],w.[RegisterTime],w.[WorkTypeID],wt.WorkTypeName,[WorkName]
+FROM Works w inner join WorkTypes wt on w.WorkTypeID=wt.WorkTypeID 
+where w.DeleteTime is null and wt.DeleteTime is null ", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+    public DataTable GetWorkById(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by WorkID desc) sn,
+[WorkID],w.[RegisterTime],w.[WorkTypeID],wt.WorkTypeName,[WorkName]
+FROM Works w inner join WorkTypes wt on w.WorkTypeID=wt.WorkTypeID 
+where w.DeleteTime is null and wt.DeleteTime is null and w.WorkID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+    public Types.ProsesType WorkInsert(string RegisterTime, int WorkTypeID, string WorkName)
+    {
+        SqlCommand cmd = new SqlCommand(@"insert into Works 
+(UserID,RegisterTime,WorkTypeID,WorkName) 
+values (@UserID,@RegisterTime,@WorkTypeID,@WorkName)", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        cmd.Parameters.AddWithValue("@WorkTypeID", WorkTypeID);
+        cmd.Parameters.AddWithValue("@WorkName", WorkName);
+
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+    public Types.ProsesType WorkUpdate(int WorkID, string RegisterTime, int WorkTypeID, string WorkName)
+    {
+        SqlCommand cmd = new SqlCommand(@"update Works set UserID=@UserID,RegisterTime=@RegisterTime,
+WorkTypeID=@WorkTypeID, WorkName=@WorkName,UpdateTime=getdate() where WorkID=@WorkID", SqlConn);
+        cmd.Parameters.AddWithValue("@WorkID", WorkID);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        cmd.Parameters.AddWithValue("@WorkTypeID", WorkTypeID);
+        cmd.Parameters.AddWithValue("@WorkName", WorkName);
+
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+    public Types.ProsesType DeleteWork(int id)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"Update Works set deletetime=getdate(),UserID=@UserID where WorkID=@id;", SqlConn);
+        cmd.Parameters.AddWithValue("@id", id);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            //LogInsert(Utils.Tables.pages, Utils.LogType.delete, String.Format("IndicatorsDelete () "), ex.Message, "", true);
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+
+
+
+
+
+    public DataTable GetWorkTypes()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [WorkTypeID] desc) sn,
+[WorkTypeID],[WorkTypeName],[InsertTime],[UpdateTime],[DeleteTime] from WorkTypes  
+where DeleteTime is null", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+
+    public DataTable GetWorkStatus()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [WorkStatusID] desc) sn,
+[WorkStatusID]
+      ,[WorkStatusName]
+      ,[InsertTime]
+      ,[Updatetime]
+      ,[DeleteTime] from [WorkStatus]  
+where DeleteTime is null", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
         }
     }
 
