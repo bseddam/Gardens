@@ -69,7 +69,10 @@ public partial class Zones : System.Web.UI.Page
         txtzonename.Text = dt.Rows[0]["ZoneName"].ToParseStr();
         txtzonearea.Text = dt.Rows[0]["ZoneArea"].ToParseStr();
         ddlgardens.SelectedValue = dt.Rows[0]["GardenID"].ToParseStr();
-        ddlunitmeasurement.SelectedValue = dt.Rows[0]["UnitMeasurementID"].ToParseStr();
+        if (dt.Rows[0]["UnitMeasurementID"].ToParseStr() != "")
+        {
+            ddlunitmeasurement.SelectedValue = dt.Rows[0]["UnitMeasurementID"].ToParseStr();
+        }
         txtnotes.Text = dt.Rows[0]["Notes"].ToParseStr();
 
         btnSave.CommandName = "update";

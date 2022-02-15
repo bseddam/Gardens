@@ -373,7 +373,7 @@ UserID=@UserID where UnitMeasurementID=@UnitMeasurementID;", SqlConn);
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by GardenID desc) sn,
 GardenID,g.RegisterTime,GardenName,GardenArea,u.UnitMeasurementName,Address,Notes 
-from Gardens g inner join UnitMeasurements u on g.UnitMeasurementID=u.UnitMeasurementID 
+from Gardens g left join UnitMeasurements u on g.UnitMeasurementID=u.UnitMeasurementID 
 where  g.DeleteTime is null and u.DeleteTime is null", SqlConn);
             da.Fill(dt);
             return dt;
@@ -389,8 +389,8 @@ where  g.DeleteTime is null and u.DeleteTime is null", SqlConn);
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by GardenID desc) sn,
-GardenID,g.RegisterTime,GardenName,GardenArea,u.UnitMeasurementName,Address,Notes 
-from Gardens g inner join UnitMeasurements u on g.UnitMeasurementID=u.UnitMeasurementID 
+GardenID,g.RegisterTime,GardenName,GardenArea,u.UnitMeasurementID,u.UnitMeasurementName,Address,Notes 
+from Gardens g left join UnitMeasurements u on g.UnitMeasurementID=u.UnitMeasurementID 
 where  g.DeleteTime is null and u.DeleteTime is null and GardenID=@id", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
             da.Fill(dt);
@@ -509,7 +509,7 @@ Address=@Address,Notes=@Notes,UpdateTime=getdate() where GardenID=@GardenID", Sq
             SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by ZoneID desc) sn,
 ZoneID,z.UserID,z.RegisterTime,g.GardenName,ZoneName,ZoneArea,z.UnitMeasurementID,u.UnitMeasurementName,z.Notes
 FROM Zones z inner join Gardens g on g.GardenID=z.GardenID 
-inner join UnitMeasurements u on z.UnitMeasurementID=u.UnitMeasurementID 
+left join UnitMeasurements u on z.UnitMeasurementID=u.UnitMeasurementID 
 where z.DeleteTime is null and g.DeleteTime is null and u.DeleteTime is null", SqlConn);
             da.Fill(dt);
             return dt;
@@ -527,7 +527,7 @@ where z.DeleteTime is null and g.DeleteTime is null and u.DeleteTime is null", S
             SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by ZoneID desc) sn,
 ZoneID,z.UserID,z.RegisterTime,g.GardenName,ZoneName,ZoneArea,z.GardenID,z.UnitMeasurementID,u.UnitMeasurementName,
 z.Notes from Zones z  inner join Gardens g on g.GardenID=z.GardenID 
-inner join UnitMeasurements u on z.UnitMeasurementID=u.UnitMeasurementID 
+left join UnitMeasurements u on z.UnitMeasurementID=u.UnitMeasurementID 
 where z.DeleteTime is null and g.DeleteTime is null and u.DeleteTime is null and z.ZoneID=@id", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
             da.Fill(dt);
@@ -633,7 +633,7 @@ UnitMeasurementID=@UnitMeasurementID,Notes=@Notes,UpdateTime=getdate() where Zon
             SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by ZoneID desc) sn,
 ZoneID,z.UserID,z.RegisterTime,g.GardenName,ZoneName,ZoneArea,z.UnitMeasurementID,u.UnitMeasurementName,
 z.Notes,g.GardenID FROM Zones z inner join Gardens g on g.GardenID=z.GardenID 
-inner join UnitMeasurements u on z.UnitMeasurementID=u.UnitMeasurementID 
+left join UnitMeasurements u on z.UnitMeasurementID=u.UnitMeasurementID 
 where z.DeleteTime is null and g.DeleteTime is null and u.DeleteTime is null and g.GardenID=@id", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
             da.Fill(dt);
@@ -670,7 +670,7 @@ s.SectorID
 FROM Sectors s 
 inner join Zones z on s.ZoneID=z.ZoneID
 inner join Gardens g on g.GardenID=z.GardenID 
-inner join UnitMeasurements u on s.UnitMeasurementID=u.UnitMeasurementID 
+left join UnitMeasurements u on s.UnitMeasurementID=u.UnitMeasurementID 
 where s.DeleteTime is null and z.DeleteTime is null and g.DeleteTime is null and u.DeleteTime is null", SqlConn);
             da.Fill(dt);
             return dt;
@@ -690,7 +690,7 @@ s.SectorID,s.UserID,s.RegisterTime,SectorName,s.ZoneID,SectorArea,s.UnitMeasurem
 g.GardenName,ZoneName,u.UnitMeasurementName FROM Sectors s 
 inner join Zones z on s.ZoneID=z.ZoneID
 inner join Gardens g on g.GardenID=z.GardenID 
-inner join UnitMeasurements u on s.UnitMeasurementID=u.UnitMeasurementID 
+left join UnitMeasurements u on s.UnitMeasurementID=u.UnitMeasurementID 
 where s.DeleteTime is null and z.DeleteTime is null and g.DeleteTime is null and u.DeleteTime is null 
 and s.SectorID=@id", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
@@ -805,7 +805,7 @@ s.SectorID
 FROM Sectors s 
 inner join Zones z on s.ZoneID=z.ZoneID
 inner join Gardens g on g.GardenID=z.GardenID 
-inner join UnitMeasurements u on s.UnitMeasurementID=u.UnitMeasurementID 
+left join UnitMeasurements u on s.UnitMeasurementID=u.UnitMeasurementID 
 where s.DeleteTime is null and z.DeleteTime is null and g.DeleteTime is null and u.DeleteTime is null
 and z.ZoneID=@id", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
@@ -975,8 +975,8 @@ FROM Lines l
 inner join Sectors s on l.SectorID=s.SectorID
 inner join Zones z on s.ZoneID=z.ZoneID
 inner join Gardens g on g.GardenID=z.GardenID 
-inner join UnitMeasurements u on l.UnitMeasurementID=u.UnitMeasurementID 
 inner join TreeTypes t on t.TreeTypeID=l.TreeTypeID
+left join UnitMeasurements u on l.UnitMeasurementID=u.UnitMeasurementID 
 where s.DeleteTime is null and z.DeleteTime is null and g.DeleteTime is null and u.DeleteTime is null 
 and t.DeleteTime is null and l.DeleteTime is null", SqlConn);
             da.Fill(dt);
@@ -999,8 +999,8 @@ FROM Lines l
 inner join Sectors s on l.SectorID=s.SectorID
 inner join Zones z on s.ZoneID=z.ZoneID
 inner join Gardens g on g.GardenID=z.GardenID 
-inner join UnitMeasurements u on l.UnitMeasurementID=u.UnitMeasurementID 
 inner join TreeTypes t on t.TreeTypeID=l.TreeTypeID
+left join UnitMeasurements u on l.UnitMeasurementID=u.UnitMeasurementID 
 where s.DeleteTime is null and z.DeleteTime is null and g.DeleteTime is null and u.DeleteTime is null 
 and t.DeleteTime is null and l.DeleteTime is null
 and l.LineID=@id", SqlConn);
@@ -1129,7 +1129,7 @@ where LineID=@LineID;", SqlConn);
   inner join ProductTypes pt on p.ProductTypeID=pt.ProductTypeID 
   inner join Brands b on p.BrandID=b.BrandID
   inner join Models m on p.ModelID=m.ModelID
-  inner join UnitMeasurements u on p.UnitMeasurementID=u.UnitMeasurementID 
+  left join UnitMeasurements u on p.UnitMeasurementID=u.UnitMeasurementID 
   where p.DeleteTime is null and pt.DeleteTime is null and b.DeleteTime is null and 
 m.DeleteTime is null and u.DeleteTime is null", SqlConn);
             da.Fill(dt);
@@ -1152,7 +1152,7 @@ m.DeleteTime is null and u.DeleteTime is null", SqlConn);
   inner join ProductTypes pt on p.ProductTypeID=pt.ProductTypeID 
   inner join Brands b on p.BrandID=b.BrandID
   inner join Models m on p.ModelID=m.ModelID
-  inner join UnitMeasurements u on p.UnitMeasurementID=u.UnitMeasurementID 
+  left join UnitMeasurements u on p.UnitMeasurementID=u.UnitMeasurementID 
   where p.DeleteTime is null and pt.DeleteTime is null and b.DeleteTime is null and 
 m.DeleteTime is null and u.DeleteTime is null and p.ProductID=@id", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
@@ -1790,5 +1790,695 @@ where DeleteTime is null", SqlConn);
             return null;
         }
     }
+
+
+    public DataTable GetCards()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [CardID] desc) sn,
+[CardID],[UserID],[CardNumber],[InsertTime],[Updatetime],[DeleteTime]
+  FROM [Cards] where DeleteTime is null", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+
+    public DataTable GetGenders()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [GenderID]) sn,
+[GenderID],[GenderName] FROM [Genders] ", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    ////Raqif Garden :)
+
+    public DataTable GetTechniqueSituations()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [TechniqueSituationID] desc) sn,
+[TechniqueSituationID]
+      ,[TechniqueSituationName]
+  FROM [TechniqueSituation]
+where DeleteTime is null", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+
+    
+
+
+
+
+
+
+    public DataTable GetTechniqueById(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select * from Techniques where TechniquesID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+    public Types.ProsesType TechniqueInsert(int UserID, int BrandID, int ModelID, string RegisterNumber, string SerieNumber, int Motor, int CompanyID, int TechniqueSituationID, int GPS, string GPSLogin, string GPSPassword, int ProductionYear, string Photourl, string Birka, string TechniquesName, string Passport, string BoughtDate)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"insert into Techniques (UserID,  BrandID,  ModelID,  RegisterNumber,  SerieNumber,  Motor,  CompanyID,  TechniqueSituationID,  GPS, GPSLogin, GPSPassword,  ProductionYear,  Photo,  Birka,  TechniquesName,  Passport,  BoughtDate)    Values( @UserID,  @BrandID,  @ModelID,  @RegisterNumber,  @SerieNumber,  @Motor,  @CompanyID,  @TechniqueSituationID,  @GPS, @GPSLogin, @GPSPassword, @ProductionYear,  @Photourl,  @Birka,  @TechniquesName,  @Passport,  @BoughtDate)", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", UserID);
+        cmd.Parameters.AddWithValue("@BrandID", BrandID);
+        cmd.Parameters.AddWithValue("@ModelID", ModelID);
+        cmd.Parameters.AddWithValue("@RegisterNumber", RegisterNumber);
+        cmd.Parameters.AddWithValue("@SerieNumber", SerieNumber);
+        cmd.Parameters.AddWithValue("@Motor", Motor);
+        cmd.Parameters.AddWithValue("@CompanyID", CompanyID);
+        cmd.Parameters.AddWithValue("@TechniqueSituationID", TechniqueSituationID);
+        cmd.Parameters.AddWithValue("@GPS", GPS);
+        cmd.Parameters.AddWithValue("@GPSLogin", GPSLogin);
+        cmd.Parameters.AddWithValue("@GPSPassword", GPSPassword);
+        cmd.Parameters.AddWithValue("@ProductionYear", ProductionYear);
+        cmd.Parameters.AddWithValue("@Photourl", Photourl);
+        cmd.Parameters.AddWithValue("@Birka", Birka);
+        cmd.Parameters.AddWithValue("@TechniquesName", TechniquesName);
+        cmd.Parameters.AddWithValue("@Passport", Passport);
+        cmd.Parameters.AddWithValue("@BoughtDate", ConvertTypes.ToParseDatetime(BoughtDate));
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+    }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+{
+    cmd.Connection.Close();
+    cmd.Dispose();
+}
+    }
+
+    public Types.ProsesType TechniqueUpdate(int TechniquesID, int UserID, int BrandID, int ModelID, string RegisterNumber, string SerieNumber, int Motor, int CompanyID, int TechniqueSituationID, int GPS, string GPSLogin, string GPSPassword, int ProductionYear, string Photourl, string Birka, string TechniquesName, string Passport, string BoughtDate)
+    {
+        SqlCommand cmd = new SqlCommand(@"update Techniques set UserID=@UserID, BrandID=@BrandID, ModelID=@ModelID,RegisterNumber=@RegisterNumber, SerieNumber=@SerieNumber, Motor=@Motor,CompanyID=@CompanyID, TechniqueSituationID=@TechniqueSituationID, GPS=@GPS, GPSLogin=@GPSLogin, GPSPassword=@GPSPassword, ProductionYear=@ProductionYear, Photo=@Photourl, Birka=@Birka,TechniquesName=@TechniquesName, Passport=@Passport,BoughtDate=@BoughtDate where TechniquesID=@TechniquesID", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", UserID);
+        cmd.Parameters.AddWithValue("@BrandID", BrandID);
+        cmd.Parameters.AddWithValue("@ModelID", ModelID);
+        cmd.Parameters.AddWithValue("@RegisterNumber", RegisterNumber);
+        cmd.Parameters.AddWithValue("@SerieNumber", SerieNumber);
+        cmd.Parameters.AddWithValue("@Motor", Motor);
+        cmd.Parameters.AddWithValue("@CompanyID", CompanyID);
+        cmd.Parameters.AddWithValue("@TechniqueSituationID", TechniqueSituationID);
+        cmd.Parameters.AddWithValue("@GPS", GPS);
+        cmd.Parameters.AddWithValue("@GPSLogin", GPSLogin);
+        cmd.Parameters.AddWithValue("@GPSPassword", GPSPassword);
+        cmd.Parameters.AddWithValue("@ProductionYear", ProductionYear);
+        cmd.Parameters.AddWithValue("@Photourl", Photourl);
+        cmd.Parameters.AddWithValue("@Birka", Birka);
+        cmd.Parameters.AddWithValue("@TechniquesName", TechniquesName);
+        cmd.Parameters.AddWithValue("@Passport", Passport);
+        cmd.Parameters.AddWithValue("BoughtDate", ConvertTypes.ToParseDatetime(BoughtDate));
+        cmd.Parameters.AddWithValue("@TechniquesID", TechniquesID);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+    public Types.ProsesType DeleteTechnique(int id)
+    {
+        SqlCommand cmd = new SqlCommand(@"Update Techniques set DeleteTime=GetDate() where TechniquesID=@id ", SqlConn);
+        cmd.Parameters.AddWithValue("@id", id);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+    public DataTable GetTechnique()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select  row_number() 
+over(order by t.TechniquesID desc) sn,c.Sname+' '+c.Name UsingUsers,
+t.TechniquesName,b.BrandName, m.ModelName, cp.CompanyName,t.Motor,t.RegisterNumber,t.SerieNumber,t.Passport,t.ProductionYear,t.Birka,ts.TechniqueSituationName,t.GPS,t.GPSLogin,t.GPSPassword,t.BoughtDate,t.Photo,t.TechniquesID,t.ModelID,t.UserID ID,t.BrandID,t.CompanyID,t.TechniqueSituationID
+from Techniques t 
+left join Users u on t.UserID=u.UsersID
+left join Cadres c on u.CadreID=c.CadreID
+left join Brands b on b.BrandID=t.BrandID
+left join Models m on m.ModelID=t.ModelID
+left join Companies cp on cp.CompanyID=t.CompanyID 
+left join TechniqueSituation ts on ts.TechniqueSituationID=t.TechniqueSituationID 
+where m.DeleteTime is null order by t.UserID desc", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+
+    //-------Suvarma sistemleri
+    public DataTable GetWateringSystems()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select  row_number() over (order by w.WateringSystemID desc) sn,b.BrandName, m.ModelName,w.WateringSystemName, 
+w.Notes,ts.TechniqueSituationName, w.RegisterTime,w.WateringSystemID,w.ModelID,w.UserID,w.BrandID,w.WateringSystemID
+from WateringSystems w left join Brands b on b.BrandID=w.BrandID left join Models m on m.ModelID=w.ModelID
+left join TechniqueSituation ts on ts.TechniqueSituationID=w.TechniqueSituationID where w.DeleteTime is null ", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+    public Types.ProsesType DeleteWateringSystems(int id)
+    {
+        SqlCommand cmd = new SqlCommand(@"Update WateringSystems set DeleteTime=GetDate() where WateringSystemID=@id ", SqlConn);
+        cmd.Parameters.AddWithValue("@id", id);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+    public DataTable GetWateringSystemsById(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select * from WateringSystems where WateringSystemID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+    public Types.ProsesType WateringSystemsInsert(int UserID, int BrandID, int ModelID, 
+        string WateringSystemName, string Notes, int TechniqueSituationID, string RegisterTime)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"insert into WateringSystems 
+(UserID, BrandID, ModelID, WateringSystemName, Notes, TechniqueSituationID, RegisterTime) 
+Values (@UserID, @BrandID, @ModelID, @WateringSystemName, @Notes, @TechniqueSituationID, @RegisterTime)", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", UserID);
+        cmd.Parameters.AddWithValue("@BrandID", BrandID);
+        cmd.Parameters.AddWithValue("@ModelID", ModelID);
+        cmd.Parameters.AddWithValue("@WateringSystemName", WateringSystemName);
+        cmd.Parameters.AddWithValue("@Notes", Notes);
+        cmd.Parameters.AddWithValue("@TechniqueSituationID", TechniqueSituationID);
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        //try
+        //{
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        //}
+        //catch (Exception ex)
+        //{
+        //    return Types.ProsesType.Error;
+        //}
+        //finally
+        //{
+        //    cmd.Connection.Close();
+        //    cmd.Dispose();
+        //}
+    }
+
+    public Types.ProsesType WateringSystemsUpdate(int WateringSystemID, int UserID, int BrandID, int ModelID,
+        string WateringSystemName, string Notes, int TechniqueSituationID, string RegisterTime)
+    {
+        SqlCommand cmd = new SqlCommand(@"update WateringSystems set 
+UserID=@UserID, BrandID=@BrandID, ModelID=@ModelID, WateringSystemName=@WateringSystemName, 
+Notes=@Notes, TechniqueSituationID=@TechniqueSituationID, RegisterTime=@RegisterTime 
+where WateringSystemID=@WateringSystemID", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", UserID);
+        cmd.Parameters.AddWithValue("@BrandID", BrandID);
+        cmd.Parameters.AddWithValue("@ModelID", ModelID);
+        cmd.Parameters.AddWithValue("@WateringSystemName", WateringSystemName);
+        cmd.Parameters.AddWithValue("@Notes", Notes);
+        cmd.Parameters.AddWithValue("@TechniqueSituationID", TechniqueSituationID);
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        cmd.Parameters.AddWithValue("@WateringSystemID", WateringSystemID);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+
+    // Kadrlar
+    public DataTable GetCadresById(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select * from Cadres where CadreID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+    public Types.ProsesType CadresInsert(int UserID, int StructureID, int PositionID, int CardID, string Sname, string Name, string FName, int Gender, string PassportN, string PIN, string PhoneNumber, string Photo, string Email, string Address, string JobEntryDate, string JobExitDate, int WorkStatusID, string RegstrDate)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"insert into Cadres (UserID, StructureID, PositionID, CardID, Sname, Name, FName, Gender, PassportN, PIN, PhoneNumber, Photo, Email, Address, JobEntryDate, 
+JobExitDate, WorkStatusID)  Values(@UserID, @StructureID, @PositionID, @CardID, @Sname, @Name, @FName, @Gender, @PassportN, @PIN, @PhoneNumber, @Photo, @Email, @Address, @JobEntryDate, @JobExitDate, @WorkStatusID)", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", UserID);
+        cmd.Parameters.AddWithValue("@StructureID", StructureID);
+        cmd.Parameters.AddWithValue("@PositionID", PositionID);
+        cmd.Parameters.AddWithValue("@CardID", CardID);
+        cmd.Parameters.AddWithValue("@Sname", Sname);
+        cmd.Parameters.AddWithValue("@Name", Name);
+        cmd.Parameters.AddWithValue("@FName", FName);
+        cmd.Parameters.AddWithValue("@Gender", Gender);
+        cmd.Parameters.AddWithValue("@PassportN", PassportN);
+        cmd.Parameters.AddWithValue("@PIN", PIN);
+        cmd.Parameters.AddWithValue("@PhoneNumber", PhoneNumber);
+        cmd.Parameters.AddWithValue("@Photo", Photo);
+        cmd.Parameters.AddWithValue("@Email", Email);
+        cmd.Parameters.AddWithValue("@Address", Address);
+        cmd.Parameters.AddWithValue("@JobEntryDate", ConvertTypes.ToParseDatetime(JobEntryDate));
+        cmd.Parameters.AddWithValue("@JobExitDate", ConvertTypes.ToParseDatetime(JobExitDate));
+        cmd.Parameters.AddWithValue("@WorkStatusID", WorkStatusID);
+        //try
+        //{
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        //}
+        //catch (Exception ex)
+        //{
+        //    return Types.ProsesType.Error;
+        //}
+        //finally
+        //{
+        //    cmd.Connection.Close();
+        //    cmd.Dispose();
+        //}
+    }
+
+    public Types.ProsesType CadresUpdate(int CadreID, int UserID, int StructureID, int PositionID, int CardID, string Sname, string Name, string FName, int Gender, string PassportN, string PIN, string PhoneNumber, string Photo, string Email, string Address, string JobEntryDate, string JobExitDate, int WorkStatusID, string RegstrDate)
+    {
+        SqlCommand cmd = new SqlCommand(@"update Cadres set UserID=@UserID, StructureID=@StructureID, PositionID=@PositionID,CardID=@CardID,Sname=@Sname, Name=@Name, FName=@FName,Gender=@Gender, PassportN=@PassportN, PIN=@PIN, PhoneNumber=@PhoneNumber, Photo=@Photo, Email=@Email, Address=@Address,JobEntryDate=@JobEntryDate, JobExitDate=@JobExitDate where CadreID=@CadreID", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", UserID);
+        cmd.Parameters.AddWithValue("@StructureID", StructureID);
+        cmd.Parameters.AddWithValue("@PositionID", PositionID);
+        cmd.Parameters.AddWithValue("@CardID", CardID);
+        cmd.Parameters.AddWithValue("@Sname", Sname);
+        cmd.Parameters.AddWithValue("@Name", Name);
+        cmd.Parameters.AddWithValue("@FName", FName);
+        cmd.Parameters.AddWithValue("@Gender", Gender);
+        cmd.Parameters.AddWithValue("@PassportN", PassportN);
+        cmd.Parameters.AddWithValue("@PIN", PIN);
+        cmd.Parameters.AddWithValue("@PhoneNumber", PhoneNumber);
+        cmd.Parameters.AddWithValue("@Photo", Photo);
+        cmd.Parameters.AddWithValue("@Email", Email);
+        cmd.Parameters.AddWithValue("@Address", Address);
+        cmd.Parameters.AddWithValue("@JobEntryDate", ConvertTypes.ToParseDatetime(JobEntryDate));
+        cmd.Parameters.AddWithValue("@JobExitDate", ConvertTypes.ToParseDatetime(JobExitDate));
+        cmd.Parameters.AddWithValue("@WorkStatusID", WorkStatusID);
+        cmd.Parameters.AddWithValue("@CadreID", CadreID);
+        //try
+        //{
+        cmd.Connection.Open();
+        cmd.ExecuteNonQuery();
+        return Types.ProsesType.Succes;
+        //}
+        //catch (Exception ex)
+        //{
+        //    return Types.ProsesType.Error;
+        //}
+        //finally
+        //{
+        cmd.Connection.Close();
+        cmd.Dispose();
+        //}
+    }
+
+    public Types.ProsesType DeleteCadres(int id)
+    {
+        SqlCommand cmd = new SqlCommand(@"Update Cadres set DeleteTime=GetDate() where CadreID=@id ", SqlConn);
+        cmd.Parameters.AddWithValue("@id", id);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+    public DataTable GetCadres()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"Select ROW_NUMBER() over(order by c.CadreID desc) sn, s.StructureName,p.PositionName, k.CardNumber, c.Sname, c.Name, c.FName, g.GenderName, c.PassportN, c.PIN, c.[Address], c.PhoneNumber,c.Email,c.Photo,c.JobEntryDate,c.JobExitDate,
+j.WorkStatusName,c.RegisterTime, c.CadreID, c.UserID, c.StructureID, c.PositionID, c.CardID, c.Gender, c.WorkStatusID
+from Cadres c 
+left join Structure s on c.StructureID=s.StructureID
+left join Positions p on c.PositionID=p.PositionID
+left join Cards k on c.CardID=k.CardID 
+left join Genders g on g.GenderID=c.Gender
+left join WorkStatus j on j.WorkStatusID=c.WorkStatusID where c.DeleteTime is null", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+
+    //-------Struktur kateqoriyasi
+    public DataTable GetStructure()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select  row_number() over(order by s.StructureSort) sn,s.StructureName, s.StructureSort, s.StructureID from Structure s  where s.DeleteTime is null ", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+    public Types.ProsesType DeleteStructure(int id)
+    {
+        SqlCommand cmd = new SqlCommand(@"Update Structure set DeleteTime=GetDate() where StructureID=@id ", SqlConn);
+        cmd.Parameters.AddWithValue("@id", id);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+    public DataTable GetStructureById(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select * from Structure where StructureID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+    public Types.ProsesType StructureInsert(int UserID, string StructureName, float StructureSort)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"insert into Structure (UserID, StructureName, StructureSort)  Values(@UserID, @StructureName, @StructureSort)", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", UserID);
+        cmd.Parameters.AddWithValue("@StructureName", StructureName);
+        cmd.Parameters.AddWithValue("@StructureSort", StructureSort);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+    public Types.ProsesType StructureUpdate(int StructureID, int UserID, string StructureName, float StructureSort)
+    {
+        SqlCommand cmd = new SqlCommand(@"update Structure set UserID=@UserID, StructureName=@StructureName, StructureSort=@StructureSort where StructureID=@StructureID", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", UserID);
+        cmd.Parameters.AddWithValue("@StructureName", StructureName);
+        cmd.Parameters.AddWithValue("@StructureSort", StructureSort);
+        cmd.Parameters.AddWithValue("@StructureID", StructureID);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+    //-------Positions kateqoriyasi
+    public DataTable GetPositions()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select  row_number() over(order by p.PositionID) sn,p.PositionName, p.PositionID from Positions p  where p.DeleteTime is null ", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+    public Types.ProsesType DeletePosition(int id)
+    {
+        SqlCommand cmd = new SqlCommand(@"Update Positions set DeleteTime=GetDate() where PositionID=@id ", SqlConn);
+        cmd.Parameters.AddWithValue("@id", id);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+    public DataTable GetPositionById(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select * from Positions where PositionID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+    public Types.ProsesType PositionInsert(int UserID, string PositionName)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"insert into Positions (UserID, PositionName)  Values(@UserID, @PositionName)", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", UserID);
+        cmd.Parameters.AddWithValue("@PositionName", PositionName);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+    public Types.ProsesType PositionUpdate(int PositionID, int UserID, string PositionName)
+    {
+        SqlCommand cmd = new SqlCommand(@"update Positions set UserID=@UserID, PositionName=@PositionName where PositionID=@PositionID", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", UserID);
+        cmd.Parameters.AddWithValue("@PositionName", PositionName);
+        cmd.Parameters.AddWithValue("@PositionID", PositionID);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+
+
 
 }

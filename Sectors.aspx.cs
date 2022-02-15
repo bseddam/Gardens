@@ -84,7 +84,10 @@ public partial class Sectors : System.Web.UI.Page
         ddlgardens.SelectedValue = dt.Rows[0]["GardenID"].ToParseStr();
         zonacomponentload();
         ddlzone.SelectedValue = dt.Rows[0]["ZoneID"].ToParseStr();
-        ddlunitmeasurement.SelectedValue = dt.Rows[0]["UnitMeasurementID"].ToParseStr();
+        if (dt.Rows[0]["UnitMeasurementID"].ToParseStr() != "")
+        {
+            ddlunitmeasurement.SelectedValue = dt.Rows[0]["UnitMeasurementID"].ToParseStr();
+        }
         txtnotes.Text = dt.Rows[0]["Notes"].ToParseStr();
 
         btnSave.CommandName = "update";

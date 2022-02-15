@@ -100,7 +100,10 @@ public partial class Products : System.Web.UI.Page
         modelcomponentload();
         ddlmodel.SelectedValue = dt.Rows[0]["ModelID"].ToParseStr();
         txtcode.Text = dt.Rows[0]["Code"].ToParseStr();
-        ddlunitmeasurement.SelectedValue = dt.Rows[0]["UnitMeasurementID"].ToParseStr();
+        if (dt.Rows[0]["UnitMeasurementID"].ToParseStr() != "")
+        {
+            ddlunitmeasurement.SelectedValue = dt.Rows[0]["UnitMeasurementID"].ToParseStr();
+        }
         txtprice.Text = dt.Rows[0]["Price"].ToParseStr();
         txtpricediscount.Text = dt.Rows[0]["PriceDiscount"].ToParseStr();
         txtnotes.Text = dt.Rows[0]["Notes"].ToParseStr();

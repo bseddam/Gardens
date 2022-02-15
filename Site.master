@@ -63,8 +63,8 @@
             <ul>
  
 
-                 <li><a href="#">Struktur</a></li>
-                  <li><a href="#">Vəzifələr</a></li>
+                 <li><a href="/structure">Struktur</a></li>
+                  <li><a href="/positions">Vəzifələr</a></li>
                   <li><a href="/producttypes">Məhsul növü</a></li>                  
                   <li><a href="/works">İşlər</a></li>
                   <li><a href="/treetypes">Ağac növləri</a></li>
@@ -82,10 +82,10 @@
               <li><a href="/zones">Zonalar</a></li>
               <li><a href="/sectors">Sektorlar</a></li>
               <li><a href="/lines">Sıralar</a></li>
-              <li><a href="#">Kadrlar</a></li>
-              <li><a href="#">Texnikalar</a></li>
-              <li><a href="#">Suvarma sistemləri</a></li>
-              <li><a href="Products.aspx">Mallar</a></li>
+              <li><a href="/cadres">Kadrlar</a></li>
+              <li><a href="/technique">Texnikalar</a></li>
+              <li><a href="/wateringsystems">Suvarma sistemləri</a></li>
+              <li><a href="/products">Mallar</a></li>
 
               
             </ul>

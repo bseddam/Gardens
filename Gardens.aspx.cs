@@ -60,7 +60,10 @@ public partial class Gardens : System.Web.UI.Page
         }
         txtgardenname.Text = dt.Rows[0]["GardenName"].ToParseStr();
         txtgardenarea.Text = dt.Rows[0]["GardenArea"].ToParseStr();
-        ddlunitmeasurement.SelectedValue = dt.Rows[0]["UnitMeasurementID"].ToParseStr();
+        if (dt.Rows[0]["UnitMeasurementID"].ToParseStr() != "")
+        {
+            ddlunitmeasurement.SelectedValue = dt.Rows[0]["UnitMeasurementID"].ToParseStr();
+        }
         txtadress.Text = dt.Rows[0]["Address"].ToParseStr();
         txtnotes.Text = dt.Rows[0]["Notes"].ToParseStr();
 

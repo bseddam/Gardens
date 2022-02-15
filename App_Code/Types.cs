@@ -14,43 +14,51 @@ public class Types
         Succes = 1,
         Error = 0
     }
-    public string PageType(int typeid)
-    {
-        string typename = "";
-        if (typeid == 1)
-        {
-            typename = "TeElmiShura";
-        }
-        else if (typeid == 2)
-        {
-            typename = "TeElmiMuessise";
-        }
-        else if (typeid == 3)
-        {
-            typename = "TeElmSaheleri";
-        }
-        else if (typeid == 4)
-        {
-            typename = "TeIxtisasIndex";
-        }
-        else if (typeid == 5)
-        {
-            typename = "TeElmiDerece";
-        }
-        else if (typeid == 6)
-        {
-            typename = "TeElmiAdlar";
-        }
-        else if (typeid == 7)
-        {
-            typename = "TeTehsilFormasi";
-        }
-        else
-        {
-            typename = "";
-        }
-        return typename;
-    }
+    //public string PageType(int typeid)
+    //{
+    //    string typename = "";
+    //    if (typeid == 1)
+    //    {
+    //        typename = "Brands";
+    //    }
+    //    else if (typeid == 2)
+    //    {
+    //        typename = "Models";
+    //    }
+    //    else if (typeid == 3)
+    //    {
+    //        typename = "Companies";
+    //    } 
+    //    else if (typeid == 4)
+    //    {
+    //        typename = "TechniqueSituation";
+    //    }
+    //    else if (typeid == 5)
+    //    {
+    //        typename = "Structure";
+    //    }
+    //    else if (typeid == 6)
+    //    {
+    //        typename = "Positions";
+    //    }
+    //    else if (typeid == 7)
+    //    {
+    //        typename = "Cards";
+    //    }
+    //    else if (typeid == 8)
+    //    {
+    //        typename = "StatusJob";
+    //    }
+    //    else if (typeid == 9)
+    //    {
+    //        typename = "Gender";
+    //    }
+    //    else
+    //    {
+    //        typename = "";
+    //    }
+    //    return typename; 
+    //}
 
 
 }

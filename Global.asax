@@ -7,6 +7,7 @@
         // Code that runs on application startup
         System.Web.Routing.RouteCollection routes = System.Web.Routing.RouteTable.Routes;
         routes.MapPageRoute("home", "home", "~/Default.aspx");
+        routes.MapPageRoute("products", "products", "~/Products.aspx");
         routes.MapPageRoute("companies", "companies", "~/Companies.aspx");
         routes.MapPageRoute("garden", "garden", "~/Gardens.aspx");
         routes.MapPageRoute("zones", "zones", "~/Zones.aspx");
@@ -18,7 +19,11 @@
         routes.MapPageRoute("treetypes", "treetypes", "~/TreeTypes.aspx");
         routes.MapPageRoute("producttypes", "producttypes", "~/ProductTypes.aspx");
         routes.MapPageRoute("works", "works", "~/Works.aspx");
-        
+        routes.MapPageRoute("cadres", "cadres", "~/Cadres.aspx");
+        routes.MapPageRoute("positions", "positions", "~/Positions.aspx");
+        routes.MapPageRoute("structure", "structure", "~/Structure.aspx");
+        routes.MapPageRoute("technique", "technique", "~/Technique.aspx");
+        routes.MapPageRoute("wateringsystems", "wateringsystems", "~/WateringSystems.aspx");
         
      
     }

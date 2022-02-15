@@ -110,7 +110,10 @@ public partial class Lines : System.Web.UI.Page
         ddlzone.SelectedValue = dt.Rows[0]["ZoneID"].ToParseStr();
         sectorcomponentload();
         ddlsector.SelectedValue = dt.Rows[0]["SectorID"].ToParseStr();
-        ddlunitmeasurement.SelectedValue = dt.Rows[0]["UnitMeasurementID"].ToParseStr();
+        if (dt.Rows[0]["UnitMeasurementID"].ToParseStr() != "")
+        {
+            ddlunitmeasurement.SelectedValue = dt.Rows[0]["UnitMeasurementID"].ToParseStr();
+        }
         ddltreetype.SelectedValue = dt.Rows[0]["TreeTypeID"].ToParseStr();
         txtnotes.Text = dt.Rows[0]["Notes"].ToParseStr();
 
