@@ -112,13 +112,7 @@
                                                                 </dx:ASPxComboBox>
                                                             </div>
                                                         </div>
-                                                         <div class="row mb-2">
-                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Qət etdiyi məsafə</label>
-                                                            <div class="col-sm-7">
-                                                                <asp:TextBox ID="txtWateringSystemSize" class="form-control mb-0 mt-0" runat="server" placeholder="Sayı daxil edin...">
-                                                                </asp:TextBox>
-                                                            </div>
-                                                        </div>
+                                                       
                                                         <div class="row mb-2">
                                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ölçü vahidi</label>
                                                             <div class="col-sm-7">
@@ -126,6 +120,13 @@
                                                                     runat="server"
                                                                     Width="100%" Height="30px">
                                                                 </dx:ASPxComboBox>
+                                                            </div>
+                                                        </div>
+                                                          <div class="row mb-2">
+                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ölçüsü</label>
+                                                            <div class="col-sm-7">
+                                                                <asp:TextBox ID="txtWateringSystemSize" class="form-control mb-0 mt-0" runat="server" placeholder="Sayı daxil edin...">
+                                                                </asp:TextBox>
                                                             </div>
                                                         </div>
                                                         <div class="row mb-2">

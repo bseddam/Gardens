@@ -69,6 +69,9 @@
                                                 <dx:GridViewDataColumn Caption="Ağac sayı" FieldName="TreeCount" VisibleIndex="1">
                                                     <EditFormSettings VisibleIndex="1" />
                                                 </dx:GridViewDataColumn>
+                                                <dx:GridViewDataColumn Caption="Əmək haqqı" FieldName="Salary" VisibleIndex="1">
+                                                    <EditFormSettings VisibleIndex="1" />
+                                                </dx:GridViewDataColumn>
                                                   <dx:GridViewDataColumn Caption="Qeyd" FieldName="Notes" VisibleIndex="1">
                                                     <EditFormSettings VisibleIndex="1" />
                                                 </dx:GridViewDataColumn>
@@ -167,6 +170,13 @@
                                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ağac sayı</label>
                                                             <div class="col-sm-7">
                                                                 <asp:TextBox ID="txtTreeCount" class="form-control mb-0 mt-0" runat="server" placeholder="Sayı daxil edin...">
+                                                                </asp:TextBox>
+                                                            </div>
+                                                        </div>
+                                                         <div class="row mb-2">
+                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Əmək haqqı</label>
+                                                            <div class="col-sm-7">
+                                                                <asp:TextBox ID="txtsalary" class="form-control mb-0 mt-0" runat="server" placeholder="Rəqəm daxil edin...">
                                                                 </asp:TextBox>
                                                             </div>
                                                         </div>

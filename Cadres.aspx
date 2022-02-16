@@ -106,7 +106,9 @@
                                                 <dx:GridViewDataColumn Caption="İş növü" FieldName="WorkStatusName" VisibleIndex="1">
                                                     <EditFormSettings VisibleIndex="1" />
                                                 </dx:GridViewDataColumn>
-
+                                                <dx:GridViewDataColumn Caption="Əmək haqqı" FieldName="Salary" VisibleIndex="1">
+                                                    <EditFormSettings VisibleIndex="1" />
+                                                </dx:GridViewDataColumn>
                                                 <dx:GridViewDataColumn Caption="Şəkil" FieldName="Photo" VisibleIndex="1"> <DataItemTemplate>
                                                     <img src="imgcadres/<%#Eval("Photo") %>"  Width="50" Height="50"/>                                     </DataItemTemplate>                                                   
                                                     <EditFormSettings VisibleIndex="1" />
@@ -275,7 +277,14 @@
                                                                     Width="100%" Height="30px">
                                                                 </dx:ASPxComboBox>
                                                             </div>
-                                                        </div>                                                   
+                                                        </div>  
+                                                        <div class="row mb-2">
+                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Əmək haqqı</label>
+                                                            <div class="col-sm-7">
+                                                                <asp:TextBox ID="txtSalary" class="form-control mb-0 mt-0" runat="server" placeholder="Rəqəm daxil edin...">
+                                                                </asp:TextBox>
+                                                            </div>
+                                                        </div>
                                                         <div class="row  mb-2">
                                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Qeydiyyat tarixi</label>
                                                             <div class="col-sm-7">

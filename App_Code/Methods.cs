@@ -2255,7 +2255,7 @@ JobExitDate, WorkStatusID)  Values(@UserID, @StructureID, @PositionID, @CardID, 
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"Select ROW_NUMBER() over(order by c.CadreID desc) sn, s.StructureName,p.PositionName, k.CardNumber, 
 c.Sname, c.Name, c.FName, g.GenderName, c.PassportN, c.PIN, c.[Address], c.PhoneNumber,c.Email,case when c.Photo='' then 'avatar.png' else c.Photo end Photo,c.JobEntryDate,c.JobExitDate,
-j.WorkStatusName,c.RegisterTime, c.CadreID, c.UserID, c.StructureID, c.PositionID, c.CardID, c.Gender, c.WorkStatusID
+j.WorkStatusName,c.RegisterTime, c.CadreID, c.UserID, c.StructureID, c.PositionID, c.CardID, c.Gender, c.WorkStatusID,c.Salary
 from Cadres c 
 left join Structure s on c.StructureID=s.StructureID
 left join Positions p on c.PositionID=p.PositionID
