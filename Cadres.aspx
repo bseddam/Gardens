@@ -108,7 +108,7 @@
                                                 </dx:GridViewDataColumn>
 
                                                 <dx:GridViewDataColumn Caption="Şəkil" FieldName="Photo" VisibleIndex="1"> <DataItemTemplate>
-                                                    <img src="imgtechnique/<%#Eval("Photo") %>"  Width="50" Height="50"/>                                     </DataItemTemplate>                                                   
+                                                    <img src="imgcadres/<%#Eval("Photo") %>"  Width="50" Height="50"/>                                     </DataItemTemplate>                                                   
                                                     <EditFormSettings VisibleIndex="1" />
                                                 </dx:GridViewDataColumn>
 
@@ -182,6 +182,9 @@
                                                             <div class="col-sm-7">
                                                                 <asp:TextBox ID="txtSname" class="form-control mb-0 mt-0" runat="server" placeholder="Mətni daxil edin...">
                                                                 </asp:TextBox>
+                                                                  <asp:RegularExpressionValidator ValidationGroup="qrup1" Display="Dynamic" ControlToValidate="txtSname" ID="RegularExpressionValidator2" ValidationExpression="^[\s\S]{3,500}$" runat="server" ForeColor="Red" ErrorMessage="Mətn 3 simvoldan cox olmalıdır."></asp:RegularExpressionValidator>
+                                                <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txtSname" ID="RequiredFieldValidator1" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>
+
                                                             </div>
                                                         </div>
                                                         <div class="row mb-2">
@@ -189,6 +192,9 @@
                                                             <div class="col-sm-7">
                                                                 <asp:TextBox ID="txtName" class="form-control mb-0 mt-0" runat="server" placeholder="Mətni daxil edin...">
                                                                 </asp:TextBox>
+                                                                 <asp:RegularExpressionValidator ValidationGroup="qrup1" Display="Dynamic" ControlToValidate="txtName" ID="RegularExpressionValidator1" ValidationExpression="^[\s\S]{3,500}$" runat="server" ForeColor="Red" ErrorMessage="Mətn 3 simvoldan cox olmalıdır."></asp:RegularExpressionValidator>
+                                                <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txtName" ID="RequiredFieldValidator2" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>
+
                                                             </div>
                                                         </div>
                                                         <div class="row mb-2">
@@ -196,6 +202,9 @@
                                                             <div class="col-sm-7">
                                                                 <asp:TextBox ID="txtFname" class="form-control mb-0 mt-0" runat="server" placeholder="Mətni daxil edin...">
                                                                 </asp:TextBox>
+                                                                 <asp:RegularExpressionValidator ValidationGroup="qrup1" Display="Dynamic" ControlToValidate="txtFname" ID="RegularExpressionValidator3" ValidationExpression="^[\s\S]{3,500}$" runat="server" ForeColor="Red" ErrorMessage="Mətn 3 simvoldan cox olmalıdır."></asp:RegularExpressionValidator>
+                                                <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txtFname" ID="RequiredFieldValidator3" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>
+
                                                             </div>
                                                         </div>
                                                         <div class="row mb-2">
@@ -205,6 +214,8 @@
                                                                     runat="server"
                                                                     Width="100%" Height="30px">
                                                                 </dx:ASPxComboBox>
+                                                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator21" runat="server" ControlToValidate="cmGender" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
+                
                                                             </div>
                                                         </div> 
                                                         <div class="row mb-2">
@@ -285,7 +296,7 @@
                                                          <div>
                                                             <asp:Label Text="" ForeColor="Red" ID="lblPopError" runat="server" />
                                                         </div>
-                                                        <asp:Button ID="btnSave" runat="server"  CssClass="btn btn-success mr-2" Text="Yadda saxla" OnClick="btntesdiq_Click" />
+                                                        <asp:Button ID="btnSave" runat="server" ValidationGroup="qrup1"  CssClass="btn btn-success mr-2" Text="Yadda saxla" OnClick="btntesdiq_Click" />
                                                         <asp:Button ID="btnCancel" runat="server" CssClass="btn btn-light" Text="Ləğv et" OnClick="btnCancel_Click" />
                                                     </div>
                                                 </dx:PopupControlContentControl>

@@ -120,7 +120,7 @@
 
                                                 <dx:GridViewDataColumn VisibleIndex="1">
                                                     <DataItemTemplate>
-                                                        <asp:LinkButton ID="lnkEdit" OnClick="lnkEdit_Click" CommandArgument='<%#Eval("TechniquesID") %>' Text="Düzəliş" runat="server" />
+                                                        <asp:LinkButton ID="lnkEdit" OnClick="lnkEdit_Click" CommandArgument='<%#Eval("TechniqueID") %>' Text="Düzəliş" runat="server" />
                                                     </DataItemTemplate>
                                                 </dx:GridViewDataColumn>
 
@@ -128,7 +128,7 @@
 
                                                 <dx:GridViewDataColumn VisibleIndex="1">
                                                     <DataItemTemplate>
-                                                        <asp:LinkButton ID="lnkDelete" OnClick="lnkDelete_Click" OnClientClick="return confirm('Silmək istədiyinizə əminsinizmi?');" CommandArgument='<%#Eval("TechniquesID") %>' Text="Sil" runat="server" />
+                                                        <asp:LinkButton ID="lnkDelete" OnClick="lnkDelete_Click" OnClientClick="return confirm('Silmək istədiyinizə əminsinizmi?');" CommandArgument='<%#Eval("TechniqueID") %>' Text="Sil" runat="server" />
                                                     </DataItemTemplate>
                                                 </dx:GridViewDataColumn>
 

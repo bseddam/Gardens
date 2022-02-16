@@ -88,12 +88,15 @@
                                                             <div class="col-sm-7">
                                                                 <asp:TextBox ID="txtname" class="form-control mb-0 mt-0" runat="server" placeholder="Mətni daxil edin...">
                                                                 </asp:TextBox>
+                                                                  <asp:RegularExpressionValidator ValidationGroup="qrup1" Display="Dynamic" ControlToValidate="txtname" ID="RegularExpressionValidator2" ValidationExpression="^[\s\S]{3,500}$" runat="server" ForeColor="Red" ErrorMessage="Mətn 3 simvoldan cox olmalıdır."></asp:RegularExpressionValidator>
+                                                    <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txtname" ID="RequiredFieldValidator2" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>
+
                                                             </div>
                                                         </div> 
                                                          <div>
                                                             <asp:Label Text="" ForeColor="Red" ID="lblPopError" runat="server" />
                                                         </div>
-                                                        <asp:Button ID="btnSave" runat="server"  CssClass="btn btn-success mr-2" Text="Yadda saxla" OnClick="btntesdiq_Click" />
+                                                        <asp:Button ID="btnSave" runat="server" ValidationGroup="qrup1" CssClass="btn btn-success mr-2" Text="Yadda saxla" OnClick="btntesdiq_Click" />
                                                         <asp:Button ID="btnCancel" runat="server" CssClass="btn btn-light" Text="Ləğv et" OnClick="btnCancel_Click" />
                                                     </div>
                                                 </dx:PopupControlContentControl>

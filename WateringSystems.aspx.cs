@@ -76,6 +76,7 @@ public partial class WateringSystems : System.Web.UI.Page
         int id = (sender as LinkButton).CommandArgument.ToParseInt();
         DataTable dt = _db.GetWateringSystemsById(id: id);
         cmBrand.Value = dt.Rows[0]["BrandID"].ToParseStr();
+        modelsload();
         cmmodels.Value = dt.Rows[0]["ModelID"].ToParseStr();
         txtname.Text = dt.Rows[0]["WateringSystemName"].ToParseStr();
         txtnotes.Text = dt.Rows[0]["Notes"].ToParseStr();

@@ -29,6 +29,7 @@ public partial class Cadres : System.Web.UI.Page
         txtPhoneNumber.Text = "";
         txtPIN.Text = "";
         txtSname.Text = "";
+        imgUser.ImageUrl = "";
     }
     void _loadGridFromDb()
     {
@@ -170,6 +171,10 @@ public partial class Cadres : System.Web.UI.Page
         if (FileUpload1.HasFile)
         {
             Session["imgpath"] = DateTime.Now.ToString("yyyy_MM_dd_hh_mm_sss") + FileUpload1.FileName;
+        }
+        else
+        {
+            Session["imgpath"] = "";
         }
 
         if (btnSave.CommandName == "insert")

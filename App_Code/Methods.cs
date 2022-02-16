@@ -1880,7 +1880,7 @@ where DeleteTime is null", SqlConn);
         try
         {
             DataTable dt = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter(@"select * from Techniques where TechniquesID=@id", SqlConn);
+            SqlDataAdapter da = new SqlDataAdapter(@"select * from Techniques where TechniqueID=@id", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
             da.Fill(dt);
             return dt;
@@ -1928,9 +1928,9 @@ where DeleteTime is null", SqlConn);
 }
     }
 
-    public Types.ProsesType TechniqueUpdate(int TechniquesID, int UserID, int BrandID, int ModelID, string RegisterNumber, string SerieNumber, int Motor, int CompanyID, int TechniqueSituationID, int GPS, string GPSLogin, string GPSPassword, int ProductionYear, string Photourl, string Birka, string TechniquesName, string Passport, string BoughtDate)
+    public Types.ProsesType TechniqueUpdate(int TechniqueID, int UserID, int BrandID, int ModelID, string RegisterNumber, string SerieNumber, int Motor, int CompanyID, int TechniqueSituationID, int GPS, string GPSLogin, string GPSPassword, int ProductionYear, string Photourl, string Birka, string TechniquesName, string Passport, string BoughtDate)
     {
-        SqlCommand cmd = new SqlCommand(@"update Techniques set UserID=@UserID, BrandID=@BrandID, ModelID=@ModelID,RegisterNumber=@RegisterNumber, SerieNumber=@SerieNumber, Motor=@Motor,CompanyID=@CompanyID, TechniqueSituationID=@TechniqueSituationID, GPS=@GPS, GPSLogin=@GPSLogin, GPSPassword=@GPSPassword, ProductionYear=@ProductionYear, Photo=@Photourl, Birka=@Birka,TechniquesName=@TechniquesName, Passport=@Passport,BoughtDate=@BoughtDate where TechniquesID=@TechniquesID", SqlConn);
+        SqlCommand cmd = new SqlCommand(@"update Techniques set UserID=@UserID, BrandID=@BrandID, ModelID=@ModelID,RegisterNumber=@RegisterNumber, SerieNumber=@SerieNumber, Motor=@Motor,CompanyID=@CompanyID, TechniqueSituationID=@TechniqueSituationID, GPS=@GPS, GPSLogin=@GPSLogin, GPSPassword=@GPSPassword, ProductionYear=@ProductionYear, Photo=@Photourl, Birka=@Birka,TechniquesName=@TechniquesName, Passport=@Passport,BoughtDate=@BoughtDate where TechniqueID=@TechniqueID", SqlConn);
         cmd.Parameters.AddWithValue("@UserID", UserID);
         cmd.Parameters.AddWithValue("@BrandID", BrandID);
         cmd.Parameters.AddWithValue("@ModelID", ModelID);
@@ -1948,7 +1948,7 @@ where DeleteTime is null", SqlConn);
         cmd.Parameters.AddWithValue("@TechniquesName", TechniquesName);
         cmd.Parameters.AddWithValue("@Passport", Passport);
         cmd.Parameters.AddWithValue("BoughtDate", ConvertTypes.ToParseDatetime(BoughtDate));
-        cmd.Parameters.AddWithValue("@TechniquesID", TechniquesID);
+        cmd.Parameters.AddWithValue("@TechniqueID", TechniqueID);
         try
         {
             cmd.Connection.Open();
@@ -1968,7 +1968,7 @@ where DeleteTime is null", SqlConn);
 
     public Types.ProsesType DeleteTechnique(int id)
     {
-        SqlCommand cmd = new SqlCommand(@"Update Techniques set DeleteTime=GetDate() where TechniquesID=@id ", SqlConn);
+        SqlCommand cmd = new SqlCommand(@"Update Techniques set DeleteTime=GetDate() where TechniqueID=@id ", SqlConn);
         cmd.Parameters.AddWithValue("@id", id);
         try
         {
@@ -1993,8 +1993,8 @@ where DeleteTime is null", SqlConn);
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"select  row_number() 
-over(order by t.TechniquesID desc) sn,c.Sname+' '+c.Name UsingUsers,
-t.TechniquesName,b.BrandName, m.ModelName, cp.CompanyName,t.Motor,t.RegisterNumber,t.SerieNumber,t.Passport,t.ProductionYear,t.Birka,ts.TechniqueSituationName,t.GPS,t.GPSLogin,t.GPSPassword,t.BoughtDate,t.Photo,t.TechniquesID,t.ModelID,t.UserID ID,t.BrandID,t.CompanyID,t.TechniqueSituationID
+over(order by t.TechniqueID desc) sn,c.Sname+' '+c.Name UsingUsers,
+t.TechniquesName,b.BrandName, m.ModelName, cp.CompanyName,t.Motor,t.RegisterNumber,t.SerieNumber,t.Passport,t.ProductionYear,t.Birka,ts.TechniqueSituationName,t.GPS,t.GPSLogin,t.GPSPassword,t.BoughtDate,t.Photo,t.TechniqueID,t.ModelID,t.UserID ID,t.BrandID,t.CompanyID,t.TechniqueSituationID
 from Techniques t 
 left join Users u on t.UserID=u.UsersID
 left join Cadres c on u.CadreID=c.CadreID
@@ -2253,7 +2253,8 @@ JobExitDate, WorkStatusID)  Values(@UserID, @StructureID, @PositionID, @CardID, 
         try
         {
             DataTable dt = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter(@"Select ROW_NUMBER() over(order by c.CadreID desc) sn, s.StructureName,p.PositionName, k.CardNumber, c.Sname, c.Name, c.FName, g.GenderName, c.PassportN, c.PIN, c.[Address], c.PhoneNumber,c.Email,c.Photo,c.JobEntryDate,c.JobExitDate,
+            SqlDataAdapter da = new SqlDataAdapter(@"Select ROW_NUMBER() over(order by c.CadreID desc) sn, s.StructureName,p.PositionName, k.CardNumber, 
+c.Sname, c.Name, c.FName, g.GenderName, c.PassportN, c.PIN, c.[Address], c.PhoneNumber,c.Email,case when c.Photo='' then 'avatar.png' else c.Photo end Photo,c.JobEntryDate,c.JobExitDate,
 j.WorkStatusName,c.RegisterTime, c.CadreID, c.UserID, c.StructureID, c.PositionID, c.CardID, c.Gender, c.WorkStatusID
 from Cadres c 
 left join Structure s on c.StructureID=s.StructureID
@@ -2538,7 +2539,7 @@ l.LineName,w.Odometer,w.FactualCount,w.OfficialCount,
 w.Note,w.RegstrTime,w.TechniquesWorkDoneID,w.UserID,w.LineID,w.WorkID,
 g.GardenID,z.ZoneID,sc.SectorsID
 from TechniquesWorkDone w
-left join Techniques t on t.TechniquesID=w.TechniquesID
+left join Techniques t on t.TechniqueID=w.TechniqueID
 left join Works s on s.WorkID=w.WorkID
 left join Lines l on l.LineID=w.LineID
 left join Sectors sc on sc.SectorsID=l.SektorID

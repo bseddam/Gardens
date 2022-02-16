@@ -93,6 +93,7 @@ public partial class Technique : System.Web.UI.Page
         int id = (sender as LinkButton).CommandArgument.ToParseInt();
         DataTable dt = _db.GetTechniqueById(id: id);
         cmBrand.Value = dt.Rows[0]["BrandID"].ToParseStr();
+        modelsload();
         cmmodels.Value = dt.Rows[0]["ModelID"].ToParseStr();
         txtRegisterNumber.Text = dt.Rows[0]["RegisterNumber"].ToParseStr();
         txtSerieNumber.Text = dt.Rows[0]["SerieNumber"].ToParseStr();
@@ -185,7 +186,7 @@ public partial class Technique : System.Web.UI.Page
         else
         {
 
-            val = _db.TechniqueUpdate(TechniquesID: btnSave.CommandArgument.ToParseInt(),
+            val = _db.TechniqueUpdate(TechniqueID: btnSave.CommandArgument.ToParseInt(),
                 UserID: Session["UserID"].ToString().ToParseInt(),
                 BrandID: cmBrand.Value.ToParseInt(),
                 ModelID: cmmodels.Value.ToParseInt(),
