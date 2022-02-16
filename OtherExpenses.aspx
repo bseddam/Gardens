@@ -86,7 +86,7 @@
                                             HeaderText="Redaktə"
                                             PopupHorizontalAlign="WindowCenter"
                                             PopupVerticalAlign="WindowCenter"
-                                            Height="200" 
+                                            Height="300" 
                                           
                                             ScrollBars="Vertical">
                                             <ContentCollection>
