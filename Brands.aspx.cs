@@ -17,7 +17,6 @@ public partial class Brands : System.Web.UI.Page
     }
     void ClearComponents()
     {
-        cmbregistertime.Text = "";
         txtbrandname.Text = "";
         lblPopError.Text = "";
     }
@@ -47,15 +46,7 @@ public partial class Brands : System.Web.UI.Page
         componentsload();
         int id = (sender as LinkButton).CommandArgument.ToParseInt();
         DataTable dt = _db.GetBrandsByID(id: id);
-        DateTime datevalue;
-        if (DateTime.TryParse(dt.Rows[0]["RegisterTime"].ToParseStr(), out datevalue))
-        {
-            cmbregistertime.Text = DateTime.Parse(dt.Rows[0]["RegisterTime"].ToParseStr()).ToString("dd.MM.yyyy");
-        }
-        else
-        {
-            cmbregistertime.Text = "";
-        }
+
         txtbrandname.Text = dt.Rows[0]["BrandName"].ToParseStr();
         ddlproducttype.SelectedValue = dt.Rows[0]["ProductTypeID"].ToParseStr();
         btnSave.CommandName = "update";
@@ -87,7 +78,7 @@ public partial class Brands : System.Web.UI.Page
         Types.ProsesType val = Types.ProsesType.Error;
         if (btnSave.CommandName == "insert")
         {
-            val = _db.BrandInsert(RegisterTime: cmbregistertime.Text.ToParseStr(),
+            val = _db.BrandInsert(
                 BrandName: txtbrandname.Text.ToParseStr(),
                 ProductTypeID: ddlproducttype.SelectedValue.ToParseInt()
                 );
@@ -95,7 +86,6 @@ public partial class Brands : System.Web.UI.Page
         else
         {
             val = _db.BrandUpdate(BrandID: btnSave.CommandArgument.ToParseInt(),
-                RegisterTime: cmbregistertime.Text.ToParseStr(),
                 BrandName: txtbrandname.Text.ToParseStr(),
                 ProductTypeID: ddlproducttype.SelectedValue.ToParseInt()
                 );

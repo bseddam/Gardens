@@ -17,7 +17,6 @@ public partial class UnitMeasurements : System.Web.UI.Page
     }
     void ClearComponents()
     {
-        cmbregistertime.Text = "";
         txtunitmeasurementname.Text = "";
         lblPopError.Text = "";
     }
@@ -38,15 +37,7 @@ public partial class UnitMeasurements : System.Web.UI.Page
    
         int id = (sender as LinkButton).CommandArgument.ToParseInt();
         DataTable dt = _db.GetUnitMeasurementByID(id: id);
-        DateTime datevalue;
-        if (DateTime.TryParse(dt.Rows[0]["RegisterTime"].ToParseStr(), out datevalue))
-        {
-            cmbregistertime.Text = DateTime.Parse(dt.Rows[0]["RegisterTime"].ToParseStr()).ToString("dd.MM.yyyy");
-        }
-        else
-        {
-            cmbregistertime.Text = "";
-        }
+
         txtunitmeasurementname.Text = dt.Rows[0]["UnitMeasurementName"].ToParseStr();
 
         btnSave.CommandName = "update";
@@ -77,13 +68,13 @@ public partial class UnitMeasurements : System.Web.UI.Page
         Types.ProsesType val = Types.ProsesType.Error;
         if (btnSave.CommandName == "insert")
         {
-            val = _db.UnitMeasurementInsert(RegisterTime: cmbregistertime.Text.ToParseStr(),
+            val = _db.UnitMeasurementInsert(
                 UnitMeasurementName: txtunitmeasurementname.Text.ToParseStr());
         }
         else
         {
             val = _db.UnitMeasurementUpdate(UnitMeasurementID: btnSave.CommandArgument.ToParseInt(),
-                RegisterTime: cmbregistertime.Text.ToParseStr(),
+
                 UnitMeasurementName: txtunitmeasurementname.Text.ToParseStr());
         }
 

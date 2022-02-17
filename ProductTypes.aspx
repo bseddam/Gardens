@@ -9,7 +9,7 @@
     <section id="about" class="about section-bg">
         <div class="container">
 
-            <asp:LinkButton ID="btnAdd" runat="server" CommandArgument="add" OnClick="LnkPnlMenu_Click" CssClass="btn btn-dark">Yeni məhsul növü əlavə et</asp:LinkButton>
+            <asp:LinkButton ID="btnAdd" runat="server" CommandArgument="add" OnClick="LnkPnlMenu_Click" CssClass="btn btn-dark">Yeni mal növü əlavə et</asp:LinkButton>
 
             <div class="row">
                 <div class="col-12">
@@ -47,10 +47,8 @@
                                 <dx:GridViewDataColumn Caption="Sıra nömrəsi" FieldName="sn" VisibleIndex="1">
                                     <EditFormSettings VisibleIndex="1" />
                                 </dx:GridViewDataColumn>
-                                <dx:GridViewDataColumn Caption="Qeydiyyat tarixi" FieldName="RegisterTime" VisibleIndex="1">
-                                    <EditFormSettings VisibleIndex="1" />
-                                </dx:GridViewDataColumn>
-                                <dx:GridViewDataColumn Caption="Ağac növü" FieldName="ProductTypeName" VisibleIndex="1">
+                     
+                                <dx:GridViewDataColumn Caption="Mal növü" FieldName="ProductTypeName" VisibleIndex="1">
                                     <EditFormSettings VisibleIndex="1" />
                                 </dx:GridViewDataColumn>
                              
@@ -87,17 +85,11 @@
                             <ContentCollection>
                                 <dx:PopupControlContentControl>
                                     <div class="container">
-                                        <div class="row mb-2">
-                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Qeydiyyata alınma tarixi</label>
-                                            <div class="col-sm-7">
-                                                <dx:ASPxDateEdit ID="cmbregistertime" runat="server" DisplayFormatString="dd.MM.yyyy" EditFormat="Custom" EditFormatString="dd.MM.yyyy" Width="100%" Height="30px">
-                                                </dx:ASPxDateEdit>
-                                            </div>
-                                        </div>
+                     
 
 
                                         <div class="row mb-2">
-                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Məhsul növü</label>
+                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Malın növü</label>
                                             <div class="col-sm-7">
                                                 <asp:TextBox ID="txtproducttypename" runat="server" class="form-control"  placeholder="Mətni daxil edin..."></asp:TextBox>
                                                 <%--<asp:RegularExpressionValidator ValidationGroup="qrup1" Display="Dynamic" ControlToValidate="txtunitmeasurementname" ID="RegularExpressionValidator2" ValidationExpression="^[\s\S]{3,500}$" runat="server" ForeColor="Red" ErrorMessage="Mətn 3 simvoldan cox olmalıdır."></asp:RegularExpressionValidator>--%>

@@ -25,7 +25,7 @@
             <div class="content-wrapper">
                 <div class="card">
                     <div class="card-body">                      
-                            <asp:LinkButton ID="btnAdd" runat="server" CommandArgument="add" OnClick="LnkPnlMenu_Click" CssClass="btn btn-info">Yeni</asp:LinkButton>
+                            <asp:LinkButton ID="btnAdd" runat="server" CommandArgument="add" OnClick="LnkPnlMenu_Click" CssClass="btn btn-info">Yeni texnika əlavə et</asp:LinkButton>
                             <div class="row">
                                 <div class="col-12">
                                     <div class="table-responsive">
@@ -177,6 +177,15 @@
                                                                 </asp:TextBox>
                                                             </div>
                                                         </div>
+                                                        <div class="row mb-2">
+                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Bağ</label>
+                                                            <div class="col-sm-7">
+                                                                <dx:ASPxComboBox ID="cmbgarden" 
+                                                                    runat="server"
+                                                                    Width="100%" Height="30px">
+                                                                </dx:ASPxComboBox>
+                                                            </div>
+                                                        </div> 
                                                         <div class="row mb-2">
                                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Şirkət</label>
                                                             <div class="col-sm-7">

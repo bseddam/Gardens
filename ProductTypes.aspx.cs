@@ -16,7 +16,6 @@ public partial class ProductTypes : System.Web.UI.Page
     }
     void ClearComponents()
     {
-        cmbregistertime.Text = "";
         txtproducttypename.Text = "";
         lblPopError.Text = "";
     }
@@ -37,15 +36,7 @@ public partial class ProductTypes : System.Web.UI.Page
 
         int id = (sender as LinkButton).CommandArgument.ToParseInt();
         DataTable dt = _db.GetProductTypeByID(id: id);
-        DateTime datevalue;
-        if (DateTime.TryParse(dt.Rows[0]["RegisterTime"].ToParseStr(), out datevalue))
-        {
-            cmbregistertime.Text = DateTime.Parse(dt.Rows[0]["RegisterTime"].ToParseStr()).ToString("dd.MM.yyyy");
-        }
-        else
-        {
-            cmbregistertime.Text = "";
-        }
+
         txtproducttypename.Text = dt.Rows[0]["ProductTypeName"].ToParseStr();
 
         btnSave.CommandName = "update";
@@ -76,13 +67,12 @@ public partial class ProductTypes : System.Web.UI.Page
         Types.ProsesType val = Types.ProsesType.Error;
         if (btnSave.CommandName == "insert")
         {
-            val = _db.ProductTypeInsert(RegisterTime: cmbregistertime.Text.ToParseStr(),
+            val = _db.ProductTypeInsert(
                 ProductTypeName: txtproducttypename.Text.ToParseStr());
         }
         else
         {
             val = _db.ProductTypeUpdate(ProductTypeID: btnSave.CommandArgument.ToParseInt(),
-                RegisterTime: cmbregistertime.Text.ToParseStr(),
                 ProductTypeName: txtproducttypename.Text.ToParseStr());
         }
 

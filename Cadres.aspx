@@ -18,12 +18,12 @@
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
-    <%-- <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-        <ContentTemplate>--%>
+    <%--       </ContentTemplate>
+    </asp:UpdatePanel>--%>
             <div class="content-wrapper">
                 <div class="card">
                     <div class="card-body">                      
-                            <asp:LinkButton ID="btnAdd" runat="server" CommandArgument="add" OnClick="LnkPnlMenu_Click" CssClass="btn btn-info">Yeni</asp:LinkButton>
+                            <asp:LinkButton ID="btnAdd" runat="server" CommandArgument="add" OnClick="LnkPnlMenu_Click" CssClass="btn btn-info">Yeni kadr əlavə et</asp:LinkButton>
                             <div class="row">
                                 <div class="col-12">
                                     <div class="table-responsive">
@@ -103,7 +103,7 @@
                                                 <dx:GridViewDataColumn Caption="İşədən çıxma tarixi" FieldName="JobExitDate" VisibleIndex="1">
                                                     <EditFormSettings VisibleIndex="1" />
                                                 </dx:GridViewDataColumn>
-                                                <dx:GridViewDataColumn Caption="İş növü" FieldName="WorkStatusName" VisibleIndex="1">
+                                                <dx:GridViewDataColumn Caption="İşçi növü" FieldName="CadreTypeName" VisibleIndex="1">
                                                     <EditFormSettings VisibleIndex="1" />
                                                 </dx:GridViewDataColumn>
                                                 <dx:GridViewDataColumn Caption="Əmək haqqı" FieldName="Salary" VisibleIndex="1">
@@ -270,9 +270,9 @@
                                                             </div>
                                                         </div>
                                                         <div class="row mb-2">
-                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">İş növü</label>
+                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">İşçi növü</label>
                                                             <div class="col-sm-7">
-                                                                <dx:ASPxComboBox ID="cmStatusJobName"
+                                                                <dx:ASPxComboBox ID="cmbcardetype"
                                                                     runat="server"
                                                                     Width="100%" Height="30px">
                                                                 </dx:ASPxComboBox>

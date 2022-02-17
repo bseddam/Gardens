@@ -287,12 +287,11 @@ RegisterTime,UnitMeasurementID,UnitMeasurementName,InsertTime,UpdateTime,DeleteT
             return null;
         }
     }
-    public Types.ProsesType UnitMeasurementInsert(string RegisterTime, string UnitMeasurementName)
+    public Types.ProsesType UnitMeasurementInsert(string UnitMeasurementName)
     {
         SqlCommand cmd = new SqlCommand(@"insert into UnitMeasurements 
-(UserID,RegisterTime,UnitMeasurementName) values (@UserID,@RegisterTime,@UnitMeasurementName)", SqlConn);
+(UserID,UnitMeasurementName) values (@UserID,@UnitMeasurementName)", SqlConn);
         cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
-        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
         cmd.Parameters.AddWithValue("@UnitMeasurementName", UnitMeasurementName);
        
         try
@@ -311,13 +310,12 @@ RegisterTime,UnitMeasurementID,UnitMeasurementName,InsertTime,UpdateTime,DeleteT
             cmd.Dispose();
         }
     }
-    public Types.ProsesType UnitMeasurementUpdate(int UnitMeasurementID, string RegisterTime, string UnitMeasurementName)
+    public Types.ProsesType UnitMeasurementUpdate(int UnitMeasurementID, string UnitMeasurementName)
     {
-        SqlCommand cmd = new SqlCommand(@"update UnitMeasurements set UserID=@UserID,RegisterTime=@RegisterTime,
+        SqlCommand cmd = new SqlCommand(@"update UnitMeasurements set UserID=@UserID,
 UnitMeasurementName=@UnitMeasurementName,UpdateTime=getdate() where UnitMeasurementID=@UnitMeasurementID", SqlConn);
         cmd.Parameters.AddWithValue("@UnitMeasurementID", UnitMeasurementID);
         cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
-        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
         cmd.Parameters.AddWithValue("@UnitMeasurementName", UnitMeasurementName);
 
         try
@@ -870,12 +868,11 @@ and z.ZoneID=@id", SqlConn);
             return null;
         }
     }
-    public Types.ProsesType TreeTypeInsert(string RegisterTime, string TreeTypeName)
+    public Types.ProsesType TreeTypeInsert( string TreeTypeName)
     {
         SqlCommand cmd = new SqlCommand(@"insert into TreeTypes 
-(UserID,RegisterTime,TreeTypeName) values (@UserID,@RegisterTime,@TreeTypeName)", SqlConn);
+(UserID,TreeTypeName) values (@UserID,@TreeTypeName)", SqlConn);
         cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
-        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
         cmd.Parameters.AddWithValue("@TreeTypeName", TreeTypeName);
 
         try
@@ -894,13 +891,12 @@ and z.ZoneID=@id", SqlConn);
             cmd.Dispose();
         }
     }
-    public Types.ProsesType TreeTypeUpdate(int TreeTypeID, string RegisterTime, string TreeTypeName)
+    public Types.ProsesType TreeTypeUpdate(int TreeTypeID, string TreeTypeName)
     {
-        SqlCommand cmd = new SqlCommand(@"update TreeTypes set UserID=@UserID,RegisterTime=@RegisterTime,
+        SqlCommand cmd = new SqlCommand(@"update TreeTypes set UserID=@UserID,
 TreeTypeName=@TreeTypeName,UpdateTime=getdate() where TreeTypeID=@TreeTypeID", SqlConn);
         cmd.Parameters.AddWithValue("@TreeTypeID", TreeTypeID);
         cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
-        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
         cmd.Parameters.AddWithValue("@TreeTypeName", TreeTypeName);
 
         try
@@ -1305,14 +1301,13 @@ and p.DeleteTime is null and BrandID=@id", SqlConn);
             return null;
         }
     }
-    public Types.ProsesType BrandInsert(string RegisterTime, string BrandName, int ProductTypeID)
+    public Types.ProsesType BrandInsert(string BrandName, int ProductTypeID)
     {
 
         SqlCommand cmd = new SqlCommand(@"insert into Brands 
-(UserID,RegisterTime,BrandName,ProductTypeID) values 
-(@UserID,@RegisterTime,@BrandName,@ProductTypeID)", SqlConn);
+(UserID,BrandName,ProductTypeID) values 
+(@UserID,@BrandName,@ProductTypeID)", SqlConn);
         cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
-        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
         cmd.Parameters.AddWithValue("@BrandName", BrandName);
         cmd.Parameters.AddWithValue("@ProductTypeID", ProductTypeID);
 
@@ -1332,15 +1327,14 @@ and p.DeleteTime is null and BrandID=@id", SqlConn);
             cmd.Dispose();
         }
     }
-    public Types.ProsesType BrandUpdate(int BrandID, string RegisterTime, string BrandName, int ProductTypeID)
+    public Types.ProsesType BrandUpdate(int BrandID,  string BrandName, int ProductTypeID)
     {
-        SqlCommand cmd = new SqlCommand(@"update Brands set UserID=@UserID,RegisterTime=@RegisterTime,
+        SqlCommand cmd = new SqlCommand(@"update Brands set UserID=@UserID,
 BrandName=@BrandName, ProductTypeID=@ProductTypeID,UpdateTime=getdate() 
 where BrandID=@BrandID", SqlConn);
 
         cmd.Parameters.AddWithValue("@BrandID", BrandID);
         cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
-        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
         cmd.Parameters.AddWithValue("@BrandName", BrandName);
         cmd.Parameters.AddWithValue("@ProductTypeID", ProductTypeID);
         
@@ -1426,14 +1420,13 @@ inner join Brands b on m.BrandID=b.BrandID where m.DeleteTime is null and b.Dele
             return null;
         }
     }
-    public Types.ProsesType ModelInsert(string RegisterTime, string ModelName, int BrandID)
+    public Types.ProsesType ModelInsert(string ModelName, int BrandID)
     {
 
         SqlCommand cmd = new SqlCommand(@"insert into Models 
-(UserID,RegisterTime,ModelName,BrandID) values 
-(@UserID,@RegisterTime,@ModelName,@BrandID)", SqlConn);
+(UserID,ModelName,BrandID) values 
+(@UserID,@ModelName,@BrandID)", SqlConn);
         cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
-        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
         cmd.Parameters.AddWithValue("@ModelName", ModelName);
         cmd.Parameters.AddWithValue("@BrandID", BrandID);
 
@@ -1453,15 +1446,14 @@ inner join Brands b on m.BrandID=b.BrandID where m.DeleteTime is null and b.Dele
             cmd.Dispose();
         }
     }
-    public Types.ProsesType ModelUpdate(int ModelID, string RegisterTime, string ModelName, int BrandID)
+    public Types.ProsesType ModelUpdate(int ModelID, string ModelName, int BrandID)
     {
-        SqlCommand cmd = new SqlCommand(@"update Models set UserID=@UserID,RegisterTime=@RegisterTime,
+        SqlCommand cmd = new SqlCommand(@"update Models set UserID=@UserID,
 ModelName=@ModelName, BrandID=@BrandID,UpdateTime=getdate() 
 where ModelID=@ModelID", SqlConn);
 
         cmd.Parameters.AddWithValue("@ModelID", ModelID);
         cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
-        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
         cmd.Parameters.AddWithValue("@ModelName", ModelName);
         cmd.Parameters.AddWithValue("@BrandID", BrandID);
 
@@ -1551,12 +1543,11 @@ where ModelID=@ModelID;", SqlConn);
         }
     }
    
-    public Types.ProsesType ProductTypeInsert(string RegisterTime, string ProductTypeName)
+    public Types.ProsesType ProductTypeInsert(string ProductTypeName)
     {
         SqlCommand cmd = new SqlCommand(@"insert into ProductTypes 
-(UserID,RegisterTime,ProductTypeName) values (@UserID,@RegisterTime,@ProductTypeName)", SqlConn);
+(UserID,ProductTypeName) values (@UserID,@ProductTypeName)", SqlConn);
         cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
-        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
         cmd.Parameters.AddWithValue("@ProductTypeName", ProductTypeName);
 
         try
@@ -1575,13 +1566,12 @@ where ModelID=@ModelID;", SqlConn);
             cmd.Dispose();
         }
     }
-    public Types.ProsesType ProductTypeUpdate(int ProductTypeID, string RegisterTime, string ProductTypeName)
+    public Types.ProsesType ProductTypeUpdate(int ProductTypeID, string ProductTypeName)
     {
-        SqlCommand cmd = new SqlCommand(@"update ProductTypes set UserID=@UserID,RegisterTime=@RegisterTime,
+        SqlCommand cmd = new SqlCommand(@"update ProductTypes set UserID=@UserID,
 ProductTypeName=@ProductTypeName,UpdateTime=getdate() where ProductTypeID=@ProductTypeID", SqlConn);
         cmd.Parameters.AddWithValue("@ProductTypeID", ProductTypeID);
         cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
-        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
         cmd.Parameters.AddWithValue("@ProductTypeName", ProductTypeName);
 
         try
@@ -1671,13 +1661,12 @@ where w.DeleteTime is null and wt.DeleteTime is null and w.WorkID=@id", SqlConn)
             return null;
         }
     }
-    public Types.ProsesType WorkInsert(string RegisterTime, int WorkTypeID, string WorkName)
+    public Types.ProsesType WorkInsert( int WorkTypeID, string WorkName)
     {
         SqlCommand cmd = new SqlCommand(@"insert into Works 
-(UserID,RegisterTime,WorkTypeID,WorkName) 
-values (@UserID,@RegisterTime,@WorkTypeID,@WorkName)", SqlConn);
+(UserID,WorkTypeID,WorkName) 
+values (@UserID,@WorkTypeID,@WorkName)", SqlConn);
         cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
-        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
         cmd.Parameters.AddWithValue("@WorkTypeID", WorkTypeID);
         cmd.Parameters.AddWithValue("@WorkName", WorkName);
 
@@ -1697,13 +1686,12 @@ values (@UserID,@RegisterTime,@WorkTypeID,@WorkName)", SqlConn);
             cmd.Dispose();
         }
     }
-    public Types.ProsesType WorkUpdate(int WorkID, string RegisterTime, int WorkTypeID, string WorkName)
+    public Types.ProsesType WorkUpdate(int WorkID, int WorkTypeID, string WorkName)
     {
-        SqlCommand cmd = new SqlCommand(@"update Works set UserID=@UserID,RegisterTime=@RegisterTime,
+        SqlCommand cmd = new SqlCommand(@"update Works set UserID=@UserID,
 WorkTypeID=@WorkTypeID, WorkName=@WorkName,UpdateTime=getdate() where WorkID=@WorkID", SqlConn);
         cmd.Parameters.AddWithValue("@WorkID", WorkID);
         cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
-        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
         cmd.Parameters.AddWithValue("@WorkTypeID", WorkTypeID);
         cmd.Parameters.AddWithValue("@WorkName", WorkName);
 
@@ -1782,6 +1770,23 @@ where DeleteTime is null", SqlConn);
       ,[Updatetime]
       ,[DeleteTime] from [WorkStatus]  
 where DeleteTime is null", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+    public DataTable GetCadreType()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT  [CadreTypeID]
+      ,[CadreTypeName]
+  FROM [Gardens].[dbo].[CadreType]", SqlConn);
             da.Fill(dt);
             return dt;
         }
@@ -2150,11 +2155,11 @@ where WateringSystemID=@WateringSystemID", SqlConn);
         }
     }
 
-    public Types.ProsesType CadresInsert(int UserID, int StructureID, int PositionID, int CardID, string Sname, string Name, string FName, int Gender, string PassportN, string PIN, string PhoneNumber, string Photo, string Email, string Address, string JobEntryDate, string JobExitDate, int WorkStatusID, string RegstrDate)
+    public Types.ProsesType CadresInsert(int UserID, int StructureID, int PositionID, int CardID, string Sname, string Name, string FName, int Gender, string PassportN, string PIN, string PhoneNumber, string Photo, string Email, string Address, string JobEntryDate, string JobExitDate, int CadreTypeID, string RegstrDate)
     {
 
         SqlCommand cmd = new SqlCommand(@"insert into Cadres (UserID, StructureID, PositionID, CardID, Sname, Name, FName, Gender, PassportN, PIN, PhoneNumber, Photo, Email, Address, JobEntryDate, 
-JobExitDate, WorkStatusID)  Values(@UserID, @StructureID, @PositionID, @CardID, @Sname, @Name, @FName, @Gender, @PassportN, @PIN, @PhoneNumber, @Photo, @Email, @Address, @JobEntryDate, @JobExitDate, @WorkStatusID)", SqlConn);
+JobExitDate, CadreTypeID)  Values(@UserID, @StructureID, @PositionID, @CardID, @Sname, @Name, @FName, @Gender, @PassportN, @PIN, @PhoneNumber, @Photo, @Email, @Address, @JobEntryDate, @JobExitDate, @CadreTypeID)", SqlConn);
         cmd.Parameters.AddWithValue("@UserID", UserID);
         cmd.Parameters.AddWithValue("@StructureID", StructureID);
         cmd.Parameters.AddWithValue("@PositionID", PositionID);
@@ -2171,7 +2176,7 @@ JobExitDate, WorkStatusID)  Values(@UserID, @StructureID, @PositionID, @CardID, 
         cmd.Parameters.AddWithValue("@Address", Address);
         cmd.Parameters.AddWithValue("@JobEntryDate", ConvertTypes.ToParseDatetime(JobEntryDate));
         cmd.Parameters.AddWithValue("@JobExitDate", ConvertTypes.ToParseDatetime(JobExitDate));
-        cmd.Parameters.AddWithValue("@WorkStatusID", WorkStatusID);
+        cmd.Parameters.AddWithValue("@CadreTypeID", CadreTypeID);
         //try
         //{
             cmd.Connection.Open();
@@ -2189,9 +2194,12 @@ JobExitDate, WorkStatusID)  Values(@UserID, @StructureID, @PositionID, @CardID, 
         //}
     }
 
-    public Types.ProsesType CadresUpdate(int CadreID, int UserID, int StructureID, int PositionID, int CardID, string Sname, string Name, string FName, int Gender, string PassportN, string PIN, string PhoneNumber, string Photo, string Email, string Address, string JobEntryDate, string JobExitDate, int WorkStatusID, string RegstrDate)
+    public Types.ProsesType CadresUpdate(int CadreID, int UserID, int StructureID, int PositionID, int CardID, string Sname, string Name, string FName, int Gender, string PassportN, string PIN, string PhoneNumber, string Photo, string Email, string Address, string JobEntryDate, string JobExitDate, int CadreTypeID, string RegstrDate)
     {
-        SqlCommand cmd = new SqlCommand(@"update Cadres set UserID=@UserID, StructureID=@StructureID, PositionID=@PositionID,CardID=@CardID,Sname=@Sname, Name=@Name, FName=@FName,Gender=@Gender, PassportN=@PassportN, PIN=@PIN, PhoneNumber=@PhoneNumber, Photo=@Photo, Email=@Email, Address=@Address,JobEntryDate=@JobEntryDate, JobExitDate=@JobExitDate where CadreID=@CadreID", SqlConn);
+        SqlCommand cmd = new SqlCommand(@"update Cadres set UserID=@UserID, StructureID=@StructureID, PositionID=@PositionID,
+CardID=@CardID,Sname=@Sname, Name=@Name, FName=@FName,Gender=@Gender, PassportN=@PassportN, PIN=@PIN, 
+PhoneNumber=@PhoneNumber, Photo=@Photo, Email=@Email, Address=@Address,JobEntryDate=@JobEntryDate, 
+JobExitDate=@JobExitDate,CadreTypeID=@CadreTypeID where CadreID=@CadreID", SqlConn);
         cmd.Parameters.AddWithValue("@UserID", UserID);
         cmd.Parameters.AddWithValue("@StructureID", StructureID);
         cmd.Parameters.AddWithValue("@PositionID", PositionID);
@@ -2208,7 +2216,7 @@ JobExitDate, WorkStatusID)  Values(@UserID, @StructureID, @PositionID, @CardID, 
         cmd.Parameters.AddWithValue("@Address", Address);
         cmd.Parameters.AddWithValue("@JobEntryDate", ConvertTypes.ToParseDatetime(JobEntryDate));
         cmd.Parameters.AddWithValue("@JobExitDate", ConvertTypes.ToParseDatetime(JobExitDate));
-        cmd.Parameters.AddWithValue("@WorkStatusID", WorkStatusID);
+        cmd.Parameters.AddWithValue("@CadreTypeID", CadreTypeID);
         cmd.Parameters.AddWithValue("@CadreID", CadreID);
         //try
         //{
@@ -2255,13 +2263,13 @@ JobExitDate, WorkStatusID)  Values(@UserID, @StructureID, @PositionID, @CardID, 
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"Select ROW_NUMBER() over(order by c.CadreID desc) sn, s.StructureName,p.PositionName, k.CardNumber, 
 c.Sname, c.Name, c.FName, g.GenderName, c.PassportN, c.PIN, c.[Address], c.PhoneNumber,c.Email,case when c.Photo='' then 'avatar.png' else c.Photo end Photo,c.JobEntryDate,c.JobExitDate,
-j.WorkStatusName,c.RegisterTime, c.CadreID, c.UserID, c.StructureID, c.PositionID, c.CardID, c.Gender, c.WorkStatusID,c.Salary
+j.CadreTypeName,c.RegisterTime, c.CadreID, c.UserID, c.StructureID, c.PositionID, c.CardID, c.Gender, c.CadreTypeID,c.Salary
 from Cadres c 
 left join Structure s on c.StructureID=s.StructureID
 left join Positions p on c.PositionID=p.PositionID
 left join Cards k on c.CardID=k.CardID 
 left join Genders g on g.GenderID=c.Gender
-left join WorkStatus j on j.WorkStatusID=c.WorkStatusID where c.DeleteTime is null", SqlConn);
+left join CadreType j on j.CadreTypeID=c.CadreTypeID where c.DeleteTime is null", SqlConn);
             da.Fill(dt);
             return dt;
         }

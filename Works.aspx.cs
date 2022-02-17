@@ -17,7 +17,7 @@ public partial class Works : System.Web.UI.Page
     }
     void ClearComponents()
     {
-        cmbregistertime.Text = "";
+      
         txtworkname.Text = "";
 
         lblPopError.Text = "";
@@ -50,15 +50,7 @@ public partial class Works : System.Web.UI.Page
         componentsload();
         int id = (sender as LinkButton).CommandArgument.ToParseInt();
         DataTable dt = _db.GetWorkById(id: id);
-        DateTime datevalue;
-        if (DateTime.TryParse(dt.Rows[0]["RegisterTime"].ToParseStr(), out datevalue))
-        {
-            cmbregistertime.Text = DateTime.Parse(dt.Rows[0]["RegisterTime"].ToParseStr()).ToString("dd.MM.yyyy");
-        }
-        else
-        {
-            cmbregistertime.Text = "";
-        }
+
         txtworkname.Text = dt.Rows[0]["WorkName"].ToParseStr();
         ddlworktype.SelectedValue = dt.Rows[0]["WorkTypeID"].ToParseStr();
         btnSave.CommandName = "update";
@@ -90,7 +82,7 @@ public partial class Works : System.Web.UI.Page
         Types.ProsesType val = Types.ProsesType.Error;
         if (btnSave.CommandName == "insert")
         {
-            val = _db.WorkInsert(RegisterTime: cmbregistertime.Text.ToParseStr(),
+            val = _db.WorkInsert(
                 WorkTypeID: ddlworktype.SelectedValue.ToParseInt(),
                 WorkName: txtworkname.Text.ToParseStr()
                 );
@@ -98,7 +90,6 @@ public partial class Works : System.Web.UI.Page
         else
         {
             val = _db.WorkUpdate(WorkID: btnSave.CommandArgument.ToParseInt(),
-                RegisterTime: cmbregistertime.Text.ToParseStr(),
                 WorkTypeID: ddlworktype.SelectedValue.ToParseInt(),
                 WorkName: txtworkname.Text.ToParseStr()
                 );

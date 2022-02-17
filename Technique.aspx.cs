@@ -71,6 +71,15 @@ public partial class Technique : System.Web.UI.Page
         cmCompany.Items.Insert(0, new ListEditItem("Seçin", "-1"));
         cmCompany.SelectedIndex = 0;
 
+
+        DataTable dt3g = _db.GetGardens();
+        cmbgarden.ValueField = "GardenID";
+        cmbgarden.TextField = "GardenName";
+        cmbgarden.DataSource = dt3g;
+        cmbgarden.DataBind();
+        cmbgarden.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmbgarden.SelectedIndex = 0;
+
         DataTable dt4 = _db.GetTechniqueSituations();
         cmbTechniqueSituationName.ValueField = "TechniqueSituationID";
         cmbTechniqueSituationName.TextField = "TechniqueSituationName";

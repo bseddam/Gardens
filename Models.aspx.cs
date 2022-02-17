@@ -17,7 +17,7 @@ public partial class Models : System.Web.UI.Page
     }
     void ClearComponents()
     {
-        cmbregistertime.Text = "";
+
         txtmodelname.Text = "";
         lblPopError.Text = "";
     }
@@ -48,14 +48,7 @@ public partial class Models : System.Web.UI.Page
         int id = (sender as LinkButton).CommandArgument.ToParseInt();
         DataTable dt = _db.GetModelByID(id: id);
         DateTime datevalue;
-        if (DateTime.TryParse(dt.Rows[0]["RegisterTime"].ToParseStr(), out datevalue))
-        {
-            cmbregistertime.Text = DateTime.Parse(dt.Rows[0]["RegisterTime"].ToParseStr()).ToString("dd.MM.yyyy");
-        }
-        else
-        {
-            cmbregistertime.Text = "";
-        }
+        
         txtmodelname.Text = dt.Rows[0]["ModelName"].ToParseStr();
         ddlbrand.SelectedValue = dt.Rows[0]["BrandID"].ToParseStr();
         btnSave.CommandName = "update";
@@ -87,7 +80,7 @@ public partial class Models : System.Web.UI.Page
         Types.ProsesType val = Types.ProsesType.Error;
         if (btnSave.CommandName == "insert")
         {
-            val = _db.ModelInsert(RegisterTime: cmbregistertime.Text.ToParseStr(),
+            val = _db.ModelInsert(
                 ModelName: txtmodelname.Text.ToParseStr(),
                 BrandID: ddlbrand.SelectedValue.ToParseInt()
                 );
@@ -95,7 +88,6 @@ public partial class Models : System.Web.UI.Page
         else
         {
             val = _db.ModelUpdate(ModelID: btnSave.CommandArgument.ToParseInt(),
-                RegisterTime: cmbregistertime.Text.ToParseStr(),
                 ModelName: txtmodelname.Text.ToParseStr(),
                 BrandID: ddlbrand.SelectedValue.ToParseInt()
                 );

@@ -17,7 +17,6 @@ public partial class TreeTypes : System.Web.UI.Page
     }
     void ClearComponents()
     {
-        cmbregistertime.Text = "";
         txttreetypename.Text = "";
         lblPopError.Text = "";
     }
@@ -38,15 +37,7 @@ public partial class TreeTypes : System.Web.UI.Page
 
         int id = (sender as LinkButton).CommandArgument.ToParseInt();
         DataTable dt = _db.GetTreeTypesByID(id: id);
-        DateTime datevalue;
-        if (DateTime.TryParse(dt.Rows[0]["RegisterTime"].ToParseStr(), out datevalue))
-        {
-            cmbregistertime.Text = DateTime.Parse(dt.Rows[0]["RegisterTime"].ToParseStr()).ToString("dd.MM.yyyy");
-        }
-        else
-        {
-            cmbregistertime.Text = "";
-        }
+
         txttreetypename.Text = dt.Rows[0]["TreeTypeName"].ToParseStr();
 
         btnSave.CommandName = "update";
@@ -77,13 +68,12 @@ public partial class TreeTypes : System.Web.UI.Page
         Types.ProsesType val = Types.ProsesType.Error;
         if (btnSave.CommandName == "insert")
         {
-            val = _db.TreeTypeInsert(RegisterTime: cmbregistertime.Text.ToParseStr(),
+            val = _db.TreeTypeInsert(
                 TreeTypeName: txttreetypename.Text.ToParseStr());
         }
         else
         {
             val = _db.TreeTypeUpdate(TreeTypeID: btnSave.CommandArgument.ToParseInt(),
-                RegisterTime: cmbregistertime.Text.ToParseStr(),
                 TreeTypeName: txttreetypename.Text.ToParseStr());
         }
 

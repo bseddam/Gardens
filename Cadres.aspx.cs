@@ -69,13 +69,13 @@ public partial class Cadres : System.Web.UI.Page
         cmCardNumber.Items.Insert(0, new ListEditItem("Seçin", "-1"));
         cmCardNumber.SelectedIndex = 0;
 
-        DataTable dt4 = _db.GetWorkStatus();
-        cmStatusJobName.ValueField = "WorkStatusID";
-        cmStatusJobName.TextField = "WorkStatusName";
-        cmStatusJobName.DataSource = dt4;
-        cmStatusJobName.DataBind();
-        cmStatusJobName.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        cmStatusJobName.SelectedIndex = 0;
+        DataTable dt4 = _db.GetCadreType();
+        cmbcardetype.ValueField = "CadreTypeID";
+        cmbcardetype.TextField = "CadreTypeName";
+        cmbcardetype.DataSource = dt4;
+        cmbcardetype.DataBind();
+        cmbcardetype.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmbcardetype.SelectedIndex = 0;
 
         DataTable dt5 = _db.GetGenders();
         cmGender.ValueField = "GenderID";
@@ -122,7 +122,7 @@ public partial class Cadres : System.Web.UI.Page
         {
             dtJobExitDate.Text = "";
         }
-        cmStatusJobName.Value = dt.Rows[0]["WorkStatusID"].ToParseStr();
+        cmbcardetype.Value = dt.Rows[0]["CadreTypeID"].ToParseStr();
         Session["imgpath"] = dt.Rows[0]["Photo"].ToParseStr();
         imgUser.ImageUrl = @"imgCadres\" + dt.Rows[0]["Photo"].ToParseStr();
         DateTime datevalue3;
@@ -196,7 +196,7 @@ public partial class Cadres : System.Web.UI.Page
                 Address: txtAddress.Text.ToParseStr(),
                 JobEntryDate: dtJobEntryDate.Text.ToParseStr(),
                 JobExitDate: dtJobExitDate.Text.ToParseStr(),
-                WorkStatusID: cmStatusJobName.Value.ToParseInt(),
+                CadreTypeID: cmbcardetype.Value.ToParseInt(),
                 RegstrDate: dtRegstrDate.Text.ToParseStr()
                 );
             if (val == Types.ProsesType.Succes)
@@ -228,7 +228,7 @@ public partial class Cadres : System.Web.UI.Page
                 Address: txtAddress.Text.ToParseStr(),
                 JobEntryDate: dtJobEntryDate.Text.ToParseStr(),
                 JobExitDate: dtJobExitDate.Text.ToParseStr(),
-                WorkStatusID: cmStatusJobName.Value.ToParseInt(),
+                CadreTypeID: cmbcardetype.Value.ToParseInt(),
                 RegstrDate: dtRegstrDate.Text.ToParseStr());
             if (val == Types.ProsesType.Succes)
             {
