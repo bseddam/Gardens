@@ -71,19 +71,7 @@ public partial class Lines : System.Web.UI.Page
         ddlgardens.DataSource = dt5;
         ddlgardens.DataBind();
         ddlgardens.Items.Insert(0, new ListItem("Seçin", "-1"));
-        ddlgardens.SelectedIndex = 0;
-
-
-        DataTable dt1 = _db.GetTreeTypes();
-        ddltreetype.DataValueField = "TreeTypeID";
-        ddltreetype.DataTextField = "TreeTypeName";
-        ddltreetype.DataSource = dt1;
-        ddltreetype.DataBind();
-        ddltreetype.Items.Insert(0, new ListItem("Seçin", "-1"));
-        ddltreetype.SelectedIndex = 0;
-
-
-        
+        ddlgardens.SelectedIndex = 0;  
 
         zonacomponentload();
         sectorcomponentload();
@@ -114,7 +102,6 @@ public partial class Lines : System.Web.UI.Page
         {
             ddlunitmeasurement.SelectedValue = dt.Rows[0]["UnitMeasurementID"].ToParseStr();
         }
-        ddltreetype.SelectedValue = dt.Rows[0]["TreeTypeID"].ToParseStr();
         txtnotes.Text = dt.Rows[0]["Notes"].ToParseStr();
 
         btnSave.CommandName = "update";
@@ -148,12 +135,10 @@ public partial class Lines : System.Web.UI.Page
         {
             val = _db.LineInsert(RegisterTime: cmbregistertime.Text.ToParseStr(),
                 LineName: txtlinename.Text.ToParseStr(), 
-                TreeTypeID: ddltreetype.SelectedValue.ToParseInt(),
                 LineArea: txtlinearea.Text.ToParseStr(),
                 SectorID: ddlsector.SelectedValue.ToParseInt(),
                 UnitMeasurementID: ddlunitmeasurement.SelectedValue.ToParseInt(),
                 TreeCount: txttreecount.Text.ToParseInt(),
-                Sowingtime: cmbsowingtime.Text.ToParseStr(),
                 Notes: txtnotes.Text.ToParseStr()
                 );
         }
@@ -162,12 +147,10 @@ public partial class Lines : System.Web.UI.Page
             val = _db.LineUpdate(LineID: btnSave.CommandArgument.ToParseInt(),
                 RegisterTime: cmbregistertime.Text.ToParseStr(),
                 LineName: txtlinename.Text.ToParseStr(),
-                TreeTypeID: ddltreetype.SelectedValue.ToParseInt(),
                 LineArea: txtlinearea.Text.ToParseStr(),
                 SectorID: ddlsector.SelectedValue.ToParseInt(),
                 UnitMeasurementID: ddlunitmeasurement.SelectedValue.ToParseInt(),
                 TreeCount: txttreecount.Text.ToParseInt(),
-                Sowingtime: cmbsowingtime.Text.ToParseStr(),
                 Notes: txtnotes.Text.ToParseStr()
                 ) ;
         }

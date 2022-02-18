@@ -247,11 +247,7 @@ PhoneNumbers=@PhoneNumbers, Email=@Email, Adress=@Adress,Notes=@Notes,UpdateTime
         }
     }
 
-
-
-
-
-
+    //Ölçü vahidi
     public DataTable GetUnitMeasurements()
     {
         try
@@ -357,11 +353,7 @@ UserID=@UserID where UnitMeasurementID=@UnitMeasurementID;", SqlConn);
         }
     }
 
-
-
-
-
-
+          //Bağlar
     public DataTable GetGardens()
     {
         try
@@ -485,18 +477,7 @@ Address=@Address,Notes=@Notes,UpdateTime=getdate() where GardenID=@GardenID", Sq
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+         //Zonalar
     public DataTable GetZones()
     {
         try
@@ -642,13 +623,7 @@ where z.DeleteTime is null and g.DeleteTime is null and u.DeleteTime is null and
     }
 
 
-
-
-
-
-
-
-
+    //Sektorlar
     public DataTable GetSectors()
     {
         try
@@ -815,22 +790,168 @@ and z.ZoneID=@id", SqlConn);
     }
 
 
+    //Siralar
+    public DataTable GetLines()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by LineID desc) sn,
+l.LineID ,l.UserID,l.RegisterTime,l.LineName,SectorName,LineArea,l.SectorID,
+l.UnitMeasurementID,TreeCount,l.Notes,g.GardenID,g.GardenName,ZoneName,u.UnitMeasurementName
+FROM Lines l 
+inner join Sectors s on l.SectorID=s.SectorID
+inner join Zones z on s.ZoneID=z.ZoneID
+inner join Gardens g on g.GardenID=z.GardenID 
+left join UnitMeasurements u on l.UnitMeasurementID=u.UnitMeasurementID 
+where s.DeleteTime is null and z.DeleteTime is null and g.DeleteTime is null and u.DeleteTime is null and l.DeleteTime is null", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+    public DataTable GetLineById(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by LineID desc) sn,
+l.LineID ,l.UserID,l.RegisterTime,l.LineName,SectorName,LineArea,l.SectorID,
+l.UnitMeasurementID,TreeCount,l.Notes,g.GardenID,g.GardenName,ZoneName,u.UnitMeasurementName
+FROM Lines l 
+inner join Sectors s on l.SectorID=s.SectorID
+inner join Zones z on s.ZoneID=z.ZoneID
+inner join Gardens g on g.GardenID=z.GardenID 
+left join UnitMeasurements u on l.UnitMeasurementID=u.UnitMeasurementID 
+where s.DeleteTime is null and z.DeleteTime is null and g.DeleteTime is null and u.DeleteTime is null and l.DeleteTime is null and l.LineID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+    public DataTable GetLineBySectorID(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by LineID desc) sn,
+l.LineID ,l.UserID,l.RegisterTime,l.LineName,SectorName,LineArea,l.SectorID,
+l.UnitMeasurementID,TreeCount,l.Notes,g.GardenID,g.GardenName,ZoneName,u.UnitMeasurementName
+FROM Lines l 
+inner join Sectors s on l.SectorID=s.SectorID
+inner join Zones z on s.ZoneID=z.ZoneID
+inner join Gardens g on g.GardenID=z.GardenID 
+left join UnitMeasurements u on l.UnitMeasurementID=u.UnitMeasurementID 
+where s.DeleteTime is null and z.DeleteTime is null and g.DeleteTime is null and u.DeleteTime is null and l.DeleteTime is null and s.SectorID=@ID", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("ID", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+    public Types.ProsesType LineInsert(string RegisterTime, string LineName, string LineArea,
+       int SectorID, int UnitMeasurementID, int TreeCount, string Notes)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"insert into Lines 
+(UserID,RegisterTime,LineName,LineArea,SectorID,UnitMeasurementID,TreeCount,Notes) 
+values (@UserID,@RegisterTime,@LineName,@LineArea,@SectorID,@UnitMeasurementID,@TreeCount,@Notes)", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        cmd.Parameters.AddWithValue("@LineName", LineName);
+        cmd.Parameters.AddWithValue("@LineArea", ConvertTypes.ToParseFloat(LineArea));
+        cmd.Parameters.AddWithValue("@SectorID", SectorID);
+        cmd.Parameters.AddWithValue("@UnitMeasurementID", UnitMeasurementID);
+        cmd.Parameters.AddWithValue("@TreeCount", TreeCount);
+        cmd.Parameters.AddWithValue("@Notes", Notes);
+
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+    public Types.ProsesType LineUpdate(int LineID, string RegisterTime, string LineName, string LineArea,
+       int SectorID, int UnitMeasurementID, int TreeCount, string Notes)
+    {
+        SqlCommand cmd = new SqlCommand(@"update Lines set UserID=@UserID,RegisterTime=@RegisterTime,
+LineName=@LineName,LineArea=@LineArea,SectorID=@SectorID,
+UnitMeasurementID=@UnitMeasurementID,TreeCount=@TreeCount
+, Notes=@Notes,UpdateTime=getdate() where LineID=@LineID", SqlConn);
+
+        cmd.Parameters.AddWithValue("@LineID", LineID);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        cmd.Parameters.AddWithValue("@LineName", LineName);
+        cmd.Parameters.AddWithValue("@LineArea", ConvertTypes.ToParseFloat(LineArea));
+        cmd.Parameters.AddWithValue("@SectorID", SectorID);
+        cmd.Parameters.AddWithValue("@UnitMeasurementID", UnitMeasurementID);
+        cmd.Parameters.AddWithValue("@TreeCount", TreeCount);
+        cmd.Parameters.AddWithValue("@Notes", Notes);
+
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+    public Types.ProsesType DeleteLine(int id)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"Update Lines set deletetime=getdate(),UserID=@UserID 
+where LineID=@LineID;", SqlConn);
+        cmd.Parameters.AddWithValue("@LineID", id);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            //LogInsert(Utils.Tables.pages, Utils.LogType.delete, String.Format("IndicatorsDelete () "), ex.Message, "", true);
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    //Ağaclar
     public DataTable GetTreeTypes()
     {
         try
@@ -913,7 +1034,6 @@ TreeTypeName=@TreeTypeName,UpdateTime=getdate() where TreeTypeID=@TreeTypeID", S
             cmd.Dispose();
         }
     }
-
     public Types.ProsesType DeleteTreeType(int id)
     {
 
@@ -939,178 +1059,8 @@ where TreeTypeID=@TreeTypeID;", SqlConn);
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public DataTable GetLines()
-    {
-        try
-        {
-            DataTable dt = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by LineID desc) sn,
-l.LineID ,l.UserID,l.RegisterTime,l.TreeTypeID,t.TreeTypeName,l.LineName,SectorName,LineArea,l.SectorID,
-l.UnitMeasurementID,TreeCount,Sowingtime,l.Notes,g.GardenID,g.GardenName,ZoneName,u.UnitMeasurementName
-FROM Lines l 
-inner join Sectors s on l.SectorID=s.SectorID
-inner join Zones z on s.ZoneID=z.ZoneID
-inner join Gardens g on g.GardenID=z.GardenID 
-inner join TreeTypes t on t.TreeTypeID=l.TreeTypeID
-left join UnitMeasurements u on l.UnitMeasurementID=u.UnitMeasurementID 
-where s.DeleteTime is null and z.DeleteTime is null and g.DeleteTime is null and u.DeleteTime is null 
-and t.DeleteTime is null and l.DeleteTime is null", SqlConn);
-            da.Fill(dt);
-            return dt;
-        }
-        catch (Exception ex)
-        {
-            return null;
-        }
-    }
-    public DataTable GetLineById(int id)
-    {
-        try
-        {
-            DataTable dt = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by LineID desc) sn,
-l.LineID ,l.UserID,l.RegisterTime,l.TreeTypeID,t.TreeTypeName,l.LineName,SectorName,LineArea,l.SectorID,
-l.UnitMeasurementID,TreeCount,Sowingtime,l.Notes,g.GardenID,g.GardenName,z.ZoneID,ZoneName,u.UnitMeasurementName
-FROM Lines l 
-inner join Sectors s on l.SectorID=s.SectorID
-inner join Zones z on s.ZoneID=z.ZoneID
-inner join Gardens g on g.GardenID=z.GardenID 
-inner join TreeTypes t on t.TreeTypeID=l.TreeTypeID
-left join UnitMeasurements u on l.UnitMeasurementID=u.UnitMeasurementID 
-where s.DeleteTime is null and z.DeleteTime is null and g.DeleteTime is null and u.DeleteTime is null 
-and t.DeleteTime is null and l.DeleteTime is null
-and l.LineID=@id", SqlConn);
-            da.SelectCommand.Parameters.AddWithValue("id", id);
-            da.Fill(dt);
-            return dt;
-        }
-        catch (Exception ex)
-        {
-            return null;
-        }
-    }
-    public Types.ProsesType LineInsert(string RegisterTime, string LineName, int TreeTypeID, string LineArea,
-       int SectorID, int UnitMeasurementID, int TreeCount,string Sowingtime, string Notes)
-    {
-
-        SqlCommand cmd = new SqlCommand(@"insert into Lines 
-(UserID,RegisterTime,LineName,TreeTypeID,LineArea,SectorID,UnitMeasurementID,TreeCount,Sowingtime,Notes) 
-values (@UserID,@RegisterTime,@LineName,@TreeTypeID,@LineArea,@SectorID,@UnitMeasurementID,@TreeCount,@Sowingtime,@Notes)", SqlConn);
-        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
-        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
-        cmd.Parameters.AddWithValue("@LineName", LineName);
-        cmd.Parameters.AddWithValue("@TreeTypeID", TreeTypeID);
-        cmd.Parameters.AddWithValue("@LineArea", ConvertTypes.ToParseFloat(LineArea));
-        cmd.Parameters.AddWithValue("@SectorID", SectorID);
-        cmd.Parameters.AddWithValue("@UnitMeasurementID", UnitMeasurementID);
-        cmd.Parameters.AddWithValue("@TreeCount", TreeCount);
-        cmd.Parameters.AddWithValue("@Sowingtime", ConvertTypes.ToParseDatetime(Sowingtime));
-        cmd.Parameters.AddWithValue("@Notes", Notes);
-
-        try
-        {
-            cmd.Connection.Open();
-            cmd.ExecuteNonQuery();
-            return Types.ProsesType.Succes;
-        }
-        catch (Exception ex)
-        {
-            return Types.ProsesType.Error;
-        }
-        finally
-        {
-            cmd.Connection.Close();
-            cmd.Dispose();
-        }
-    }
-    public Types.ProsesType LineUpdate(int LineID, string RegisterTime, string LineName, int TreeTypeID, string LineArea,
-       int SectorID, int UnitMeasurementID, int TreeCount, string Sowingtime, string Notes)
-    {
-        SqlCommand cmd = new SqlCommand(@"update Lines set UserID=@UserID,RegisterTime=@RegisterTime,
-LineName=@LineName, TreeTypeID=@TreeTypeID,LineArea=@LineArea,SectorID=@SectorID,
-UnitMeasurementID=@UnitMeasurementID,TreeCount=@TreeCount
-,Sowingtime=@Sowingtime,Notes=@Notes,UpdateTime=getdate() where LineID=@LineID", SqlConn);
-
-        cmd.Parameters.AddWithValue("@LineID", LineID);
-        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
-        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
-        cmd.Parameters.AddWithValue("@LineName", LineName);
-        cmd.Parameters.AddWithValue("@TreeTypeID", TreeTypeID);
-        cmd.Parameters.AddWithValue("@LineArea", ConvertTypes.ToParseFloat(LineArea));
-        cmd.Parameters.AddWithValue("@SectorID", SectorID);
-        cmd.Parameters.AddWithValue("@UnitMeasurementID", UnitMeasurementID);
-        cmd.Parameters.AddWithValue("@TreeCount", TreeCount);
-        cmd.Parameters.AddWithValue("@Sowingtime", ConvertTypes.ToParseDatetime(Sowingtime));
-        cmd.Parameters.AddWithValue("@Notes", Notes);
-
-        try
-        {
-            cmd.Connection.Open();
-            cmd.ExecuteNonQuery();
-            return Types.ProsesType.Succes;
-        }
-        catch (Exception ex)
-        {
-            return Types.ProsesType.Error;
-        }
-        finally
-        {
-            cmd.Connection.Close();
-            cmd.Dispose();
-        }
-    }
-    public Types.ProsesType DeleteLine(int id)
-    {
-
-        SqlCommand cmd = new SqlCommand(@"Update Lines set deletetime=getdate(),UserID=@UserID 
-where LineID=@LineID;", SqlConn);
-        cmd.Parameters.AddWithValue("@LineID", id);
-        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
-        try
-        {
-            cmd.Connection.Open();
-            cmd.ExecuteNonQuery();
-            return Types.ProsesType.Succes;
-        }
-        catch (Exception ex)
-        {
-            //LogInsert(Utils.Tables.pages, Utils.LogType.delete, String.Format("IndicatorsDelete () "), ex.Message, "", true);
-            return Types.ProsesType.Error;
-        }
-        finally
-        {
-            cmd.Connection.Close();
-            cmd.Dispose();
-        }
-    }
-
-
-
-
-
-
-
-
-
-
+          
+//Mallar
     public DataTable GetProducts()
     {
         try
@@ -1260,11 +1210,7 @@ where ProductID=@ProductID;", SqlConn);
 
 
 
-
-
-
-
-
+//Markalar
     public DataTable GetBrands()
     {
         try
@@ -1377,13 +1323,8 @@ where BrandID=@BrandID;", SqlConn);
         }
     }
 
-
-
-
-
-
-
-
+    
+    //Madeller
     public DataTable GetModels()
     {
         try
@@ -1513,16 +1454,7 @@ where ModelID=@ModelID;", SqlConn);
     }
 
 
-
-
-
-
-
-
-
-
-
-
+    //Mallarin tipi
     public DataTable GetProductTypes()
     {
         try
@@ -1555,8 +1487,7 @@ where ModelID=@ModelID;", SqlConn);
         {
             return null;
         }
-    }
-   
+    }   
     public Types.ProsesType ProductTypeInsert(string ProductTypeName)
     {
         SqlCommand cmd = new SqlCommand(@"insert into ProductTypes 
@@ -1604,7 +1535,6 @@ ProductTypeName=@ProductTypeName,UpdateTime=getdate() where ProductTypeID=@Produ
             cmd.Dispose();
         }
     }
-
     public Types.ProsesType DeleteProductType(int id)
     {
 
@@ -1632,14 +1562,7 @@ where ProductTypeID=@ProductTypeID;", SqlConn);
 
 
 
-
-
-
-
-
-
-
-
+    //işlər
     public DataTable GetWorks()
     {
         try
@@ -1751,9 +1674,7 @@ WorkTypeID=@WorkTypeID, WorkName=@WorkName,UpdateTime=getdate() where WorkID=@Wo
 
 
 
-
-
-
+    //İşlərin tipləri
     public DataTable GetWorkTypes()
     {
         try
@@ -1770,8 +1691,7 @@ where DeleteTime is null", SqlConn);
             return null;
         }
     }
-
-
+    //İşlərin statusu
     public DataTable GetWorkStatus()
     {
         try
@@ -1792,7 +1712,7 @@ where DeleteTime is null", SqlConn);
             return null;
         }
     }
-
+    //Kadr tipləri
     public DataTable GetCadreType()
     {
         try
@@ -1809,8 +1729,7 @@ where DeleteTime is null", SqlConn);
             return null;
         }
     }
-
-
+    //Kartlar
     public DataTable GetCards()
     {
         try
@@ -1827,8 +1746,7 @@ where DeleteTime is null", SqlConn);
             return null;
         }
     }
-
-
+    //Cins
     public DataTable GetGenders()
     {
         try
@@ -1847,33 +1765,7 @@ where DeleteTime is null", SqlConn);
 
     
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    ////Raqif Garden :)
-
+    //Texnikalar
     public DataTable GetTechniqueSituations()
     {
         try
@@ -1892,8 +1784,6 @@ where DeleteTime is null", SqlConn);
             return null;
         }
     }
-
-
     public DataTable GetTechniqueById(int id)
     {
         try
@@ -2277,7 +2167,8 @@ JobExitDate=@JobExitDate,CadreTypeID=@CadreTypeID where CadreID=@CadreID", SqlCo
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"Select ROW_NUMBER() over(order by c.CadreID desc) sn, s.StructureName,p.PositionName, k.CardNumber, 
 c.Sname, c.Name, c.FName, g.GenderName, c.PassportN, c.PIN, c.[Address], c.PhoneNumber,c.Email,case when c.Photo='' then 'avatar.png' else c.Photo end Photo,c.JobEntryDate,c.JobExitDate,
-j.CadreTypeName,c.RegisterTime, c.CadreID, c.UserID, c.StructureID, c.PositionID, c.CardID, c.Gender, c.CadreTypeID,c.Salary
+j.CadreTypeName,c.RegisterTime, c.CadreID, c.UserID, c.StructureID, c.PositionID, c.CardID, c.Gender, c.CadreTypeID,c.Salary,isnull(s.StructureName,'') +' '+isnull(p.PositionName,'')+' '+ isnull(k.CardNumber,'')+' '+ 
+c.Sname+' '+ c.Name+' '+ c.FName NameDDL
 from Cadres c 
 left join Structure s on c.StructureID=s.StructureID
 left join Positions p on c.PositionID=p.PositionID
@@ -2292,7 +2183,6 @@ left join CadreType j on j.CadreTypeID=c.CadreTypeID where c.DeleteTime is null"
             return null;
         }
     }
-
 
     //-------Struktur kateqoriyasi
     public DataTable GetStructure()

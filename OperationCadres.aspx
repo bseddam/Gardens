@@ -119,6 +119,7 @@
                                                                     runat="server"
                                                                     Width="100%" Height="30px">
                                                                 </dx:ASPxComboBox>
+                                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="cmCadre" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
                                                             </div>
                                                         </div>
                                                         <div class="row mb-2">
@@ -128,6 +129,7 @@
                                                                     runat="server"
                                                                     Width="100%" Height="30px">
                                                                 </dx:ASPxComboBox>
+                                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ControlToValidate="cmWork" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
                                                             </div>
                                                         </div>
                                                         <div class="row mb-2">
@@ -135,8 +137,9 @@
                                                             <div class="col-sm-7">
                                                                 <dx:ASPxComboBox ID="cmGarden" 
                                                                     runat="server"
-                                                                    Width="100%" Height="30px">
+                                                                    Width="100%" Height="30px" OnSelectedIndexChanged="cmGarden_SelectedIndexChanged" AutoPostBack="true">
                                                                 </dx:ASPxComboBox>
+                                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="cmGarden" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
                                                             </div>
                                                         </div> 
                                                         <div class="row mb-2">
@@ -144,7 +147,7 @@
                                                             <div class="col-sm-7">
                                                                 <dx:ASPxComboBox ID="cmZone" 
                                                                     runat="server"
-                                                                    Width="100%" Height="30px">
+                                                                    Width="100%" Height="30px" OnSelectedIndexChanged="cmZone_SelectedIndexChanged" AutoPostBack="true">
                                                                 </dx:ASPxComboBox>
                                                             </div>
                                                         </div> 
@@ -153,7 +156,7 @@
                                                             <div class="col-sm-7">
                                                                 <dx:ASPxComboBox ID="cmSektor" 
                                                                     runat="server"
-                                                                    Width="100%" Height="30px">
+                                                                    Width="100%" Height="30px" OnSelectedIndexChanged="cmSektor_SelectedIndexChanged" AutoPostBack="true">
                                                                 </dx:ASPxComboBox>
                                                             </div>
                                                         </div>
@@ -193,7 +196,7 @@
                                                                 <dx:ASPxDateEdit ID="dtRegstrDate" runat="server" CssClass="form-control"></dx:ASPxDateEdit>
                                                             </div>
                                                         </div>
-                                                        <asp:Button ID="btnSave" runat="server"  CssClass="btn btn-success mr-2" Text="Yadda saxla" OnClick="btntesdiq_Click" />
+                                                        <asp:Button ID="btnSave" runat="server"  CssClass="btn btn-success mr-2" Text="Yadda saxla" OnClick="btntesdiq_Click" ValidationGroup="qrup1" />
                                                         <asp:Button ID="btnCancel" runat="server" CssClass="btn btn-light" Text="Ləğv et" OnClick="btnCancel_Click" />
                                                     </div>
                                                 </dx:PopupControlContentControl>

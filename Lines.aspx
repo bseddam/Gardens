@@ -68,9 +68,6 @@
                                 <dx:GridViewDataColumn Caption="Ağac sayı" FieldName="TreeCount" VisibleIndex="1">
                                     <EditFormSettings VisibleIndex="1" />
                                 </dx:GridViewDataColumn>
-                                <dx:GridViewDataColumn Caption="Əkilmə vaxtı" FieldName="Sowingtime" VisibleIndex="1">
-                                    <EditFormSettings VisibleIndex="1" />
-                                </dx:GridViewDataColumn>
                                 <dx:GridViewDataColumn Caption="Ümumi sahəsi" FieldName="LineArea" VisibleIndex="1">
                                     <EditFormSettings VisibleIndex="1" />
                                 </dx:GridViewDataColumn>
@@ -164,13 +161,6 @@
                                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="ddlsector" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
                                             </div>
                                         </div>
-                                        <div class="row mb-2">
-                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ağacın növü</label>
-                                            <div class="col-sm-7">
-                                                <asp:DropDownList ID="ddltreetype" class="form-control" runat="server"></asp:DropDownList>
-                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ControlToValidate="ddltreetype" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
-                                            </div>
-                                        </div>
                                        <div class="row mb-2">
                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ağac sayı</label>
                                             <div class="col-sm-7">
@@ -179,15 +169,7 @@
                                                 <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txttreecount" ID="RequiredsFieldValidator21" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>
                                             </div>
                                         </div>
-                                         <div class="row mb-2">
-                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Əkilmə tarixi</label>
-                                            <div class="col-sm-7">
-                                                <dx:ASPxDateEdit ID="cmbsowingtime" runat="server" DisplayFormatString="dd.MM.yyyy" EditFormat="Custom" EditFormatString="dd.MM.yyyy" Width="100%" Height="30px">
-                                                </dx:ASPxDateEdit>
-                                            </div>
-                                        </div>
-
-
+                                        
                                         <div class="row mb-2">
                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Sahəsi</label>
                                             <div class="col-sm-7">

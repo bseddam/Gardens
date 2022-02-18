@@ -40,99 +40,85 @@ public partial class OperationCadres : System.Web.UI.Page
     }
     void componentsload()
     {
-        //cmCadre.Items.Clear();
-        //DataTable dt1 = _db.GetSections(typeid: 11);
-        //cmCadre.ValueField = "CadreID";
-        //cmCadre.TextField = "Name";
-        //cmCadre.DataSource = dt1;
-        //cmCadre.DataBind();
-        //cmCadre.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        //cmCadre.SelectedIndex = 0;
+        cmCadre.Items.Clear();
+        cmCadre.Items.Clear();
+        DataTable dt1 = _db.GetCadres();
+        cmCadre.ValueField = "CadreID";
+        cmCadre.TextField = "NameDDL";
+        cmCadre.DataSource = dt1;
+        cmCadre.DataBind();
+        cmCadre.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmCadre.SelectedIndex = 0;
 
-        //DataTable dt2 = _db.GetSections(typeid: 6);
-        //cmPosition.ValueField = "PositionID";
-        //cmPosition.TextField = "PositionName";
-        //cmPosition.DataSource = dt2;
-        //cmPosition.DataBind();
-        //cmPosition.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        //cmPosition.SelectedIndex = 0;
+        cmWork.Items.Clear();
+        DataTable dt2 = _db.GetWorks();
+        cmWork.ValueField = "WorkID";
+        cmWork.TextField = "WorkName";
+        cmWork.DataSource = dt2;
+        cmWork.DataBind();
+        cmWork.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmWork.SelectedIndex = 0;
 
-        //DataTable dt3 = _db.GetSections(typeid: 7);
-        //cmCardNumber.ValueField = "CardID";
-        //cmCardNumber.TextField = "CardNumber";
-        //cmCardNumber.DataSource = dt3;
-        //cmCardNumber.DataBind();
-        //cmCardNumber.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        //cmCardNumber.SelectedIndex = 0;
-
-        //DataTable dt4 = _db.GetSections(typeid: 8);
-        //cmStatusJobName.ValueField = "StatusJobID";
-        //cmStatusJobName.TextField = "StatusJobName";
-        //cmStatusJobName.DataSource = dt4;
-        //cmStatusJobName.DataBind();
-        //cmStatusJobName.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        //cmStatusJobName.SelectedIndex = 0;
-
-        //DataTable dt5 = _db.GetSections(typeid: 9);
-        //cmGender.ValueField = "GenderID";
-        //cmGender.TextField = "GenderName";
-        //cmGender.DataSource = dt5;
-        //cmGender.DataBind();
-        //cmGender.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        //cmGender.SelectedIndex = 0;
-
+        cmGarden.Items.Clear();
+        DataTable dt3 = _db.GetGardens();
+        cmGarden.ValueField = "GardenID";
+        cmGarden.TextField = "GardenName";
+        cmGarden.DataSource = dt3;
+        cmGarden.DataBind();
+        cmGarden.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmGarden.SelectedIndex = 0;   
 
     }
     protected void lnkEdit_Click(object sender, EventArgs e)
     {
         componentsload();
-        //int id = (sender as LinkButton).CommandArgument.ToParseInt();
-        //DataTable dt = _db.GetCadresById(id: id);
-        //cmStructure.Value = dt.Rows[0]["StructureID"].ToParseStr();
-        //cmPosition.Value = dt.Rows[0]["PositionID"].ToParseStr();
-        //cmCardNumber.Value = dt.Rows[0]["CardID"].ToParseStr();
-        //txtSname.Text = dt.Rows[0]["Sname"].ToParseStr();
-        //txtName.Text = dt.Rows[0]["Name"].ToParseStr();
-        //txtFname.Text = dt.Rows[0]["FName"].ToParseStr();
-        //cmGender.Value = dt.Rows[0]["Gender"].ToParseStr();
-        //txtPassportN.Text = dt.Rows[0]["PassportN"].ToParseStr();
-        //txtPIN.Text = dt.Rows[0]["PIN"].ToParseStr();
-        //txtAddress.Text = dt.Rows[0]["Address"].ToParseStr();
-        //txtPhoneNumber.Text = dt.Rows[0]["PhoneNumber"].ToParseStr();
-        //txtEmail.Text = dt.Rows[0]["Email"].ToParseStr();
-        //DateTime datevalue;
-        //if (DateTime.TryParse(dt.Rows[0]["JobEntryDate"].ToParseStr(), out datevalue))
-        //{
-        //    dtJobEntryDate.Text = DateTime.Parse(dt.Rows[0]["JobEntryDate"].ToParseStr()).ToString("dd.MM.yyyy");
-        //}
-        //else
-        //{
-        //    dtJobEntryDate.Text = "";
-        //}
-        //DateTime datevalue1;
-        //if (DateTime.TryParse(dt.Rows[0]["JobExitDate"].ToParseStr(), out datevalue1))
-        //{
-        //    dtJobExitDate.Text = DateTime.Parse(dt.Rows[0]["JobExitDate"].ToParseStr()).ToString("dd.MM.yyyy");
-        //}
-        //else
-        //{
-        //    dtJobExitDate.Text = "";
-        //}
-        //cmStatusJobName.Value = dt.Rows[0]["StatusJob"].ToParseStr();
-        //Session["imgpath"] = dt.Rows[0]["Photo"].ToParseStr();
-        //imgUser.ImageUrl = @"imgCadres\" + dt.Rows[0]["Photo"].ToParseStr();
-        //DateTime datevalue3;
-        //if (DateTime.TryParse(dt.Rows[0]["RegstrDate"].ToParseStr(), out datevalue3))
-        //{
-        //    dtRegstrDate.Text = DateTime.Parse(dt.Rows[0]["RegstrDate"].ToParseStr()).ToString("dd.MM.yyyy");
-        //}
-        //else
-        //{
-        //    dtRegstrDate.Text = "";
-        //}
+        int id = (sender as LinkButton).CommandArgument.ToParseInt();
+        DataTable dt = _db.GetCadresById(id: id);
+        cmStructure.Value = dt.Rows[0]["StructureID"].ToParseStr();
+        cmPosition.Value = dt.Rows[0]["PositionID"].ToParseStr();
+        cmCardNumber.Value = dt.Rows[0]["CardID"].ToParseStr();
+        txtSname.Text = dt.Rows[0]["Sname"].ToParseStr();
+        txtName.Text = dt.Rows[0]["Name"].ToParseStr();
+        txtFname.Text = dt.Rows[0]["FName"].ToParseStr();
+        cmGender.Value = dt.Rows[0]["Gender"].ToParseStr();
+        txtPassportN.Text = dt.Rows[0]["PassportN"].ToParseStr();
+        txtPIN.Text = dt.Rows[0]["PIN"].ToParseStr();
+        txtAddress.Text = dt.Rows[0]["Address"].ToParseStr();
+        txtPhoneNumber.Text = dt.Rows[0]["PhoneNumber"].ToParseStr();
+        txtEmail.Text = dt.Rows[0]["Email"].ToParseStr();
+        DateTime datevalue;
+        if (DateTime.TryParse(dt.Rows[0]["JobEntryDate"].ToParseStr(), out datevalue))
+        {
+            dtJobEntryDate.Text = DateTime.Parse(dt.Rows[0]["JobEntryDate"].ToParseStr()).ToString("dd.MM.yyyy");
+        }
+        else
+        {
+            dtJobEntryDate.Text = "";
+        }
+        DateTime datevalue1;
+        if (DateTime.TryParse(dt.Rows[0]["JobExitDate"].ToParseStr(), out datevalue1))
+        {
+            dtJobExitDate.Text = DateTime.Parse(dt.Rows[0]["JobExitDate"].ToParseStr()).ToString("dd.MM.yyyy");
+        }
+        else
+        {
+            dtJobExitDate.Text = "";
+        }
+        cmStatusJobName.Value = dt.Rows[0]["StatusJob"].ToParseStr();
+        Session["imgpath"] = dt.Rows[0]["Photo"].ToParseStr();
+        imgUser.ImageUrl = @"imgCadres\" + dt.Rows[0]["Photo"].ToParseStr();
+        DateTime datevalue3;
+        if (DateTime.TryParse(dt.Rows[0]["RegstrDate"].ToParseStr(), out datevalue3))
+        {
+            dtRegstrDate.Text = DateTime.Parse(dt.Rows[0]["RegstrDate"].ToParseStr()).ToString("dd.MM.yyyy");
+        }
+        else
+        {
+            dtRegstrDate.Text = "";
+        }
 
-        //btnSave.CommandName = "update";
-        //btnSave.CommandArgument = id.ToString();
+        btnSave.CommandName = "update";
+        btnSave.CommandArgument = id.ToString();
         popupEdit.ShowOnPageLoad = true;
     }
     protected void lnkDelete_Click(object sender, EventArgs e)
@@ -237,11 +223,47 @@ public partial class OperationCadres : System.Web.UI.Page
         //    return;
         //}
 
-        //_loadGridFromDb();
-        //popupEdit.ShowOnPageLoad = false;
+        _loadGridFromDb();
+        popupEdit.ShowOnPageLoad = false;
     }
     protected void btnCancel_Click(object sender, EventArgs e)
     {
         popupEdit.ShowOnPageLoad = false;
+    }
+
+    protected void cmGarden_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        cmZone.Items.Clear();
+        DataTable dt4 = _db.GetZonesByGardenID(_db.GetGardenById(cmGarden.Value.ToParseInt()).Rows[0]["GardenID"].ToParseInt());
+        cmZone.ValueField = "ZoneID";
+        cmZone.TextField = "ZoneName";
+        cmZone.DataSource = dt4;
+        cmZone.DataBind();
+        cmZone.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmZone.SelectedIndex = 0;
+    }
+
+    protected void cmZone_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        cmSektor.Items.Clear();
+        DataTable dt5 = _db.GetSectorsByZoneID(_db.GetZoneById(cmZone.Value.ToParseInt()).Rows[0]["ZoneID"].ToParseInt());
+        cmSektor.ValueField = "SectorID";
+        cmSektor.TextField = "SectorName";
+        cmSektor.DataSource = dt5;
+        cmSektor.DataBind();
+        cmSektor.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmSektor.SelectedIndex = 0;
+    }
+
+    protected void cmSektor_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        cmLine.Items.Clear();
+        DataTable dt5 = _db.GetLineBySectorID(_db.GetSectorById(cmSektor.Value.ToParseInt()).Rows[0]["SectorID"].ToParseInt());
+        cmLine.ValueField = "LineID";
+        cmLine.TextField = "LineName";
+        cmLine.DataSource = dt5;
+        cmLine.DataBind();
+        cmLine.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmLine.SelectedIndex = 0;
     }
 }
