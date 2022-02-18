@@ -43,7 +43,7 @@ public partial class Technique : System.Web.UI.Page
     }
     void modelsload() 
     {
-        DataTable dt2 = _db.GetModelByID(cmBrand.Value.ToParseInt());
+        DataTable dt2 = _db.GetModelsByBrandID(cmBrand.Value.ToParseInt());
         cmmodels.ValueField = "ModelID";
         cmmodels.TextField = "ModelName";
         cmmodels.DataSource = dt2;

@@ -85,12 +85,19 @@
                             HeaderText="Redaktə"
                             PopupHorizontalAlign="WindowCenter"
                             PopupVerticalAlign="WindowCenter"
-                            Height="600"
+                            Height="200"
                             ScrollBars="Vertical">
                             <ContentCollection>
                                 <dx:PopupControlContentControl>
                                     <div class="container">
                                    
+                                         <div class="row mb-2">
+                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Markası</label>
+                                            <div class="col-sm-7">
+                                                <asp:DropDownList ID="ddlbrand" class="form-control" runat="server" ></asp:DropDownList>
+                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator21" runat="server" ControlToValidate="ddlbrand" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
+                                            </div>
+                                        </div>
 
 
                                         <div class="row mb-2">
@@ -103,13 +110,7 @@
                                         </div>
 
 
-                                        <div class="row mb-2">
-                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Mal növləri</label>
-                                            <div class="col-sm-7">
-                                                <asp:DropDownList ID="ddlbrand" class="form-control" runat="server" ></asp:DropDownList>
-                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator21" runat="server" ControlToValidate="ddlbrand" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
-                                            </div>
-                                        </div>
+                                       
                                        
                                       
 

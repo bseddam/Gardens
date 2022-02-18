@@ -81,7 +81,7 @@
                             HeaderText="Redaktə"
                             PopupHorizontalAlign="WindowCenter"
                             PopupVerticalAlign="WindowCenter"
-                            Height="600"
+                            Height="200"
                             ScrollBars="Vertical">
                             <ContentCollection>
                                 <dx:PopupControlContentControl>
@@ -89,7 +89,7 @@
                                     
 
                                         <div class="row mb-2">
-                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ölçü vahidi</label>
+                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ağac növü</label>
                                             <div class="col-sm-7">
                                                 <asp:TextBox ID="txttreetypename" runat="server" class="form-control"  placeholder="Mətni daxil edin..."></asp:TextBox>
                                                 <%--<asp:RegularExpressionValidator ValidationGroup="qrup1" Display="Dynamic" ControlToValidate="txtunitmeasurementname" ID="RegularExpressionValidator2" ValidationExpression="^[\s\S]{3,500}$" runat="server" ForeColor="Red" ErrorMessage="Mətn 3 simvoldan cox olmalıdır."></asp:RegularExpressionValidator>--%>

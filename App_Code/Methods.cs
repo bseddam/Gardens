@@ -11,11 +11,9 @@ using System.Data.SqlClient;
 
 public class Methods
 {
-    //public SqlConnection SqlConn = new SqlConnection(@"Data Source=(local);Initial Catalog=ETES_DB;Integrated Security=true;");
-
     public static SqlConnection SqlConn
     {
-         get { return new SqlConnection(@"Data Source=(local);Initial Catalog=Gardens;Integrated Security=true;Max Pool Size=1024;Pooling=true;"); }
+         get { return new SqlConnection(@"Data Source = SQL5105.site4now.net; Initial Catalog = db_a83176_gardens; User Id = db_a83176_gardens_admin; Password = Gardens1"); }
 
     }
     public DataTable User (string Login, string Pass)
@@ -1402,7 +1400,23 @@ inner join Brands b on m.BrandID=b.BrandID where m.DeleteTime is null and b.Dele
             return null;
         }
     }
-
+    public DataTable GetModelsByBrandID(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [ModelID] desc) sn,
+m.RegisterTime,[ModelID],m.[BrandID],b.BrandName,[ModelName] FROM [Models] m 
+inner join Brands b on m.BrandID=b.BrandID where m.DeleteTime is null and b.DeleteTime is null and m.BrandID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
     public DataTable GetModelByID(int id)
     {
         try

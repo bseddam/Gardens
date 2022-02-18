@@ -37,7 +37,7 @@ public partial class Products : System.Web.UI.Page
     }
     void modelcomponentload()
     {
-        DataTable dt6 = _db.GetModelByID(ddlbrand.SelectedValue.ToParseInt());
+        DataTable dt6 = _db.GetModelsByBrandID(ddlbrand.SelectedValue.ToParseInt());
         ddlmodel.DataValueField = "ModelID";
         ddlmodel.DataTextField = "ModelName";
         ddlmodel.DataSource = dt6;

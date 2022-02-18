@@ -81,10 +81,10 @@
                                                   <dx:GridViewDataColumn Caption="Motor" FieldName="Motor" VisibleIndex="1">
                                                     <EditFormSettings VisibleIndex="1" />
                                                 </dx:GridViewDataColumn>
-                                                  <dx:GridViewDataColumn Caption="Qeydiyyat nömrəsi" FieldName="RegisterNumber" VisibleIndex="1">
+                                                  <dx:GridViewDataColumn Caption="İnvertar kodu" FieldName="RegisterNumber" VisibleIndex="1">
                                                     <EditFormSettings VisibleIndex="1" />
                                                 </dx:GridViewDataColumn>
-                                                <dx:GridViewDataColumn Caption="Seriya nomrəsi" FieldName="SerieNumber" VisibleIndex="1">
+                                                <dx:GridViewDataColumn Caption="Məsul şəxs" FieldName="SerieNumber" VisibleIndex="1">
                                                     <EditFormSettings VisibleIndex="1" />
                                                 </dx:GridViewDataColumn>
                                                   <dx:GridViewDataColumn Caption="Passport" FieldName="Passport" VisibleIndex="1">
@@ -203,7 +203,7 @@
                                                             </div>
                                                         </div>
                                                           <div class="row mb-2">
-                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Qeydiyyat nömrəsi</label>
+                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">İnvertar kodu</label>
                                                             <div class="col-sm-7">
                                                                 <asp:TextBox ID="txtRegisterNumber" class="form-control mb-0 mt-0" runat="server" placeholder="Mətni daxil edin...">
                                                                 </asp:TextBox>
@@ -211,7 +211,7 @@
                                                         </div>
                                                         
                                                         <div class="row mb-2">
-                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Seriya nömrəsi</label>
+                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Məsul şəxs</label>
                                                             <div class="col-sm-7">
                                                                 <asp:TextBox ID="txtSerieNumber" class="form-control mb-0 mt-0" runat="server" placeholder="Mətni daxil edin...">
                                                                 </asp:TextBox>
