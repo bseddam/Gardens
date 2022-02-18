@@ -12,7 +12,7 @@ public partial class Products : System.Web.UI.Page
     Methods _db = new Methods();
     protected void Page_Load(object sender, EventArgs e)
     {
-        //Kele
+        //Kele1
         _loadGridFromDb();
         if (IsPostBack) return;
     }
