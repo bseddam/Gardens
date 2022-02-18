@@ -53,6 +53,9 @@
                                 <dx:GridViewDataColumn Caption="İşin növü" FieldName="WorkTypeName" VisibleIndex="1">
                                     <EditFormSettings VisibleIndex="1" />
                                 </dx:GridViewDataColumn>
+                                 <dx:GridViewDataColumn Caption="İşin qiyməti" FieldName="Price" VisibleIndex="1">
+                                    <EditFormSettings VisibleIndex="1" />
+                                </dx:GridViewDataColumn>
           
 
                                 <dx:GridViewDataColumn VisibleIndex="1">
@@ -109,7 +112,17 @@
                                               </div>
                                         </div>
 
-                       
+                         <div class="row mb-2">
+                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">İşin qiyməti</label>
+                                            <div class="col-sm-7">
+                                                <asp:TextBox ID="txtprice" runat="server" class="form-control"  placeholder="Mətni daxil edin..."></asp:TextBox>
+                                                <%--<asp:RegularExpressionValidator ValidationGroup="qrup1" Display="Dynamic" ControlToValidate="txtunitmeasurementname" ID="RegularExpressionValidator2" ValidationExpression="^[\s\S]{3,500}$" runat="server" ForeColor="Red" ErrorMessage="Mətn 3 simvoldan cox olmalıdır."></asp:RegularExpressionValidator>--%>
+                                                <asp:CompareValidator ID="cv6" runat="server" ControlToValidate="txtprice" ErrorMessage="Format düzgün deyil." Operator="DataTypeCheck" Type="Double" ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red" />
+                         
+                                                <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txtprice" ID="RequiredFieldValidator2" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>
+                                           
+                                            </div>
+                                        </div>
 
 
 

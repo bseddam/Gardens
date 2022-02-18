@@ -18,6 +18,7 @@ public partial class TreeTypes : System.Web.UI.Page
     void ClearComponents()
     {
         txttreetypename.Text = "";
+        txtcoefficient.Text = "";
         lblPopError.Text = "";
     }
     void _loadGridFromDb()
@@ -69,12 +70,15 @@ public partial class TreeTypes : System.Web.UI.Page
         if (btnSave.CommandName == "insert")
         {
             val = _db.TreeTypeInsert(
-                TreeTypeName: txttreetypename.Text.ToParseStr());
+                TreeTypeName: txttreetypename.Text.ToParseStr(),
+                Coefficient: txtcoefficient.Text.ToParseStr()
+                );
         }
         else
         {
             val = _db.TreeTypeUpdate(TreeTypeID: btnSave.CommandArgument.ToParseInt(),
-                TreeTypeName: txttreetypename.Text.ToParseStr());
+                TreeTypeName: txttreetypename.Text.ToParseStr(),
+                Coefficient: txtcoefficient.Text.ToParseStr());
         }
 
         if (val == Types.ProsesType.Error)

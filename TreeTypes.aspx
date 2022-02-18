@@ -52,6 +52,9 @@
                                 <dx:GridViewDataColumn Caption="Ağac növü" FieldName="TreeTypeName" VisibleIndex="1">
                                     <EditFormSettings VisibleIndex="1" />
                                 </dx:GridViewDataColumn>
+                                  <dx:GridViewDataColumn Caption="Əmsal" FieldName="Coefficient" VisibleIndex="1">
+                                    <EditFormSettings VisibleIndex="1" />
+                                </dx:GridViewDataColumn>
                              
                                 <dx:GridViewDataColumn VisibleIndex="1">
                                     <DataItemTemplate>
@@ -94,6 +97,18 @@
                                                 <asp:TextBox ID="txttreetypename" runat="server" class="form-control"  placeholder="Mətni daxil edin..."></asp:TextBox>
                                                 <%--<asp:RegularExpressionValidator ValidationGroup="qrup1" Display="Dynamic" ControlToValidate="txtunitmeasurementname" ID="RegularExpressionValidator2" ValidationExpression="^[\s\S]{3,500}$" runat="server" ForeColor="Red" ErrorMessage="Mətn 3 simvoldan cox olmalıdır."></asp:RegularExpressionValidator>--%>
                                                 <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txttreetypename" ID="RequiredFieldValidator1" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>
+                                            </div>
+                                        </div>
+
+                                       <div class="row mb-2">
+                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Əmsal</label>
+                                            <div class="col-sm-7">
+                                                <asp:TextBox ID="txtcoefficient" runat="server" class="form-control"  placeholder="Mətni daxil edin..."></asp:TextBox>
+                                                <%--<asp:RegularExpressionValidator ValidationGroup="qrup1" Display="Dynamic" ControlToValidate="txtunitmeasurementname" ID="RegularExpressionValidator2" ValidationExpression="^[\s\S]{3,500}$" runat="server" ForeColor="Red" ErrorMessage="Mətn 3 simvoldan cox olmalıdır."></asp:RegularExpressionValidator>--%>
+                                                <asp:CompareValidator ID="cv6" runat="server" ControlToValidate="txtcoefficient" ErrorMessage="Format düzgün deyil." Operator="DataTypeCheck" Type="Double" ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red" />
+                         
+                                                <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txtcoefficient" ID="RequiredFieldValidator2" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>
+                                           
                                             </div>
                                         </div>
 

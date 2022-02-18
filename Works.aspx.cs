@@ -17,7 +17,7 @@ public partial class Works : System.Web.UI.Page
     }
     void ClearComponents()
     {
-      
+        txtprice.Text = "";
         txtworkname.Text = "";
 
         lblPopError.Text = "";
@@ -84,14 +84,16 @@ public partial class Works : System.Web.UI.Page
         {
             val = _db.WorkInsert(
                 WorkTypeID: ddlworktype.SelectedValue.ToParseInt(),
-                WorkName: txtworkname.Text.ToParseStr()
+                WorkName: txtworkname.Text.ToParseStr(),
+                Price: txtprice.Text.ToParseStr()
                 );
         }
         else
         {
             val = _db.WorkUpdate(WorkID: btnSave.CommandArgument.ToParseInt(),
                 WorkTypeID: ddlworktype.SelectedValue.ToParseInt(),
-                WorkName: txtworkname.Text.ToParseStr()
+                WorkName: txtworkname.Text.ToParseStr(),
+                Price: txtprice.Text.ToParseStr()
                 );
 
 

@@ -958,9 +958,7 @@ where LineID=@LineID;", SqlConn);
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by TreeTypeID desc) sn, 
-[TreeTypeID]
-      ,[UserID],RegisterTime,[TreeTypeName],[InsertTime],[UpdateTime],[DeleteTime]
-  FROM [TreeTypes] where DeleteTime is null", SqlConn);
+*  FROM [TreeTypes] where DeleteTime is null", SqlConn);
             da.Fill(dt);
             return dt;
         }
@@ -975,9 +973,7 @@ where LineID=@LineID;", SqlConn);
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by TreeTypeID desc) sn, 
-[TreeTypeID]
-      ,[UserID],RegisterTime,[TreeTypeName],[InsertTime],[UpdateTime],[DeleteTime]
-  FROM [TreeTypes] where DeleteTime is null and TreeTypeID=@id", SqlConn);
+* FROM [TreeTypes] where DeleteTime is null and TreeTypeID=@id", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
             da.Fill(dt);
             return dt;
@@ -987,13 +983,13 @@ where LineID=@LineID;", SqlConn);
             return null;
         }
     }
-    public Types.ProsesType TreeTypeInsert( string TreeTypeName)
+    public Types.ProsesType TreeTypeInsert( string TreeTypeName,string Coefficient)
     {
         SqlCommand cmd = new SqlCommand(@"insert into TreeTypes 
-(UserID,TreeTypeName) values (@UserID,@TreeTypeName)", SqlConn);
+(UserID,TreeTypeName,Coefficient) values (@UserID,@TreeTypeName,@Coefficient)", SqlConn);
         cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
         cmd.Parameters.AddWithValue("@TreeTypeName", TreeTypeName);
-
+        cmd.Parameters.AddWithValue("@Coefficient", Coefficient);
         try
         {
             cmd.Connection.Open();
@@ -1010,14 +1006,14 @@ where LineID=@LineID;", SqlConn);
             cmd.Dispose();
         }
     }
-    public Types.ProsesType TreeTypeUpdate(int TreeTypeID, string TreeTypeName)
+    public Types.ProsesType TreeTypeUpdate(int TreeTypeID, string TreeTypeName,string Coefficient)
     {
         SqlCommand cmd = new SqlCommand(@"update TreeTypes set UserID=@UserID,
-TreeTypeName=@TreeTypeName,UpdateTime=getdate() where TreeTypeID=@TreeTypeID", SqlConn);
+TreeTypeName=@TreeTypeName,Coefficient=@Coefficient,UpdateTime=getdate() where TreeTypeID=@TreeTypeID", SqlConn);
         cmd.Parameters.AddWithValue("@TreeTypeID", TreeTypeID);
         cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
         cmd.Parameters.AddWithValue("@TreeTypeName", TreeTypeName);
-
+        cmd.Parameters.AddWithValue("@Coefficient", Coefficient);
         try
         {
             cmd.Connection.Open();
@@ -1569,7 +1565,7 @@ where ProductTypeID=@ProductTypeID;", SqlConn);
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by WorkID desc) sn,
-[WorkID],w.[RegisterTime],w.[WorkTypeID],wt.WorkTypeName,[WorkName]
+[WorkID],w.[RegisterTime],w.[WorkTypeID],wt.WorkTypeName,[WorkName],w.Price
 FROM Works w inner join WorkTypes wt on w.WorkTypeID=wt.WorkTypeID 
 where w.DeleteTime is null and wt.DeleteTime is null ", SqlConn);
             da.Fill(dt);
@@ -1586,7 +1582,7 @@ where w.DeleteTime is null and wt.DeleteTime is null ", SqlConn);
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by WorkID desc) sn,
-[WorkID],w.[RegisterTime],w.[WorkTypeID],wt.WorkTypeName,[WorkName]
+[WorkID],w.[RegisterTime],w.[WorkTypeID],wt.WorkTypeName,[WorkName],Price
 FROM Works w inner join WorkTypes wt on w.WorkTypeID=wt.WorkTypeID 
 where w.DeleteTime is null and wt.DeleteTime is null and w.WorkID=@id", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
@@ -1598,15 +1594,15 @@ where w.DeleteTime is null and wt.DeleteTime is null and w.WorkID=@id", SqlConn)
             return null;
         }
     }
-    public Types.ProsesType WorkInsert( int WorkTypeID, string WorkName)
+    public Types.ProsesType WorkInsert( int WorkTypeID, string WorkName,string Price)
     {
         SqlCommand cmd = new SqlCommand(@"insert into Works 
-(UserID,WorkTypeID,WorkName) 
-values (@UserID,@WorkTypeID,@WorkName)", SqlConn);
+(UserID,WorkTypeID,WorkName,Price) 
+values (@UserID,@WorkTypeID,@WorkName,@Price)", SqlConn);
         cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
         cmd.Parameters.AddWithValue("@WorkTypeID", WorkTypeID);
         cmd.Parameters.AddWithValue("@WorkName", WorkName);
-
+        cmd.Parameters.AddWithValue("@Price", Price);
         try
         {
             cmd.Connection.Open();
@@ -1623,15 +1619,15 @@ values (@UserID,@WorkTypeID,@WorkName)", SqlConn);
             cmd.Dispose();
         }
     }
-    public Types.ProsesType WorkUpdate(int WorkID, int WorkTypeID, string WorkName)
+    public Types.ProsesType WorkUpdate(int WorkID, int WorkTypeID, string WorkName,string Price)
     {
         SqlCommand cmd = new SqlCommand(@"update Works set UserID=@UserID,
-WorkTypeID=@WorkTypeID, WorkName=@WorkName,UpdateTime=getdate() where WorkID=@WorkID", SqlConn);
+WorkTypeID=@WorkTypeID,WorkName=@WorkName,Price=@Price,UpdateTime=getdate() where WorkID=@WorkID", SqlConn);
         cmd.Parameters.AddWithValue("@WorkID", WorkID);
         cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
         cmd.Parameters.AddWithValue("@WorkTypeID", WorkTypeID);
         cmd.Parameters.AddWithValue("@WorkName", WorkName);
-
+        cmd.Parameters.AddWithValue("@Price", Price);
         try
         {
             cmd.Connection.Open();
@@ -2532,7 +2528,8 @@ where w.DeleteTime is null", SqlConn);
 
     public Types.ProsesType DeleteOperationWateringSystems(int id)
     {
-        SqlCommand cmd = new SqlCommand(@"Update WateringSystemWork set DeleteTime=GetDate() where WateringSystemWorkID=@id ", SqlConn);
+        SqlCommand cmd = new SqlCommand(@"Update WateringSystemWork set DeleteTime=GetDate() 
+where WateringSystemWorkID=@id ", SqlConn);
         cmd.Parameters.AddWithValue("@id", id);
         try
         {
@@ -2569,6 +2566,73 @@ where w.DeleteTime is null", SqlConn);
 
 
 
+    //hava seraiti
+    public DataTable GetWeatherCondition()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [WeatherConditionID] desc) sn,
+* FROM [WeatherCondition] where DeleteTime is null", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+    public DataTable GetWeatherConditionByID(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [WeatherConditionID] desc) sn,
+* FROM [WeatherCondition] where DeleteTime is null and WeatherConditionID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
 
+
+
+
+    //agac yaslari
+    public DataTable GetTariffTreeAge()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [TariffAgeID] desc) sn,
+* FROM [TariffTreeAge] where DeleteTime is null", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+    public DataTable GetTariffTreeAgeByID(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [TariffAgeID] desc) sn,
+* FROM [TariffTreeAge] where DeleteTime is null and TariffAgeID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
 
 }
