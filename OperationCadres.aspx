@@ -170,6 +170,33 @@
                                                             </div>
                                                         </div>
                                                         <div class="row mb-2">
+                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Hava şəraiti</label>
+                                                            <div class="col-sm-7">
+                                                                <dx:ASPxComboBox ID="cmWeather" 
+                                                                    runat="server"
+                                                                    Width="100%" Height="30px">
+                                                                </dx:ASPxComboBox>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mb-2">
+                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ağaçın tipi</label>
+                                                            <div class="col-sm-7">
+                                                                <dx:ASPxComboBox ID="cmTreeType" 
+                                                                    runat="server"
+                                                                    Width="100%" Height="30px">
+                                                                </dx:ASPxComboBox>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mb-2">
+                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ağacın yaşı</label>
+                                                            <div class="col-sm-7">
+                                                                <dx:ASPxComboBox ID="cmTreeAge" 
+                                                                    runat="server"
+                                                                    Width="100%" Height="30px">
+                                                                </dx:ASPxComboBox>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mb-2">
                                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ağac sayı</label>
                                                             <div class="col-sm-7">
                                                                 <asp:TextBox ID="txtTreeCount" class="form-control mb-0 mt-0" runat="server" placeholder="Sayı daxil edin...">
