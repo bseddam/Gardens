@@ -2433,6 +2433,33 @@ left join Gardens g on g.GardenID=z.GardenID where w.DeleteTime is null ", SqlCo
         }
     }
 
+    public DataTable GetOperationCadreByID(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select ROW_NUMBER() over( order by w.WorkDoneID) sn,
+c.Name+' '+c.Sname+' '+c.FName fullname, s.WorkName,
+g.GardenName,z.ZonaName,sc.SectorName,l.LineName,w.TreeCount,
+w.Notes,w.RegstrTime,w.WorkDoneID,w.UserID,w.LinesID,w.CadreID,
+g.GardenID,z.ZoneID,sc.SectorsID,w.WorkID
+from WorkDone w
+left join Cadres c on c.CadreID=w.CadreID
+left join Works s on s.WorkID=w.WorkID
+left join Lines l on l.LineID=w.LinesID
+left join Sectors sc on sc.SectorsID=l.SektorID
+left join Zones z on z.ZoneID=sc.ZonaID
+left join Gardens g on g.GardenID=z.GardenID where w.DeleteTime is null and w.WorkDoneID=@WorkDoneID", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("@WorkDoneID", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
 
     //-------Texnikalar uzre emeliyyat
 

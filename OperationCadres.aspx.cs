@@ -73,14 +73,14 @@ public partial class OperationCadres : System.Web.UI.Page
     {
         componentsload();
         int id = (sender as LinkButton).CommandArgument.ToParseInt();
-        DataTable dt = _db.GetCadresById(id: id);
-        cmStructure.Value = dt.Rows[0]["StructureID"].ToParseStr();
-        cmPosition.Value = dt.Rows[0]["PositionID"].ToParseStr();
-        cmCardNumber.Value = dt.Rows[0]["CardID"].ToParseStr();
-        txtSname.Text = dt.Rows[0]["Sname"].ToParseStr();
-        txtName.Text = dt.Rows[0]["Name"].ToParseStr();
-        txtFname.Text = dt.Rows[0]["FName"].ToParseStr();
-        cmGender.Value = dt.Rows[0]["Gender"].ToParseStr();
+        DataTable dt = _db.GetOperationCadreByID(id: id);
+        cmCadre.Value = dt.Rows[0]["CadreID"].ToParseStr();
+        cmWork.Value = dt.Rows[0]["WorkID"].ToParseStr();
+        cmGarden.Value = dt.Rows[0]["GardenID"].ToParseStr();
+        cmZone.Text = dt.Rows[0]["ZoneID"].ToParseStr();
+        cmSektor.Text = dt.Rows[0]["SectorsID"].ToParseStr();
+        cmLine.Text = dt.Rows[0]["LinesID"].ToParseStr();
+        cmWeather.Value = dt.Rows[0]["Gender"].ToParseStr();
         txtPassportN.Text = dt.Rows[0]["PassportN"].ToParseStr();
         txtPIN.Text = dt.Rows[0]["PIN"].ToParseStr();
         txtAddress.Text = dt.Rows[0]["Address"].ToParseStr();
