@@ -1742,6 +1742,91 @@ where DeleteTime is null", SqlConn);
             return null;
         }
     }
+    public DataTable GetCardsByID(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [CardID] desc) sn,
+[CardID],[UserID],[CardNumber],[InsertTime],[Updatetime],[DeleteTime]
+  FROM [Cards] where DeleteTime is null and CardID=@CardID", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("CardID", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+    public Types.ProsesType DeleteCards(int id)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"Update Cards set deletetime=getdate(),UserID=@UserID where CardID=@id;", SqlConn);
+        cmd.Parameters.AddWithValue("@id", id);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            //LogInsert(Utils.Tables.pages, Utils.LogType.delete, String.Format("IndicatorsDelete () "), ex.Message, "", true);
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+    public Types.ProsesType CardsInsert(int UserID, string CardNumber)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"insert into Cards (UserID, CardNumber)  Values(@UserID, @CardNumber)", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", UserID);
+        cmd.Parameters.AddWithValue("@CardNumber", CardNumber);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+    public Types.ProsesType CardsUpdate(int CardID, int UserID, string CardNumber)
+    {
+        SqlCommand cmd = new SqlCommand(@"update Cards set UserID=@UserID, CardNumber=@CardNumber where CardID=@CardID", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", UserID);
+        cmd.Parameters.AddWithValue("@CardNumber", CardNumber);
+        cmd.Parameters.AddWithValue("@CardID", CardID);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
     //Cins
     public DataTable GetGenders()
     {
@@ -1758,8 +1843,7 @@ where DeleteTime is null", SqlConn);
             return null;
         }
     }
-
-    
+        
 
     //Texnikalar
     public DataTable GetTechniqueSituations()
