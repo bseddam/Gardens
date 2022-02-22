@@ -2662,4 +2662,90 @@ where WateringSystemWorkID=@id ", SqlConn);
         }
     }
 
+
+
+
+
+
+
+
+
+
+    //yeni
+
+
+  
+    public Types.ProsesType WeatherConditionInsert(string WeatherConditionName, string Coefficient)
+    {
+        SqlCommand cmd = new SqlCommand(@"insert into WeatherCondition 
+(UserID,WeatherConditionName,Coefficient) values (@UserID,@WeatherConditionName,@Coefficient)", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@WeatherConditionName", WeatherConditionName);
+        cmd.Parameters.AddWithValue("@Coefficient", Coefficient);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+    public Types.ProsesType WeatherConditionUpdate(int WeatherConditionID, string WeatherConditionName, string Coefficient)
+    {
+        SqlCommand cmd = new SqlCommand(@"update WeatherCondition set UserID=@UserID,
+WeatherConditionName=@WeatherConditionName,Coefficient=@Coefficient,
+UpdateTime=getdate() where WeatherConditionID=@WeatherConditionID", SqlConn);
+        cmd.Parameters.AddWithValue("@WeatherConditionID", WeatherConditionID);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@WeatherConditionName", WeatherConditionName);
+        cmd.Parameters.AddWithValue("@Coefficient", Coefficient);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+    public Types.ProsesType DeleteWeatherCondition(int id)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"Update WeatherCondition set deletetime=getdate(),
+UserID=@UserID where WeatherConditionID=@WeatherConditionID;", SqlConn);
+        cmd.Parameters.AddWithValue("@WeatherConditionID", id);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            //LogInsert(Utils.Tables.pages, Utils.LogType.delete, String.Format("IndicatorsDelete () "), ex.Message, "", true);
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
 }
