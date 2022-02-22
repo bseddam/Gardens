@@ -45,6 +45,7 @@ public partial class Cadres : System.Web.UI.Page
     }
     void componentsload()
     {
+        cmStructure.Items.Clear();
         DataTable dt1 = _db.GetStructure();
         cmStructure.ValueField = "StructureID";
         cmStructure.TextField = "StructureName";
@@ -53,6 +54,7 @@ public partial class Cadres : System.Web.UI.Page
         cmStructure.Items.Insert(0, new ListEditItem("Seçin", "-1"));
         cmStructure.SelectedIndex = 0;
 
+        cmPosition.Items.Clear();
         DataTable dt2 = _db.GetPositions();
         cmPosition.ValueField = "PositionID";
         cmPosition.TextField = "PositionName";
@@ -61,6 +63,7 @@ public partial class Cadres : System.Web.UI.Page
         cmPosition.Items.Insert(0, new ListEditItem("Seçin", "-1"));
         cmPosition.SelectedIndex = 0;
 
+        cmCardNumber.Items.Clear();
         DataTable dt3 = _db.GetCards();
         cmCardNumber.ValueField = "CardID";
         cmCardNumber.TextField = "CardNumber";
@@ -69,6 +72,7 @@ public partial class Cadres : System.Web.UI.Page
         cmCardNumber.Items.Insert(0, new ListEditItem("Seçin", "-1"));
         cmCardNumber.SelectedIndex = 0;
 
+        cmbcardetype.Items.Clear();
         DataTable dt4 = _db.GetCadreType();
         cmbcardetype.ValueField = "CadreTypeID";
         cmbcardetype.TextField = "CadreTypeName";
@@ -77,6 +81,7 @@ public partial class Cadres : System.Web.UI.Page
         cmbcardetype.Items.Insert(0, new ListEditItem("Seçin", "-1"));
         cmbcardetype.SelectedIndex = 0;
 
+        cmGender.Items.Clear();
         DataTable dt5 = _db.GetGenders();
         cmGender.ValueField = "GenderID";
         cmGender.TextField = "GenderName";

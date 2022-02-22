@@ -1716,7 +1716,7 @@ where DeleteTime is null", SqlConn);
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"SELECT  [CadreTypeID]
       ,[CadreTypeName]
-  FROM [Gardens].[dbo].[CadreType]", SqlConn);
+  FROM CadreType", SqlConn);
             da.Fill(dt);
             return dt;
         }
