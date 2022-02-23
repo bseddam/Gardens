@@ -260,13 +260,13 @@
                                                         <div class="row  mb-2">
                                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">İşə qəbul olma tarixi</label>
                                                             <div class="col-sm-7">
-                                                                <dx:ASPxDateEdit ID="dtJobEntryDate" runat="server"></dx:ASPxDateEdit>
+                                                                <dx:ASPxDateEdit ID="dtJobEntryDate" runat="server" CssClass="form-control"></dx:ASPxDateEdit>
                                                             </div>
                                                         </div>
                                                         <div class="row  mb-2">
                                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">İşədən çıxma tarixi</label>
                                                             <div class="col-sm-7">
-                                                                <dx:ASPxDateEdit ID="dtJobExitDate" runat="server"></dx:ASPxDateEdit>
+                                                                <dx:ASPxDateEdit ID="dtJobExitDate" runat="server" CssClass="form-control"></dx:ASPxDateEdit>
                                                             </div>
                                                         </div>
                                                         <div class="row mb-2">
@@ -288,7 +288,7 @@
                                                         <div class="row  mb-2">
                                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Qeydiyyat tarixi</label>
                                                             <div class="col-sm-7">
-                                                                <dx:ASPxDateEdit ID="dtRegstrDate" runat="server"></dx:ASPxDateEdit>
+                                                                <dx:ASPxDateEdit ID="dtRegstrDate" runat="server" CssClass="form-control"></dx:ASPxDateEdit>
                                                             </div>
                                                         </div>
                                                           
@@ -298,7 +298,7 @@
                                                                
                                  <asp:Image ID="imgUser" runat="server" width="150" height="150"/><br />
 
-                <asp:FileUpload ID="FileUpload1" runat="server" CssClass="hidden" onchange='openFile(event)' />
+                <asp:FileUpload ID="FileUpload1" runat="server" CssClass="hidden" onchange='openFile(event)' Class="form-control" />
     
                                                             </div>
                                                         </div>
