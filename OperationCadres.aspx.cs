@@ -71,55 +71,55 @@ public partial class OperationCadres : System.Web.UI.Page
     }
     protected void lnkEdit_Click(object sender, EventArgs e)
     {
-        componentsload();
-        int id = (sender as LinkButton).CommandArgument.ToParseInt();
-        DataTable dt = _db.GetCadresById(id: id);
-        cmStructure.Value = dt.Rows[0]["StructureID"].ToParseStr();
-        cmPosition.Value = dt.Rows[0]["PositionID"].ToParseStr();
-        cmCardNumber.Value = dt.Rows[0]["CardID"].ToParseStr();
-        txtSname.Text = dt.Rows[0]["Sname"].ToParseStr();
-        txtName.Text = dt.Rows[0]["Name"].ToParseStr();
-        txtFname.Text = dt.Rows[0]["FName"].ToParseStr();
-        cmGender.Value = dt.Rows[0]["Gender"].ToParseStr();
-        txtPassportN.Text = dt.Rows[0]["PassportN"].ToParseStr();
-        txtPIN.Text = dt.Rows[0]["PIN"].ToParseStr();
-        txtAddress.Text = dt.Rows[0]["Address"].ToParseStr();
-        txtPhoneNumber.Text = dt.Rows[0]["PhoneNumber"].ToParseStr();
-        txtEmail.Text = dt.Rows[0]["Email"].ToParseStr();
-        DateTime datevalue;
-        if (DateTime.TryParse(dt.Rows[0]["JobEntryDate"].ToParseStr(), out datevalue))
-        {
-            dtJobEntryDate.Text = DateTime.Parse(dt.Rows[0]["JobEntryDate"].ToParseStr()).ToString("dd.MM.yyyy");
-        }
-        else
-        {
-            dtJobEntryDate.Text = "";
-        }
-        DateTime datevalue1;
-        if (DateTime.TryParse(dt.Rows[0]["JobExitDate"].ToParseStr(), out datevalue1))
-        {
-            dtJobExitDate.Text = DateTime.Parse(dt.Rows[0]["JobExitDate"].ToParseStr()).ToString("dd.MM.yyyy");
-        }
-        else
-        {
-            dtJobExitDate.Text = "";
-        }
-        cmStatusJobName.Value = dt.Rows[0]["StatusJob"].ToParseStr();
-        Session["imgpath"] = dt.Rows[0]["Photo"].ToParseStr();
-        imgUser.ImageUrl = @"imgCadres\" + dt.Rows[0]["Photo"].ToParseStr();
-        DateTime datevalue3;
-        if (DateTime.TryParse(dt.Rows[0]["RegstrDate"].ToParseStr(), out datevalue3))
-        {
-            dtRegstrDate.Text = DateTime.Parse(dt.Rows[0]["RegstrDate"].ToParseStr()).ToString("dd.MM.yyyy");
-        }
-        else
-        {
-            dtRegstrDate.Text = "";
-        }
+        //componentsload();
+        //int id = (sender as LinkButton).CommandArgument.ToParseInt();
+        //DataTable dt = _db.GetCadresById(id: id);
+        //cmStructure.Value = dt.Rows[0]["StructureID"].ToParseStr();
+        //cmPosition.Value = dt.Rows[0]["PositionID"].ToParseStr();
+        //cmCardNumber.Value = dt.Rows[0]["CardID"].ToParseStr();
+        //txtSname.Text = dt.Rows[0]["Sname"].ToParseStr();
+        //txtName.Text = dt.Rows[0]["Name"].ToParseStr();
+        //txtFname.Text = dt.Rows[0]["FName"].ToParseStr();
+        //cmGender.Value = dt.Rows[0]["Gender"].ToParseStr();
+        //txtPassportN.Text = dt.Rows[0]["PassportN"].ToParseStr();
+        //txtPIN.Text = dt.Rows[0]["PIN"].ToParseStr();
+        //txtAddress.Text = dt.Rows[0]["Address"].ToParseStr();
+        //txtPhoneNumber.Text = dt.Rows[0]["PhoneNumber"].ToParseStr();
+        //txtEmail.Text = dt.Rows[0]["Email"].ToParseStr();
+        //DateTime datevalue;
+        //if (DateTime.TryParse(dt.Rows[0]["JobEntryDate"].ToParseStr(), out datevalue))
+        //{
+        //    dtJobEntryDate.Text = DateTime.Parse(dt.Rows[0]["JobEntryDate"].ToParseStr()).ToString("dd.MM.yyyy");
+        //}
+        //else
+        //{
+        //    dtJobEntryDate.Text = "";
+        //}
+        //DateTime datevalue1;
+        //if (DateTime.TryParse(dt.Rows[0]["JobExitDate"].ToParseStr(), out datevalue1))
+        //{
+        //    dtJobExitDate.Text = DateTime.Parse(dt.Rows[0]["JobExitDate"].ToParseStr()).ToString("dd.MM.yyyy");
+        //}
+        //else
+        //{
+        //    dtJobExitDate.Text = "";
+        //}
+        //cmStatusJobName.Value = dt.Rows[0]["StatusJob"].ToParseStr();
+        //Session["imgpath"] = dt.Rows[0]["Photo"].ToParseStr();
+        //imgUser.ImageUrl = @"imgCadres\" + dt.Rows[0]["Photo"].ToParseStr();
+        //DateTime datevalue3;
+        //if (DateTime.TryParse(dt.Rows[0]["RegstrDate"].ToParseStr(), out datevalue3))
+        //{
+        //    dtRegstrDate.Text = DateTime.Parse(dt.Rows[0]["RegstrDate"].ToParseStr()).ToString("dd.MM.yyyy");
+        //}
+        //else
+        //{
+        //    dtRegstrDate.Text = "";
+        //}
 
-        btnSave.CommandName = "update";
-        btnSave.CommandArgument = id.ToString();
-        popupEdit.ShowOnPageLoad = true;
+        //btnSave.CommandName = "update";
+        //btnSave.CommandArgument = id.ToString();
+        //popupEdit.ShowOnPageLoad = true;
     }
     protected void lnkDelete_Click(object sender, EventArgs e)
     {

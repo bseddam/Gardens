@@ -1716,7 +1716,7 @@ where DeleteTime is null", SqlConn);
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"SELECT  [CadreTypeID]
       ,[CadreTypeName]
-  FROM [Gardens].[dbo].[CadreType]", SqlConn);
+  FROM [CadreType]", SqlConn);
             da.Fill(dt);
             return dt;
         }
@@ -2702,6 +2702,101 @@ UpdateTime=getdate() where WeatherConditionID=@WeatherConditionID", SqlConn);
         SqlCommand cmd = new SqlCommand(@"Update WeatherCondition set deletetime=getdate(),
 UserID=@UserID where WeatherConditionID=@WeatherConditionID;", SqlConn);
         cmd.Parameters.AddWithValue("@WeatherConditionID", id);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            //LogInsert(Utils.Tables.pages, Utils.LogType.delete, String.Format("IndicatorsDelete () "), ex.Message, "", true);
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+
+
+
+
+    //giris cixis
+    public DataTable GetEntryExits()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [EntryExitID] desc) sn,
+e.*,c2.CardNumber,c1.Sname+' '+c1.Name+' '+c1.FName fullname,case when e.EntryExitStatus =1 then N'Giriş' 
+when e.EntryExitStatus =2 then N'Çıxış' else N'Xəta baş verdi!' end EntryExitName from [EntryExit] e 
+left join Cadres c1 on e.CadreID=c1.CadreID 
+left join Cards c2 on c2.CardID=c1.CardID  where e.DeleteTime is null and c1.DeleteTime is null  and c2.DeleteTime is null ", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+    public DataTable GetCadreByCardnumber(string cardnumber)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT  CadreID,c2.CardNumber,c1.Sname+' '+c1.Name+' '+c1.FName fullname from   Cadres c1 
+left join Cards c2 on c2.CardID=c1.CardID  where c1.DeleteTime is null
+and c2.DeleteTime is null and c2.CardNumber=@cardnumber", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("cardnumber", cardnumber);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+  
+
+    public Types.ProsesType EntryExitInsert(int CadreID, int EntryExitStatus)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"insert into EntryExit 
+(UserID,CadreID,EntryExitStatus) values (@UserID,@CadreID,@EntryExitStatus)", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@CadreID", CadreID);
+        cmd.Parameters.AddWithValue("@EntryExitStatus", EntryExitStatus);
+
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+
+    public Types.ProsesType DeleteEntryExit(int id)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"Update EntryExit set deletetime=getdate(),UserID=@UserID 
+where EntryExitID=@EntryExitID;", SqlConn);
+        cmd.Parameters.AddWithValue("@EntryExitID", id);
         cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
         try
         {
