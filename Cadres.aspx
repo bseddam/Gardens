@@ -171,6 +171,16 @@
                                                             </div>
                                                         </div>
                                                         <div class="row mb-2">
+                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Bağ</label>
+                                                            <div class="col-sm-7">
+                                                                <dx:ASPxComboBox ID="cmGarden" OnSelectedIndexChanged="cmGarden_SelectedIndexChanged"
+                                                                    runat="server"
+                                                                    Width="100%" Height="30px" AutoPostBack="true">
+                                                                </dx:ASPxComboBox>
+                                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ControlToValidate="cmGarden" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
+                                                            </div>
+                                                        </div> 
+                                                        <div class="row mb-2">
                                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">İş kartı</label>
                                                             <div class="col-sm-7">
                                                                 <dx:ASPxComboBox ID="cmCardNumber" 

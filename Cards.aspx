@@ -51,7 +51,9 @@
                                                 <dx:GridViewDataColumn Caption="Kartın nömrəsi" FieldName="CardNumber" VisibleIndex="1">
                                                     <EditFormSettings VisibleIndex="1" />
                                                 </dx:GridViewDataColumn>
-                                                
+                                                <dx:GridViewDataColumn Caption="Bağ" FieldName="GardenName" VisibleIndex="1">
+                                                    <EditFormSettings VisibleIndex="1" />
+                                                </dx:GridViewDataColumn>
                                                 <dx:GridViewDataColumn VisibleIndex="1">
                                                     <DataItemTemplate>
                                                         <asp:LinkButton ID="lnkEdit" OnClick="lnkEdit_Click" CommandArgument='<%#Eval("CardID") %>' Text="Düzəliş" runat="server" />
@@ -77,12 +79,22 @@
                                             HeaderText="Redaktə"
                                             PopupHorizontalAlign="WindowCenter"
                                             PopupVerticalAlign="WindowCenter"
-                                            Height="200" 
+                                            Height="250" 
                                           
                                             ScrollBars="Vertical">
                                             <ContentCollection>
                                                 <dx:PopupControlContentControl>
                                                     <div class="container">
+                                                        <div class="row mb-2">
+                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Bağ</label>
+                                                            <div class="col-sm-7">
+                                                                <dx:ASPxComboBox ID="cmGarden" 
+                                                                    runat="server"
+                                                                    Width="100%" Height="30px">
+                                                                </dx:ASPxComboBox>
+                                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="cmGarden" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
+                                                            </div>
+                                                        </div> 
                                                         <div class="row mb-2">
                                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Kartın nömrəsi</label>
                                                             <div class="col-sm-7">
@@ -93,6 +105,7 @@
 
                                                             </div>
                                                         </div> 
+
                                                          <div>
                                                             <asp:Label Text="" ForeColor="Red" ID="lblPopError" runat="server" />
                                                         </div>

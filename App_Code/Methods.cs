@@ -1733,9 +1733,28 @@ where DeleteTime is null", SqlConn);
         try
         {
             DataTable dt = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [CardID] desc) sn,
-[CardID],[UserID],[CardNumber],[InsertTime],[Updatetime],[DeleteTime]
-  FROM [Cards] where DeleteTime is null", SqlConn);
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by c.CardID desc) sn,
+c.CardID,c.UserID,c.CardNumber,c.InsertTime,c.Updatetime,c.DeleteTime,
+g.GardenName,c.GardenID
+  FROM Cards c inner join Gardens g on g.GardenID=c.GardenID where c.DeleteTime is null", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+    public DataTable GetCardsByGardenID(int GardenID)
+    {  //and c.cardid not in (select cardid from cadres)
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by c.CardID desc) sn,
+c.CardID,c.UserID,c.CardNumber,c.InsertTime,c.Updatetime,c.DeleteTime,
+g.GardenName,c.GardenID FROM Cards c inner join Gardens g on g.GardenID=c.GardenID 
+where c.DeleteTime is null and c.GardenID=@GardenID", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("GardenID", GardenID);
             da.Fill(dt);
             return dt;
         }
@@ -1750,7 +1769,7 @@ where DeleteTime is null", SqlConn);
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [CardID] desc) sn,
-[CardID],[UserID],[CardNumber],[InsertTime],[Updatetime],[DeleteTime]
+[CardID],[UserID],[CardNumber],[InsertTime],[Updatetime],[DeleteTime],GardenID
   FROM [Cards] where DeleteTime is null and CardID=@CardID", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("CardID", id);
             da.Fill(dt);
@@ -1784,12 +1803,13 @@ where DeleteTime is null", SqlConn);
             cmd.Dispose();
         }
     }
-    public Types.ProsesType CardsInsert(int UserID, string CardNumber)
+    public Types.ProsesType CardsInsert(int UserID, string CardNumber,int GardenID)
     {
 
-        SqlCommand cmd = new SqlCommand(@"insert into Cards (UserID, CardNumber)  Values(@UserID, @CardNumber)", SqlConn);
+        SqlCommand cmd = new SqlCommand(@"insert into Cards (UserID, CardNumber,GardenID)  Values(@UserID, @CardNumber,@GardenID)", SqlConn);
         cmd.Parameters.AddWithValue("@UserID", UserID);
         cmd.Parameters.AddWithValue("@CardNumber", CardNumber);
+        cmd.Parameters.AddWithValue("@GardenID", GardenID);
         try
         {
             cmd.Connection.Open();
@@ -1806,11 +1826,12 @@ where DeleteTime is null", SqlConn);
             cmd.Dispose();
         }
     }
-    public Types.ProsesType CardsUpdate(int CardID, int UserID, string CardNumber)
+    public Types.ProsesType CardsUpdate(int CardID, int UserID, string CardNumber,int GardenID)
     {
-        SqlCommand cmd = new SqlCommand(@"update Cards set UserID=@UserID, CardNumber=@CardNumber where CardID=@CardID", SqlConn);
+        SqlCommand cmd = new SqlCommand(@"update Cards set UserID=@UserID, CardNumber=@CardNumber,GardenID=@GardenID where CardID=@CardID", SqlConn);
         cmd.Parameters.AddWithValue("@UserID", UserID);
         cmd.Parameters.AddWithValue("@CardNumber", CardNumber);
+        cmd.Parameters.AddWithValue("@GardenID", GardenID);
         cmd.Parameters.AddWithValue("@CardID", CardID);
         try
         {
@@ -2141,14 +2162,15 @@ where WateringSystemID=@WateringSystemID", SqlConn);
         }
     }
 
-    public Types.ProsesType CadresInsert(int UserID, int StructureID, int PositionID, int CardID, string Sname, string Name, string FName, int Gender, string PassportN, string PIN, string PhoneNumber, string Photo, string Email, string Address, string JobEntryDate, string JobExitDate, int CadreTypeID, string RegstrDate)
+    public Types.ProsesType CadresInsert(int UserID, int StructureID, int PositionID, int GardenID, int CardID, string Sname, string Name, string FName, int Gender, string PassportN, string PIN, string PhoneNumber, string Photo, string Email, string Address, string JobEntryDate, string JobExitDate, int CadreTypeID, string RegstrDate)
     {
 
-        SqlCommand cmd = new SqlCommand(@"insert into Cadres (UserID, StructureID, PositionID, CardID, Sname, Name, FName, Gender, PassportN, PIN, PhoneNumber, Photo, Email, Address, JobEntryDate, 
-JobExitDate, CadreTypeID)  Values(@UserID, @StructureID, @PositionID, @CardID, @Sname, @Name, @FName, @Gender, @PassportN, @PIN, @PhoneNumber, @Photo, @Email, @Address, @JobEntryDate, @JobExitDate, @CadreTypeID)", SqlConn);
+        SqlCommand cmd = new SqlCommand(@"insert into Cadres (UserID, StructureID, PositionID, GardenID, CardID, Sname, Name, FName, Gender, PassportN, PIN, PhoneNumber, Photo, Email, Address, JobEntryDate, 
+JobExitDate, CadreTypeID)  Values(@UserID, @StructureID, @PositionID, @GardenID, @CardID, @Sname, @Name, @FName, @Gender, @PassportN, @PIN, @PhoneNumber, @Photo, @Email, @Address, @JobEntryDate, @JobExitDate, @CadreTypeID)", SqlConn);
         cmd.Parameters.AddWithValue("@UserID", UserID);
         cmd.Parameters.AddWithValue("@StructureID", StructureID);
         cmd.Parameters.AddWithValue("@PositionID", PositionID);
+        cmd.Parameters.AddWithValue("@GardenID", GardenID);
         cmd.Parameters.AddWithValue("@CardID", CardID);
         cmd.Parameters.AddWithValue("@Sname", Sname);
         cmd.Parameters.AddWithValue("@Name", Name);
@@ -2180,15 +2202,16 @@ JobExitDate, CadreTypeID)  Values(@UserID, @StructureID, @PositionID, @CardID, @
         //}
     }
 
-    public Types.ProsesType CadresUpdate(int CadreID, int UserID, int StructureID, int PositionID, int CardID, string Sname, string Name, string FName, int Gender, string PassportN, string PIN, string PhoneNumber, string Photo, string Email, string Address, string JobEntryDate, string JobExitDate, int CadreTypeID, string RegstrDate)
+    public Types.ProsesType CadresUpdate(int CadreID, int UserID, int StructureID, int PositionID, int GardenID, int CardID, string Sname, string Name, string FName, int Gender, string PassportN, string PIN, string PhoneNumber, string Photo, string Email, string Address, string JobEntryDate, string JobExitDate, int CadreTypeID, string RegstrDate)
     {
         SqlCommand cmd = new SqlCommand(@"update Cadres set UserID=@UserID, StructureID=@StructureID, PositionID=@PositionID,
-CardID=@CardID,Sname=@Sname, Name=@Name, FName=@FName,Gender=@Gender, PassportN=@PassportN, PIN=@PIN, 
+GardenID=@GardenID, CardID=@CardID,Sname=@Sname, Name=@Name, FName=@FName,Gender=@Gender, PassportN=@PassportN, PIN=@PIN, 
 PhoneNumber=@PhoneNumber, Photo=@Photo, Email=@Email, Address=@Address,JobEntryDate=@JobEntryDate, 
 JobExitDate=@JobExitDate,CadreTypeID=@CadreTypeID where CadreID=@CadreID", SqlConn);
         cmd.Parameters.AddWithValue("@UserID", UserID);
         cmd.Parameters.AddWithValue("@StructureID", StructureID);
         cmd.Parameters.AddWithValue("@PositionID", PositionID);
+        cmd.Parameters.AddWithValue("@GardenID", GardenID);
         cmd.Parameters.AddWithValue("@CardID", CardID);
         cmd.Parameters.AddWithValue("@Sname", Sname);
         cmd.Parameters.AddWithValue("@Name", Name);
