@@ -17,7 +17,8 @@ public partial class Users : System.Web.UI.Page
     }
     void ClearComponents()
     {
-
+        txtlogin.Text = "";
+        txtpassword.Text = "";
         txtlogin.Text = "";
         lblPopError.Text = "";
     }
@@ -43,22 +44,22 @@ public partial class Users : System.Web.UI.Page
         cmbgarden.SelectedIndex = 0;
 
 
-        cmbkadrlar.Items.Clear();
+        cmbcadres.Items.Clear();
         DataTable dt1 = _db.GetCadres();
-        cmbkadrlar.ValueField = "CadreID";
-        cmbkadrlar.TextField = "NameDDL";
-        cmbkadrlar.DataSource = dt1;
-        cmbkadrlar.DataBind();
-        cmbkadrlar.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        cmbkadrlar.SelectedIndex = 0;
+        cmbcadres.ValueField = "CadreID";
+        cmbcadres.TextField = "NameDDL";
+        cmbcadres.DataSource = dt1;
+        cmbcadres.DataBind();
+        cmbcadres.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmbcadres.SelectedIndex = 0;
 
 
 
 
         cmbstatus.Items.Clear();
         DataTable dt2 = _db.GetUserStatus();
-        cmbstatus.ValueField = "CadreID";
-        cmbstatus.TextField = "NameDDL";
+        cmbstatus.ValueField = "UserStatusID";
+        cmbstatus.TextField = "UserStatusName";
         cmbstatus.DataSource = dt2;
         cmbstatus.DataBind();
         cmbstatus.Items.Insert(0, new ListEditItem("Seçin", "-1"));
@@ -69,11 +70,15 @@ public partial class Users : System.Web.UI.Page
     {
         componentsload();
         int id = (sender as LinkButton).CommandArgument.ToParseInt();
-        DataTable dt = _db.GetModelByID(id: id);
- 
+        DataTable dt = _db.GetUserByid(userid: id);
+        cmbgarden.Value = dt.Rows[0]["GardenID"].ToParseStr();
+        cmbcadres.Value = dt.Rows[0]["CadreID"].ToParseStr();
 
-        txtlogin.Text = dt.Rows[0]["ModelName"].ToParseStr();
-        cmbgarden.ValueField = dt.Rows[0]["BrandID"].ToParseStr();
+        txtlogin.Text = dt.Rows[0]["Login"].ToParseStr();
+        txtpassword.Text = dt.Rows[0]["Password"].ToParseStr();
+
+        cmbstatus.Value = dt.Rows[0]["UserStatusID"].ToParseStr();
+
         btnSave.CommandName = "update";
         btnSave.CommandArgument = id.ToString();
         popupEdit.ShowOnPageLoad = true;
@@ -81,7 +86,7 @@ public partial class Users : System.Web.UI.Page
     protected void lnkDelete_Click(object sender, EventArgs e)
     {
         int _id = (sender as LinkButton).CommandArgument.ToParseInt();
-        Types.ProsesType val = _db.DeleteModel(id: _id);
+        Types.ProsesType val = _db.DeleteUser(id: _id);
         _loadGridFromDb();
     }
     protected void LnkPnlMenu_Click(object sender, EventArgs e)
@@ -103,16 +108,22 @@ public partial class Users : System.Web.UI.Page
         Types.ProsesType val = Types.ProsesType.Error;
         if (btnSave.CommandName == "insert")
         {
-            val = _db.ModelInsert(
-                ModelName: txtlogin.Text.ToParseStr(),
-                BrandID: cmbgarden.Value.ToParseInt()
+            val = _db.UserInsert(
+                GardenID:cmbgarden.Value.ToParseInt(),
+                CadreID: cmbcadres.Value.ToParseInt(),
+                Login: txtlogin.Text.ToParseStr(),
+                Password: txtpassword.Text.ToParseStr(),
+                UserStatusID: cmbstatus.Value.ToParseInt()
                 );
         }
         else
         {
-            val = _db.ModelUpdate(ModelID: btnSave.CommandArgument.ToParseInt(),
-                ModelName: txtlogin.Text.ToParseStr(),
-                BrandID: cmbgarden.Value.ToParseInt()
+            val = _db.UserUpdate(id: btnSave.CommandArgument.ToParseInt(),
+                GardenID: cmbgarden.Value.ToParseInt(),
+                CadreID: cmbcadres.Value.ToParseInt(),
+                Login: txtlogin.Text.ToParseStr(),
+                Password: txtpassword.Text.ToParseStr(),
+                UserStatusID: cmbstatus.Value.ToParseInt()
                 );
         }
 

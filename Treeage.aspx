@@ -10,7 +10,7 @@
     <section id="about" class="about section-bg">
         <div class="container">
 
-            <asp:LinkButton ID="btnAdd" runat="server" CommandArgument="add" OnClick="LnkPnlMenu_Click" CssClass="btn btn-dark">Yeni ağac yaşı əlavə et</asp:LinkButton>
+            <asp:LinkButton ID="btnAdd" runat="server" CommandArgument="add" OnClick="LnkPnlMenu_Click" CssClass="btn btn-dark">Yeni ağac yaşına görə tarif əlavə et</asp:LinkButton>
 
             <div class="row">
                 <div class="col-12">
@@ -48,8 +48,10 @@
                                 <dx:GridViewDataColumn Caption="Sıra nömrəsi" FieldName="sn" VisibleIndex="1">
                                     <EditFormSettings VisibleIndex="1" />
                                 </dx:GridViewDataColumn>
-                      
-                                <dx:GridViewDataColumn Caption="Ağac yaşı tarifi" FieldName="TreeTypeName" VisibleIndex="1">
+                                <dx:GridViewDataColumn Caption="Ağac sayından" FieldName="FirstAge" VisibleIndex="1">
+                                    <EditFormSettings VisibleIndex="1" />
+                                </dx:GridViewDataColumn>
+                                <dx:GridViewDataColumn Caption="Ağac sayına" FieldName="LastAge" VisibleIndex="1">
                                     <EditFormSettings VisibleIndex="1" />
                                 </dx:GridViewDataColumn>
                                   <dx:GridViewDataColumn Caption="Əmsal" FieldName="Coefficient" VisibleIndex="1">
@@ -58,15 +60,13 @@
                              
                                 <dx:GridViewDataColumn VisibleIndex="1">
                                     <DataItemTemplate>
-                                        <asp:LinkButton ID="lnkEdit" OnClick="lnkEdit_Click" CommandArgument='<%#Eval("TreeTypeID") %>' Text="Düzəliş" runat="server" />
+                                        <asp:LinkButton ID="lnkEdit" OnClick="lnkEdit_Click" CommandArgument='<%#Eval("TariffAgeID") %>' Text="Düzəliş" runat="server" />
                                     </DataItemTemplate>
                                 </dx:GridViewDataColumn>
 
-
-
                                 <dx:GridViewDataColumn VisibleIndex="1">
                                     <DataItemTemplate>
-                                        <asp:LinkButton ID="lnkDelete" OnClick="lnkDelete_Click" OnClientClick="return confirm('Silmək istədiyinizə əminsinizmi?');" CommandArgument='<%#Eval("TreeTypeID") %>' Text="Sil" runat="server" />
+                                        <asp:LinkButton ID="lnkDelete" OnClick="lnkDelete_Click" OnClientClick="return confirm('Silmək istədiyinizə əminsinizmi?');" CommandArgument='<%#Eval("TariffAgeID") %>' Text="Sil" runat="server" />
                                     </DataItemTemplate>
                                 </dx:GridViewDataColumn>
 
@@ -91,19 +91,19 @@
                                     <div class="container">
                                     
                                          <div class="row mb-2">
-                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ağac sayı</label>
+                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ağac sayından</label>
                                             <div class="col-sm-7">
-                                                <asp:TextBox ID="txttreecount"  class="form-control" runat="server" placeholder="Mətni daxil edin..." TextMode="Number">
+                                                <asp:TextBox ID="txtFirstAge"  class="form-control" runat="server" placeholder="Mətni daxil edin..." TextMode="Number">
                                                 </asp:TextBox>
-                                                <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txttreecount" ID="RequiredsFieldValidator21" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>
+                                                <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txtFirstAge" ID="RequiredsFieldValidator21" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>
                                             </div>
                                         </div>
                                         <div class="row mb-2">
                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ağac sayına</label>
                                             <div class="col-sm-7">
-                                                <asp:TextBox ID="TextBox1"  class="form-control" runat="server" placeholder="Mətni daxil edin..." TextMode="Number">
+                                                <asp:TextBox ID="txtLastAge"  class="form-control" runat="server" placeholder="Mətni daxil edin..." TextMode="Number">
                                                 </asp:TextBox>
-                                                <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txttreecount" ID="RequiredFieldValidator3" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>
+                                                <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txtLastAge" ID="RequiredFieldValidator3" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>
                                             </div>
                                         </div>
                                        
