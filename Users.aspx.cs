@@ -43,6 +43,27 @@ public partial class Users : System.Web.UI.Page
         cmbgarden.SelectedIndex = 0;
 
 
+        cmbkadrlar.Items.Clear();
+        DataTable dt1 = _db.GetCadres();
+        cmbkadrlar.ValueField = "CadreID";
+        cmbkadrlar.TextField = "NameDDL";
+        cmbkadrlar.DataSource = dt1;
+        cmbkadrlar.DataBind();
+        cmbkadrlar.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmbkadrlar.SelectedIndex = 0;
+
+
+
+
+        cmbstatus.Items.Clear();
+        DataTable dt2 = _db.GetUserStatus();
+        cmbstatus.ValueField = "CadreID";
+        cmbstatus.TextField = "NameDDL";
+        cmbstatus.DataSource = dt2;
+        cmbstatus.DataBind();
+        cmbstatus.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmbstatus.SelectedIndex = 0;
+
     }
     protected void lnkEdit_Click(object sender, EventArgs e)
     {

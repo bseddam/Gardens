@@ -40,7 +40,7 @@ public partial class OperationCadres : System.Web.UI.Page
     }
     void componentsload()
     {
-        cmCadre.Items.Clear();
+   
         cmCadre.Items.Clear();
         DataTable dt1 = _db.GetCadres();
         cmCadre.ValueField = "CadreID";

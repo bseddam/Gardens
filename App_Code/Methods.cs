@@ -57,12 +57,12 @@ public class Methods
             //    status = " and a.ID=" + HttpContext.Current.Session["UsersID1"].ToParseStr();
             //}
             DataTable dt = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter(@"SELECT  u.UserID UserID1,row_number() 
-over(order by u.UserID desc) sn,c.Sname+' '+c.Name+' '+c.FName fullname,case when u.StatusID=1 then 'Admin' 
-when u.StatusID=2 then N'Rəhbərlik' when u.StatusID=3 then N'Bağ' end Status,g.GardenName,u.* FROM [Users] u
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT  row_number() 
+over(order by u.UserID desc) sn,c.Sname+' '+c.Name+' '+c.FName fullname,
+us.UserStatusName,g.GardenName,u.* FROM [Users] u
+inner join UserStatus us on u.UserStatusID=us.UserStatusID
 left join Gardens g on g.GardenID=u.GardenID
-left join Cadres c on u.cadreid=c.cadreid
-", SqlConn);
+left join Cadres c on u.cadreid=c.cadreid where u.DeleteTime is null", SqlConn);
             da.Fill(dt);
             return dt;
         }
@@ -2929,4 +2929,25 @@ where EntryExitID=@EntryExitID;", SqlConn);
         }
     }
 
+
+
+
+
+
+
+    public DataTable GetUserStatus()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT *
+  FROM [UserStatus] where DeleteTime is null", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
 }

@@ -61,7 +61,7 @@
                                     <EditFormSettings VisibleIndex="1" />
                                 </dx:GridViewDataColumn>
 
-                                <dx:GridViewDataColumn Caption="Status" FieldName="Status" VisibleIndex="1">
+                                <dx:GridViewDataColumn Caption="Status" FieldName="UserStatusName" VisibleIndex="1">
                                     <EditFormSettings VisibleIndex="1" />
                                 </dx:GridViewDataColumn>
 
@@ -71,7 +71,7 @@
 
                                 <dx:GridViewDataColumn VisibleIndex="1">
                                     <DataItemTemplate>
-                                        <asp:LinkButton ID="lnkEdit" OnClick="lnkEdit_Click" CommandArgument='<%#Eval("UserID1") %>' Text="Düzəliş" runat="server" />
+                                        <asp:LinkButton ID="lnkEdit" OnClick="lnkEdit_Click" CommandArgument='<%#Eval("UserID") %>' Text="Düzəliş" runat="server" />
                                     </DataItemTemplate>
                                 </dx:GridViewDataColumn>
 
@@ -79,7 +79,7 @@
 
                                 <dx:GridViewDataColumn VisibleIndex="1">
                                     <DataItemTemplate>
-                                        <asp:LinkButton ID="lnkDelete" OnClick="lnkDelete_Click" OnClientClick="return confirm('Silmək istədiyinizə əminsinizmi?');" CommandArgument='<%#Eval("UserID1") %>' Text="Sil" runat="server" />
+                                        <asp:LinkButton ID="lnkDelete" OnClick="lnkDelete_Click" OnClientClick="return confirm('Silmək istədiyinizə əminsinizmi?');" CommandArgument='<%#Eval("UserID") %>' Text="Sil" runat="server" />
                                     </DataItemTemplate>
                                 </dx:GridViewDataColumn>
 
@@ -104,11 +104,20 @@
                                     <div class="container">
 
                                         <div class="row mb-2">
-                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Bağ</label>
+                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Bağlar</label>
                                             <div class="col-sm-7">
                                                 <dx:ASPxComboBox ID="cmbgarden" runat="server" Width="100%" Height="30px">
                                                 </dx:ASPxComboBox>
                                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator21" runat="server" ControlToValidate="cmbgarden" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-2">
+                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Kadrlar</label>
+                                            <div class="col-sm-7">
+                                                <dx:ASPxComboBox ID="cmbkadrlar" runat="server" Width="100%" Height="30px">
+                                                </dx:ASPxComboBox>
+                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="cmbgarden" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
                                             </div>
                                         </div>
 
@@ -132,8 +141,14 @@
 
 
 
-
-
+                                         <div class="row mb-2">
+                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Status</label>
+                                            <div class="col-sm-7">
+                                                <dx:ASPxComboBox ID="cmbstatus" runat="server" Width="100%" Height="30px">
+                                                </dx:ASPxComboBox>
+                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ControlToValidate="cmbgarden" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
+                                            </div>
+                                        </div>
 
 
                                         <div>
