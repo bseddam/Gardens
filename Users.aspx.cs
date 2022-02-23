@@ -7,7 +7,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-public partial class Models : System.Web.UI.Page
+public partial class Users : System.Web.UI.Page
 {
     Methods _db = new Methods();
     protected void Page_Load(object sender, EventArgs e)
@@ -18,39 +18,41 @@ public partial class Models : System.Web.UI.Page
     void ClearComponents()
     {
 
-        txtmodelname.Text = "";
+        txtlogin.Text = "";
         lblPopError.Text = "";
     }
     void _loadGridFromDb()
     {
-        DataTable dtmodels = _db.GetModels();
-        if (dtmodels != null)
+        DataTable dt = _db.GetUsers();
+        if (dt != null)
         {
             Grid.SettingsPager.Summary.Text = "Cari səhifə: {0}, Ümumi səhifələrin sayı: {1}, Tapılmış məlumatların sayı: {2}";
-            Grid.DataSource = dtmodels;
+            Grid.DataSource = dt;
             Grid.DataBind();
         }
     }
 
     void componentsload()
     {
-        DataTable dt7 = _db.GetBrands();
-        ddlbrand.DataValueField = "BrandID";
-        ddlbrand.DataTextField = "BrandName";
-        ddlbrand.DataSource = dt7;
-        ddlbrand.DataBind();
-        ddlbrand.Items.Insert(0, new ListItem("Seçin", "-1"));
-        ddlbrand.SelectedIndex = 0;
+        DataTable dt7 = _db.GetGardens();
+        cmbgarden.ValueField = "GardenID";
+        cmbgarden.TextField = "GardenName";
+        cmbgarden.DataSource = dt7;
+        cmbgarden.DataBind();
+        cmbgarden.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmbgarden.SelectedIndex = 0;
+
+
     }
     protected void lnkEdit_Click(object sender, EventArgs e)
     {
         componentsload();
         int id = (sender as LinkButton).CommandArgument.ToParseInt();
         DataTable dt = _db.GetModelByID(id: id);
+ 
 
-        
-        txtmodelname.Text = dt.Rows[0]["ModelName"].ToParseStr();
-        ddlbrand.SelectedValue = dt.Rows[0]["BrandID"].ToParseStr();
+        txtlogin.Text = dt.Rows[0]["ModelName"].ToParseStr();
+        cmbgarden.ValueField = dt.Rows[0]["BrandID"].ToParseStr();
         btnSave.CommandName = "update";
         btnSave.CommandArgument = id.ToString();
         popupEdit.ShowOnPageLoad = true;
@@ -81,15 +83,15 @@ public partial class Models : System.Web.UI.Page
         if (btnSave.CommandName == "insert")
         {
             val = _db.ModelInsert(
-                ModelName: txtmodelname.Text.ToParseStr(),
-                BrandID: ddlbrand.SelectedValue.ToParseInt()
+                ModelName: txtlogin.Text.ToParseStr(),
+                BrandID: cmbgarden.Value.ToParseInt()
                 );
         }
         else
         {
             val = _db.ModelUpdate(ModelID: btnSave.CommandArgument.ToParseInt(),
-                ModelName: txtmodelname.Text.ToParseStr(),
-                BrandID: ddlbrand.SelectedValue.ToParseInt()
+                ModelName: txtlogin.Text.ToParseStr(),
+                BrandID: cmbgarden.Value.ToParseInt()
                 );
         }
 

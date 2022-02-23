@@ -32,6 +32,10 @@
         routes.MapPageRoute("otherexpenses", "otherexpenses", "~/OtherExpenses.aspx");
         routes.MapPageRoute("weathercondition", "weathercondition", "~/WeatherCondition.aspx");
         routes.MapPageRoute("treeage", "treeage", "~/Treeage.aspx");
+        routes.MapPageRoute("cards", "cards", "~/Cards.aspx");
+        routes.MapPageRoute("users", "users", "~/Users.aspx");
+        
+        
         
 
     }

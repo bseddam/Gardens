@@ -51,16 +51,18 @@ public class Methods
     {
         try
         {
-            string status = " ";
-            if (HttpContext.Current.Session["StatusID"].ToParseStr() == "2")
-            {
-                status = " and a.ID=" + HttpContext.Current.Session["UsersID1"].ToParseStr();
-            }
+            //string status = " ";
+            //if (HttpContext.Current.Session["StatusID"].ToParseStr() == "2")
+            //{
+            //    status = " and a.ID=" + HttpContext.Current.Session["UsersID1"].ToParseStr();
+            //}
             DataTable dt = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter(@"select 
-ROW_NUMBER() over (order by a.id desc, a.FullName) SN,a.*,e.Adi ElmiShura 
-from Users a inner join TeElmiShura e on a.ElmiShuraID=e.ID where 1=1 " + status +
-" order by a.id desc", SqlConn);
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT  u.UserID UserID1,row_number() 
+over(order by u.UserID desc) sn,c.Sname+' '+c.Name+' '+c.FName fullname,case when u.StatusID=1 then 'Admin' 
+when u.StatusID=2 then N'Rəhbərlik' when u.StatusID=3 then N'Bağ' end Status,g.GardenName,u.* FROM [Users] u
+left join Gardens g on g.GardenID=u.GardenID
+left join Cadres c on u.cadreid=c.cadreid
+", SqlConn);
             da.Fill(dt);
             return dt;
         }
