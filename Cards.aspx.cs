@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DevExpress.Web;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -13,7 +14,20 @@ public partial class Cards : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         _loadGridFromDb();
+        
         if (IsPostBack) return;
+    }
+    void componentsload()
+    {
+        cmGarden.Items.Clear();
+        DataTable dt3 = _db.GetGardens();
+        cmGarden.ValueField = "GardenID";
+        cmGarden.TextField = "GardenName";
+        cmGarden.DataSource = dt3;
+        cmGarden.DataBind();
+        cmGarden.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmGarden.SelectedIndex = 0;
+
     }
     void ClearComponents()
     {
@@ -36,6 +50,8 @@ public partial class Cards : System.Web.UI.Page
         int id = (sender as LinkButton).CommandArgument.ToParseInt();
         DataTable dt = _db.GetCardsByID(id: id);
         txtname.Text = dt.Rows[0]["CardNumber"].ToParseStr();
+        componentsload();
+        cmGarden.Value = dt.Rows[0]["GardenID"].ToParseStr();
 
         btnSave.CommandName = "update";
         btnSave.CommandArgument = id.ToString();
@@ -51,6 +67,7 @@ public partial class Cards : System.Web.UI.Page
     protected void LnkPnlMenu_Click(object sender, EventArgs e)
     {
         ClearComponents();
+        componentsload();
         LinkButton btn = sender as LinkButton;
         switch (btn.CommandArgument)
         {
@@ -68,13 +85,13 @@ public partial class Cards : System.Web.UI.Page
         if (btnSave.CommandName == "insert")
         {
             val = _db.CardsInsert(UserID: Session["UserID"].ToString().ToParseInt(),
-                CardNumber: txtname.Text.ToParseStr());
+                CardNumber: txtname.Text.ToParseStr(), GardenID:cmGarden.Value.ToParseInt());
         }
         else
         {
             val = _db.CardsUpdate(CardID: btnSave.CommandArgument.ToParseInt(),
                 UserID: Session["UserID"].ToString().ToParseInt(),
-                CardNumber: txtname.Text.ToParseStr());
+                CardNumber: txtname.Text.ToParseStr(), GardenID:cmGarden.Value.ToParseInt());
         }
 
         if (val == Types.ProsesType.Error)
