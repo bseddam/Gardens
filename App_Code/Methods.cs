@@ -1716,7 +1716,7 @@ where DeleteTime is null", SqlConn);
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"SELECT  [CadreTypeID]
       ,[CadreTypeName]
-  FROM [CadreType]", SqlConn);
+  FROM [Gardens].[dbo].[CadreType]", SqlConn);
             da.Fill(dt);
             return dt;
         }
@@ -1742,6 +1742,91 @@ where DeleteTime is null", SqlConn);
             return null;
         }
     }
+    public DataTable GetCardsByID(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [CardID] desc) sn,
+[CardID],[UserID],[CardNumber],[InsertTime],[Updatetime],[DeleteTime]
+  FROM [Cards] where DeleteTime is null and CardID=@CardID", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("CardID", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+    public Types.ProsesType DeleteCards(int id)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"Update Cards set deletetime=getdate(),UserID=@UserID where CardID=@id;", SqlConn);
+        cmd.Parameters.AddWithValue("@id", id);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            //LogInsert(Utils.Tables.pages, Utils.LogType.delete, String.Format("IndicatorsDelete () "), ex.Message, "", true);
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+    public Types.ProsesType CardsInsert(int UserID, string CardNumber)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"insert into Cards (UserID, CardNumber)  Values(@UserID, @CardNumber)", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", UserID);
+        cmd.Parameters.AddWithValue("@CardNumber", CardNumber);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+    public Types.ProsesType CardsUpdate(int CardID, int UserID, string CardNumber)
+    {
+        SqlCommand cmd = new SqlCommand(@"update Cards set UserID=@UserID, CardNumber=@CardNumber where CardID=@CardID", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", UserID);
+        cmd.Parameters.AddWithValue("@CardNumber", CardNumber);
+        cmd.Parameters.AddWithValue("@CardID", CardID);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
     //Cins
     public DataTable GetGenders()
     {
@@ -1758,8 +1843,7 @@ where DeleteTime is null", SqlConn);
             return null;
         }
     }
-
-    
+        
 
     //Texnikalar
     public DataTable GetTechniqueSituations()
@@ -2430,6 +2514,33 @@ left join Gardens g on g.GardenID=z.GardenID where w.DeleteTime is null ", SqlCo
         {
             cmd.Connection.Close();
             cmd.Dispose();
+        }
+    }
+
+    public DataTable GetOperationCadreByID(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select ROW_NUMBER() over( order by w.WorkDoneID) sn,
+c.Name+' '+c.Sname+' '+c.FName fullname, s.WorkName,
+g.GardenName,z.ZonaName,sc.SectorName,l.LineName,w.TreeCount,
+w.Notes,w.RegstrTime,w.WorkDoneID,w.UserID,w.LinesID,w.CadreID,
+g.GardenID,z.ZoneID,sc.SectorsID,w.WorkID
+from WorkDone w
+left join Cadres c on c.CadreID=w.CadreID
+left join Works s on s.WorkID=w.WorkID
+left join Lines l on l.LineID=w.LinesID
+left join Sectors sc on sc.SectorsID=l.SektorID
+left join Zones z on z.ZoneID=sc.ZonaID
+left join Gardens g on g.GardenID=z.GardenID where w.DeleteTime is null and w.WorkDoneID=@WorkDoneID", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("@WorkDoneID", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
         }
     }
 
