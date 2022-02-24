@@ -2539,20 +2539,14 @@ left join CadreType j on j.CadreTypeID=c.CadreTypeID where c.DeleteTime is null"
 c.Name+' '+c.Sname+' '+c.FName fullname, s.WorkName,
 g.GardenName,z.ZonaName,sc.SectorName,l.LineName,w.TreeCount,
 w.Notes,w.RegstrTime,w.WorkDoneID,w.UserID,w.LinesID,w.CadreID,
-g.GardenID,z.ZoneID,sc.SectorsID,wc.WeatherConditionName+' ('+cast(wc.Coefficient as varchar)+')' as WeatherConditionName1
-, tt.TreeTypeName+' ('+cast(tt.Coefficient as varchar)+')' TreeTypeName1,
-cast(FirstAge as varchar)+' - '+cast(LastAge as varchar)+' yaş ('+cast(Coefficient as varchar)+')' TreeAgeName1
+g.GardenID,z.ZoneID,sc.SectorsID
 from WorkDone w
 left join Cadres c on c.CadreID=w.CadreID
 left join Works s on s.WorkID=w.WorkID
 left join Lines l on l.LineID=w.LinesID
 left join Sectors sc on sc.SectorsID=l.SektorID
 left join Zones z on z.ZoneID=sc.ZonaID
-left join Gardens g on g.GardenID=z.GardenID 
-left join WeatherCondition wc on wc.WeatherConditionID=w.WeatherConditionID
-left join TreeTypes tt on tt.TreeTypeID=w.TreeTypeID
-left join TariffTreeAge tta on tta.TariffAgeID=w.TariffAgeID
-where w.DeleteTime is null ", SqlConn);
+left join Gardens g on g.GardenID=z.GardenID where w.DeleteTime is null ", SqlConn);
             da.Fill(dt);
             return dt;
         }
@@ -2611,76 +2605,14 @@ left join Gardens g on g.GardenID=z.GardenID where w.DeleteTime is null and w.Wo
     }
 
 
-    SqlCommand cmd = new SqlCommand(@"insert into WorkDone (UserID,CadreID,WorkID,LinesID,WeatherConditionID,TreeTypeID,TariffAgeID,TreeCount,Salary,Notes,RegisterTime)
-                                            Values(@UserID, @CadreID,@WorkID,@LinesID,@WeatherConditionID,@TreeTypeID,@TariffAgeID,@TreeCount,@Salary,@Notes,@RegisterTime)", SqlConn);
-    cmd.Parameters.AddWithValue("@UserID", UserID);
-        cmd.Parameters.AddWithValue("@CadreID", CadreID);
-        cmd.Parameters.AddWithValue("@WorkID", WorkID);
-        cmd.Parameters.AddWithValue("@LinesID", LinesID);
-        cmd.Parameters.AddWithValue("@WeatherConditionID", WeatherConditionID);
-        cmd.Parameters.AddWithValue("@TreeTypeID", TreeTypeID);
-        cmd.Parameters.AddWithValue("@TariffAgeID", TariffAgeID);
-        cmd.Parameters.AddWithValue("@TreeCount", TreeCount);
-        cmd.Parameters.AddWithValue("@Salary", Salary);
-        cmd.Parameters.AddWithValue("@Notes", Notes);
-        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+    //-------Texnikalar uzre emeliyyat
+
+    public DataTable GetOperationTechniques()
+    {
         try
         {
-            cmd.Connection.Open();
-            cmd.ExecuteNonQuery();
-            return Types.ProsesType.Succes;
-        }
-        catch (Exception ex)
-{
-    return Types.ProsesType.Error;
-}
-finally
-{
-    cmd.Connection.Close();
-    cmd.Dispose();
-}
-    }
-
-    public Types.ProsesType OperationCadreUpdate(int WorkDoneID, int UserID, int CadreID, int WorkID, int LinesID, int WeatherConditionID, int TreeTypeID, int TariffAgeID, int TreeCount, float Salary, string Notes, string RegisterTime)
-{
-    SqlCommand cmd = new SqlCommand(@"update WorkDone set UserID=@UserID, CadreID=@CadreID,WorkID=@WorkID,LinesID=@LinesID,WeatherConditionID=@WeatherConditionID,TreeTypeID=@TreeTypeID,TariffAgeID=@TariffAgeID,TreeCount=@TreeCount,Salary=@Salary,Notes=@Notes,RegisterTime=@RegisterTime where WorkDoneID=@WorkDoneID", SqlConn);
-    cmd.Parameters.AddWithValue("@UserID", UserID);
-    cmd.Parameters.AddWithValue("@CadreID", CadreID);
-    cmd.Parameters.AddWithValue("@WorkID", WorkID);
-    cmd.Parameters.AddWithValue("@LinesID", LinesID);
-    cmd.Parameters.AddWithValue("@WeatherConditionID", WeatherConditionID);
-    cmd.Parameters.AddWithValue("@TreeTypeID", TreeTypeID);
-    cmd.Parameters.AddWithValue("@TariffAgeID", TariffAgeID);
-    cmd.Parameters.AddWithValue("@TreeCount", TreeCount);
-    cmd.Parameters.AddWithValue("@Salary", Salary);
-    cmd.Parameters.AddWithValue("@Notes", Notes);
-    cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
-    cmd.Parameters.AddWithValue("@WorkDoneID", WorkDoneID);
-    try
-    {
-        cmd.Connection.Open();
-        cmd.ExecuteNonQuery();
-        return Types.ProsesType.Succes;
-    }
-    catch (Exception ex)
-    {
-        return Types.ProsesType.Error;
-    }
-    finally
-    {
-        cmd.Connection.Close();
-        cmd.Dispose();
-    }
-}
-
-//-------Texnikalar uzre emeliyyat
-
-public DataTable GetOperationTechniques()
-{
-    try
-    {
-        DataTable dt = new DataTable();
-        SqlDataAdapter da = new SqlDataAdapter(@"select ROW_NUMBER() over( order by w.TechniquesWorkDoneID) sn,
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select ROW_NUMBER() over( order by w.TechniquesWorkDoneID) sn,
 t.TechniquesName, s.WorkName,g.GardenName,z.ZonaName,sc.SectorName,
 l.LineName,w.Odometer,w.FactualCount,w.OfficialCount,
 w.Note,w.RegstrTime,w.TechniquesWorkDoneID,w.UserID,w.LineID,w.WorkID,
@@ -2692,61 +2624,61 @@ left join Lines l on l.LineID=w.LineID
 left join Sectors sc on sc.SectorsID=l.SektorID
 left join Zones z on z.ZoneID=sc.ZonaID
 left join Gardens g on g.GardenID=z.GardenID where w.DeleteTime is null", SqlConn);
-        da.Fill(dt);
-        return dt;
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
     }
-    catch (Exception ex)
-    {
-        return null;
-    }
-}
 
-public Types.ProsesType DeleteOperationTechniques(int id)
-{
-    SqlCommand cmd = new SqlCommand(@"Update TechniquesWorkDone set DeleteTime=GetDate() where TechniquesWorkDoneID=@id ", SqlConn);
-    cmd.Parameters.AddWithValue("@id", id);
-    try
+    public Types.ProsesType DeleteOperationTechniques(int id)
     {
-        cmd.Connection.Open();
-        cmd.ExecuteNonQuery();
-        return Types.ProsesType.Succes;
+        SqlCommand cmd = new SqlCommand(@"Update TechniquesWorkDone set DeleteTime=GetDate() where TechniquesWorkDoneID=@id ", SqlConn);
+        cmd.Parameters.AddWithValue("@id", id);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
     }
-    catch (Exception ex)
-    {
-        return Types.ProsesType.Error;
-    }
-    finally
-    {
-        cmd.Connection.Close();
-        cmd.Dispose();
-    }
-}
 
-public DataTable GetTechniquesWorkDoneById(int id)
-{
-    try
+    public DataTable GetTechniquesWorkDoneById(int id)
     {
-        DataTable dt = new DataTable();
-        SqlDataAdapter da = new SqlDataAdapter(@"select * from TechniquesWorkDone where TechniquesWorkDoneID=@id", SqlConn);
-        da.SelectCommand.Parameters.AddWithValue("id", id);
-        da.Fill(dt);
-        return dt;
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select * from TechniquesWorkDone where TechniquesWorkDoneID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
     }
-    catch (Exception ex)
+
+
+    //-------Suvarma sistemleri uzre emeliyyat
+
+    public DataTable GetOperationWateringSystems()
     {
-        return null;
-    }
-}
-
-
-//-------Suvarma sistemleri uzre emeliyyat
-
-public DataTable GetOperationWateringSystems()
-{
-    try
-    {
-        DataTable dt = new DataTable();
-        SqlDataAdapter da = new SqlDataAdapter(@"select ROW_NUMBER() over( order by w.WateringSystemWorkID) sn,
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select ROW_NUMBER() over( order by w.WateringSystemWorkID) sn,
 wt.WateringSystemName, g.GardenName,Ws.StatusExitEntry, w.WateringSystemSize,um.UnitMeasurementName,w.Note,w.RegstrTime,w.WateringSystemWorkID,
 w.UserID,w.UnitMeasurementID,w.WateringSystemGardenID,g.GardenID
 from WateringSystemWork w
@@ -2756,448 +2688,448 @@ left join WateringSystems wt on wt.WateringSystemID=s.WateringSystemID
 left join WateringSystemStatus Ws on Ws.StatusID=W.EntryExitStatus
 left join UnitMeasurements um on um.UnitMeasurementID=W.UnitMeasurementID
 where w.DeleteTime is null", SqlConn);
-        da.Fill(dt);
-        return dt;
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
     }
-    catch (Exception ex)
-    {
-        return null;
-    }
-}
 
-public Types.ProsesType DeleteOperationWateringSystems(int id)
-{
-    SqlCommand cmd = new SqlCommand(@"Update WateringSystemWork set DeleteTime=GetDate() 
+    public Types.ProsesType DeleteOperationWateringSystems(int id)
+    {
+        SqlCommand cmd = new SqlCommand(@"Update WateringSystemWork set DeleteTime=GetDate() 
 where WateringSystemWorkID=@id ", SqlConn);
-    cmd.Parameters.AddWithValue("@id", id);
-    try
-    {
-        cmd.Connection.Open();
-        cmd.ExecuteNonQuery();
-        return Types.ProsesType.Succes;
+        cmd.Parameters.AddWithValue("@id", id);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
     }
-    catch (Exception ex)
-    {
-        return Types.ProsesType.Error;
-    }
-    finally
-    {
-        cmd.Connection.Close();
-        cmd.Dispose();
-    }
-}
 
-public DataTable GetOperationWateringSystemsById(int id)
-{
-    try
+    public DataTable GetOperationWateringSystemsById(int id)
     {
-        DataTable dt = new DataTable();
-        SqlDataAdapter da = new SqlDataAdapter(@"select * from WateringSystemWork where WateringSystemWorkID=@id", SqlConn);
-        da.SelectCommand.Parameters.AddWithValue("id", id);
-        da.Fill(dt);
-        return dt;
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select * from WateringSystemWork where WateringSystemWorkID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
     }
-    catch (Exception ex)
+
+
+
+    //hava seraiti
+    public DataTable GetWeatherCondition()
     {
-        return null;
-    }
-}
-
-
-
-//hava seraiti
-public DataTable GetWeatherCondition()
-{
-    try
-    {
-        DataTable dt = new DataTable();
-        SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [WeatherConditionID] desc) sn,
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [WeatherConditionID] desc) sn,
 * FROM [WeatherCondition] where DeleteTime is null", SqlConn);
-        da.Fill(dt);
-        return dt;
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
     }
-    catch (Exception ex)
+    public DataTable GetWeatherConditionByID(int id)
     {
-        return null;
-    }
-}
-public DataTable GetWeatherConditionByID(int id)
-{
-    try
-    {
-        DataTable dt = new DataTable();
-        SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [WeatherConditionID] desc) sn,
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [WeatherConditionID] desc) sn,
 * FROM [WeatherCondition] where DeleteTime is null and WeatherConditionID=@id", SqlConn);
-        da.SelectCommand.Parameters.AddWithValue("id", id);
-        da.Fill(dt);
-        return dt;
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
     }
-    catch (Exception ex)
+
+
+
+
+    //agac yaslari tarifi
+    public DataTable GetTariffTreeAge()
     {
-        return null;
-    }
-}
-
-
-
-
-//agac yaslari tarifi
-public DataTable GetTariffTreeAge()
-{
-    try
-    {
-        DataTable dt = new DataTable();
-        SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [TariffAgeID] desc) sn,
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [TariffAgeID] desc) sn,
 * FROM [TariffTreeAge] where DeleteTime is null", SqlConn);
-        da.Fill(dt);
-        return dt;
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
     }
-    catch (Exception ex)
+    public DataTable GetTariffTreeAgeByID(int id)
     {
-        return null;
-    }
-}
-public DataTable GetTariffTreeAgeByID(int id)
-{
-    try
-    {
-        DataTable dt = new DataTable();
-        SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() 
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() 
 over(order by [TariffAgeID] desc) sn,* FROM [TariffTreeAge] where DeleteTime is null 
 and TariffAgeID=@id", SqlConn);
-        da.SelectCommand.Parameters.AddWithValue("id", id);
-        da.Fill(dt);
-        return dt;
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
     }
-    catch (Exception ex)
+
+
+    public Types.ProsesType TariffTreeAgeInsert(int FirstAge, int LastAge, string Coefficient)
     {
-        return null;
-    }
-}
-
-
-public Types.ProsesType TariffTreeAgeInsert(int FirstAge, int LastAge, string Coefficient)
-{
-    SqlCommand cmd = new SqlCommand(@"insert into TariffTreeAge 
+        SqlCommand cmd = new SqlCommand(@"insert into TariffTreeAge 
 (UserID,FirstAge,LastAge,Coefficient) values (@UserID,@FirstAge,@LastAge,@Coefficient)", SqlConn);
-    cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
-    cmd.Parameters.AddWithValue("@FirstAge", FirstAge);
-    cmd.Parameters.AddWithValue("@LastAge", LastAge);
-    cmd.Parameters.AddWithValue("@Coefficient", ConvertTypes.ToParseFloat(Coefficient));
-    try
-    {
-        cmd.Connection.Open();
-        cmd.ExecuteNonQuery();
-        return Types.ProsesType.Succes;
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@FirstAge", FirstAge);
+        cmd.Parameters.AddWithValue("@LastAge", LastAge);
+        cmd.Parameters.AddWithValue("@Coefficient", ConvertTypes.ToParseFloat(Coefficient));
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
     }
-    catch (Exception ex)
+    public Types.ProsesType TariffTreeAgeUpdate(int TariffAgeID,
+        int FirstAge, int LastAge, string Coefficient)
     {
-        return Types.ProsesType.Error;
-    }
-    finally
-    {
-        cmd.Connection.Close();
-        cmd.Dispose();
-    }
-}
-public Types.ProsesType TariffTreeAgeUpdate(int TariffAgeID,
-    int FirstAge, int LastAge, string Coefficient)
-{
-    SqlCommand cmd = new SqlCommand(@"update TariffTreeAge set UserID=@UserID,
+        SqlCommand cmd = new SqlCommand(@"update TariffTreeAge set UserID=@UserID,
 FirstAge=@FirstAge,LastAge=@LastAge,Coefficient=@Coefficient,
 UpdateTime=getdate() where TariffAgeID=@TariffAgeID", SqlConn);
-    cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
-    cmd.Parameters.AddWithValue("@TariffAgeID", TariffAgeID);
-    cmd.Parameters.AddWithValue("@FirstAge", FirstAge);
-    cmd.Parameters.AddWithValue("@LastAge", LastAge);
-    cmd.Parameters.AddWithValue("@Coefficient", ConvertTypes.ToParseFloat(Coefficient));
-    try
-    {
-        cmd.Connection.Open();
-        cmd.ExecuteNonQuery();
-        return Types.ProsesType.Succes;
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@TariffAgeID", TariffAgeID);
+        cmd.Parameters.AddWithValue("@FirstAge", FirstAge);
+        cmd.Parameters.AddWithValue("@LastAge", LastAge);
+        cmd.Parameters.AddWithValue("@Coefficient", ConvertTypes.ToParseFloat(Coefficient));
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
     }
-    catch (Exception ex)
+    public Types.ProsesType DeleteTariffTreeAge(int id)
     {
-        return Types.ProsesType.Error;
-    }
-    finally
-    {
-        cmd.Connection.Close();
-        cmd.Dispose();
-    }
-}
-public Types.ProsesType DeleteTariffTreeAge(int id)
-{
 
-    SqlCommand cmd = new SqlCommand(@"Update TariffTreeAge set deletetime=getdate(),
+        SqlCommand cmd = new SqlCommand(@"Update TariffTreeAge set deletetime=getdate(),
 UserID=@UserID where TariffAgeID=@TariffAgeID;", SqlConn);
-    cmd.Parameters.AddWithValue("@TariffAgeID", id);
-    cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
-    try
-    {
-        cmd.Connection.Open();
-        cmd.ExecuteNonQuery();
-        return Types.ProsesType.Succes;
+        cmd.Parameters.AddWithValue("@TariffAgeID", id);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            //LogInsert(Utils.Tables.pages, Utils.LogType.delete, String.Format("IndicatorsDelete () "), ex.Message, "", true);
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
     }
-    catch (Exception ex)
+
+
+
+
+
+
+
+
+
+
+
+
+    public Types.ProsesType WeatherConditionInsert(string WeatherConditionName, string Coefficient)
     {
-        //LogInsert(Utils.Tables.pages, Utils.LogType.delete, String.Format("IndicatorsDelete () "), ex.Message, "", true);
-        return Types.ProsesType.Error;
-    }
-    finally
-    {
-        cmd.Connection.Close();
-        cmd.Dispose();
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-public Types.ProsesType WeatherConditionInsert(string WeatherConditionName, string Coefficient)
-{
-    SqlCommand cmd = new SqlCommand(@"insert into WeatherCondition 
+        SqlCommand cmd = new SqlCommand(@"insert into WeatherCondition 
 (UserID,WeatherConditionName,Coefficient) values (@UserID,@WeatherConditionName,@Coefficient)", SqlConn);
-    cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
-    cmd.Parameters.AddWithValue("@WeatherConditionName", WeatherConditionName);
-    cmd.Parameters.AddWithValue("@Coefficient", Coefficient);
-    try
-    {
-        cmd.Connection.Open();
-        cmd.ExecuteNonQuery();
-        return Types.ProsesType.Succes;
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@WeatherConditionName", WeatherConditionName);
+        cmd.Parameters.AddWithValue("@Coefficient", Coefficient);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
     }
-    catch (Exception ex)
+    public Types.ProsesType WeatherConditionUpdate(int WeatherConditionID, string WeatherConditionName, string Coefficient)
     {
-        return Types.ProsesType.Error;
-    }
-    finally
-    {
-        cmd.Connection.Close();
-        cmd.Dispose();
-    }
-}
-public Types.ProsesType WeatherConditionUpdate(int WeatherConditionID, string WeatherConditionName, string Coefficient)
-{
-    SqlCommand cmd = new SqlCommand(@"update WeatherCondition set UserID=@UserID,
+        SqlCommand cmd = new SqlCommand(@"update WeatherCondition set UserID=@UserID,
 WeatherConditionName=@WeatherConditionName,Coefficient=@Coefficient,
 UpdateTime=getdate() where WeatherConditionID=@WeatherConditionID", SqlConn);
-    cmd.Parameters.AddWithValue("@WeatherConditionID", WeatherConditionID);
-    cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
-    cmd.Parameters.AddWithValue("@WeatherConditionName", WeatherConditionName);
-    cmd.Parameters.AddWithValue("@Coefficient", Coefficient);
-    try
-    {
-        cmd.Connection.Open();
-        cmd.ExecuteNonQuery();
-        return Types.ProsesType.Succes;
+        cmd.Parameters.AddWithValue("@WeatherConditionID", WeatherConditionID);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@WeatherConditionName", WeatherConditionName);
+        cmd.Parameters.AddWithValue("@Coefficient", Coefficient);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
     }
-    catch (Exception ex)
+    public Types.ProsesType DeleteWeatherCondition(int id)
     {
-        return Types.ProsesType.Error;
-    }
-    finally
-    {
-        cmd.Connection.Close();
-        cmd.Dispose();
-    }
-}
-public Types.ProsesType DeleteWeatherCondition(int id)
-{
 
-    SqlCommand cmd = new SqlCommand(@"Update WeatherCondition set deletetime=getdate(),
+        SqlCommand cmd = new SqlCommand(@"Update WeatherCondition set deletetime=getdate(),
 UserID=@UserID where WeatherConditionID=@WeatherConditionID;", SqlConn);
-    cmd.Parameters.AddWithValue("@WeatherConditionID", id);
-    cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
-    try
-    {
-        cmd.Connection.Open();
-        cmd.ExecuteNonQuery();
-        return Types.ProsesType.Succes;
+        cmd.Parameters.AddWithValue("@WeatherConditionID", id);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            //LogInsert(Utils.Tables.pages, Utils.LogType.delete, String.Format("IndicatorsDelete () "), ex.Message, "", true);
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
     }
-    catch (Exception ex)
+
+
+
+
+
+    //giris cixis
+    public DataTable GetEntryExits()
     {
-        //LogInsert(Utils.Tables.pages, Utils.LogType.delete, String.Format("IndicatorsDelete () "), ex.Message, "", true);
-        return Types.ProsesType.Error;
-    }
-    finally
-    {
-        cmd.Connection.Close();
-        cmd.Dispose();
-    }
-}
-
-
-
-
-
-//giris cixis
-public DataTable GetEntryExits()
-{
-    try
-    {
-        DataTable dt = new DataTable();
-        SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [EntryExitID] desc) sn,
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [EntryExitID] desc) sn,
 e.*,c2.CardNumber,c1.Sname+' '+c1.Name+' '+c1.FName fullname,case when e.EntryExitStatus =1 then N'Giriş' 
 when e.EntryExitStatus =2 then N'Çıxış' else N'Xəta baş verdi!' end EntryExitName from [EntryExit] e 
 left join Cadres c1 on e.CadreID=c1.CadreID 
 left join Cards c2 on c2.CardID=c1.CardID  where e.DeleteTime is null and c1.DeleteTime is null  and c2.DeleteTime is null ", SqlConn);
-        da.Fill(dt);
-        return dt;
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
     }
-    catch (Exception ex)
+    public DataTable GetCadreByCardnumber(string cardnumber)
     {
-        return null;
-    }
-}
-public DataTable GetCadreByCardnumber(string cardnumber)
-{
-    try
-    {
-        DataTable dt = new DataTable();
-        SqlDataAdapter da = new SqlDataAdapter(@"SELECT  CadreID,c2.CardNumber,c1.Sname+' '+c1.Name+' '+c1.FName fullname from   Cadres c1 
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT  CadreID,c2.CardNumber,c1.Sname+' '+c1.Name+' '+c1.FName fullname from   Cadres c1 
 left join Cards c2 on c2.CardID=c1.CardID  where c1.DeleteTime is null
 and c2.DeleteTime is null and c2.CardNumber=@cardnumber", SqlConn);
-        da.SelectCommand.Parameters.AddWithValue("cardnumber", cardnumber);
-        da.Fill(dt);
-        return dt;
+            da.SelectCommand.Parameters.AddWithValue("cardnumber", cardnumber);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
     }
-    catch (Exception ex)
+
+
+
+    public Types.ProsesType EntryExitInsert(int CadreID, int EntryExitStatus)
     {
-        return null;
-    }
-}
 
-
-
-public Types.ProsesType EntryExitInsert(int CadreID, int EntryExitStatus)
-{
-
-    SqlCommand cmd = new SqlCommand(@"insert into EntryExit 
+        SqlCommand cmd = new SqlCommand(@"insert into EntryExit 
 (UserID,CadreID,EntryExitStatus) values (@UserID,@CadreID,@EntryExitStatus)", SqlConn);
-    cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
-    cmd.Parameters.AddWithValue("@CadreID", CadreID);
-    cmd.Parameters.AddWithValue("@EntryExitStatus", EntryExitStatus);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@CadreID", CadreID);
+        cmd.Parameters.AddWithValue("@EntryExitStatus", EntryExitStatus);
 
-    try
-    {
-        cmd.Connection.Open();
-        cmd.ExecuteNonQuery();
-        return Types.ProsesType.Succes;
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
     }
-    catch (Exception ex)
+
+
+    public Types.ProsesType DeleteEntryExit(int id)
     {
-        return Types.ProsesType.Error;
-    }
-    finally
-    {
-        cmd.Connection.Close();
-        cmd.Dispose();
-    }
-}
 
-
-public Types.ProsesType DeleteEntryExit(int id)
-{
-
-    SqlCommand cmd = new SqlCommand(@"Update EntryExit set deletetime=getdate(),UserID=@UserID 
+        SqlCommand cmd = new SqlCommand(@"Update EntryExit set deletetime=getdate(),UserID=@UserID 
 where EntryExitID=@EntryExitID;", SqlConn);
-    cmd.Parameters.AddWithValue("@EntryExitID", id);
-    cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
-    try
-    {
-        cmd.Connection.Open();
-        cmd.ExecuteNonQuery();
-        return Types.ProsesType.Succes;
+        cmd.Parameters.AddWithValue("@EntryExitID", id);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            //LogInsert(Utils.Tables.pages, Utils.LogType.delete, String.Format("IndicatorsDelete () "), ex.Message, "", true);
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
     }
-    catch (Exception ex)
+
+
+
+
+
+
+
+    public DataTable GetUserStatus()
     {
-        //LogInsert(Utils.Tables.pages, Utils.LogType.delete, String.Format("IndicatorsDelete () "), ex.Message, "", true);
-        return Types.ProsesType.Error;
-    }
-    finally
-    {
-        cmd.Connection.Close();
-        cmd.Dispose();
-    }
-}
-
-
-
-
-
-
-
-public DataTable GetUserStatus()
-{
-    try
-    {
-        DataTable dt = new DataTable();
-        SqlDataAdapter da = new SqlDataAdapter(@"SELECT *
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT *
   FROM [UserStatus] where DeleteTime is null", SqlConn);
-        da.Fill(dt);
-        return dt;
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
     }
-    catch (Exception ex)
-    {
-        return null;
-    }
-}
 
 
-public DataTable GetProductOperationTypes()
-{
-    try
+    public DataTable GetProductOperationTypes()
     {
-        DataTable dt = new DataTable();
-        SqlDataAdapter da = new SqlDataAdapter(@"SELECT *
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT *
   FROM [ProductOperationTypes] where DeleteTime is null", SqlConn);
-        da.Fill(dt);
-        return dt;
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
     }
-    catch (Exception ex)
-    {
-        return null;
-    }
-}
-public DataTable GetStockOperationReasonsByProductOperationTypeID(int ProductOperationTypeID)
-{  //and c.cardid not in (select cardid from cadres)
-    try
-    {
-        DataTable dt = new DataTable();
-        SqlDataAdapter da = new SqlDataAdapter(@"SELECT *
+    public DataTable GetStockOperationReasonsByProductOperationTypeID(int ProductOperationTypeID)
+    {  //and c.cardid not in (select cardid from cadres)
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT *
   FROM [StockOperationReasons] where deletetime is null and ProductOperationTypeID=@ProductOperationTypeID", SqlConn);
-        da.SelectCommand.Parameters.AddWithValue("ProductOperationTypeID", ProductOperationTypeID);
-        da.Fill(dt);
-        return dt;
+            da.SelectCommand.Parameters.AddWithValue("ProductOperationTypeID", ProductOperationTypeID);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
     }
-    catch (Exception ex)
+
+
+
+
+
+
+
+    public DataTable GetProductStockInputOutput()
     {
-        return null;
-    }
-}
-
-
-
-
-
-
-
-public DataTable GetProductStockInputOutput()
-{
-    try
-    {
-        DataTable dt = new DataTable();
-        SqlDataAdapter da = new SqlDataAdapter(@"SELECT 
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT 
 row_number() over(order by ProductStockInputOutputID desc) sn,psio.*,pot.ProductOperationTypeName,pt.ProductTypeID,pt.ProductTypeName,
 sor.ReasonName,p.ProductsName,um.UnitMeasurementName,m.ModelID,m.ModelName,b.BrandID,b.BrandName FROM [ProductStockInputOutput] psio 
 inner join ProductOperationTypes pot on psio.ProductOperationTypeID=pot.ProductOperationTypeID
@@ -3209,25 +3141,25 @@ inner join UnitMeasurements um on psio.UnitMeasurementID=um.UnitMeasurementID
 inner join ProductTypes pt on pt.ProductTypeID=p.ProductTypeID
  where psio.DeleteTime is null
 ", SqlConn);
-        da.Fill(dt);
-        return dt;
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
     }
-    catch (Exception ex)
+
+
+
+
+
+    public DataTable GetProductStockInputOutputByID(int id)
     {
-        return null;
-    }
-}
-
-
-
-
-
-public DataTable GetProductStockInputOutputByID(int id)
-{
-    try
-    {
-        DataTable dt = new DataTable();
-        SqlDataAdapter da = new SqlDataAdapter(@"SELECT 
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT 
 row_number() over(order by ProductStockInputOutputID desc) sn,psio.*,pot.ProductOperationTypeName,pt.ProductTypeID,pt.ProductTypeName,
 sor.ReasonName,p.ProductsName,um.UnitMeasurementName,m.ModelID,m.ModelName,b.BrandID,b.BrandName FROM [ProductStockInputOutput] psio 
 inner join ProductOperationTypes pot on psio.ProductOperationTypeID=pot.ProductOperationTypeID
@@ -3239,142 +3171,142 @@ inner join UnitMeasurements um on psio.UnitMeasurementID=um.UnitMeasurementID
 inner join ProductTypes pt on pt.ProductTypeID=p.ProductTypeID
  where psio.DeleteTime is null
  and ProductStockInputOutputID=@id", SqlConn);
-        da.SelectCommand.Parameters.AddWithValue("id", id);
-        da.Fill(dt);
-        return dt;
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
     }
-    catch (Exception ex)
+
+
+    public Types.ProsesType ProductStockInputOutputInsert(int ProductOperationTypeID,
+        int StockOperationReasonID, int ProductID, int UnitMeasurementID, string ProductSize,
+        string Price, string PriceDiscount, string Amount, string AmountDiscount, string RegisterTime, string Notes)
     {
-        return null;
-    }
-}
 
-
-public Types.ProsesType ProductStockInputOutputInsert(int ProductOperationTypeID,
-    int StockOperationReasonID, int ProductID, int UnitMeasurementID, string ProductSize,
-    string Price, string PriceDiscount, string Amount, string AmountDiscount, string RegisterTime, string Notes)
-{
-
-    SqlCommand cmd = new SqlCommand(@"insert into ProductStockInputOutput 
+        SqlCommand cmd = new SqlCommand(@"insert into ProductStockInputOutput 
 (UserID,ProductOperationTypeID,StockOperationReasonID,ProductID,UnitMeasurementID,
 ProductSize,Price,PriceDiscount,Amount,AmountDiscount,RegisterTime,Notes) values 
 (@UserID,@ProductOperationTypeID,@StockOperationReasonID,@ProductID,
 @UnitMeasurementID,@ProductSize,@Price,@PriceDiscount,@Amount,@AmountDiscount,@RegisterTime,@Notes)", SqlConn);
-    cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
-    cmd.Parameters.AddWithValue("@ProductOperationTypeID", ProductOperationTypeID);
-    cmd.Parameters.AddWithValue("@StockOperationReasonID", StockOperationReasonID);
-    cmd.Parameters.AddWithValue("@ProductID", ProductID);
-    cmd.Parameters.AddWithValue("@UnitMeasurementID", UnitMeasurementID);
-    cmd.Parameters.AddWithValue("@ProductSize", ConvertTypes.ToParseFloat(ProductSize));
-    cmd.Parameters.AddWithValue("@Price", ConvertTypes.ToParseFloat(Price));
-    cmd.Parameters.AddWithValue("@PriceDiscount", ConvertTypes.ToParseFloat(PriceDiscount));
-    cmd.Parameters.AddWithValue("@Amount", ConvertTypes.ToParseFloat(Amount));
-    cmd.Parameters.AddWithValue("@AmountDiscount", ConvertTypes.ToParseFloat(AmountDiscount));
-    cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
-    cmd.Parameters.AddWithValue("@Notes", Notes);
-    //try
-    //{
-    cmd.Connection.Open();
-    cmd.ExecuteNonQuery();
-    return Types.ProsesType.Succes;
-    //}
-    //catch (Exception ex)
-    //{
-    //    return Types.ProsesType.Error;
-    //}
-    //finally
-    //{
-    //    cmd.Connection.Close();
-    //    cmd.Dispose();
-    //}
-}
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@ProductOperationTypeID", ProductOperationTypeID);
+        cmd.Parameters.AddWithValue("@StockOperationReasonID", StockOperationReasonID);
+        cmd.Parameters.AddWithValue("@ProductID", ProductID);
+        cmd.Parameters.AddWithValue("@UnitMeasurementID", UnitMeasurementID);
+        cmd.Parameters.AddWithValue("@ProductSize", ConvertTypes.ToParseFloat(ProductSize));
+        cmd.Parameters.AddWithValue("@Price", ConvertTypes.ToParseFloat(Price));
+        cmd.Parameters.AddWithValue("@PriceDiscount", ConvertTypes.ToParseFloat(PriceDiscount));
+        cmd.Parameters.AddWithValue("@Amount", ConvertTypes.ToParseFloat(Amount));
+        cmd.Parameters.AddWithValue("@AmountDiscount", ConvertTypes.ToParseFloat(AmountDiscount));
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        cmd.Parameters.AddWithValue("@Notes", Notes);
+        //try
+        //{
+        cmd.Connection.Open();
+        cmd.ExecuteNonQuery();
+        return Types.ProsesType.Succes;
+        //}
+        //catch (Exception ex)
+        //{
+        //    return Types.ProsesType.Error;
+        //}
+        //finally
+        //{
+        //    cmd.Connection.Close();
+        //    cmd.Dispose();
+        //}
+    }
 
 
 
-public Types.ProsesType ProductStockInputOutputUpdate(int ProductStockInputOutputID,
-    int ProductOperationTypeID, int StockOperationReasonID, int ProductID, int UnitMeasurementID,
-    string ProductSize, string Price, string PriceDiscount, string Amount,
-    string AmountDiscount, string RegisterTime, string Notes)
-{
-    SqlCommand cmd = new SqlCommand(@"update ProductStockInputOutput set UserID=@UserID,
+    public Types.ProsesType ProductStockInputOutputUpdate(int ProductStockInputOutputID,
+        int ProductOperationTypeID, int StockOperationReasonID, int ProductID, int UnitMeasurementID,
+        string ProductSize, string Price, string PriceDiscount, string Amount,
+        string AmountDiscount, string RegisterTime, string Notes)
+    {
+        SqlCommand cmd = new SqlCommand(@"update ProductStockInputOutput set UserID=@UserID,
 ProductOperationTypeID=@ProductOperationTypeID,StockOperationReasonID=@StockOperationReasonID,
 ProductID=@ProductID,UnitMeasurementID=@UnitMeasurementID,ProductSize=@ProductSize,
 Price=@Price,PriceDiscount=@PriceDiscount,Amount=@Amount,AmountDiscount=@AmountDiscount,
 RegisterTime=@RegisterTime,Notes=@Notes,UpdateTime=getdate() where ProductStockInputOutputID=@ProductStockInputOutputID", SqlConn);
-    cmd.Parameters.AddWithValue("@ProductStockInputOutputID", ProductStockInputOutputID);
-    cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
-    cmd.Parameters.AddWithValue("@ProductOperationTypeID", ProductOperationTypeID);
-    cmd.Parameters.AddWithValue("@StockOperationReasonID", StockOperationReasonID);
-    cmd.Parameters.AddWithValue("@ProductID", ProductID);
-    cmd.Parameters.AddWithValue("@UnitMeasurementID", UnitMeasurementID);
-    cmd.Parameters.AddWithValue("@ProductSize", ConvertTypes.ToParseFloat(ProductSize));
-    cmd.Parameters.AddWithValue("@Price", ConvertTypes.ToParseFloat(Price));
-    cmd.Parameters.AddWithValue("@PriceDiscount", ConvertTypes.ToParseFloat(PriceDiscount));
-    cmd.Parameters.AddWithValue("@Amount", ConvertTypes.ToParseFloat(Amount));
-    cmd.Parameters.AddWithValue("@AmountDiscount", ConvertTypes.ToParseFloat(AmountDiscount));
-    cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
-    cmd.Parameters.AddWithValue("@Notes", Notes);
-    try
-    {
-        cmd.Connection.Open();
-        cmd.ExecuteNonQuery();
-        return Types.ProsesType.Succes;
+        cmd.Parameters.AddWithValue("@ProductStockInputOutputID", ProductStockInputOutputID);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@ProductOperationTypeID", ProductOperationTypeID);
+        cmd.Parameters.AddWithValue("@StockOperationReasonID", StockOperationReasonID);
+        cmd.Parameters.AddWithValue("@ProductID", ProductID);
+        cmd.Parameters.AddWithValue("@UnitMeasurementID", UnitMeasurementID);
+        cmd.Parameters.AddWithValue("@ProductSize", ConvertTypes.ToParseFloat(ProductSize));
+        cmd.Parameters.AddWithValue("@Price", ConvertTypes.ToParseFloat(Price));
+        cmd.Parameters.AddWithValue("@PriceDiscount", ConvertTypes.ToParseFloat(PriceDiscount));
+        cmd.Parameters.AddWithValue("@Amount", ConvertTypes.ToParseFloat(Amount));
+        cmd.Parameters.AddWithValue("@AmountDiscount", ConvertTypes.ToParseFloat(AmountDiscount));
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        cmd.Parameters.AddWithValue("@Notes", Notes);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
     }
-    catch (Exception ex)
-    {
-        return Types.ProsesType.Error;
-    }
-    finally
-    {
-        cmd.Connection.Close();
-        cmd.Dispose();
-    }
-}
 
 
-public Types.ProsesType DeleteProductStockInputOutput(int id)
-{
+    public Types.ProsesType DeleteProductStockInputOutput(int id)
+    {
 
-    SqlCommand cmd = new SqlCommand(@"Update ProductStockInputOutput set deletetime=getdate(),UserID=@UserID 
+        SqlCommand cmd = new SqlCommand(@"Update ProductStockInputOutput set deletetime=getdate(),UserID=@UserID 
 where ProductStockInputOutputID=@ProductStockInputOutputID;", SqlConn);
-    cmd.Parameters.AddWithValue("@ProductStockInputOutputID", id);
-    cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
-    try
-    {
-        cmd.Connection.Open();
-        cmd.ExecuteNonQuery();
-        return Types.ProsesType.Succes;
+        cmd.Parameters.AddWithValue("@ProductStockInputOutputID", id);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            //LogInsert(Utils.Tables.pages, Utils.LogType.delete, String.Format("IndicatorsDelete () "), ex.Message, "", true);
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
     }
-    catch (Exception ex)
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public DataTable GetProductByModelId(int id)
     {
-        //LogInsert(Utils.Tables.pages, Utils.LogType.delete, String.Format("IndicatorsDelete () "), ex.Message, "", true);
-        return Types.ProsesType.Error;
-    }
-    finally
-    {
-        cmd.Connection.Close();
-        cmd.Dispose();
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-public DataTable GetProductByModelId(int id)
-{
-    try
-    {
-        DataTable dt = new DataTable();
-        SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by ProductID desc) sn,
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by ProductID desc) sn,
        [ProductID],p.[UserID],p.[RegisterTime],[ProductsName],p.[ProductTypeID],pt.ProductTypeName
       ,p.[BrandID],b.BrandName,p.[ModelID],m.ModelName,[Code],p.[UnitMeasurementID] ,u.UnitMeasurementName
       ,[Price],[PriceDiscount],[Notes] from [Products] p 
@@ -3384,14 +3316,14 @@ public DataTable GetProductByModelId(int id)
   left join UnitMeasurements u on p.UnitMeasurementID=u.UnitMeasurementID 
   where p.DeleteTime is null and pt.DeleteTime is null and b.DeleteTime is null and 
 m.DeleteTime is null and u.DeleteTime is null and m.ModelID=@id", SqlConn);
-        da.SelectCommand.Parameters.AddWithValue("id", id);
-        da.Fill(dt);
-        return dt;
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
     }
-    catch (Exception ex)
-    {
-        return null;
-    }
-}
 
 }
