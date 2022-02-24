@@ -834,14 +834,15 @@ where s.DeleteTime is null and z.DeleteTime is null and g.DeleteTime is null and
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by LineID desc) sn,
-l.LineID ,l.UserID,l.RegisterTime,l.LineName,SectorName,LineArea,l.SectorID,
+l.LineID ,l.UserID,l.RegisterTime,l.LineName,SectorName,LineArea,z.zoneid,l.SectorID,
 l.UnitMeasurementID,TreeCount,l.Notes,g.GardenID,g.GardenName,ZoneName,u.UnitMeasurementName
 FROM Lines l 
 inner join Sectors s on l.SectorID=s.SectorID
 inner join Zones z on s.ZoneID=z.ZoneID
 inner join Gardens g on g.GardenID=z.GardenID 
 left join UnitMeasurements u on l.UnitMeasurementID=u.UnitMeasurementID 
-where s.DeleteTime is null and z.DeleteTime is null and g.DeleteTime is null and u.DeleteTime is null and l.DeleteTime is null and l.LineID=@id", SqlConn);
+where s.DeleteTime is null and z.DeleteTime is null and g.DeleteTime is null 
+and u.DeleteTime is null and l.DeleteTime is null and l.LineID=@id", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
             da.Fill(dt);
             return dt;
@@ -1220,8 +1221,29 @@ where ProductID=@ProductID;", SqlConn);
     }
 
 
+    public DataTable GetBrandsByProductTypeID(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [BrandID] desc) sn,
+b.RegisterTime,[BrandID],[BrandName],b.ProductTypeID,p.ProductTypeName
+  from [Brands] b inner join ProductTypes p on b.ProductTypeID=p.ProductTypeID where b.DeleteTime is null
+and p.DeleteTime is null and b.ProductTypeID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
 
-//Markalar
+
+
+
+    //Markalar
     public DataTable GetBrands()
     {
         try
@@ -3062,4 +3084,246 @@ where EntryExitID=@EntryExitID;", SqlConn);
             return null;
         }
     }
+
+
+    public DataTable GetProductOperationTypes()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT *
+  FROM [ProductOperationTypes] where DeleteTime is null", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+    public DataTable GetStockOperationReasonsByProductOperationTypeID(int ProductOperationTypeID)
+    {  //and c.cardid not in (select cardid from cadres)
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT *
+  FROM [StockOperationReasons] where deletetime is null and ProductOperationTypeID=@ProductOperationTypeID", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("ProductOperationTypeID", ProductOperationTypeID);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+
+
+
+
+
+
+    public DataTable GetProductStockInputOutput()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT 
+row_number() over(order by ProductStockInputOutputID desc) sn,psio.*,pot.ProductOperationTypeName,pt.ProductTypeID,pt.ProductTypeName,
+sor.ReasonName,p.ProductsName,um.UnitMeasurementName,m.ModelID,m.ModelName,b.BrandID,b.BrandName FROM [ProductStockInputOutput] psio 
+inner join ProductOperationTypes pot on psio.ProductOperationTypeID=pot.ProductOperationTypeID
+inner join StockOperationReasons sor on psio.StockOperationReasonID=sor.StockOperationReasonID and sor.ProductOperationTypeID=pot.ProductOperationTypeID
+inner join Products p on psio.ProductID=p.ProductID
+inner join Models m on m.ModelID=p.ModelID
+inner join brands b on b.BrandID=m.BrandID
+inner join UnitMeasurements um on psio.UnitMeasurementID=um.UnitMeasurementID
+inner join ProductTypes pt on pt.ProductTypeID=p.ProductTypeID
+ where psio.DeleteTime is null
+", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+
+   
+
+
+    public DataTable GetProductStockInputOutputByID(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT 
+row_number() over(order by ProductStockInputOutputID desc) sn,psio.*,pot.ProductOperationTypeName,pt.ProductTypeID,pt.ProductTypeName,
+sor.ReasonName,p.ProductsName,um.UnitMeasurementName,m.ModelID,m.ModelName,b.BrandID,b.BrandName FROM [ProductStockInputOutput] psio 
+inner join ProductOperationTypes pot on psio.ProductOperationTypeID=pot.ProductOperationTypeID
+inner join StockOperationReasons sor on psio.StockOperationReasonID=sor.StockOperationReasonID and sor.ProductOperationTypeID=pot.ProductOperationTypeID
+inner join Products p on psio.ProductID=p.ProductID
+inner join Models m on m.ModelID=p.ModelID
+inner join brands b on b.BrandID=m.BrandID
+inner join UnitMeasurements um on psio.UnitMeasurementID=um.UnitMeasurementID
+inner join ProductTypes pt on pt.ProductTypeID=p.ProductTypeID
+ where psio.DeleteTime is null
+ and ProductStockInputOutputID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+
+    public Types.ProsesType ProductStockInputOutputInsert(int ProductOperationTypeID, 
+        int StockOperationReasonID, int ProductID, int UnitMeasurementID,string ProductSize,
+        string Price,string PriceDiscount, string Amount,string AmountDiscount,string RegisterTime,string Notes)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"insert into ProductStockInputOutput 
+(UserID,ProductOperationTypeID,StockOperationReasonID,ProductID,UnitMeasurementID,
+ProductSize,Price,PriceDiscount,Amount,AmountDiscount,RegisterTime,Notes) values 
+(@UserID,@ProductOperationTypeID,@StockOperationReasonID,@ProductID,
+@UnitMeasurementID,@ProductSize,@Price,@PriceDiscount,@Amount,@AmountDiscount,@RegisterTime,@Notes)", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@ProductOperationTypeID", ProductOperationTypeID);
+        cmd.Parameters.AddWithValue("@StockOperationReasonID", StockOperationReasonID);
+        cmd.Parameters.AddWithValue("@ProductID", ProductID);
+        cmd.Parameters.AddWithValue("@UnitMeasurementID", UnitMeasurementID);
+        cmd.Parameters.AddWithValue("@ProductSize", ConvertTypes.ToParseFloat(ProductSize));
+        cmd.Parameters.AddWithValue("@Price", ConvertTypes.ToParseFloat(Price));
+        cmd.Parameters.AddWithValue("@PriceDiscount", ConvertTypes.ToParseFloat(PriceDiscount));
+        cmd.Parameters.AddWithValue("@Amount", ConvertTypes.ToParseFloat(Amount));
+        cmd.Parameters.AddWithValue("@AmountDiscount", ConvertTypes.ToParseFloat(AmountDiscount));
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        cmd.Parameters.AddWithValue("@Notes", Notes);
+        //try
+        //{
+        cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        //}
+        //catch (Exception ex)
+        //{
+        //    return Types.ProsesType.Error;
+        //}
+        //finally
+        //{
+        //    cmd.Connection.Close();
+        //    cmd.Dispose();
+        //}
+    }
+
+
+
+    public Types.ProsesType ProductStockInputOutputUpdate(int ProductStockInputOutputID,
+        int ProductOperationTypeID, int StockOperationReasonID, int ProductID, int UnitMeasurementID, 
+        string ProductSize, string Price, string PriceDiscount, string Amount, 
+        string AmountDiscount, string RegisterTime,string Notes)
+    {
+        SqlCommand cmd = new SqlCommand(@"update ProductStockInputOutput set UserID=@UserID,
+ProductOperationTypeID=@ProductOperationTypeID,StockOperationReasonID=@StockOperationReasonID,
+ProductID=@ProductID,UnitMeasurementID=@UnitMeasurementID,ProductSize=@ProductSize,
+Price=@Price,PriceDiscount=@PriceDiscount,Amount=@Amount,AmountDiscount=@AmountDiscount,
+RegisterTime=@RegisterTime,Notes=@Notes,UpdateTime=getdate() where ProductStockInputOutputID=@ProductStockInputOutputID", SqlConn);
+        cmd.Parameters.AddWithValue("@ProductStockInputOutputID", ProductStockInputOutputID);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@ProductOperationTypeID", ProductOperationTypeID);
+        cmd.Parameters.AddWithValue("@StockOperationReasonID", StockOperationReasonID);
+        cmd.Parameters.AddWithValue("@ProductID", ProductID);
+        cmd.Parameters.AddWithValue("@UnitMeasurementID", UnitMeasurementID);
+        cmd.Parameters.AddWithValue("@ProductSize", ConvertTypes.ToParseFloat(ProductSize));
+        cmd.Parameters.AddWithValue("@Price", ConvertTypes.ToParseFloat(Price));
+        cmd.Parameters.AddWithValue("@PriceDiscount", ConvertTypes.ToParseFloat(PriceDiscount));
+        cmd.Parameters.AddWithValue("@Amount", ConvertTypes.ToParseFloat(Amount));
+        cmd.Parameters.AddWithValue("@AmountDiscount", ConvertTypes.ToParseFloat(AmountDiscount));
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        cmd.Parameters.AddWithValue("@Notes", Notes);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+
+    public Types.ProsesType DeleteProductStockInputOutput(int id)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"Update ProductStockInputOutput set deletetime=getdate(),UserID=@UserID 
+where ProductStockInputOutputID=@ProductStockInputOutputID;", SqlConn);
+        cmd.Parameters.AddWithValue("@ProductStockInputOutputID", id);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            //LogInsert(Utils.Tables.pages, Utils.LogType.delete, String.Format("IndicatorsDelete () "), ex.Message, "", true);
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public DataTable GetProductByModelId(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by ProductID desc) sn,
+       [ProductID],p.[UserID],p.[RegisterTime],[ProductsName],p.[ProductTypeID],pt.ProductTypeName
+      ,p.[BrandID],b.BrandName,p.[ModelID],m.ModelName,[Code],p.[UnitMeasurementID] ,u.UnitMeasurementName
+      ,[Price],[PriceDiscount],[Notes] from [Products] p 
+  inner join ProductTypes pt on p.ProductTypeID=pt.ProductTypeID 
+  inner join Brands b on p.BrandID=b.BrandID
+  inner join Models m on p.ModelID=m.ModelID
+  left join UnitMeasurements u on p.UnitMeasurementID=u.UnitMeasurementID 
+  where p.DeleteTime is null and pt.DeleteTime is null and b.DeleteTime is null and 
+m.DeleteTime is null and u.DeleteTime is null and m.ModelID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
 }

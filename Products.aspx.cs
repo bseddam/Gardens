@@ -45,7 +45,16 @@ public partial class Products : System.Web.UI.Page
         ddlmodel.Items.Insert(0, new ListItem("Seçin", "-1"));
         ddlmodel.SelectedIndex = 0;
     }
-
+    void brandcomponentload()
+    {
+        DataTable dt6 = _db.GetBrandsByProductTypeID(ddlproducttype.SelectedValue.ToParseInt());
+        ddlbrand.DataValueField = "BrandID";
+        ddlbrand.DataTextField = "BrandName";
+        ddlbrand.DataSource = dt6;
+        ddlbrand.DataBind();
+        ddlbrand.Items.Insert(0, new ListItem("Seçin", "-1"));
+        ddlbrand.SelectedIndex = 0;
+    }
 
     void componentsload()
     {
@@ -57,15 +66,6 @@ public partial class Products : System.Web.UI.Page
         ddlunitmeasurement.Items.Insert(0, new ListItem("Seçin", "-1"));
         ddlunitmeasurement.SelectedIndex = 0;
 
-        DataTable dt6 = _db.GetBrands();
-        ddlbrand.DataValueField = "BrandID";
-        ddlbrand.DataTextField = "BrandName";
-        ddlbrand.DataSource = dt6;
-        ddlbrand.DataBind();
-        ddlbrand.Items.Insert(0, new ListItem("Seçin", "-1"));
-        ddlbrand.SelectedIndex = 0;
-
-
         DataTable dt7 = _db.GetProductTypes();
         ddlproducttype.DataValueField = "ProductTypeID";
         ddlproducttype.DataTextField = "ProductTypeName";
@@ -73,6 +73,10 @@ public partial class Products : System.Web.UI.Page
         ddlproducttype.DataBind();
         ddlproducttype.Items.Insert(0, new ListItem("Seçin", "-1"));
         ddlproducttype.SelectedIndex = 0;
+
+        brandcomponentload();
+
+       
 
 
 
@@ -96,7 +100,11 @@ public partial class Products : System.Web.UI.Page
         }
         txtproductname.Text = dt.Rows[0]["ProductsName"].ToParseStr();
         ddlproducttype.SelectedValue = dt.Rows[0]["ProductTypeID"].ToParseStr();
-        ddlbrand.SelectedValue = dt.Rows[0]["BrandID"].ToParseStr();
+        brandcomponentload();
+        if (dt.Rows[0]["BrandID"].ToParseStr() != "")
+        {
+            ddlbrand.SelectedValue = dt.Rows[0]["BrandID"].ToParseStr();
+        }
         modelcomponentload();
         ddlmodel.SelectedValue = dt.Rows[0]["ModelID"].ToParseStr();
         txtcode.Text = dt.Rows[0]["Code"].ToParseStr();
@@ -187,5 +195,10 @@ public partial class Products : System.Web.UI.Page
     protected void ddlbrand_SelectedIndexChanged(object sender, EventArgs e)
     {
         modelcomponentload();
+    }
+
+    protected void ddlproducttype_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        brandcomponentload();
     }
 }
