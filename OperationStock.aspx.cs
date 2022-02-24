@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DevExpress.Web;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -17,127 +18,164 @@ public partial class OperationStock : System.Web.UI.Page
     }
     void ClearComponents()
     {
-        //txtAddress.Text = "";
-        //txtEmail.Text = "";
-        //txtFname.Text = "";
-        //txtName.Text = "";
-        //txtPassportN.Text = "";
-        //txtPhoneNumber.Text = "";
-        //txtPIN.Text = "";
-        //txtSname.Text = "";
+        txtAmount.Text = "";
+        txtAmountDiscount.Text = "";
+        txtNote.Text = "";
+        txtPrice.Text = "";
+        txtPriceDiscount.Text = "";
+        txtProductSize.Text = "";
+        cmbregistertime.Text = "";
     }
     void _loadGridFromDb()
     {
 
-        //DataTable DTOperationWateringSystems = _db.GetOperationWateringSystems();
-        //if (DTOperationWateringSystems != null)
-        //{
-        //    Grid.SettingsPager.Summary.Text = "Cari səhifə: {0}, Ümumi səhifələrin sayı: {1}, Tapılmış məlumatların sayı: {2}";
-        //    Grid.DataSource = DTOperationWateringSystems;
-        //    Grid.DataBind();
-        //}
+        DataTable dt = _db.GetProductStockInputOutput();
+        if (dt != null)
+        {
+            Grid.SettingsPager.Summary.Text = "Cari səhifə: {0}, Ümumi səhifələrin sayı: {1}, Tapılmış məlumatların sayı: {2}";
+            Grid.DataSource = dt;
+            Grid.DataBind();
+        }
     }
+    void Reasoncomponentload()
+    {
+        cmbStockOperationReason.Items.Clear();
+        DataTable dt3 = _db.GetStockOperationReasonsByProductOperationTypeID
+            (cmbProductOperationType.Value.ToParseInt());
+        cmbStockOperationReason.ValueField = "StockOperationReasonID";
+        cmbStockOperationReason.TextField = "ReasonName";
+        cmbStockOperationReason.DataSource = dt3;
+        cmbStockOperationReason.DataBind();
+        cmbStockOperationReason.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmbStockOperationReason.SelectedIndex = 0;
+
+    }
+
+
+    void brandcomponentload()
+    {
+        DataTable dt6 = _db.GetBrandsByProductTypeID(cmbproducttype.Value.ToParseInt());
+        cmbbrand.ValueField = "BrandID";
+        cmbbrand.TextField = "BrandName";
+        cmbbrand.DataSource = dt6;
+        cmbbrand.DataBind();
+        cmbbrand.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmbbrand.SelectedIndex = 0;
+    }
+
+    void modelcomponentload()
+    {
+        DataTable dt6 = _db.GetModelsByBrandID(cmbbrand.Value.ToParseInt());
+        cmbmodel.ValueField = "ModelID";
+        cmbmodel.TextField = "ModelName";
+        cmbmodel.DataSource = dt6;
+        cmbmodel.DataBind();
+        cmbmodel.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmbmodel.SelectedIndex = 0;
+    }
+
+    void productcomponentload()
+    {
+        DataTable dt6 = _db.GetProductByModelId(cmbmodel.Value.ToParseInt());
+        cmbProducts.ValueField = "ProductID";
+        cmbProducts.TextField = "ProductsName";
+        cmbProducts.DataSource = dt6;
+        cmbProducts.DataBind();
+        cmbProducts.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmbProducts.SelectedIndex = 0;
+    }
+
+
     void componentsload()
     {
-        //cmCadre.Items.Clear();
-        //DataTable dt1 = _db.GetSections(typeid: 11);
-        //cmCadre.ValueField = "CadreID";
-        //cmCadre.TextField = "Name";
-        //cmCadre.DataSource = dt1;
-        //cmCadre.DataBind();
-        //cmCadre.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        //cmCadre.SelectedIndex = 0;
-
-        //DataTable dt2 = _db.GetSections(typeid: 6);
-        //cmPosition.ValueField = "PositionID";
-        //cmPosition.TextField = "PositionName";
-        //cmPosition.DataSource = dt2;
-        //cmPosition.DataBind();
-        //cmPosition.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        //cmPosition.SelectedIndex = 0;
-
-        //DataTable dt3 = _db.GetSections(typeid: 7);
-        //cmCardNumber.ValueField = "CardID";
-        //cmCardNumber.TextField = "CardNumber";
-        //cmCardNumber.DataSource = dt3;
-        //cmCardNumber.DataBind();
-        //cmCardNumber.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        //cmCardNumber.SelectedIndex = 0;
-
-        //DataTable dt4 = _db.GetSections(typeid: 8);
-        //cmStatusJobName.ValueField = "StatusJobID";
-        //cmStatusJobName.TextField = "StatusJobName";
-        //cmStatusJobName.DataSource = dt4;
-        //cmStatusJobName.DataBind();
-        //cmStatusJobName.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        //cmStatusJobName.SelectedIndex = 0;
-
-        //DataTable dt5 = _db.GetSections(typeid: 9);
-        //cmGender.ValueField = "GenderID";
-        //cmGender.TextField = "GenderName";
-        //cmGender.DataSource = dt5;
-        //cmGender.DataBind();
-        //cmGender.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        //cmGender.SelectedIndex = 0;
+        cmbProductOperationType.Items.Clear();
+        DataTable dt1 = _db.GetProductOperationTypes();
+        cmbProductOperationType.ValueField = "ProductOperationTypeID";
+        cmbProductOperationType.TextField = "ProductOperationTypeName";
+        cmbProductOperationType.DataSource = dt1;
+        cmbProductOperationType.DataBind();
+        cmbProductOperationType.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmbProductOperationType.SelectedIndex = 0;
 
 
+
+        cmbproducttype.Items.Clear();
+        DataTable dt2 = _db.GetProductTypes();
+        cmbproducttype.ValueField = "ProductTypeID";
+        cmbproducttype.TextField = "ProductTypeName";
+        cmbproducttype.DataSource = dt2;
+        cmbproducttype.DataBind();
+        cmbproducttype.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmbproducttype.SelectedIndex = 0;
+
+
+
+        cmbUnitMeasurement.Items.Clear();
+        DataTable dt3 = _db.GetUnitMeasurements();
+        cmbUnitMeasurement.ValueField = "UnitMeasurementID";
+        cmbUnitMeasurement.TextField = "UnitMeasurementName";
+        cmbUnitMeasurement.DataSource = dt3;
+        cmbUnitMeasurement.DataBind();
+        cmbUnitMeasurement.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmbUnitMeasurement.SelectedIndex = 0;
+
+
+
+
+        Reasoncomponentload();
+        brandcomponentload();
+        modelcomponentload();
+        productcomponentload();
     }
     protected void lnkEdit_Click(object sender, EventArgs e)
     {
+    
+        int id = (sender as LinkButton).CommandArgument.ToParseInt();
+        DataTable dt = _db.GetProductStockInputOutputByID(id: id);
         componentsload();
-        //int id = (sender as LinkButton).CommandArgument.ToParseInt();
-        //DataTable dt = _db.GetCadresById(id: id);
-        //cmStructure.Value = dt.Rows[0]["StructureID"].ToParseStr();
-        //cmPosition.Value = dt.Rows[0]["PositionID"].ToParseStr();
-        //cmCardNumber.Value = dt.Rows[0]["CardID"].ToParseStr();
-        //txtSname.Text = dt.Rows[0]["Sname"].ToParseStr();
-        //txtName.Text = dt.Rows[0]["Name"].ToParseStr();
-        //txtFname.Text = dt.Rows[0]["FName"].ToParseStr();
-        //cmGender.Value = dt.Rows[0]["Gender"].ToParseStr();
-        //txtPassportN.Text = dt.Rows[0]["PassportN"].ToParseStr();
-        //txtPIN.Text = dt.Rows[0]["PIN"].ToParseStr();
-        //txtAddress.Text = dt.Rows[0]["Address"].ToParseStr();
-        //txtPhoneNumber.Text = dt.Rows[0]["PhoneNumber"].ToParseStr();
-        //txtEmail.Text = dt.Rows[0]["Email"].ToParseStr();
-        //DateTime datevalue;
-        //if (DateTime.TryParse(dt.Rows[0]["JobEntryDate"].ToParseStr(), out datevalue))
-        //{
-        //    dtJobEntryDate.Text = DateTime.Parse(dt.Rows[0]["JobEntryDate"].ToParseStr()).ToString("dd.MM.yyyy");
-        //}
-        //else
-        //{
-        //    dtJobEntryDate.Text = "";
-        //}
-        //DateTime datevalue1;
-        //if (DateTime.TryParse(dt.Rows[0]["JobExitDate"].ToParseStr(), out datevalue1))
-        //{
-        //    dtJobExitDate.Text = DateTime.Parse(dt.Rows[0]["JobExitDate"].ToParseStr()).ToString("dd.MM.yyyy");
-        //}
-        //else
-        //{
-        //    dtJobExitDate.Text = "";
-        //}
-        //cmStatusJobName.Value = dt.Rows[0]["StatusJob"].ToParseStr();
-        //Session["imgpath"] = dt.Rows[0]["Photo"].ToParseStr();
-        //imgUser.ImageUrl = @"imgCadres\" + dt.Rows[0]["Photo"].ToParseStr();
-        //DateTime datevalue3;
-        //if (DateTime.TryParse(dt.Rows[0]["RegstrDate"].ToParseStr(), out datevalue3))
-        //{
-        //    dtRegstrDate.Text = DateTime.Parse(dt.Rows[0]["RegstrDate"].ToParseStr()).ToString("dd.MM.yyyy");
-        //}
-        //else
-        //{
-        //    dtRegstrDate.Text = "";
-        //}
+        cmbProductOperationType.Value = dt.Rows[0]["ProductOperationTypeID"].ToParseStr();
+        cmbproducttype.Value = dt.Rows[0]["ProductTypeID"].ToParseStr();
+        cmbUnitMeasurement.Value = dt.Rows[0]["UnitMeasurementID"].ToParseStr();
+        Reasoncomponentload();
+        cmbStockOperationReason.Value = dt.Rows[0]["StockOperationReasonID"].ToParseStr();
+        brandcomponentload();
+        cmbbrand.Value = dt.Rows[0]["BrandID"].ToParseStr();
+        modelcomponentload();
+        cmbmodel.Value = dt.Rows[0]["ModelID"].ToParseStr();
+        productcomponentload();
+        cmbProducts.Value = dt.Rows[0]["ProductID"].ToParseStr();
 
-        //btnSave.CommandName = "update";
-        //btnSave.CommandArgument = id.ToString();
+        txtAmount.Text = dt.Rows[0]["Amount"].ToParseStr();
+        txtAmountDiscount.Text = dt.Rows[0]["AmountDiscount"].ToParseStr();
+        txtNote.Text = dt.Rows[0]["Notes"].ToParseStr();
+        txtPrice.Text = dt.Rows[0]["Price"].ToParseStr();
+        txtPriceDiscount.Text = dt.Rows[0]["PriceDiscount"].ToParseStr();
+        txtProductSize.Text = dt.Rows[0]["ProductSize"].ToParseStr();
+
+
+
+
+        DateTime datevalue;
+        if (DateTime.TryParse(dt.Rows[0]["RegisterTime"].ToParseStr(), out datevalue))
+        {
+            cmbregistertime.Text = DateTime.Parse(dt.Rows[0]["RegisterTime"].ToParseStr()).ToString("dd.MM.yyyy");
+        }
+        else
+        {
+            cmbregistertime.Text = "";
+        }
+
+
+
+
+        btnSave.CommandName = "update";
+        btnSave.CommandArgument = id.ToString();
         popupEdit.ShowOnPageLoad = true;
     }
     protected void lnkDelete_Click(object sender, EventArgs e)
     {
         int _id = (sender as LinkButton).CommandArgument.ToParseInt();
-        Types.ProsesType val = _db.DeleteOperationTechniques(id: _id);
+        Types.ProsesType val = _db.DeleteProductStockInputOutput(id: _id);
         _loadGridFromDb();
     }
     protected void LnkPnlMenu_Click(object sender, EventArgs e)
@@ -156,91 +194,80 @@ public partial class OperationStock : System.Web.UI.Page
     }
     protected void btntesdiq_Click(object sender, EventArgs e)
     {
-        //lblPopError.Text = "";
-        //Types.ProsesType val = Types.ProsesType.Error;
-        //if (Session["UserID"] != null)
-        //{
-        //    Session["UserID"] = 1;
-        //}
+        lblPopError.Text = "";
+        Types.ProsesType val = Types.ProsesType.Error;
+        if (Session["UserID"] != null)
+        {
+            Session["UserID"] = 1;
+        }
 
-        //if (FileUpload1.HasFile)
-        //{
-        //    Session["imgpath"] = DateTime.Now.ToString("yyyy_MM_dd_hh_mm_sss") + FileUpload1.FileName;
-        //}
+       
 
-        //if (btnSave.CommandName == "insert")
-        //{
+        if (btnSave.CommandName == "insert")
+        {
+            val = _db.ProductStockInputOutputInsert(
+                ProductOperationTypeID: cmbProductOperationType.Value.ToParseInt(),
+                StockOperationReasonID: cmbStockOperationReason.Value.ToParseInt(),
+                ProductID: cmbProducts.Value.ToParseInt(),
+                UnitMeasurementID: cmbUnitMeasurement.Value.ToParseInt(),
+                ProductSize: txtProductSize.Text.ToParseStr(),
+                Price: txtPrice.Text.ToParseStr(),
+                PriceDiscount: txtPriceDiscount.Text.ToParseStr(),
+                Amount: txtAmount.Text.ToParseStr(),
+                AmountDiscount: txtAmountDiscount.Text.ToParseStr(),
+                RegisterTime: cmbregistertime.Text.ToParseStr(),
+                Notes: txtNote.Text.ToParseStr()
+                );
+        }
+        else
+        {
+            val = _db.ProductStockInputOutputUpdate(
+                ProductStockInputOutputID: btnSave.CommandArgument.ToParseInt(),
+                ProductOperationTypeID: cmbProductOperationType.Value.ToParseInt(),
+                StockOperationReasonID: cmbStockOperationReason.Value.ToParseInt(),
+                ProductID: cmbProducts.Value.ToParseInt(),
+                UnitMeasurementID: cmbUnitMeasurement.Value.ToParseInt(),
+                ProductSize: txtProductSize.Text.ToParseStr(),
+                Price: txtPrice.Text.ToParseStr(),
+                PriceDiscount: txtPriceDiscount.Text.ToParseStr(),
+                Amount: txtAmount.Text.ToParseStr(),
+                AmountDiscount: txtAmountDiscount.Text.ToParseStr(),
+                RegisterTime: cmbregistertime.Text.ToParseStr(),
+                Notes: txtNote.Text.ToParseStr()
+                );
+        }
 
-        //    val = _db.CadresInsert(UserID: Session["UserID"].ToString().ToParseInt(),
-        //        StructureID: cmStructure.Value.ToParseInt(),
-        //        PositionID: cmPosition.Value.ToParseInt(),
-        //        CardID: cmCardNumber.Value.ToParseInt(),
-        //        Sname: txtSname.Text.ToParseStr(),
-        //        Name: txtName.Text.ToParseStr(),
-        //        FName: txtFname.Text.ToParseStr(),
-        //        Gender: cmGender.Value.ToParseInt(),
-        //        PassportN: txtPassportN.Text.ToParseStr(),
-        //        PIN: txtPIN.Text.ToParseStr(),
-        //        PhoneNumber: txtPhoneNumber.Text.ToParseStr(),
-        //        Photo: Session["imgpath"].ToString(),
-        //        Email: txtEmail.Text.ToParseStr(),
-        //        Address: txtAddress.Text.ToParseStr(),
-        //        JobEntryDate: dtJobEntryDate.Text.ToParseStr(),
-        //        JobExitDate: dtJobExitDate.Text.ToParseStr(),
-        //        StatusJob: cmStatusJobName.Value.ToParseInt(),
-        //        RegstrDate: dtRegstrDate.Text.ToParseStr()
-        //        );
-        //    if (val == Types.ProsesType.Succes)
-        //    {
-        //        if (FileUpload1.HasFile)
-        //        {
-        //            FileUpload1.SaveAs(Server.MapPath("/imgcadres/" + Session["imgpath"].ToString()));
-        //        }
-        //    }
+        if (val == Types.ProsesType.Error)
+        {
+            lblPopError.Text = "XƏTA! Yadda saxlamaq mümkün olmadı.";
+            return;
+        }
 
-        //}
-        //else
-        //{
-
-        //    val = _db.CadresUpdate(CadreID: btnSave.CommandArgument.ToParseInt(),
-        //        UserID: Session["UserID"].ToString().ToParseInt(),
-        //        StructureID: cmStructure.Value.ToParseInt(),
-        //        PositionID: cmPosition.Value.ToParseInt(),
-        //        CardID: cmCardNumber.Value.ToParseInt(),
-        //        Sname: txtSname.Text.ToParseStr(),
-        //        Name: txtName.Text.ToParseStr(),
-        //        FName: txtFname.Text.ToParseStr(),
-        //        Gender: cmGender.Value.ToParseInt(),
-        //        PassportN: txtPassportN.Text.ToParseStr(),
-        //        PIN: txtPIN.Text.ToParseStr(),
-        //        PhoneNumber: txtPhoneNumber.Text.ToParseStr(),
-        //        Photo: Session["imgpath"].ToString(),
-        //        Email: txtEmail.Text.ToParseStr(),
-        //        Address: txtAddress.Text.ToParseStr(),
-        //        JobEntryDate: dtJobEntryDate.Text.ToParseStr(),
-        //        JobExitDate: dtJobExitDate.Text.ToParseStr(),
-        //        StatusJob: cmStatusJobName.Value.ToParseInt(),
-        //        RegstrDate: dtRegstrDate.Text.ToParseStr());
-        //    if (val == Types.ProsesType.Succes)
-        //    {
-        //        if (FileUpload1.HasFile)
-        //        {
-        //            FileUpload1.SaveAs(Server.MapPath("/imgcadres/" + Session["imgpath"].ToString()));
-        //        }
-        //    }
-        //}
-
-        //if (val == Types.ProsesType.Error)
-        //{
-        //    lblPopError.Text = "XƏTA! Yadda saxlamaq mümkün olmadı.";
-        //    return;
-        //}
-
-        //_loadGridFromDb();
-        //popupEdit.ShowOnPageLoad = false;
+        _loadGridFromDb();
+        popupEdit.ShowOnPageLoad = false;
     }
     protected void btnCancel_Click(object sender, EventArgs e)
     {
         popupEdit.ShowOnPageLoad = false;
+    }
+
+    protected void cmbProductOperationType_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        Reasoncomponentload();
+    }
+
+    protected void cmbproducttype_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        brandcomponentload();
+    }
+
+    protected void cmbbrand_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        modelcomponentload();
+    }
+
+    protected void cmbmodel_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        productcomponentload();
     }
 }
