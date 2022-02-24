@@ -2539,14 +2539,20 @@ left join CadreType j on j.CadreTypeID=c.CadreTypeID where c.DeleteTime is null"
 c.Name+' '+c.Sname+' '+c.FName fullname, s.WorkName,
 g.GardenName,z.ZonaName,sc.SectorName,l.LineName,w.TreeCount,
 w.Notes,w.RegstrTime,w.WorkDoneID,w.UserID,w.LinesID,w.CadreID,
-g.GardenID,z.ZoneID,sc.SectorsID
+g.GardenID,z.ZoneID,sc.SectorsID,wc.WeatherConditionName+' ('+cast(wc.Coefficient as varchar)+')' as WeatherConditionName1
+, tt.TreeTypeName+' ('+cast(tt.Coefficient as varchar)+')' TreeTypeName1,
+cast(FirstAge as varchar)+' - '+cast(LastAge as varchar)+' yaş ('+cast(Coefficient as varchar)+')' TreeAgeName1
 from WorkDone w
 left join Cadres c on c.CadreID=w.CadreID
 left join Works s on s.WorkID=w.WorkID
 left join Lines l on l.LineID=w.LinesID
 left join Sectors sc on sc.SectorsID=l.SektorID
 left join Zones z on z.ZoneID=sc.ZonaID
-left join Gardens g on g.GardenID=z.GardenID where w.DeleteTime is null ", SqlConn);
+left join Gardens g on g.GardenID=z.GardenID 
+left join WeatherCondition wc on wc.WeatherConditionID=w.WeatherConditionID
+left join TreeTypes tt on tt.TreeTypeID=w.TreeTypeID
+left join TariffTreeAge tta on tta.TariffAgeID=w.TariffAgeID
+where w.DeleteTime is null ", SqlConn);
             da.Fill(dt);
             return dt;
         }
@@ -2604,6 +2610,68 @@ left join Gardens g on g.GardenID=z.GardenID where w.DeleteTime is null and w.Wo
         }
     }
 
+
+        SqlCommand cmd = new SqlCommand(@"insert into WorkDone (UserID,CadreID,WorkID,LinesID,WeatherConditionID,TreeTypeID,TariffAgeID,TreeCount,Salary,Notes,RegisterTime)
+                                            Values(@UserID, @CadreID,@WorkID,@LinesID,@WeatherConditionID,@TreeTypeID,@TariffAgeID,@TreeCount,@Salary,@Notes,@RegisterTime)", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", UserID);
+        cmd.Parameters.AddWithValue("@CadreID", CadreID);
+        cmd.Parameters.AddWithValue("@WorkID", WorkID);
+        cmd.Parameters.AddWithValue("@LinesID", LinesID);
+        cmd.Parameters.AddWithValue("@WeatherConditionID", WeatherConditionID);
+        cmd.Parameters.AddWithValue("@TreeTypeID", TreeTypeID);
+        cmd.Parameters.AddWithValue("@TariffAgeID", TariffAgeID);
+        cmd.Parameters.AddWithValue("@TreeCount", TreeCount);
+        cmd.Parameters.AddWithValue("@Salary", Salary);
+        cmd.Parameters.AddWithValue("@Notes", Notes);
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+    public Types.ProsesType OperationCadreUpdate(int WorkDoneID, int UserID, int CadreID, int WorkID, int LinesID, int WeatherConditionID, int TreeTypeID, int TariffAgeID, int TreeCount, float Salary, string Notes, string RegisterTime)
+    {
+        SqlCommand cmd = new SqlCommand(@"update WorkDone set UserID=@UserID, CadreID=@CadreID,WorkID=@WorkID,LinesID=@LinesID,WeatherConditionID=@WeatherConditionID,TreeTypeID=@TreeTypeID,TariffAgeID=@TariffAgeID,TreeCount=@TreeCount,Salary=@Salary,Notes=@Notes,RegisterTime=@RegisterTime where WorkDoneID=@WorkDoneID", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", UserID);
+        cmd.Parameters.AddWithValue("@CadreID", CadreID);
+        cmd.Parameters.AddWithValue("@WorkID", WorkID);
+        cmd.Parameters.AddWithValue("@LinesID", LinesID);
+        cmd.Parameters.AddWithValue("@WeatherConditionID", WeatherConditionID);
+        cmd.Parameters.AddWithValue("@TreeTypeID", TreeTypeID);
+        cmd.Parameters.AddWithValue("@TariffAgeID", TariffAgeID);
+        cmd.Parameters.AddWithValue("@TreeCount", TreeCount);
+        cmd.Parameters.AddWithValue("@Salary", Salary);
+        cmd.Parameters.AddWithValue("@Notes", Notes);
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        cmd.Parameters.AddWithValue("@WorkDoneID", WorkDoneID);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
 
     //-------Texnikalar uzre emeliyyat
 

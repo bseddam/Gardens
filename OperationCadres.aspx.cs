@@ -18,14 +18,19 @@ public partial class OperationCadres : System.Web.UI.Page
     }
     void ClearComponents()
     {
-        //txtAddress.Text = "";
-        //txtEmail.Text = "";
-        //txtFname.Text = "";
-        //txtName.Text = "";
-        //txtPassportN.Text = "";
-        //txtPhoneNumber.Text = "";
-        //txtPIN.Text = "";
-        //txtSname.Text = "";
+        txtNotes.Text = "";
+        txtsalary.Text = "";
+        txtTreeCount.Text = "";
+        cmCadre.Items.Clear();
+        cmWork.Items.Clear();
+        cmGarden.Items.Clear();
+        cmZone.Items.Clear();
+        cmSektor.Items.Clear();
+        cmLine.Items.Clear();
+        cmWeather.Items.Clear();
+        cmTreeType.Items.Clear();
+        cmTreeAge.Items.Clear();
+
     }
     void _loadGridFromDb()
     {
