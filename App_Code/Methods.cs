@@ -2495,18 +2495,18 @@ left join CadreType j on j.CadreTypeID=c.CadreTypeID where c.DeleteTime is null"
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"select ROW_NUMBER() over( order by w.WorkDoneID) sn,
-c.Name+' '+c.Sname+' '+c.FName fullname, s.WorkName,
-g.GardenName,z.ZonaName,sc.SectorName,l.LineName,w.TreeCount,
-w.Notes,w.RegstrTime,w.WorkDoneID,w.UserID,w.LinesID,w.CadreID,
-g.GardenID,z.ZoneID,sc.SectorsID,wc.WeatherConditionName+' ('+cast(wc.Coefficient as varchar)+')' as WeatherConditionName1
+c.Name+' '+c.Sname+' '+c.FName fullname, s.WorkName,w.Salary,
+g.GardenName,z.ZoneName,sc.SectorName,l.LineName,w.TreeCount,
+w.Notes,w.RegisterTime,w.WorkDoneID,w.UserID,w.LinesID,w.CadreID,w.WorkID,
+g.GardenID,z.ZoneID,sc.SectorID,wc.WeatherConditionName+' ('+cast(wc.Coefficient as varchar)+')' as WeatherConditionName1
 , tt.TreeTypeName+' ('+cast(tt.Coefficient as varchar)+')' TreeTypeName1,
-cast(FirstAge as varchar)+' - '+cast(LastAge as varchar)+' yaş ('+cast(Coefficient as varchar)+')' TreeAgeName1
+cast(tta.FirstAge as varchar)+' - '+cast(tta.LastAge as varchar)+' yaş ('+cast(tta.Coefficient as varchar)+')' TreeAgeName1
 from WorkDone w
 left join Cadres c on c.CadreID=w.CadreID
 left join Works s on s.WorkID=w.WorkID
 left join Lines l on l.LineID=w.LinesID
-left join Sectors sc on sc.SectorsID=l.SektorID
-left join Zones z on z.ZoneID=sc.ZonaID
+left join Sectors sc on sc.SectorID=l.SectorID
+left join Zones z on z.ZoneID=sc.ZoneID
 left join Gardens g on g.GardenID=z.GardenID 
 left join WeatherCondition wc on wc.WeatherConditionID=w.WeatherConditionID
 left join TreeTypes tt on tt.TreeTypeID=w.TreeTypeID
@@ -2585,21 +2585,21 @@ left join Gardens g on g.GardenID=z.GardenID where w.DeleteTime is null and w.Wo
         cmd.Parameters.AddWithValue("@Salary", Salary);
         cmd.Parameters.AddWithValue("@Notes", Notes);
         cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
-        try
-        {
+        //try
+        //{
             cmd.Connection.Open();
             cmd.ExecuteNonQuery();
             return Types.ProsesType.Succes;
-        }
-        catch (Exception ex)
-        {
-            return Types.ProsesType.Error;
-        }
-        finally
-        {
-            cmd.Connection.Close();
-            cmd.Dispose();
-        }
+        //}
+        //catch (Exception ex)
+        //{
+        //    return Types.ProsesType.Error;
+        //}
+        //finally
+        //{
+        //    cmd.Connection.Close();
+        //    cmd.Dispose();
+        //}
     }
 
     public Types.ProsesType OperationCadreUpdate(int WorkDoneID, int UserID, int CadreID, int WorkID, int LinesID, int WeatherConditionID, int TreeTypeID, int TariffAgeID, int TreeCount, float Salary, string Notes, string RegisterTime)

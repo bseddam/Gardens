@@ -21,15 +21,15 @@ public partial class OperationCadres : System.Web.UI.Page
         txtNotes.Text = "";
         txtsalary.Text = "";
         txtTreeCount.Text = "";
-        cmCadre.Items.Clear();
-        cmWork.Items.Clear();
-        cmGarden.Items.Clear();
-        cmZone.Items.Clear();
-        cmSektor.Items.Clear();
-        cmLine.Items.Clear();
-        cmWeather.Items.Clear();
-        cmTreeType.Items.Clear();
-        cmTreeAge.Items.Clear();
+        cmCadre.SelectedIndex = 0;
+        cmWork.SelectedIndex = 0;
+        cmGarden.SelectedIndex = 0;
+        cmZone.SelectedIndex = 0;
+        cmSektor.SelectedIndex = 0;
+        cmLine.SelectedIndex = 0;
+        cmWeather.SelectedIndex = 0;
+        cmTreeType.SelectedIndex = 0;
+        cmTreeAge.SelectedIndex = 0;
 
     }
     void _loadGridFromDb()

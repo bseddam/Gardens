@@ -57,7 +57,7 @@
                                                   <dx:GridViewDataColumn Caption="Bağ" FieldName="GardenName" VisibleIndex="1">
                                                     <EditFormSettings VisibleIndex="1" />
                                                 </dx:GridViewDataColumn>                                 
-                                                <dx:GridViewDataColumn Caption="Zona" FieldName="ZonaName" VisibleIndex="1">
+                                                <dx:GridViewDataColumn Caption="Zona" FieldName="ZoneName" VisibleIndex="1">
                                                     <EditFormSettings VisibleIndex="1" />
                                                 </dx:GridViewDataColumn>
                                                   <dx:GridViewDataColumn Caption="Sektor" FieldName="SectorName" VisibleIndex="1">
@@ -85,7 +85,7 @@
                                                     <EditFormSettings VisibleIndex="1" />
                                                 </dx:GridViewDataColumn>
                                                 
-                                                <dx:GridViewDataColumn Caption="Qeydiyyat tarixi" FieldName="RegstrTime" VisibleIndex="1">
+                                                <dx:GridViewDataColumn Caption="Qeydiyyat tarixi" FieldName="RegisterTime" VisibleIndex="1">
                                                     <EditFormSettings VisibleIndex="1" />
                                                 </dx:GridViewDataColumn>
 
