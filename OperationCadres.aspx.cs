@@ -18,14 +18,19 @@ public partial class OperationCadres : System.Web.UI.Page
     }
     void ClearComponents()
     {
-        //txtAddress.Text = "";
-        //txtEmail.Text = "";
-        //txtFname.Text = "";
-        //txtName.Text = "";
-        //txtPassportN.Text = "";
-        //txtPhoneNumber.Text = "";
-        //txtPIN.Text = "";
-        //txtSname.Text = "";
+        txtNotes.Text = "";
+        txtsalary.Text = "";
+        txtTreeCount.Text = "";
+        cmCadre.Items.Clear();
+        cmWork.Items.Clear();
+        cmGarden.Items.Clear();
+        cmZone.Items.Clear();
+        cmSektor.Items.Clear();
+        cmLine.Items.Clear();
+        cmWeather.Items.Clear();
+        cmTreeType.Items.Clear();
+        cmTreeAge.Items.Clear();
+
     }
     void _loadGridFromDb()
     {
@@ -66,7 +71,35 @@ public partial class OperationCadres : System.Web.UI.Page
         cmGarden.DataSource = dt3;
         cmGarden.DataBind();
         cmGarden.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        cmGarden.SelectedIndex = 0;   
+        cmGarden.SelectedIndex = 0;
+
+        cmWeather.Items.Clear();
+        DataTable dt4 = _db.GetWeatherCondition();
+        cmWeather.ValueField = "WeatherConditionID";
+        cmWeather.TextField = "WeatherConditionName1";
+        cmWeather.DataSource = dt4;
+        cmWeather.DataBind();
+        cmWeather.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmWeather.SelectedIndex = 0;
+
+        cmTreeType.Items.Clear();
+        DataTable dt5 = _db.GetTreeTypes();
+        cmTreeType.ValueField = "TreeTypeID";
+        cmTreeType.TextField = "TreeTypeName1";
+        cmTreeType.DataSource = dt5;
+        cmTreeType.DataBind();
+        cmTreeType.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmTreeType.SelectedIndex = 0;
+
+        cmTreeAge.Items.Clear();
+        DataTable dt6 = _db.GetTariffTreeAge();
+        cmTreeAge.ValueField = "TariffAgeID";
+        cmTreeAge.TextField = "Name1";
+        cmTreeAge.DataSource = dt6;
+        cmTreeAge.DataBind();
+        cmTreeAge.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmTreeAge.SelectedIndex = 0;
+
 
     }
     protected void lnkEdit_Click(object sender, EventArgs e)
@@ -74,39 +107,25 @@ public partial class OperationCadres : System.Web.UI.Page
         componentsload();
         int id = (sender as LinkButton).CommandArgument.ToParseInt();
         DataTable dt = _db.GetCadresById(id: id);
-        cmStructure.Value = dt.Rows[0]["StructureID"].ToParseStr();
-        cmPosition.Value = dt.Rows[0]["PositionID"].ToParseStr();
-        cmCardNumber.Value = dt.Rows[0]["CardID"].ToParseStr();
-        txtSname.Text = dt.Rows[0]["Sname"].ToParseStr();
-        txtName.Text = dt.Rows[0]["Name"].ToParseStr();
-        txtFname.Text = dt.Rows[0]["FName"].ToParseStr();
-        cmGender.Value = dt.Rows[0]["Gender"].ToParseStr();
-        txtPassportN.Text = dt.Rows[0]["PassportN"].ToParseStr();
-        txtPIN.Text = dt.Rows[0]["PIN"].ToParseStr();
-        txtAddress.Text = dt.Rows[0]["Address"].ToParseStr();
-        txtPhoneNumber.Text = dt.Rows[0]["PhoneNumber"].ToParseStr();
-        txtEmail.Text = dt.Rows[0]["Email"].ToParseStr();
+        cmCadre.Value = dt.Rows[0]["CadreID"].ToParseStr();
+        cmWork.Value = dt.Rows[0]["WorkID"].ToParseStr();
+        cmLine.Value = dt.Rows[0]["LinesID"].ToParseStr();
+        cmWeather.Value = dt.Rows[0]["WeatherConditionID"].ToParseStr();
+        cmTreeType.Value = dt.Rows[0]["TreeTypeID"].ToParseStr();
+        cmTreeAge.Value = dt.Rows[0]["TariffAgeID"].ToParseStr();
+        txtTreeCount.Text = dt.Rows[0]["TreeCount"].ToParseStr();
+        txtsalary.Text = dt.Rows[0]["Salary"].ToParseStr();
+        txtNotes.Text = dt.Rows[0]["Notes"].ToParseStr();
         DateTime datevalue;
-        if (DateTime.TryParse(dt.Rows[0]["JobEntryDate"].ToParseStr(), out datevalue))
+        if (DateTime.TryParse(dt.Rows[0]["RegisterTime"].ToParseStr(), out datevalue))
         {
-            dtJobEntryDate.Text = DateTime.Parse(dt.Rows[0]["JobEntryDate"].ToParseStr()).ToString("dd.MM.yyyy");
+             dtRegstrDate.Text = DateTime.Parse(dt.Rows[0]["RegisterTime"].ToParseStr()).ToString("dd.MM.yyyy");
         }
         else
         {
-            dtJobEntryDate.Text = "";
+            dtRegstrDate.Text = "";
         }
-        DateTime datevalue1;
-        if (DateTime.TryParse(dt.Rows[0]["JobExitDate"].ToParseStr(), out datevalue1))
-        {
-            dtJobExitDate.Text = DateTime.Parse(dt.Rows[0]["JobExitDate"].ToParseStr()).ToString("dd.MM.yyyy");
-        }
-        else
-        {
-            dtJobExitDate.Text = "";
-        }
-        cmStatusJobName.Value = dt.Rows[0]["StatusJob"].ToParseStr();
-        Session["imgpath"] = dt.Rows[0]["Photo"].ToParseStr();
-        imgUser.ImageUrl = @"imgCadres\" + dt.Rows[0]["Photo"].ToParseStr();
+        
         DateTime datevalue3;
         if (DateTime.TryParse(dt.Rows[0]["RegstrDate"].ToParseStr(), out datevalue3))
         {
@@ -117,9 +136,9 @@ public partial class OperationCadres : System.Web.UI.Page
             dtRegstrDate.Text = "";
         }
 
-        //btnSave.CommandName = "update";
-        //btnSave.CommandArgument = id.ToString();
-        //popupEdit.ShowOnPageLoad = true;
+        btnSave.CommandName = "update";
+        btnSave.CommandArgument = id.ToString();
+        popupEdit.ShowOnPageLoad = true;
     }
     protected void lnkDelete_Click(object sender, EventArgs e)
     {
@@ -143,85 +162,50 @@ public partial class OperationCadres : System.Web.UI.Page
     }
     protected void btntesdiq_Click(object sender, EventArgs e)
     {
-        //lblPopError.Text = "";
-        //Types.ProsesType val = Types.ProsesType.Error;
-        //if (Session["UserID"] != null)
-        //{
-        //    Session["UserID"] = 1;
-        //}
+        lblPopError.Text = "";
+        Types.ProsesType val = Types.ProsesType.Error;
+        if (Session["UserID"] != null)
+        {
+            Session["UserID"] = 1;
+        }
 
-        //if (FileUpload1.HasFile)
-        //{
-        //    Session["imgpath"] = DateTime.Now.ToString("yyyy_MM_dd_hh_mm_sss") + FileUpload1.FileName;
-        //}
+        if (btnSave.CommandName == "insert")
+        {
+            val = _db.OperationCadreInsert(UserID: Session["UserID"].ToString().ToParseInt(),
+                CadreID: cmCadre.Value.ToParseInt(),
+                WorkID: cmWork.Value.ToParseInt(),
+                LinesID: cmLine.Value.ToParseInt(),
+                WeatherConditionID: cmWeather.Value.ToParseInt(),
+                TreeTypeID: cmTreeType.Value.ToParseInt(),
+                TariffAgeID: cmTreeAge.Value.ToParseInt(),
+                TreeCount: txtTreeCount.Text.ToParseInt(),
+                Salary: txtsalary.Text.ToParseInt(),
+                Notes: txtNotes.Text.ToParseStr(),
+                RegisterTime: dtRegstrDate.Text.ToParseStr()
+                );            
+        }
+        else
+        {
 
-        //if (btnSave.CommandName == "insert")
-        //{
+            val = _db.OperationCadreUpdate(WorkDoneID: btnSave.CommandArgument.ToParseInt(),
+                UserID: Session["UserID"].ToString().ToParseInt(),
+                CadreID: cmCadre.Value.ToParseInt(),
+                WorkID: cmWork.Value.ToParseInt(),
+                LinesID: cmLine.Value.ToParseInt(),
+                WeatherConditionID: cmWeather.Value.ToParseInt(),
+                TreeTypeID: cmTreeType.Value.ToParseInt(),
+                TariffAgeID: cmTreeAge.Value.ToParseInt(),
+                TreeCount: txtTreeCount.Text.ToParseInt(),
+                Salary: txtsalary.Text.ToParseInt(),
+                Notes: txtNotes.Text.ToParseStr(),
+                RegisterTime: dtRegstrDate.Text.ToParseStr());            
+        }
 
-        //    val = _db.CadresInsert(UserID: Session["UserID"].ToString().ToParseInt(),
-        //        StructureID: cmStructure.Value.ToParseInt(),
-        //        PositionID: cmPosition.Value.ToParseInt(),
-        //        CardID: cmCardNumber.Value.ToParseInt(),
-        //        Sname: txtSname.Text.ToParseStr(),
-        //        Name: txtName.Text.ToParseStr(),
-        //        FName: txtFname.Text.ToParseStr(),
-        //        Gender: cmGender.Value.ToParseInt(),
-        //        PassportN: txtPassportN.Text.ToParseStr(),
-        //        PIN: txtPIN.Text.ToParseStr(),
-        //        PhoneNumber: txtPhoneNumber.Text.ToParseStr(),
-        //        Photo: Session["imgpath"].ToString(),
-        //        Email: txtEmail.Text.ToParseStr(),
-        //        Address: txtAddress.Text.ToParseStr(),
-        //        JobEntryDate: dtJobEntryDate.Text.ToParseStr(),
-        //        JobExitDate: dtJobExitDate.Text.ToParseStr(),
-        //        StatusJob: cmStatusJobName.Value.ToParseInt(),
-        //        RegstrDate: dtRegstrDate.Text.ToParseStr()
-        //        );
-        //    if (val == Types.ProsesType.Succes)
-        //    {
-        //        if (FileUpload1.HasFile)
-        //        {
-        //            FileUpload1.SaveAs(Server.MapPath("/imgcadres/" + Session["imgpath"].ToString()));
-        //        }
-        //    }
-
-        //}
-        //else
-        //{
-
-        //    val = _db.CadresUpdate(CadreID: btnSave.CommandArgument.ToParseInt(),
-        //        UserID: Session["UserID"].ToString().ToParseInt(),
-        //        StructureID: cmStructure.Value.ToParseInt(),
-        //        PositionID: cmPosition.Value.ToParseInt(),
-        //        CardID: cmCardNumber.Value.ToParseInt(),
-        //        Sname: txtSname.Text.ToParseStr(),
-        //        Name: txtName.Text.ToParseStr(),
-        //        FName: txtFname.Text.ToParseStr(),
-        //        Gender: cmGender.Value.ToParseInt(),
-        //        PassportN: txtPassportN.Text.ToParseStr(),
-        //        PIN: txtPIN.Text.ToParseStr(),
-        //        PhoneNumber: txtPhoneNumber.Text.ToParseStr(),
-        //        Photo: Session["imgpath"].ToString(),
-        //        Email: txtEmail.Text.ToParseStr(),
-        //        Address: txtAddress.Text.ToParseStr(),
-        //        JobEntryDate: dtJobEntryDate.Text.ToParseStr(),
-        //        JobExitDate: dtJobExitDate.Text.ToParseStr(),
-        //        StatusJob: cmStatusJobName.Value.ToParseInt(),
-        //        RegstrDate: dtRegstrDate.Text.ToParseStr());
-        //    if (val == Types.ProsesType.Succes)
-        //    {
-        //        if (FileUpload1.HasFile)
-        //        {
-        //            FileUpload1.SaveAs(Server.MapPath("/imgcadres/" + Session["imgpath"].ToString()));
-        //        }
-        //    }
-        //}
-
-        //if (val == Types.ProsesType.Error)
-        //{
-        //    lblPopError.Text = "XƏTA! Yadda saxlamaq mümkün olmadı.";
-        //    return;
-        //}
+        if (val == Types.ProsesType.Error)
+        {
+            lblPopError.Text = "XƏTA! Yadda saxlamaq mümkün olmadı.";
+            return;
+        }
 
         _loadGridFromDb();
         popupEdit.ShowOnPageLoad = false;

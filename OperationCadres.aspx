@@ -66,6 +66,15 @@
                                                   <dx:GridViewDataColumn Caption="Sıra" FieldName="LineName" VisibleIndex="1">
                                                     <EditFormSettings VisibleIndex="1" />
                                                 </dx:GridViewDataColumn>
+                                                <dx:GridViewDataColumn Caption="Hava şəraiti" FieldName="WeatherConditionName1" VisibleIndex="1">
+                                                    <EditFormSettings VisibleIndex="1" />
+                                                </dx:GridViewDataColumn>
+                                                <dx:GridViewDataColumn Caption="Ağacın tipi" FieldName="TreeTypeName1" VisibleIndex="1">
+                                                    <EditFormSettings VisibleIndex="1" />
+                                                </dx:GridViewDataColumn>
+                                                <dx:GridViewDataColumn Caption="Ağacın yaşı" FieldName="TreeAgeName1" VisibleIndex="1">
+                                                    <EditFormSettings VisibleIndex="1" />
+                                                </dx:GridViewDataColumn>
                                                 <dx:GridViewDataColumn Caption="Ağac sayı" FieldName="TreeCount" VisibleIndex="1">
                                                     <EditFormSettings VisibleIndex="1" />
                                                 </dx:GridViewDataColumn>
@@ -102,19 +111,19 @@
                                             AllowResize="true"
                                             Modal="true"
                                             DragElement="Header"
-                                            Width="600"
+                                            Width="700"
                                             HeaderText="Redaktə"
                                             PopupHorizontalAlign="WindowCenter"
                                             PopupVerticalAlign="WindowCenter"
-                                            Height="500" 
+                                            Height="600" 
                                           
                                             ScrollBars="Vertical">
                                             <ContentCollection>
                                                 <dx:PopupControlContentControl>
                                                     <div class="container">
                                                         <div class="row mb-2">
-                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">İşçi</label>
-                                                            <div class="col-sm-7">
+                                                            <label for="exampleInputUsername3" class="col-sm-3 col-form-label">İşçi</label>
+                                                            <div class="col-sm-9">
                                                                 <dx:ASPxComboBox ID="cmCadre" 
                                                                     runat="server"
                                                                     Width="100%" Height="30px">
@@ -123,8 +132,8 @@
                                                             </div>
                                                         </div>
                                                         <div class="row mb-2">
-                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">İş</label>
-                                                            <div class="col-sm-7">
+                                                            <label for="exampleInputUsername3" class="col-sm-3 col-form-label">İş</label>
+                                                            <div class="col-sm-9">
                                                                 <dx:ASPxComboBox ID="cmWork" 
                                                                     runat="server"
                                                                     Width="100%" Height="30px">
@@ -133,8 +142,8 @@
                                                             </div>
                                                         </div>
                                                         <div class="row mb-2">
-                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Bağ</label>
-                                                            <div class="col-sm-7">
+                                                            <label for="exampleInputUsername3" class="col-sm-3 col-form-label">Bağ</label>
+                                                            <div class="col-sm-9">
                                                                 <dx:ASPxComboBox ID="cmGarden" 
                                                                     runat="server"
                                                                     Width="100%" Height="30px" OnSelectedIndexChanged="cmGarden_SelectedIndexChanged" AutoPostBack="true">
@@ -143,8 +152,8 @@
                                                             </div>
                                                         </div> 
                                                         <div class="row mb-2">
-                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Zona</label>
-                                                            <div class="col-sm-7">
+                                                            <label for="exampleInputUsername3" class="col-sm-3 col-form-label">Zona</label>
+                                                            <div class="col-sm-9">
                                                                 <dx:ASPxComboBox ID="cmZone" 
                                                                     runat="server"
                                                                     Width="100%" Height="30px" OnSelectedIndexChanged="cmZone_SelectedIndexChanged" AutoPostBack="true">
@@ -152,8 +161,8 @@
                                                             </div>
                                                         </div> 
                                                         <div class="row mb-2">
-                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Sektor</label>
-                                                            <div class="col-sm-7">
+                                                            <label for="exampleInputUsername3" class="col-sm-3 col-form-label">Sektor</label>
+                                                            <div class="col-sm-9">
                                                                 <dx:ASPxComboBox ID="cmSektor" 
                                                                     runat="server"
                                                                     Width="100%" Height="30px" OnSelectedIndexChanged="cmSektor_SelectedIndexChanged" AutoPostBack="true">
@@ -161,8 +170,8 @@
                                                             </div>
                                                         </div>
                                                         <div class="row mb-2">
-                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Sıra</label>
-                                                            <div class="col-sm-7">
+                                                            <label for="exampleInputUsername3" class="col-sm-3 col-form-label">Sıra</label>
+                                                            <div class="col-sm-9">
                                                                 <dx:ASPxComboBox ID="cmLine" 
                                                                     runat="server"
                                                                     Width="100%" Height="30px">
@@ -170,8 +179,8 @@
                                                             </div>
                                                         </div>
                                                         <div class="row mb-2">
-                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Hava şəraiti</label>
-                                                            <div class="col-sm-7">
+                                                            <label for="exampleInputUsername3" class="col-sm-3 col-form-label">Hava şəraiti</label>
+                                                            <div class="col-sm-9">
                                                                 <dx:ASPxComboBox ID="cmWeather" 
                                                                     runat="server"
                                                                     Width="100%" Height="30px">
@@ -179,8 +188,8 @@
                                                             </div>
                                                         </div>
                                                         <div class="row mb-2">
-                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ağaçın tipi</label>
-                                                            <div class="col-sm-7">
+                                                            <label for="exampleInputUsername3" class="col-sm-3 col-form-label">Ağaçın tipi</label>
+                                                            <div class="col-sm-9">
                                                                 <dx:ASPxComboBox ID="cmTreeType" 
                                                                     runat="server"
                                                                     Width="100%" Height="30px">
@@ -188,8 +197,8 @@
                                                             </div>
                                                         </div>
                                                         <div class="row mb-2">
-                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ağacın yaşı</label>
-                                                            <div class="col-sm-7">
+                                                            <label for="exampleInputUsername3" class="col-sm-3 col-form-label">Ağacın yaşı</label>
+                                                            <div class="col-sm-9">
                                                                 <dx:ASPxComboBox ID="cmTreeAge" 
                                                                     runat="server"
                                                                     Width="100%" Height="30px">
@@ -197,32 +206,35 @@
                                                             </div>
                                                         </div>
                                                         <div class="row mb-2">
-                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ağac sayı</label>
-                                                            <div class="col-sm-7">
+                                                            <label for="exampleInputUsername3" class="col-sm-3 col-form-label">Ağac sayı</label>
+                                                            <div class="col-sm-9">
                                                                 <asp:TextBox ID="txtTreeCount" class="form-control mb-0 mt-0" runat="server" placeholder="Sayı daxil edin...">
                                                                 </asp:TextBox>
                                                             </div>
                                                         </div>
                                                          <div class="row mb-2">
-                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Əmək haqqı</label>
-                                                            <div class="col-sm-7">
+                                                            <label for="exampleInputUsername3" class="col-sm-3 col-form-label">Əmək haqqı</label>
+                                                            <div class="col-sm-9">
                                                                 <asp:TextBox ID="txtsalary" class="form-control mb-0 mt-0" runat="server" placeholder="Rəqəm daxil edin...">
                                                                 </asp:TextBox>
                                                             </div>
                                                         </div>
                                                         <div class="row mb-2">
-                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Qeyd</label>
-                                                            <div class="col-sm-7">
+                                                            <label for="exampleInputUsername3" class="col-sm-3 col-form-label">Qeyd</label>
+                                                            <div class="col-sm-9">
                                                                 <asp:TextBox ID="txtNotes" class="form-control mb-0 mt-0" runat="server" placeholder="Mətni daxil edin..." TextMode="MultiLine">
                                                                 </asp:TextBox>
                                                             </div>
                                                         </div>
                                                         <div class="row  mb-2">
-                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Qeydiyyat tarixi</label>
-                                                            <div class="col-sm-7">
+                                                            <label for="exampleInputUsername3" class="col-sm-3 col-form-label">Qeydiyyat tarixi</label>
+                                                            <div class="col-sm-9">
                                                                 <dx:ASPxDateEdit ID="dtRegstrDate" runat="server" CssClass="form-control"></dx:ASPxDateEdit>
                                                             </div>
                                                         </div>
+                                                         <div>
+                                            <asp:Label Text="" ForeColor="Red" ID="lblPopError" runat="server" />
+                                        </div>
                                                         <asp:Button ID="btnSave" runat="server"  CssClass="btn btn-success mr-2" Text="Yadda saxla" OnClick="btntesdiq_Click" ValidationGroup="qrup1" />
                                                         <asp:Button ID="btnCancel" runat="server" CssClass="btn btn-light" Text="Ləğv et" OnClick="btnCancel_Click" />
                                                     </div>
