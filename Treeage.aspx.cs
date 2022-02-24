@@ -12,44 +12,44 @@ public partial class Treeage : System.Web.UI.Page
     Methods _db = new Methods();
     protected void Page_Load(object sender, EventArgs e)
     {
-        //_loadGridFromDb();
+        _loadGridFromDb();
         if (IsPostBack) return;
     }
     void ClearComponents()
     {
-        txttreecount.Text = "";
+        txtFirstAge.Text = "";
+        txtLastAge.Text = "";
         txtcoefficient.Text = "";
         lblPopError.Text = "";
     }
-    //void _loadGridFromDb()
-    //{
-    //    DataTable dt = _db.GetTreeTypes();
-    //    if (dt != null)
-    //    {
-    //        Grid.SettingsPager.Summary.Text = "Cari səhifə: {0}, Ümumi səhifələrin sayı: {1}, Tapılmış məlumatların sayı: {2}";
-    //        Grid.DataSource = dt;
-    //        Grid.DataBind();
-    //    }
-    //}
+    void _loadGridFromDb()
+    {
+        DataTable dt = _db.GetTariffTreeAge();
+        if (dt != null)
+        {
+            Grid.SettingsPager.Summary.Text = "Cari səhifə: {0}, Ümumi səhifələrin sayı: {1}, Tapılmış məlumatların sayı: {2}";
+            Grid.DataSource = dt;
+            Grid.DataBind();
+        }
+    }
 
 
     protected void lnkEdit_Click(object sender, EventArgs e)
     {
-
-        //int id = (sender as LinkButton).CommandArgument.ToParseInt();
-        //DataTable dt = _db.GetTreeTypesByID(id: id);
-
-        //txttreecount.Text = dt.Rows[0]["TreeTypeName"].ToParseStr();
-
-        //btnSave.CommandName = "update";
-        //btnSave.CommandArgument = id.ToString();
-        //popupEdit.ShowOnPageLoad = true;
+        int id = (sender as LinkButton).CommandArgument.ToParseInt();
+        DataTable dt = _db.GetTariffTreeAgeByID(id: id);
+        txtFirstAge.Text = dt.Rows[0]["FirstAge"].ToParseStr();
+        txtLastAge.Text = dt.Rows[0]["LastAge"].ToParseStr();
+        txtcoefficient.Text = dt.Rows[0]["Coefficient"].ToParseStr();
+        btnSave.CommandName = "update";
+        btnSave.CommandArgument = id.ToString();
+        popupEdit.ShowOnPageLoad = true;
     }
     protected void lnkDelete_Click(object sender, EventArgs e)
     {
-        //int _id = (sender as LinkButton).CommandArgument.ToParseInt();
-        //Types.ProsesType val = _db.DeleteTreeType(id: _id);
-        //_loadGridFromDb();
+        int _id = (sender as LinkButton).CommandArgument.ToParseInt();
+        Types.ProsesType val = _db.DeleteTariffTreeAge(id: _id);
+        _loadGridFromDb();
     }
     protected void LnkPnlMenu_Click(object sender, EventArgs e)
     {
@@ -65,30 +65,33 @@ public partial class Treeage : System.Web.UI.Page
     }
     protected void btntesdiq_Click(object sender, EventArgs e)
     {
-        //lblPopError.Text = "";
-        //Types.ProsesType val = Types.ProsesType.Error;
-        //if (btnSave.CommandName == "insert")
-        //{
-        //    val = _db.TreeTypeInsert(
-        //        TreeTypeName: txttreecount.Text.ToParseStr(),
-        //        Coefficient: txtcoefficient.Text.ToParseStr()
-        //        );
-        //}
-        //else
-        //{
-        //    val = _db.TreeTypeUpdate(TreeTypeID: btnSave.CommandArgument.ToParseInt(),
-        //        TreeTypeName: txttreecount.Text.ToParseStr(),
-        //        Coefficient: txtcoefficient.Text.ToParseStr());
-        //}
+        lblPopError.Text = "";
+        Types.ProsesType val = Types.ProsesType.Error;
+        if (btnSave.CommandName == "insert")
+        {
+            val = _db.TariffTreeAgeInsert(
+                FirstAge: txtFirstAge.Text.ToParseInt(),
+                LastAge: txtLastAge.Text.ToParseInt(),
+                Coefficient: txtcoefficient.Text.ToParseStr()
+                );
+        }
+        else
+        {
+            val = _db.TariffTreeAgeUpdate(TariffAgeID: btnSave.CommandArgument.ToParseInt(),
+                FirstAge: txtFirstAge.Text.ToParseInt(),
+                LastAge: txtLastAge.Text.ToParseInt(),
+                Coefficient: txtcoefficient.Text.ToParseStr()
+                );
+        }
 
-        //if (val == Types.ProsesType.Error)
-        //{
-        //    lblPopError.Text = "XƏTA! Yadda saxlamaq mümkün olmadı.";
-        //    return;
-        //}
+        if (val == Types.ProsesType.Error)
+        {
+            lblPopError.Text = "XƏTA! Yadda saxlamaq mümkün olmadı.";
+            return;
+        }
 
-        //_loadGridFromDb();
-        //popupEdit.ShowOnPageLoad = false;
+        _loadGridFromDb();
+        popupEdit.ShowOnPageLoad = false;
     }
     protected void btnCancel_Click(object sender, EventArgs e)
     {

@@ -108,16 +108,16 @@
                                             <div class="col-sm-7">
                                                 <dx:ASPxComboBox ID="cmbgarden" runat="server" Width="100%" Height="30px">
                                                 </dx:ASPxComboBox>
-                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator21" runat="server" ControlToValidate="cmbgarden" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
+                                               
                                             </div>
                                         </div>
 
                                         <div class="row mb-2">
                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Kadrlar</label>
                                             <div class="col-sm-7">
-                                                <dx:ASPxComboBox ID="cmbkadrlar" runat="server" Width="100%" Height="30px">
+                                                <dx:ASPxComboBox ID="cmbcadres" runat="server" Width="100%" Height="30px">
                                                 </dx:ASPxComboBox>
-                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="cmbgarden" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
+                                                
                                             </div>
                                         </div>
 
