@@ -2526,10 +2526,6 @@ left join CadreType j on j.CadreTypeID=c.CadreTypeID where c.DeleteTime is null"
 
 
 
-
-
-
-    //Kadrlar uzre emeliyyat
     //Kadrlar uzre emeliyyat
     public DataTable GetOperationCadre()
     {
@@ -2646,6 +2642,145 @@ where w.DeleteTime is null and w.WorkDoneID=@WorkDoneID", SqlConn);
     }
 
     public Types.ProsesType OperationCadreUpdate(int WorkDoneID, int UserID, int CadreID, int WorkID, int LinesID, int WeatherConditionID, int TreeTypeID, int TariffAgeID, int TreeCount, float Salary, string Notes, string RegisterTime)
+    {
+        SqlCommand cmd = new SqlCommand(@"update WorkDone set UserID=@UserID, CadreID=@CadreID,WorkID=@WorkID,LinesID=@LinesID,WeatherConditionID=@WeatherConditionID,TreeTypeID=@TreeTypeID,TariffAgeID=@TariffAgeID,TreeCount=@TreeCount,Salary=@Salary,Notes=@Notes,RegisterTime=@RegisterTime where WorkDoneID=@WorkDoneID", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", UserID);
+        cmd.Parameters.AddWithValue("@CadreID", CadreID);
+        cmd.Parameters.AddWithValue("@WorkID", WorkID);
+        cmd.Parameters.AddWithValue("@LinesID", LinesID);
+        cmd.Parameters.AddWithValue("@WeatherConditionID", WeatherConditionID);
+        cmd.Parameters.AddWithValue("@TreeTypeID", TreeTypeID);
+        cmd.Parameters.AddWithValue("@TariffAgeID", TariffAgeID);
+        cmd.Parameters.AddWithValue("@TreeCount", TreeCount);
+        cmd.Parameters.AddWithValue("@Salary", Salary);
+        cmd.Parameters.AddWithValue("@Notes", Notes);
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        cmd.Parameters.AddWithValue("@WorkDoneID", WorkDoneID);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+
+    //Texnikilarin gorduyu isler uzre emeliyyat
+    public DataTable GetOperationTechniqueWorkDone()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select ROW_NUMBER() over( order by t.TechniquesWorkDoneID) sn,t.*,c.CompanyName,sc.SectorID,sc.SectorName,
+z.ZoneID,z.ZoneName,g.GardenID,g.GardenName,tc.TechniqueID,tc.TechniqueID,tc.TechniquesName+' '+Birka as TechniquesName
+from TechniquesWorkDone t
+left join Companies c on c.CompanyID=t.CompanyID
+left join Works s on s.WorkID=t.WorkID
+left join Lines l on l.LineID=t.LineID
+left join Sectors sc on sc.SectorID=l.SectorID
+left join Zones z on z.ZoneID=sc.ZoneID
+left join Gardens g on g.GardenID=z.GardenID 
+left join Techniques tc on tc.TechniqueID=t.TechniqueID
+where t.DeleteTime is null ", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+    public Types.ProsesType DeleteOperationTechniqueWorkDone(int id)
+    {
+        SqlCommand cmd = new SqlCommand(@"Update TechniquesWorkDone set DeleteTime=GetDate() where TechniquesWorkDoneID=@id ", SqlConn);
+        cmd.Parameters.AddWithValue("@id", id);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+    public DataTable GetOperationTechniqueWorkDoneByID(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select ROW_NUMBER() over( order by t.TechniquesWorkDoneID) sn,t.*,c.CompanyName,sc.SectorID,sc.SectorName,
+z.ZoneID,z.ZoneName,g.GardenID,g.GardenName,tc.TechniqueID,tc.TechniqueID,tc.TechniquesName+' '+Birka as TechniquesName
+from TechniquesWorkDone t
+left join Companies c on c.CompanyID=t.CompanyID
+left join Works s on s.WorkID=t.WorkID
+left join Lines l on l.LineID=t.LineID
+left join Sectors sc on sc.SectorID=l.SectorID
+left join Zones z on z.ZoneID=sc.ZoneID
+left join Gardens g on g.GardenID=z.GardenID 
+left join Techniques tc on tc.TechniqueID=t.TechniqueID
+where t.DeleteTime is null and t.TechniquesWorkDoneID=@TechniquesWorkDoneID", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("@TechniquesWorkDoneID", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+    public Types.ProsesType OperationTechniqueWorkDoneInsert(int UserID, int CadreID, int WorkID, int LinesID, int WeatherConditionID, int TreeTypeID, int TariffAgeID, int TreeCount, float Salary, string Notes, string RegisterTime)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"insert into WorkDone (UserID,CadreID,WorkID,LinesID,WeatherConditionID,TreeTypeID,TariffAgeID,TreeCount,Salary,Notes,RegisterTime)
+                                            Values(@UserID, @CadreID,@WorkID,@LinesID,@WeatherConditionID,@TreeTypeID,@TariffAgeID,@TreeCount,@Salary,@Notes,@RegisterTime)", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", UserID);
+        cmd.Parameters.AddWithValue("@CadreID", CadreID);
+        cmd.Parameters.AddWithValue("@WorkID", WorkID);
+        cmd.Parameters.AddWithValue("@LinesID", LinesID);
+        cmd.Parameters.AddWithValue("@WeatherConditionID", WeatherConditionID);
+        cmd.Parameters.AddWithValue("@TreeTypeID", TreeTypeID);
+        cmd.Parameters.AddWithValue("@TariffAgeID", TariffAgeID);
+        cmd.Parameters.AddWithValue("@TreeCount", TreeCount);
+        cmd.Parameters.AddWithValue("@Salary", Salary);
+        cmd.Parameters.AddWithValue("@Notes", Notes);
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+    public Types.ProsesType OperationTechniqueWorkDoneUpdate(int WorkDoneID, int UserID, int CadreID, int WorkID, int LinesID, int WeatherConditionID, int TreeTypeID, int TariffAgeID, int TreeCount, float Salary, string Notes, string RegisterTime)
     {
         SqlCommand cmd = new SqlCommand(@"update WorkDone set UserID=@UserID, CadreID=@CadreID,WorkID=@WorkID,LinesID=@LinesID,WeatherConditionID=@WeatherConditionID,TreeTypeID=@TreeTypeID,TariffAgeID=@TariffAgeID,TreeCount=@TreeCount,Salary=@Salary,Notes=@Notes,RegisterTime=@RegisterTime where WorkDoneID=@WorkDoneID", SqlConn);
         cmd.Parameters.AddWithValue("@UserID", UserID);
@@ -2956,17 +3091,6 @@ UserID=@UserID where TariffAgeID=@TariffAgeID;", SqlConn);
             cmd.Dispose();
         }
     }
-
-
-
-
-
-
-
-
-
-
-
 
     public Types.ProsesType WeatherConditionInsert(string WeatherConditionName, string Coefficient)
     {
@@ -3398,5 +3522,7 @@ m.DeleteTime is null and u.DeleteTime is null and m.ModelID=@id", SqlConn);
             return null;
         }
     }
+
+
 
 }

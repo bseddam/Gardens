@@ -28,11 +28,11 @@ public partial class OperationTechniqueServices : System.Web.UI.Page
     void _loadGridFromDb()
     {
 
-        //DataTable DTOperationWateringSystems = _db.GetOperationWateringSystems();
-        //if (DTOperationWateringSystems != null)
+        //DataTable DTOperationTechniqueServices = _db.GetOperationTechniquesse();
+        //if (DTOperationTechniqueServices != null)
         //{
         //    Grid.SettingsPager.Summary.Text = "Cari səhifə: {0}, Ümumi səhifələrin sayı: {1}, Tapılmış məlumatların sayı: {2}";
-        //    Grid.DataSource = DTOperationWateringSystems;
+        //    Grid.DataSource = DTOperationTechniqueServices;
         //    Grid.DataBind();
         //}
     }
