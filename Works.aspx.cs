@@ -50,7 +50,7 @@ public partial class Works : System.Web.UI.Page
         componentsload();
         int id = (sender as LinkButton).CommandArgument.ToParseInt();
         DataTable dt = _db.GetWorkById(id: id);
-
+        txtprice.Text = dt.Rows[0]["Price"].ToParseStr();
         txtworkname.Text = dt.Rows[0]["WorkName"].ToParseStr();
         ddlworktype.SelectedValue = dt.Rows[0]["WorkTypeID"].ToParseStr();
         btnSave.CommandName = "update";
