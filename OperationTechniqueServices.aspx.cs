@@ -242,4 +242,14 @@ public partial class OperationTechniqueServices : System.Web.UI.Page
     {
         popupEdit.ShowOnPageLoad = false;
     }
+
+    protected void cmbbrand_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+    }
+
+    protected void cmbmodel_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+    }
 }

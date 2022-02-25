@@ -38,7 +38,7 @@ public partial class TreeTypes : System.Web.UI.Page
 
         int id = (sender as LinkButton).CommandArgument.ToParseInt();
         DataTable dt = _db.GetTreeTypesByID(id: id);
-
+        txtcoefficient.Text = dt.Rows[0]["Coefficient"].ToParseStr();
         txttreetypename.Text = dt.Rows[0]["TreeTypeName"].ToParseStr();
 
         btnSave.CommandName = "update";
