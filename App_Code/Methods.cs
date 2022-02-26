@@ -1631,6 +1631,28 @@ where w.DeleteTime is null and wt.DeleteTime is null and w.WorkID=@id", SqlConn)
             return null;
         }
     }
+
+
+    public DataTable GetWorkByWorkTypeId(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by WorkID desc) sn,
+[WorkID],w.[RegisterTime],w.[WorkTypeID],wt.WorkTypeName,[WorkName],Price
+FROM Works w inner join WorkTypes wt on w.WorkTypeID=wt.WorkTypeID 
+where w.DeleteTime is null and wt.DeleteTime is null and w.WorkTypeID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+
     public Types.ProsesType WorkInsert(int WorkTypeID, string WorkName, string Price)
     {
         SqlCommand cmd = new SqlCommand(@"insert into Works 

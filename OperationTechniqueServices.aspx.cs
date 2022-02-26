@@ -1,5 +1,7 @@
-﻿using System;
+﻿using DevExpress.Web;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -38,49 +40,109 @@ public partial class OperationTechniqueServices : System.Web.UI.Page
     }
     void componentsload()
     {
-        //cmCadre.Items.Clear();
-        //DataTable dt1 = _db.GetSections(typeid: 11);
-        //cmCadre.ValueField = "CadreID";
-        //cmCadre.TextField = "Name";
-        //cmCadre.DataSource = dt1;
-        //cmCadre.DataBind();
-        //cmCadre.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        //cmCadre.SelectedIndex = 0;
-
-        //DataTable dt2 = _db.GetSections(typeid: 6);
-        //cmPosition.ValueField = "PositionID";
-        //cmPosition.TextField = "PositionName";
-        //cmPosition.DataSource = dt2;
-        //cmPosition.DataBind();
-        //cmPosition.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        //cmPosition.SelectedIndex = 0;
-
-        //DataTable dt3 = _db.GetSections(typeid: 7);
-        //cmCardNumber.ValueField = "CardID";
-        //cmCardNumber.TextField = "CardNumber";
-        //cmCardNumber.DataSource = dt3;
-        //cmCardNumber.DataBind();
-        //cmCardNumber.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        //cmCardNumber.SelectedIndex = 0;
-
-        //DataTable dt4 = _db.GetSections(typeid: 8);
-        //cmStatusJobName.ValueField = "StatusJobID";
-        //cmStatusJobName.TextField = "StatusJobName";
-        //cmStatusJobName.DataSource = dt4;
-        //cmStatusJobName.DataBind();
-        //cmStatusJobName.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        //cmStatusJobName.SelectedIndex = 0;
-
-        //DataTable dt5 = _db.GetSections(typeid: 9);
-        //cmGender.ValueField = "GenderID";
-        //cmGender.TextField = "GenderName";
-        //cmGender.DataSource = dt5;
-        //cmGender.DataBind();
-        //cmGender.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        //cmGender.SelectedIndex = 0;
+        DataTable dt2x = _db.GetProductTypes();
+        cmbproducttype.ValueField = "ProductTypeID";
+        cmbproducttype.TextField = "ProductTypeName";
+        cmbproducttype.DataSource = dt2x;
+        cmbproducttype.DataBind();
+        cmbproducttype.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmbproducttype.SelectedIndex = 0;
 
 
+        DataTable dt1 = _db.GetGardens();
+        cmbGarden.ValueField = "GardenID";
+        cmbGarden.TextField = "GardenName";
+        cmbGarden.DataSource = dt1;
+        cmbGarden.DataBind();
+        cmbGarden.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmbGarden.SelectedIndex = 0;
+
+        DataTable dt3 = _db.GetUnitMeasurements();
+        cmbUnitMeasurement.ValueField = "UnitMeasurementID";
+        cmbUnitMeasurement.TextField = "UnitMeasurementName";
+        cmbUnitMeasurement.DataSource = dt3;
+        cmbUnitMeasurement.DataBind();
+        cmbUnitMeasurement.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmbUnitMeasurement.SelectedIndex = 0;
+
+
+        DataTable dt2 = _db.GetWorkByWorkTypeId(5);
+        cmbWork.ValueField = "WorkID";
+        cmbWork.TextField = "WorkName";
+        cmbWork.DataSource = dt2;
+        cmbWork.DataBind();
+        cmbWork.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmbWork.SelectedIndex = 0;
+
+        DataTable dt6 = _db.GetBrandsByProductTypeID(4);
+        cmbbrand.ValueField = "BrandID";
+        cmbbrand.TextField = "BrandName";
+        cmbbrand.DataSource = dt6;
+        cmbbrand.DataBind();
+        cmbbrand.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmbbrand.SelectedIndex = 0;
+
+
+        brandsparepartscomponentload();
+
+        modeltechniquecomponentload();
+        techniquecomponentload();
+
+        modelsparepartscomponentload();
+        sparepartscomponentload();
     }
+    void brandsparepartscomponentload()
+    {
+        DataTable dt7 = _db.GetBrandsByProductTypeID(cmbproducttype.Value.ToParseInt());
+        cmbbrandspareparts.ValueField = "BrandID";
+        cmbbrandspareparts.TextField = "BrandName";
+        cmbbrandspareparts.DataSource = dt7;
+        cmbbrandspareparts.DataBind();
+        cmbbrandspareparts.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmbbrandspareparts.SelectedIndex = 0;
+    }
+    void modeltechniquecomponentload()
+    {
+        DataTable dt6 = _db.GetModelsByBrandID(cmbbrand.Value.ToParseInt());
+        cmbmodel.ValueField = "ModelID";
+        cmbmodel.TextField = "ModelName";
+        cmbmodel.DataSource = dt6;
+        cmbmodel.DataBind();
+        cmbmodel.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmbmodel.SelectedIndex = 0;
+    }
+    void modelsparepartscomponentload()
+    {
+        DataTable dt6 = _db.GetModelsByBrandID(cmbbrandspareparts.Value.ToParseInt());
+        cmbmodelspareparts.ValueField = "ModelID";
+        cmbmodelspareparts.TextField = "ModelName";
+        cmbmodelspareparts.DataSource = dt6;
+        cmbmodelspareparts.DataBind();
+        cmbmodelspareparts.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmbmodelspareparts.SelectedIndex = 0;
+    }
+    void techniquecomponentload()
+    {
+        DataTable dt6 = _db.GetProductByModelId(cmbmodel.Value.ToParseInt());
+        cmTechnique.ValueField = "ProductID";
+        cmTechnique.TextField = "ProductsName";
+        cmTechnique.DataSource = dt6;
+        cmTechnique.DataBind();
+        cmTechnique.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmTechnique.SelectedIndex = 0;
+    }
+    void sparepartscomponentload()
+    {
+        DataTable dt6 = _db.GetProductByModelId(cmbmodelspareparts.Value.ToParseInt());
+        cmbspareparts.ValueField = "ProductID";
+        cmbspareparts.TextField = "ProductsName";
+        cmbspareparts.DataSource = dt6;
+        cmbspareparts.DataBind();
+        cmbspareparts.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmbspareparts.SelectedIndex = 0;
+    }
+
+
     protected void lnkEdit_Click(object sender, EventArgs e)
     {
         componentsload();
@@ -245,11 +307,26 @@ public partial class OperationTechniqueServices : System.Web.UI.Page
 
     protected void cmbbrand_SelectedIndexChanged(object sender, EventArgs e)
     {
-
+        modeltechniquecomponentload();
     }
 
     protected void cmbmodel_SelectedIndexChanged(object sender, EventArgs e)
     {
+        techniquecomponentload();
+    }
 
+    protected void cmbbrandspareparts_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        modelsparepartscomponentload();
+    }
+
+    protected void cmbmodelspareparts_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        sparepartscomponentload();
+    }
+
+    protected void cmbproducttype_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        brandsparepartscomponentload();
     }
 }
