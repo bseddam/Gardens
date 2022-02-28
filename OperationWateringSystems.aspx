@@ -54,7 +54,7 @@
                                                 <dx:GridViewDataColumn Caption="Bağ" FieldName="GardenName" VisibleIndex="1">
                                                     <EditFormSettings VisibleIndex="1" />
                                                 </dx:GridViewDataColumn>
-                                                <dx:GridViewDataColumn Caption="İstiqamət" FieldName="StatusExitEntry" VisibleIndex="1">
+                                                <dx:GridViewDataColumn Caption="İstiqamət" FieldName="ProductOperationTypeName" VisibleIndex="1">
                                                     <EditFormSettings VisibleIndex="1" />
                                                 </dx:GridViewDataColumn>
                                                   <dx:GridViewDataColumn Caption="Həcm" FieldName="WateringSystemSize" VisibleIndex="1">
@@ -63,23 +63,23 @@
                                                 <dx:GridViewDataColumn Caption="Ölçü vahidi" FieldName="UnitMeasurementName" VisibleIndex="1">
                                                     <EditFormSettings VisibleIndex="1" />
                                                 </dx:GridViewDataColumn>
-                                                  <dx:GridViewDataColumn Caption="Qeyd" FieldName="Note" VisibleIndex="1">
+                                                  <dx:GridViewDataColumn Caption="Qeyd" FieldName="Notes" VisibleIndex="1">
                                                     <EditFormSettings VisibleIndex="1" />
                                                 </dx:GridViewDataColumn>
                                                 
-                                                <dx:GridViewDataColumn Caption="Qeydiyyat tarixi" FieldName="RegstrTime" VisibleIndex="1">
+                                                <dx:GridViewDataColumn Caption="Qeydiyyat tarixi" FieldName="RegisterTime" VisibleIndex="1">
                                                     <EditFormSettings VisibleIndex="1" />
                                                 </dx:GridViewDataColumn>
 
                                                 <dx:GridViewDataColumn VisibleIndex="1">
                                                     <DataItemTemplate>
-                                                        <asp:LinkButton ID="lnkEdit" OnClick="lnkEdit_Click" CommandArgument='<%#Eval("TechniquesWorkDoneID") %>' Text="Düzəliş" runat="server" />
+                                                        <asp:LinkButton ID="lnkEdit" OnClick="lnkEdit_Click" CommandArgument='<%#Eval("WateringSystemWorkID") %>' Text="Düzəliş" runat="server" />
                                                     </DataItemTemplate>
                                                 </dx:GridViewDataColumn>
 
                                                 <dx:GridViewDataColumn VisibleIndex="1">
                                                     <DataItemTemplate>
-                                                        <asp:LinkButton ID="lnkDelete" OnClick="lnkDelete_Click" OnClientClick="return confirm('Silmək istədiyinizə əminsinizmi?');" CommandArgument='<%#Eval("TechniquesWorkDoneID") %>' Text="Sil" runat="server" />
+                                                        <asp:LinkButton ID="lnkDelete" OnClick="lnkDelete_Click" OnClientClick="return confirm('Silmək istədiyinizə əminsinizmi?');" CommandArgument='<%#Eval("WateringSystemWorkID") %>' Text="Sil" runat="server" />
                                                     </DataItemTemplate>
                                                 </dx:GridViewDataColumn>
 
@@ -112,7 +112,15 @@
                                                                 </dx:ASPxComboBox>
                                                             </div>
                                                         </div>
-                                                       
+                                                        <div class="row mb-2">
+                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Bağ üzrə suvarma sistemi</label>
+                                                            <div class="col-sm-7">
+                                                                <dx:ASPxComboBox ID="cmWateringSystemsName" 
+                                                                    runat="server"
+                                                                    Width="100%" Height="30px">
+                                                                </dx:ASPxComboBox>
+                                                            </div>
+                                                        </div>
                                                         <div class="row mb-2">
                                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ölçü vahidi</label>
                                                             <div class="col-sm-7">
@@ -152,6 +160,9 @@
                                                                 <dx:ASPxDateEdit ID="dtRegstrTime" runat="server" CssClass="form-control"></dx:ASPxDateEdit>
                                                             </div>
                                                         </div>
+                                                        <div>
+                                            <asp:Label Text="" ForeColor="Red" ID="lblPopError" runat="server" />
+                                        </div>
                                                         <asp:Button ID="btnSave" runat="server"  CssClass="btn btn-success mr-2" Text="Yadda saxla" OnClick="btntesdiq_Click" />
                                                         <asp:Button ID="btnCancel" runat="server" CssClass="btn btn-light" Text="Ləğv et" OnClick="btnCancel_Click" />
                                                     </div>

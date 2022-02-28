@@ -30,6 +30,7 @@ public partial class OperationCadres : System.Web.UI.Page
         cmWeather.SelectedIndex = 0;
         cmTreeType.SelectedIndex = 0;
         cmTreeAge.SelectedIndex = 0;
+        dtRegstrDate.Text = "";
 
     }
     void _loadGridFromDb()
@@ -76,7 +77,7 @@ public partial class OperationCadres : System.Web.UI.Page
         cmWeather.Items.Clear();
         DataTable dt4 = _db.GetWeatherCondition();
         cmWeather.ValueField = "WeatherConditionID";
-        cmWeather.TextField = "WeatherConditionName1";
+        cmWeather.TextField = "WeatherConditionName";
         cmWeather.DataSource = dt4;
         cmWeather.DataBind();
         cmWeather.Items.Insert(0, new ListEditItem("Seçin", "-1"));
@@ -85,7 +86,7 @@ public partial class OperationCadres : System.Web.UI.Page
         cmTreeType.Items.Clear();
         DataTable dt5 = _db.GetTreeTypes();
         cmTreeType.ValueField = "TreeTypeID";
-        cmTreeType.TextField = "TreeTypeName1";
+        cmTreeType.TextField = "TreeTypeName";
         cmTreeType.DataSource = dt5;
         cmTreeType.DataBind();
         cmTreeType.Items.Insert(0, new ListEditItem("Seçin", "-1"));
@@ -94,7 +95,7 @@ public partial class OperationCadres : System.Web.UI.Page
         cmTreeAge.Items.Clear();
         DataTable dt6 = _db.GetTariffTreeAge();
         cmTreeAge.ValueField = "TariffAgeID";
-        cmTreeAge.TextField = "Name1";
+        cmTreeAge.TextField = "TariffAgeName1";
         cmTreeAge.DataSource = dt6;
         cmTreeAge.DataBind();
         cmTreeAge.Items.Insert(0, new ListEditItem("Seçin", "-1"));
@@ -214,7 +215,7 @@ public partial class OperationCadres : System.Web.UI.Page
     protected void cmGarden_SelectedIndexChanged(object sender, EventArgs e)
     {
         cmZone.Items.Clear();
-        DataTable dt4 = _db.GetZonesByGardenID(_db.GetGardenById(cmGarden.Value.ToParseInt()).Rows[0]["GardenID"].ToParseInt());
+        DataTable dt4 = _db.GetZonesByGardenID(cmGarden.Value.ToParseInt());
         cmZone.ValueField = "ZoneID";
         cmZone.TextField = "ZoneName";
         cmZone.DataSource = dt4;
@@ -226,7 +227,7 @@ public partial class OperationCadres : System.Web.UI.Page
     protected void cmZone_SelectedIndexChanged(object sender, EventArgs e)
     {
         cmSektor.Items.Clear();
-        DataTable dt5 = _db.GetSectorsByZoneID(_db.GetZoneById(cmZone.Value.ToParseInt()).Rows[0]["ZoneID"].ToParseInt());
+        DataTable dt5 = _db.GetSectorsByZoneID(cmZone.Value.ToParseInt());
         cmSektor.ValueField = "SectorID";
         cmSektor.TextField = "SectorName";
         cmSektor.DataSource = dt5;
