@@ -28,7 +28,6 @@ public partial class OperationStock : System.Web.UI.Page
     }
     void _loadGridFromDb()
     {
-
         DataTable dt = _db.GetProductStockInputOutput();
         if (dt != null)
         {
@@ -88,6 +87,18 @@ public partial class OperationStock : System.Web.UI.Page
 
     void componentsload()
     {
+
+        cmbgarden.Items.Clear();
+        DataTable d2t1 = _db.GetGardens();
+        cmbgarden.ValueField = "GardenID";
+        cmbgarden.TextField = "GardenName";
+        cmbgarden.DataSource = d2t1;
+        cmbgarden.DataBind();
+        cmbgarden.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmbgarden.SelectedIndex = 0;
+
+
+
         cmbProductOperationType.Items.Clear();
         DataTable dt1 = _db.GetProductOperationTypes();
         cmbProductOperationType.ValueField = "ProductOperationTypeID";
@@ -133,6 +144,7 @@ public partial class OperationStock : System.Web.UI.Page
         int id = (sender as LinkButton).CommandArgument.ToParseInt();
         DataTable dt = _db.GetProductStockInputOutputByID(id: id);
         componentsload();
+        cmbgarden.Value = dt.Rows[0]["GardenID"].ToParseStr();
         cmbProductOperationType.Value = dt.Rows[0]["ProductOperationTypeID"].ToParseStr();
         cmbproducttype.Value = dt.Rows[0]["ProductTypeID"].ToParseStr();
         cmbUnitMeasurement.Value = dt.Rows[0]["UnitMeasurementID"].ToParseStr();
@@ -206,6 +218,7 @@ public partial class OperationStock : System.Web.UI.Page
         if (btnSave.CommandName == "insert")
         {
             val = _db.ProductStockInputOutputInsert(
+                GardenID:cmbgarden.Value.ToParseInt(),
                 ProductOperationTypeID: cmbProductOperationType.Value.ToParseInt(),
                 StockOperationReasonID: cmbStockOperationReason.Value.ToParseInt(),
                 ProductID: cmbProducts.Value.ToParseInt(),
@@ -221,8 +234,8 @@ public partial class OperationStock : System.Web.UI.Page
         }
         else
         {
-            val = _db.ProductStockInputOutputUpdate(
-                ProductStockInputOutputID: btnSave.CommandArgument.ToParseInt(),
+            val = _db.ProductStockInputOutputUpdate(ProductStockInputOutputID: btnSave.CommandArgument.ToParseInt(),
+                GardenID: cmbgarden.Value.ToParseInt(),
                 ProductOperationTypeID: cmbProductOperationType.Value.ToParseInt(),
                 StockOperationReasonID: cmbStockOperationReason.Value.ToParseInt(),
                 ProductID: cmbProducts.Value.ToParseInt(),
