@@ -6,15 +6,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <%--<div class="row mb-2">
-                                                <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Servis növü</label>
-                                                <div class="col-sm-7">
-                                                    <dx:ASPxComboBox ID="cmServicesTypeName"
-                                                        runat="server"
-                                                        Width="100%" Height="30px">
-                                                    </dx:ASPxComboBox>
-                                                </div>
-                                            </div>--%>
+
     <div class="content-wrapper">
         <div class="card">
             <div class="card-body">
@@ -23,59 +15,67 @@
                     <div class="col-12">
                         <div class="table-responsive">
                             <dx:ASPxGridViewExporter ID="gridExporter" runat="server" PaperKind="A4" Landscape="True"></dx:ASPxGridViewExporter>
-                            <dx:ASPxGridView ID="Grid" runat="server"
-                                ClientInstanceName="grid"
-                                AutoGenerateColumns="False"
-                                Width="100%"
-                                SettingsBehavior-ConfirmDelete="true"
-                                SettingsBehavior-EnableCustomizationWindow="true"
-                                KeyFieldName="id" Theme="Office2010Blue" CssClass="griddizayn" SettingsText-GroupPanel="Qruplaşdırmaq istədiyiniz sütun başlıqlarını buraya sürüşdürün">
-                                <Settings ShowFilterRow="True" GridLines="Both" ShowGroupPanel="True" />
+                        <dx:ASPxGridView ID="Grid" runat="server"
+                            ClientInstanceName="grid"
+                            AutoGenerateColumns="False"
+                            Width="100%"
+                            SettingsBehavior-ConfirmDelete="true"
+                            SettingsBehavior-EnableCustomizationWindow="true"
+                            KeyFieldName="id" Theme="Office2010Blue" CssClass="griddizayn" SettingsText-GroupPanel="Qruplaşdırmaq istədiyiniz sütun başlıqlarını buraya sürüşdürün">
+                            <Settings ShowFilterRow="True" GridLines="Both" ShowGroupPanel="True" ShowFooter="True" ShowGroupFooter="VisibleAlways" ShowHeaderFilterBlankItems="true" ShowFilterBar="Auto" ShowHeaderFilterButton="true" />
 
-                                <SettingsEditing Mode="EditFormAndDisplayRow"></SettingsEditing>
+                            <SettingsEditing Mode="EditFormAndDisplayRow"></SettingsEditing>
 
-                                <SettingsText CommandNew="Yeni" PopupEditFormCaption="Form" CommandDelete="Sil"
-                                    CommandCancel="Ləğv et" CommandEdit="Yenilə" CommandUpdate="Yadda saxla"
-                                    CustomizationWindowCaption="Sütun seçin" ConfirmDelete="Silmək istəditinizə əminsiniz?" />
-
-
-
-                                <SettingsDataSecurity AllowDelete="True" AllowEdit="True" AllowInsert="True" />
+                            <SettingsText CommandNew="Yeni" PopupEditFormCaption="Form" CommandDelete="Sil"
+                                CommandCancel="Ləğv et" CommandEdit="Yenilə" CommandUpdate="Yadda saxla"
+                                CustomizationWindowCaption="Sütun seçin" ConfirmDelete="Silmək istəditinizə əminsiniz?" />
 
 
 
-                                <SettingsPager Summary-Visible="True" PageSizeItemSettings-Visible="False">
-                                    <PageSizeItemSettings Visible="False"></PageSizeItemSettings>
+                            <SettingsDataSecurity AllowDelete="True" AllowEdit="True" AllowInsert="True" />
 
-                                </SettingsPager>
 
+
+                            <SettingsPager Summary-Visible="True" PageSizeItemSettings-Visible="False">
+                                <PageSizeItemSettings Visible="False"></PageSizeItemSettings>
+
+                            </SettingsPager>
 
                                 <Columns>
 
                                     <dx:GridViewDataColumn Caption="Sıra nömrəsi" FieldName="sn" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
-                                    <dx:GridViewDataColumn Caption="Servis növü" FieldName="ServicesTypeName" VisibleIndex="1">
+                                    <dx:GridViewDataColumn Caption="Servis növü" FieldName="WorkName" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
                                     <dx:GridViewDataColumn Caption="Bağ" FieldName="GardenName" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
-                                    <dx:GridViewDataColumn Caption="İşin növü" FieldName="WorkName" VisibleIndex="1">
+                                  
+                                    <dx:GridViewDataColumn Caption="Marka texnika" FieldName="brandtex" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
-                                    <dx:GridViewDataColumn Caption="Marka" FieldName="BrandName" VisibleIndex="1">
+                                    <dx:GridViewDataColumn Caption="Model texnika" FieldName="modeltex" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
-                                    <dx:GridViewDataColumn Caption="Model" FieldName="ModelName" VisibleIndex="1">
+                                     <dx:GridViewDataColumn Caption="Texnikanın adı" FieldName="TechniquesName" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
+
+                                    <dx:GridViewDataColumn Caption="Marka mal" FieldName="modelbrand" VisibleIndex="1">
+                                        <EditFormSettings VisibleIndex="1" />
+                                    </dx:GridViewDataColumn>
+                                    <dx:GridViewDataColumn Caption="Model mal" FieldName="modelprod" VisibleIndex="1">
+                                        <EditFormSettings VisibleIndex="1" />
+                                    </dx:GridViewDataColumn>
+
+
+
                                     <dx:GridViewDataColumn Caption="Malın adı" FieldName="ProductsName" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
-                                    <dx:GridViewDataColumn Caption="Texnikanın adı" FieldName="TechniqueName" VisibleIndex="1">
-                                        <EditFormSettings VisibleIndex="1" />
-                                    </dx:GridViewDataColumn>
+                                
 
                                     <dx:GridViewDataColumn Caption="Ölçü vahidi" FieldName="UnitMeasurementID" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
@@ -93,7 +93,7 @@
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
 
-                                    <dx:GridViewDataColumn Caption="Yürüş" FieldName="saat_km" VisibleIndex="1">
+                                    <dx:GridViewDataColumn Caption="Yürüş" FieldName="Odometer" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
 
@@ -101,7 +101,7 @@
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
 
-                                    <dx:GridViewDataColumn Caption="Qeydiyyat tarixi" FieldName="RegstrTime" VisibleIndex="1">
+                                    <dx:GridViewDataColumn Caption="Qeydiyyat tarixi" FieldName="RegisterTime" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
 
@@ -190,6 +190,8 @@
                                                         runat="server"
                                                         Width="100%" Height="30px">
                                                     </dx:ASPxComboBox>
+                                                      <asp:RequiredFieldValidator ID="RequiredFieldValidator14" runat="server" ControlToValidate="cmTechnique" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
+                             
                                                 </div>
                                             </div>
 
@@ -218,7 +220,7 @@
                                                 <div class="col-sm-7">
                                                     <dx:ASPxComboBox ID="cmbmodelspareparts" runat="server" Width="100%" Height="30px" AutoPostBack="True" OnSelectedIndexChanged="cmbmodelspareparts_SelectedIndexChanged">
                                                     </dx:ASPxComboBox>
-                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ControlToValidate="cmbmodel" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
+                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ControlToValidate="cmbmodelspareparts" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
                                                 </div>
                                             </div>
                                            
@@ -277,12 +279,15 @@
                                                 <div class="col-sm-7">
                                                     <asp:TextBox ID="txtServicePrice" class="form-control mb-0 mt-0" runat="server" placeholder="Mətni daxil edin...">
                                                     </asp:TextBox>
+                                                     <asp:CompareValidator ID="CompareValidator2" runat="server" ControlToValidate="txtServicePrice" ErrorMessage="Format düzgün deyil." Operator="DataTypeCheck" Type="Double" ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red" />
+                                                    <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txtServicePrice" ID="RequiredFieldValidator13" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>
+
                                                 </div>
                                             </div>
                                             <div class="row mb-2">
                                                 <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Yürüş</label>
                                                 <div class="col-sm-7">
-                                                    <asp:TextBox ID="txtsaat_km" class="form-control mb-0 mt-0" runat="server" placeholder="Mətni daxil edin...">
+                                                    <asp:TextBox ID="txtodometer" class="form-control mb-0 mt-0" runat="server" placeholder="Mətni daxil edin...">
                                                     </asp:TextBox>
                                                 </div>
                                             </div>
@@ -305,7 +310,11 @@
 
                                                 </div>
                                             </div>
-                                            <asp:Button ID="btnSave" runat="server" CssClass="btn btn-success mr-2" Text="Yadda saxla" OnClick="btntesdiq_Click" />
+                                             <div>
+                                                <asp:Label Text="" ForeColor="Red" ID="lblPopError" runat="server" />
+                                            </div>
+                                            <asp:Button ID="btnSave" runat="server" ValidationGroup="qrup1" CssClass="btn btn-success mr-2" Text="Yadda saxla" OnClick="btntesdiq_Click" />
+                                       
                                             <asp:Button ID="btnCancel" runat="server" CssClass="btn btn-light" Text="Ləğv et" OnClick="btnCancel_Click" />
                                         </div>
                                     </dx:PopupControlContentControl>

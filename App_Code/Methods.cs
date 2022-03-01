@@ -1487,6 +1487,23 @@ where ModelID=@ModelID;", SqlConn);
     }
 
 
+    public DataTable GetProductGeneralTypes()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() 
+over(order by [ProductGeneralTypeID] desc) sn,
+* FROM [ProductGeneralTypes] where DeleteTime is null", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
     //Mallarin tipi
     public DataTable GetProductTypes()
     {
@@ -1494,8 +1511,9 @@ where ModelID=@ModelID;", SqlConn);
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [ProductTypeID] desc) sn,
-[ProductTypeID],RegisterTime,[UserID],[ProductTypeName],[InsertTime],[UpdateTime],[DeleteTime]
-  from [ProductTypes]   where DeleteTime is null", SqlConn);
+[ProductTypeID],RegisterTime,[UserID],[ProductTypeName],pgt.ProductGeneralTypeID,ProductGeneralTypeName
+  from [ProductTypes] pt inner join ProductGeneralTypes pgt on 
+pt.ProductGeneralTypeID=pgt.ProductGeneralTypeID   where pt.DeleteTime is null and pgt.DeleteTime is null", SqlConn);
             da.Fill(dt);
             return dt;
         }
@@ -1510,8 +1528,9 @@ where ModelID=@ModelID;", SqlConn);
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [ProductTypeID] desc) sn,
-[ProductTypeID],RegisterTime,[UserID],[ProductTypeName],[InsertTime],[UpdateTime],[DeleteTime]
-  from [ProductTypes]   where DeleteTime is null and ProductTypeID=@id", SqlConn);
+[ProductTypeID],RegisterTime,[UserID],[ProductTypeName],pgt.ProductGeneralTypeID,ProductGeneralTypeName
+  from [ProductTypes] pt inner join ProductGeneralTypes pgt on 
+pt.ProductGeneralTypeID=pgt.ProductGeneralTypeID where pt.DeleteTime is null and ProductTypeID=@id", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
             da.Fill(dt);
             return dt;
@@ -1521,11 +1540,12 @@ where ModelID=@ModelID;", SqlConn);
             return null;
         }
     }
-    public Types.ProsesType ProductTypeInsert(string ProductTypeName)
+    public Types.ProsesType ProductTypeInsert(int ProductGeneralTypeID, string ProductTypeName)
     {
         SqlCommand cmd = new SqlCommand(@"insert into ProductTypes 
-(UserID,ProductTypeName) values (@UserID,@ProductTypeName)", SqlConn);
+(UserID,ProductGeneralTypeID,ProductTypeName) values (@UserID,@ProductGeneralTypeID,@ProductTypeName)", SqlConn);
         cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@ProductGeneralTypeID", ProductGeneralTypeID);
         cmd.Parameters.AddWithValue("@ProductTypeName", ProductTypeName);
 
         try
@@ -1544,12 +1564,13 @@ where ModelID=@ModelID;", SqlConn);
             cmd.Dispose();
         }
     }
-    public Types.ProsesType ProductTypeUpdate(int ProductTypeID, string ProductTypeName)
+    public Types.ProsesType ProductTypeUpdate(int ProductTypeID, int ProductGeneralTypeID, string ProductTypeName)
     {
         SqlCommand cmd = new SqlCommand(@"update ProductTypes set UserID=@UserID,
-ProductTypeName=@ProductTypeName,UpdateTime=getdate() where ProductTypeID=@ProductTypeID", SqlConn);
+ProductTypeName=@ProductTypeName,ProductGeneralTypeID=@ProductGeneralTypeID,UpdateTime=getdate() where ProductTypeID=@ProductTypeID", SqlConn);
         cmd.Parameters.AddWithValue("@ProductTypeID", ProductTypeID);
         cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@ProductGeneralTypeID", ProductGeneralTypeID);
         cmd.Parameters.AddWithValue("@ProductTypeName", ProductTypeName);
 
         try
@@ -2056,6 +2077,170 @@ where DeleteTime is null", SqlConn);
         }
     }
 
+
+    //texniki service
+    public DataTable GetTechniquesServices()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by t.TechniqueServiceID desc) sn,
+t.*,g.GardenName,w.WorkName,p.ProductTypeID,p.ProductID,p.ProductsName,u.UnitMeasurementName,tc.TechniquesName,
+ m1.ModelID modeltexid,m1.ModelName modeltex,b1.BrandID brandtexid,b1.BrandName brandtex,m2.ModelID modelprodid,b2.BrandID brandprodid,
+ m2.ModelName modelprod,b2.BrandName modelbrand
+FROM [TechniqueService] t 
+left join Techniques tc on t.TechniqueID=tc.TechniqueID
+left join Models m1 on m1.ModelID=tc.ModelID
+left join Brands b1 on m1.BrandID=b1.BrandID
+
+left join Gardens g on t.GardenID=g.GardenID 
+left join Works w on t.WorkID=w.WorkID
+left join Products p on p.ProductID=t.ProductID
+left join Models m2 on m2.ModelID=p.ModelID
+left join Brands b2 on m2.BrandID=b2.BrandID
+
+left join UnitMeasurements u on u.UnitMeasurementID=t.UnitMeasurementID where t.DeleteTime is null", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+
+
+    public DataTable GetTechniquesServiceById(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by t.TechniqueServiceID desc) sn,
+t.*,g.GardenName,w.WorkName,p.ProductTypeID,p.ProductID,p.ProductsName,u.UnitMeasurementName,tc.TechniquesName,
+ m1.ModelID modeltexid,m1.ModelName modeltex,b1.BrandID brandtexid,b1.BrandName brandtex,m2.ModelID modelprodid,b2.BrandID brandprodid,
+ m2.ModelName modelprod,b2.BrandName modelbrand
+FROM [TechniqueService] t 
+left join Techniques tc on t.TechniqueID=tc.TechniqueID
+left join Models m1 on m1.ModelID=tc.ModelID
+left join Brands b1 on m1.BrandID=b1.BrandID
+
+left join Gardens g on t.GardenID=g.GardenID 
+left join Works w on t.WorkID=w.WorkID
+left join Products p on p.ProductID=t.ProductID
+left join Models m2 on m2.ModelID=p.ModelID
+left join Brands b2 on m2.BrandID=b2.BrandID
+
+left join UnitMeasurements u on u.UnitMeasurementID=t.UnitMeasurementID where t.DeleteTime is null 
+and TechniqueServiceID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+
+    public Types.ProsesType InsertTechniquesService(int TechniqueID, int GardenID, int WorkID,
+        int ProductID, string Price, int ProductSize, int UnitMeasurementID, string Amount,
+       string ServicePrice, int Odometer, string Note, string RegisterTime)
+    {
+        SqlCommand cmd = new SqlCommand(@"insert into TechniqueService 
+(UserID,TechniqueID,GardenID,WorkID,ProductID,Price,ProductSize,
+UnitMeasurementID,Amount,ServicePrice,Odometer,Note,RegisterTime) 
+Values (@UserID,@TechniqueID,@GardenID,@WorkID,@ProductID,@Price,@ProductSize,
+@UnitMeasurementID,@Amount,@ServicePrice,@Odometer,@Note,@RegisterTime)", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@TechniqueID", TechniqueID);
+        cmd.Parameters.AddWithValue("@GardenID", GardenID);
+        cmd.Parameters.AddWithValue("@WorkID", WorkID);
+        cmd.Parameters.AddWithValue("@ProductID", ProductID);
+        cmd.Parameters.AddWithValue("@Price", ConvertTypes.ToParseFloat(Price));
+        cmd.Parameters.AddWithValue("@ProductSize", ProductSize);
+        cmd.Parameters.AddWithValue("@UnitMeasurementID", UnitMeasurementID);
+        cmd.Parameters.AddWithValue("@Amount", ConvertTypes.ToParseFloat(Amount));
+        cmd.Parameters.AddWithValue("@ServicePrice", ConvertTypes.ToParseFloat(ServicePrice));
+        cmd.Parameters.AddWithValue("@Odometer", Odometer);
+        cmd.Parameters.AddWithValue("@Note", Note);
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+
+    public Types.ProsesType UpdateTechniquesService(int TechniqueServiceID, int TechniqueID, int GardenID, int WorkID,
+        int ProductID, string Price, int ProductSize, int UnitMeasurementID, string Amount,
+       string ServicePrice, int Odometer, string Note, string RegisterTime)
+    {
+        SqlCommand cmd = new SqlCommand(@"update TechniqueService set 
+UserID=@UserID, TechniqueID=@TechniqueID, GardenID=@GardenID, 
+WorkID=@WorkID, ProductID=@ProductID,Price=@Price,ProductSize=@ProductSize,
+UnitMeasurementID=@UnitMeasurementID,Amount=@Amount,ServicePrice=@ServicePrice,
+Odometer=@Odometer,Note=@Note,RegisterTime=@RegisterTime 
+where TechniqueServiceID=@TechniqueServiceID", SqlConn);
+        cmd.Parameters.AddWithValue("@TechniqueServiceID", TechniqueServiceID);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@TechniqueID", TechniqueID);
+        cmd.Parameters.AddWithValue("@GardenID", GardenID);
+        cmd.Parameters.AddWithValue("@WorkID", WorkID);
+        cmd.Parameters.AddWithValue("@ProductID", ProductID);
+        cmd.Parameters.AddWithValue("@Price", ConvertTypes.ToParseFloat(Price));
+        cmd.Parameters.AddWithValue("@ProductSize", ProductSize);
+        cmd.Parameters.AddWithValue("@UnitMeasurementID", UnitMeasurementID);
+        cmd.Parameters.AddWithValue("@Amount", ConvertTypes.ToParseFloat(Amount));
+        cmd.Parameters.AddWithValue("@ServicePrice", ConvertTypes.ToParseFloat(ServicePrice));
+        cmd.Parameters.AddWithValue("@Odometer", Odometer);
+        cmd.Parameters.AddWithValue("@Note", Note);
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public DataTable GetTechnique()
     {
         try
@@ -2065,7 +2250,7 @@ where DeleteTime is null", SqlConn);
 over(order by t.TechniqueID desc) sn,c.Sname+' '+c.Name UsingUsers,
 t.TechniquesName,b.BrandName, m.ModelName, cp.CompanyName,t.Motor,t.RegisterNumber,t.SerieNumber,t.Passport,t.ProductionYear,t.Birka,ts.TechniqueSituationName,t.GPS,t.GPSLogin,t.GPSPassword,t.BoughtDate,t.Photo,t.TechniqueID,t.ModelID,t.UserID ID,t.BrandID,t.CompanyID,t.TechniqueSituationID
 from Techniques t 
-left join Users u on t.UserID=u.UsersID
+left join Users u on t.UserID=u.UserID
 left join Cadres c on u.CadreID=c.CadreID
 left join Brands b on b.BrandID=t.BrandID
 left join Models m on m.ModelID=t.ModelID
@@ -3423,21 +3608,21 @@ ProductSize,Price,PriceDiscount,Amount,AmountDiscount,RegisterTime,Notes) values
         cmd.Parameters.AddWithValue("@AmountDiscount", ConvertTypes.ToParseFloat(AmountDiscount));
         cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
         cmd.Parameters.AddWithValue("@Notes", Notes);
-        //try
-        //{
-        cmd.Connection.Open();
-        cmd.ExecuteNonQuery();
-        return Types.ProsesType.Succes;
-        //}
-        //catch (Exception ex)
-        //{
-        //    return Types.ProsesType.Error;
-        //}
-        //finally
-        //{
-        //    cmd.Connection.Close();
-        //    cmd.Dispose();
-        //}
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
     }
 
 
@@ -3544,6 +3729,34 @@ m.DeleteTime is null and u.DeleteTime is null and m.ModelID=@id", SqlConn);
             return null;
         }
     }
+
+
+
+
+    public DataTable GetTechniquesByModelId(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by TechniqueID desc) sn,
+ p.* from Techniques p
+
+  inner join Brands b on p.BrandID=b.BrandID
+  inner join Models m on p.ModelID=m.ModelID
+
+  where p.DeleteTime is null  and b.DeleteTime is null and 
+m.DeleteTime is null  and m.ModelID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+
 
 
 

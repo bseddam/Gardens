@@ -200,5 +200,6 @@ public partial class Products : System.Web.UI.Page
     protected void ddlproducttype_SelectedIndexChanged(object sender, EventArgs e)
     {
         brandcomponentload();
+        modelcomponentload();
     }
 }
