@@ -2338,21 +2338,21 @@ Values (@UserID, @BrandID, @ModelID, @WateringSystemName, @Notes, @TechniqueSitu
         cmd.Parameters.AddWithValue("@Notes", Notes);
         cmd.Parameters.AddWithValue("@TechniqueSituationID", TechniqueSituationID);
         cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
-        //try
-        //{
-        cmd.Connection.Open();
+        try
+        {
+            cmd.Connection.Open();
         cmd.ExecuteNonQuery();
         return Types.ProsesType.Succes;
-        //}
-        //catch (Exception ex)
-        //{
-        //    return Types.ProsesType.Error;
-        //}
-        //finally
-        //{
-        //    cmd.Connection.Close();
-        //    cmd.Dispose();
-        //}
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
     }
 
     public Types.ProsesType WateringSystemsUpdate(int WateringSystemID, int UserID, int BrandID, int ModelID,
@@ -2428,21 +2428,21 @@ JobExitDate, CadreTypeID)  Values(@UserID, @StructureID, @PositionID, @GardenID,
         cmd.Parameters.AddWithValue("@JobEntryDate", ConvertTypes.ToParseDatetime(JobEntryDate));
         cmd.Parameters.AddWithValue("@JobExitDate", ConvertTypes.ToParseDatetime(JobExitDate));
         cmd.Parameters.AddWithValue("@CadreTypeID", CadreTypeID);
-        //try
-        //{
+        try
+        {
         cmd.Connection.Open();
         cmd.ExecuteNonQuery();
         return Types.ProsesType.Succes;
-        //}
-        //catch (Exception ex)
-        //{
-        //    return Types.ProsesType.Error;
-        //}
-        //finally
-        //{
-        //    cmd.Connection.Close();
-        //    cmd.Dispose();
-        //}
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
     }
 
     public Types.ProsesType CadresUpdate(int CadreID, int UserID, int StructureID, int PositionID, int GardenID, int CardID, string Sname, string Name, string FName, int Gender, string PassportN, string PIN, string PhoneNumber, string Photo, string Email, string Address, string JobEntryDate, string JobExitDate, int CadreTypeID, string RegstrDate)
@@ -2470,21 +2470,21 @@ JobExitDate=@JobExitDate,CadreTypeID=@CadreTypeID where CadreID=@CadreID", SqlCo
         cmd.Parameters.AddWithValue("@JobExitDate", ConvertTypes.ToParseDatetime(JobExitDate));
         cmd.Parameters.AddWithValue("@CadreTypeID", CadreTypeID);
         cmd.Parameters.AddWithValue("@CadreID", CadreID);
-        //try
-        //{
-        cmd.Connection.Open();
+        try
+        {
+            cmd.Connection.Open();
         cmd.ExecuteNonQuery();
         return Types.ProsesType.Succes;
-        //}
-        //catch (Exception ex)
-        //{
-        //    return Types.ProsesType.Error;
-        //}
-        //finally
-        //{
-        cmd.Connection.Close();
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
         cmd.Dispose();
-        //}
+        }
     }
 
     public Types.ProsesType DeleteCadres(int id)
