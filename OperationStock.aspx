@@ -48,6 +48,9 @@
                                     <dx:GridViewDataColumn Caption="Sıra nömrəsi" FieldName="sn" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
+                                    <dx:GridViewDataColumn Caption="Bağ adı" FieldName="gardenname" VisibleIndex="1">
+                                        <EditFormSettings VisibleIndex="1" />
+                                    </dx:GridViewDataColumn>
                                     <dx:GridViewDataColumn Caption="Əməliyyat növü" FieldName="ProductOperationTypeName" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
@@ -123,6 +126,17 @@
                                 <ContentCollection>
                                     <dx:PopupControlContentControl>
                                         <div class="container">
+
+                                            <div class="row mb-2">
+                                                <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Bağ adı</label>
+                                                <div class="col-sm-7">
+                                                    <dx:ASPxComboBox ID="cmbgarden" runat="server" Width="100%" Height="30px" AutoPostBack="True" OnSelectedIndexChanged="cmbProductOperationType_SelectedIndexChanged">
+                                                    </dx:ASPxComboBox>
+                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator13" runat="server" ControlToValidate="cmbgarden" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
+                                                </div>
+                                            </div>
+
+
                                             <div class="row mb-2">
                                                 <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Əməliyyatın növü</label>
                                                 <div class="col-sm-7">
