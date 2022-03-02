@@ -3826,4 +3826,126 @@ m.DeleteTime is null  and m.ModelID=@id", SqlConn);
         }
     }
 
+
+
+
+    public DataTable GetExpenses()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() 
+over(order by OtherExpenseID desc) sn,e.* from OtherExpenses e where e.DeleteTime is null ", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+    public DataTable GetExpenseByID(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() 
+over(order by OtherExpenseID desc) sn,e.* from OtherExpenses e where e.DeleteTime is null 
+and OtherExpenseID=@id ", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+
+    public Types.ProsesType InsertExpense(string OtherExpenseName, string Amount, string Note, 
+        string RegisterTime)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"insert into OtherExpenses 
+(UserID,OtherExpenseName,Amount,Note,RegisterTime) values 
+(@UserID,@OtherExpenseName,@Amount,@Note,@RegisterTime)", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@OtherExpenseName", OtherExpenseName);
+        cmd.Parameters.AddWithValue("@Amount", ConvertTypes.ToParseFloat(Amount));
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        cmd.Parameters.AddWithValue("@Note", Note);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+
+    public Types.ProsesType UpdateExpense(int OtherExpenseID, string OtherExpenseName,
+        string Amount, string Note, string RegisterTime)
+    {
+ 
+
+        SqlCommand cmd = new SqlCommand(@"update OtherExpenses set UserID=@UserID,
+OtherExpenseName=@OtherExpenseName,Amount=@Amount,RegisterTime=@RegisterTime,Note=@Note,
+UpdateTime=getdate() 
+where OtherExpenseID=@OtherExpenseID", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@OtherExpenseID", OtherExpenseID);
+        cmd.Parameters.AddWithValue("@OtherExpenseName", OtherExpenseName);
+        cmd.Parameters.AddWithValue("@Amount", ConvertTypes.ToParseFloat(Amount));
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        cmd.Parameters.AddWithValue("@Note", Note);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+
+
+    public Types.ProsesType DeleteExpense(int id)
+    {
+        SqlCommand cmd = new SqlCommand(@"Update OtherExpenses set DeleteTime=GetDate() where OtherExpenseID=@id ", SqlConn);
+        cmd.Parameters.AddWithValue("@id", id);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
 }
