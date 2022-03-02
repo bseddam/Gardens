@@ -46,7 +46,7 @@
         <header id="header" class="d-flex align-items-center">
         <div class="container d-flex align-items-center justify-content-between">
 
-            <h1 class="logo"><a href="Default.aspx">BAĞLAR</a></h1>
+            <h1 class="logo"><a href="/home">BAĞLAR</a></h1>
    
 
         </div>

@@ -47,7 +47,7 @@
                                                 <i class="mdi mdi-account-outline text-primary"></i>
                                             </span>
                                         </div>
-                                        <asp:TextBox ID="exampleInputEmail" placeholder="İstifadəçi adı" class="form-control form-control-lg border-left-0" runat="server"></asp:TextBox>
+                                        <asp:TextBox ID="txtusername" placeholder="İstifadəçi adı" class="form-control form-control-lg border-left-0" runat="server"></asp:TextBox>
 
                                     </div>
                                 </div>
@@ -59,13 +59,15 @@
                                                 <i class="mdi mdi-lock-outline text-primary"></i>
                                             </span>
                                         </div>
-                                        <asp:TextBox ID="exampleInputPassword" TextMode="Password" placeholder="Şifrə" class="form-control form-control-lg border-left-0" runat="server"></asp:TextBox>
+                                        <asp:TextBox ID="txtpassword" TextMode="Password" placeholder="Şifrə" class="form-control form-control-lg border-left-0" runat="server"></asp:TextBox>
 
 
                                     </div>
                                 </div>
                                 <div class="my-2 d-flex justify-content-between align-items-center">
                                     <div class="form-check">
+                                         <asp:Label Text="" ForeColor="Red" ID="lblPopError" runat="server" />
+                             
                                         <label class="form-check-label text-muted">
                                             <input type="checkbox" class="form-check-input" runat="server">
                                             Yadda saxla
