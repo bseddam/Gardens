@@ -33,6 +33,7 @@ public class Methods
             return null;
         }
     }
+
     public DataTable GetUsers()
     {
         try
@@ -87,6 +88,8 @@ UserStatusID) values
             cmd.Dispose();
         }
     }
+
+    
     public Types.ProsesType UserUpdate(int id, int GardenID, int CadreID, string Login,
         string Password, int UserStatusID)
     {
@@ -136,7 +139,64 @@ GardenID=@GardenID, CadreID=@CadreID, Login=@Login,Password=@Password,UserStatus
     }
 
 
+    public DataTable GetUsersPermissions()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"Select m2.SiteMapID,m1.MenuName+' '+m2.MenuName name from (select * from SiteMap s where s.menusubid is null) m1 inner join 
+(select * from SiteMap s1 where s1.menusubid is not null) m2 on m1.SiteMapID=m2.MenuSubID", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+    public Types.ProsesType UserInsertPermissions(int UserID, string[] SiteMapID)
+    {
+        SqlCommand cmddel = new SqlCommand(@"Delete from PermissionUser Where UserID=@UserID", SqlConn);
+        cmddel.Parameters.AddWithValue("@UserID", UserID);
+        try
+        {
+            cmddel.Connection.Open();
+            cmddel.ExecuteNonQuery();
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmddel.Connection.Close();
+            cmddel.Dispose();
+        }
 
+        foreach (string i in SiteMapID)
+        {
+            SqlCommand cmd = new SqlCommand(@"insert into PermissionUser (UserID,SiteMapID) values 
+(@UserID,@SiteMapID)", SqlConn);
+            cmd.Parameters.AddWithValue("@UserID", UserID);
+            cmd.Parameters.AddWithValue("@SiteMapID", int.Parse(i));
+            try
+            {
+                cmd.Connection.Open();
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                return Types.ProsesType.Error;
+            }
+            finally
+            {
+                cmd.Connection.Close();
+                cmd.Dispose();
+            }
+        }
+        return Types.ProsesType.Succes;
+
+    }
 
     public DataTable GetCompanies()
     {

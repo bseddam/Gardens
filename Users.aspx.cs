@@ -140,4 +140,51 @@ public partial class Users : System.Web.UI.Page
     {
         popupEdit.ShowOnPageLoad = false;
     }
+
+    protected void lnkPermission_Click(object sender, EventArgs e)
+    {
+        int id = (sender as LinkButton).CommandArgument.ToParseInt();
+        DataTable dt = _db.GetUsersPermissions();
+        chlist.DataValueField = "SiteMapID";
+        chlist.DataTextField = "name";
+        chlist.DataSource = dt;
+        chlist.DataBind();
+        btnPermissionsSave.CommandArgument = id.ToString();
+        popupPermission.ShowOnPageLoad = true;
+    }
+
+    protected void btnPermissionsSave_Click(object sender, EventArgs e)
+    {
+        lblPopError.Text = "";
+        Types.ProsesType val = Types.ProsesType.Error;        
+        string IDS = "";
+        foreach (ListItem item in chlist.Items)
+        {
+            if (item.Selected)
+            {
+                IDS += item.Value+","; 
+            }
+        }
+        int id = btnPermissionsSave.CommandArgument.ToParseInt();
+
+       IDS=IDS.Substring(0, IDS.Length - 1);
+
+        string[] PermissionID = IDS.Split(',');
+
+        val = _db.UserInsertPermissions(id,PermissionID);
+
+        if (val == Types.ProsesType.Error)
+        {
+            lblPopError.Text = "XƏTA! Yadda saxlamaq mümkün olmadı.";
+            return;
+        }
+
+     //   _loadGridFromDb();
+        popupPermission.ShowOnPageLoad = false;
+    }
+
+    protected void btnPermissionsCancel_Click(object sender, EventArgs e)
+    {
+        popupPermission.ShowOnPageLoad = false;
+    }
 }

@@ -67,7 +67,14 @@
 
 
 
+                           
 
+                                
+                                <dx:GridViewDataColumn VisibleIndex="1">
+                                    <DataItemTemplate>
+                                        <asp:LinkButton ID="lnkPermission" OnClick="lnkPermission_Click" CommandArgument='<%#Eval("UserID") %>' Text="İcazələr" runat="server" />
+                                    </DataItemTemplate>
+                                </dx:GridViewDataColumn>
 
                                 <dx:GridViewDataColumn VisibleIndex="1">
                                     <DataItemTemplate>
@@ -160,7 +167,32 @@
                                 </dx:PopupControlContentControl>
                             </ContentCollection>
                         </dx:ASPxPopupControl>
-
+                        <dx:ASPxPopupControl ID="popupPermission"
+                            runat="server"
+                            ClientInstanceName="popup"
+                            AllowDragging="true"
+                            AllowResize="true"
+                            Modal="true"
+                            DragElement="Header"
+                            Width="600"
+                            HeaderText="Redaktə"
+                            PopupHorizontalAlign="WindowCenter"
+                            PopupVerticalAlign="WindowCenter"
+                            Height="400"
+                            ScrollBars="Vertical">
+                            <ContentCollection>
+                                <dx:PopupControlContentControl>
+                                    <div class="container">
+                                        <asp:CheckBoxList ID="chlist" runat="server"></asp:CheckBoxList>
+                                        <div>
+                                            <asp:Label Text="" ForeColor="Red" ID="poplblper" runat="server" />
+                                        </div>
+                                        <asp:Button ID="btnPermissionsSave" runat="server" CssClass="btn btn-success mr-2" Text="Yadda saxla" OnClick="btnPermissionsSave_Click" />
+                                        <asp:Button ID="btnPermissionsCancel" runat="server" CssClass="btn btn-light" Text="Ləğv et" OnClick="btnPermissionsCancel_Click" />
+                                    </div>
+                                </dx:PopupControlContentControl>
+                            </ContentCollection>
+                        </dx:ASPxPopupControl>
 
                     </div>
                 </div>
