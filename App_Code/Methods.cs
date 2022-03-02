@@ -14,10 +14,24 @@ public class Methods
     public static SqlConnection SqlConn
     {
         get { return new SqlConnection(@"Data Source = SQL5105.site4now.net; Initial Catalog = db_a83176_gardens; User Id = db_a83176_gardens_admin; Password = Gardens1"); }
-
     }
-
-
+    public DataTable User(string Login, string Pass)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"Select * from Users where Login=@Login 
+and Password=@Password and DeleteTime is null", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("@Login", Login);
+            da.SelectCommand.Parameters.AddWithValue("@Password", Pass);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
     public DataTable GetUserByid(int userid)
     {
         try
@@ -64,8 +78,7 @@ left join Cadres c on u.cadreid=c.cadreid where u.DeleteTime is null", SqlConn);
 
 
         SqlCommand cmd = new SqlCommand(@"insert into Users (GardenID,CadreID,Login,Password,
-UserStatusID) values 
-(@GardenID,@CadreID,@Login,@Password,@UserStatusID)", SqlConn);
+UserStatusID) values (@GardenID,@CadreID,@Login,@Password,@UserStatusID)", SqlConn);
         cmd.Parameters.AddWithValue("@GardenID", GardenID);
         cmd.Parameters.AddWithValue("@CadreID", CadreID);
         cmd.Parameters.AddWithValue("@Login", Login);
@@ -3943,5 +3956,28 @@ where OtherExpenseID=@OtherExpenseID", SqlConn);
             cmd.Dispose();
         }
     }
+
+    public DataTable GetSiteMap()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select lm.* from SiteMap lm 
+where  lm.SiteMapID not in (
+select sm.SiteMapID from Users u 
+inner join PermissionUser p on u.UserID = p.UserID
+inner join SiteMap sm on p.SiteMapID = sm.SiteMapID where p.UserID=@UserID)", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+
+
 
 }

@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -12,45 +11,50 @@ using System.Web.UI.WebControls;
 
 public partial class Default1 : System.Web.UI.Page
 {
-    // ClSsql clSsql = new ClSsql();
+    Methods _db = new Methods();
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (!Page.IsPostBack)
-        {
-
-        }
+        if (IsPostBack) return;
     }
     protected void btntesdiq_Click(object sender, EventArgs e)
     {
-        Response.Redirect("Default.aspx");
-        ////exampleInputEmail.Text = Config.Sha1(exampleInputPassword.Text.ToString());
-        //try
-        //{
-        //    ClSsql clSsql = new ClSsql();
-        //    SqlCommand cmd = new SqlCommand("Select * from UserAdmin where Login_name=@Login_name and Passvord=@Passvord", clSsql.sqlconn);
-        //    cmd.Parameters.AddWithValue("Login_name", exampleInputEmail.Text.ToString());
-        //    cmd.Parameters.AddWithValue("Passvord", Config.Sha1(exampleInputPassword.Text.ToString()));
-        //    clSsql.sqlconn.Open();
-        //    SqlDataAdapter dap = new SqlDataAdapter(cmd);
-        //    DataTable dt = new DataTable();
-        //    dap.Fill(dt);
-        //    clSsql.sqlconn.Close();
-        //    if (dt.Rows.Count > 0)
-        //    {
-        //        Session["UsersID1"] = int.Parse(dt.Rows[0]["ID"].ToString());
-        //        Session["ElmiMuessiseID1"] = int.Parse(dt.Rows[0]["ElmiMuessiseID"].ToString());
-        //        Session["AdminStatus1"] = int.Parse(dt.Rows[0]["AdminStatus"].ToString());
-        //        Response.Redirect("Home.aspx");
-        //    }
-        //}
-        //catch (SqlException ex)
-        //{
+        if (txtusername.Text.Length < 3)
+        {
+            Config.MsgBox("İstifadəçi adını daxil edin!", Page);
+          
+            return;
+        }
+        if (txtpassword.Text.Length < 3)
+        {
+            Config.MsgBox("Şifrəni daxil edin!", Page);
+            return;
+        }
+        DataTable dtuser = _db.User(txtusername.Text,
+        //Config.Sha1(PassText.Text.ToString()));
+        txtpassword.Text);
 
-        //    throw new Exception(ex.Message + "(" + ex.Message + ")");
-        //}
-        //    //catch
-        //    //{
-        //    //    Response.Redirect("Login.aspx");
-        //    //}
+        string _id = "";
+        if (dtuser != null)
+        {
+            if (dtuser.Rows.Count > 0)
+            {
+                _id = dtuser.Rows[0]["UserID"].ToParseStr();
+            }
+        }
+
+
+        if (_id.Length < 1)
+        {
+            Config.MsgBox("İstifadəçi adı və ya şifrə yanlışdır!", Page);
+          
+            //Config.MsgBox("İstifadəçi adı və ya şifrə yanlışdır!", Page);
+            return;
+        }
+        Session["UserID"] = _id;
+        Session["UserStatusID"] = dtuser.Rows[0]["UserStatusID"].ToParseStr();
+
+        Config.Rd("/home");
+
+
     }
 }
