@@ -5,12 +5,13 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
-      <%-- <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-        <ContentTemplate>--%>
+    <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+       <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+        <ContentTemplate>
             <div class="content-wrapper">
                 <div class="card">
                     <div class="card-body">                      
-                            <asp:LinkButton ID="btnAdd" runat="server" CommandArgument="add" OnClick="LnkPnlMenu_Click" CssClass="btn btn-info">Yeni</asp:LinkButton>
+                            <asp:LinkButton ID="btnAdd" runat="server" CommandArgument="add" OnClick="LnkPnlMenu_Click" CssClass="btn btn-dark">Texnikaların gördüyü işləri əlavə et</asp:LinkButton>
                             <div class="row">
                                 <div class="col-12">
                                     <div class="table-responsive">
@@ -72,12 +73,6 @@
                                                 <dx:GridViewDataColumn Caption="Ağac sayı" FieldName="TreeCount" VisibleIndex="1">
                                                     <EditFormSettings VisibleIndex="1" />
                                                 </dx:GridViewDataColumn>
-                                                <dx:GridViewDataColumn Caption="Faktiki ağac sayı" FieldName="FactualCount" VisibleIndex="1">
-                                                    <EditFormSettings VisibleIndex="1" />
-                                                </dx:GridViewDataColumn>
-                                                <dx:GridViewDataColumn Caption="Rəsmi ağac sayı" FieldName="OfficialCount" VisibleIndex="1">
-                                                    <EditFormSettings VisibleIndex="1" />
-                                                </dx:GridViewDataColumn>
                                                   <dx:GridViewDataColumn Caption="Qeyd" FieldName="Notes" VisibleIndex="1">
                                                     <EditFormSettings VisibleIndex="1" />
                                                 </dx:GridViewDataColumn>
@@ -101,6 +96,7 @@
 
                                             </Columns>
                                         </dx:ASPxGridView>
+
                                         <dx:ASPxPopupControl ID="popupEdit"
                                             runat="server"
                                             ClientInstanceName="popup"
@@ -125,6 +121,7 @@
                                                                     runat="server" AutoPostBack="true"
                                                                     Width="100%" Height="30px" OnSelectedIndexChanged="cmMarka_SelectedIndexChanged">
                                                                 </dx:ASPxComboBox>
+                                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" ControlToValidate="cmMarka" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
                                                             </div>
                                                         </div>
                                                         <div class="row mb-2">
@@ -134,6 +131,7 @@
                                                                     runat="server" AutoPostBack="true"
                                                                     Width="100%" Height="30px" OnSelectedIndexChanged="cmModel_SelectedIndexChanged">
                                                                 </dx:ASPxComboBox>
+                                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="cmModel" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
                                                             </div>
                                                         </div>                                                        
                                                         <div class="row mb-2">
@@ -143,6 +141,7 @@
                                                                     runat="server"
                                                                     Width="100%" Height="30px">
                                                                 </dx:ASPxComboBox>
+                                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="cmTechnique" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
                                                             </div>
                                                         </div>
                                                         <div class="row mb-2">
@@ -152,6 +151,7 @@
                                                                     runat="server"
                                                                     Width="100%" Height="30px">
                                                                 </dx:ASPxComboBox>
+                                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="cmCompany" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
                                                             </div>
                                                         </div>
                                                         <div class="row mb-2">
@@ -161,6 +161,7 @@
                                                                     runat="server"
                                                                     Width="100%" Height="30px">
                                                                 </dx:ASPxComboBox>
+                                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ControlToValidate="cmWork" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
                                                             </div>
                                                         </div>
                                                         <div class="row mb-2">
@@ -170,6 +171,7 @@
                                                                     runat="server" AutoPostBack="true"
                                                                     Width="100%" Height="30px" OnSelectedIndexChanged="cmGarden_SelectedIndexChanged">
                                                                 </dx:ASPxComboBox>
+                                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" ControlToValidate="cmGarden" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
                                                             </div>
                                                         </div> 
                                                         <div class="row mb-2">
@@ -204,6 +206,7 @@
                                                             <div class="col-sm-7">
                                                                 <asp:TextBox ID="txtOdometer" class="form-control mb-0 mt-0" runat="server" placeholder="Sayı daxil edin...">
                                                                 </asp:TextBox>
+                                                <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txtOdometer" ID="RequiredFieldValidator7" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>
                                                             </div>
                                                         </div>                                                        
                                                         <div class="row mb-2">
@@ -211,20 +214,7 @@
                                                             <div class="col-sm-7">
                                                                 <asp:TextBox ID="txtTreeCount" class="form-control mb-0 mt-0" runat="server" placeholder="Sayı daxil edin...">
                                                                 </asp:TextBox>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row mb-2">
-                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Faktiki ağac sayı</label>
-                                                            <div class="col-sm-7">
-                                                                <asp:TextBox ID="txtFactualCount" class="form-control mb-0 mt-0" runat="server" placeholder="Sayı daxil edin...">
-                                                                </asp:TextBox>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row mb-2">
-                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Rəsmi ağac sayı</label>
-                                                            <div class="col-sm-7">
-                                                                <asp:TextBox ID="txtOfficialCount" class="form-control mb-0 mt-0" runat="server" placeholder="Sayı daxil edin...">
-                                                                </asp:TextBox>
+                                                <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txtTreeCount" ID="RequiredFieldValidator8" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>
                                                             </div>
                                                         </div>
                                                         <div class="row mb-2">
@@ -237,13 +227,13 @@
                                                         <div class="row  mb-2">
                                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Qeydiyyat tarixi</label>
                                                             <div class="col-sm-7">
-                                                                <dx:ASPxDateEdit ID="dtRegisterTime" runat="server" CssClass="form-control"></dx:ASPxDateEdit>
+                                                                <dx:ASPxDateEdit ID="dtRegisterTime" runat="server" CssClass="form-control" DisplayFormatString="dd.MM.yyyy" EditFormat="Custom" EditFormatString="dd.MM.yyyy" Width="100%" Height="30px"></dx:ASPxDateEdit>
                                                             </div>
                                                         </div>
                                                          <div>
                                             <asp:Label Text="" ForeColor="Red" ID="lblPopError" runat="server" />
                                         </div>
-                                                        <asp:Button ID="btnSave" runat="server"  CssClass="btn btn-success mr-2" Text="Yadda saxla" OnClick="btntesdiq_Click" />
+                                                        <asp:Button ID="btnSave" runat="server" ValidationGroup="qrup1"  CssClass="btn btn-success mr-2" Text="Yadda saxla" OnClick="btntesdiq_Click" />
                                                         <asp:Button ID="btnCancel" runat="server" CssClass="btn btn-light" Text="Ləğv et" OnClick="btnCancel_Click" />
                                                     </div>
                                                 </dx:PopupControlContentControl>
@@ -267,7 +257,7 @@
                 }
             </style>
 
- <%--       </ContentTemplate>
-    </asp:UpdatePanel>--%>
+        </ContentTemplate>
+    </asp:UpdatePanel>
 </asp:Content>
 

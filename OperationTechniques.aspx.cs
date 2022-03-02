@@ -17,10 +17,8 @@ public partial class OperationTechniques : System.Web.UI.Page
     }
     void ClearComponents()
     {
-        txtFactualCount.Text = "";
         txtNotes.Text = "";
         txtOdometer.Text = "";
-        txtOfficialCount.Text = "";
         txtTreeCount.Text = "";
         dtRegisterTime.Text = "";
     }
@@ -93,8 +91,6 @@ public partial class OperationTechniques : System.Web.UI.Page
         cmSektor_SelectedIndexChanged(null, null);
         cmLine.Value = dt.Rows[0]["LineID"].ToParseStr();
         txtTreeCount.Text = dt.Rows[0]["TreeCount"].ToParseStr();
-        txtFactualCount.Text = dt.Rows[0]["FactualCount"].ToParseStr();
-        txtOfficialCount.Text = dt.Rows[0]["OfficialCount"].ToParseStr();
         txtNotes.Text = dt.Rows[0]["Notes"].ToParseStr();
         DateTime datevalue;
         if (DateTime.TryParse(dt.Rows[0]["RegisterTime"].ToParseStr(), out datevalue))
@@ -149,8 +145,6 @@ public partial class OperationTechniques : System.Web.UI.Page
                 Odometer: txtOdometer.Text.ToParseInt(),
                 LineID: cmLine.Value.ToParseInt(),
                 TreeCount: txtTreeCount.Text.ToParseInt(),
-                FactualCount: txtFactualCount.Text.ToParseInt(),
-                OfficialCount: txtOfficialCount.Text.ToParseInt(),
                 Notes: txtNotes.Text.ToParseStr(),
                 RegisterTime: dtRegisterTime.Text.ToParseStr()
                 );          
@@ -166,8 +160,6 @@ public partial class OperationTechniques : System.Web.UI.Page
                 Odometer: txtOdometer.Text.ToParseInt(),
                 LineID: cmLine.Value.ToParseInt(),
                 TreeCount: txtTreeCount.Text.ToParseInt(),
-                FactualCount: txtFactualCount.Text.ToParseInt(),
-                OfficialCount: txtOfficialCount.Text.ToParseInt(),
                 Notes: txtNotes.Text.ToParseStr(),
                 RegisterTime: dtRegisterTime.Text.ToParseStr());           
         }
