@@ -5,12 +5,13 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
-        <%-- <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-        <ContentTemplate>--%>
+    <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+         <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+        <ContentTemplate>
             <div class="content-wrapper">
                 <div class="card">
                     <div class="card-body">                      
-                            <asp:LinkButton ID="btnAdd" runat="server" CommandArgument="add" OnClick="LnkPnlMenu_Click" CssClass="btn btn-info">Yeni</asp:LinkButton>
+                            <asp:LinkButton ID="btnAdd" runat="server" CommandArgument="add" OnClick="LnkPnlMenu_Click" CssClass="btn btn-dark">Kadrların gördüyü işləri əlavə et</asp:LinkButton>
                             <div class="row">
                                 <div class="col-12">
                                     <div class="table-responsive">
@@ -176,6 +177,7 @@
                                                                     runat="server"
                                                                     Width="100%" Height="30px">
                                                                 </dx:ASPxComboBox>
+                                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" ControlToValidate="cmLine" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
                                                             </div>
                                                         </div>
                                                         <div class="row mb-2">
@@ -185,6 +187,8 @@
                                                                     runat="server"
                                                                     Width="100%" Height="30px">
                                                                 </dx:ASPxComboBox>
+                                                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator7" runat="server" ControlToValidate="cmWeather" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
+
                                                             </div>
                                                         </div>
                                                         <div class="row mb-2">
@@ -194,6 +198,8 @@
                                                                     runat="server"
                                                                     Width="100%" Height="30px">
                                                                 </dx:ASPxComboBox>
+                                                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator8" runat="server" ControlToValidate="cmTreeType" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
+
                                                             </div>
                                                         </div>
                                                         <div class="row mb-2">
@@ -203,20 +209,24 @@
                                                                     runat="server"
                                                                     Width="100%" Height="30px">
                                                                 </dx:ASPxComboBox>
+                                                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator9" runat="server" ControlToValidate="cmTreeAge" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
+
                                                             </div>
                                                         </div>
                                                         <div class="row mb-2">
                                                             <label for="exampleInputUsername3" class="col-sm-3 col-form-label">Ağac sayı</label>
                                                             <div class="col-sm-9">
                                                                 <asp:TextBox ID="txtTreeCount" class="form-control mb-0 mt-0" runat="server" placeholder="Sayı daxil edin...">
-                                                                </asp:TextBox>
+                                                                </asp:TextBox>                                                                
+                                                <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txtTreeCount" ID="RequiredFieldValidator5" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>
                                                             </div>
                                                         </div>
                                                          <div class="row mb-2">
                                                             <label for="exampleInputUsername3" class="col-sm-3 col-form-label">Əmək haqqı</label>
                                                             <div class="col-sm-9">
                                                                 <asp:TextBox ID="txtsalary" class="form-control mb-0 mt-0" runat="server" placeholder="Rəqəm daxil edin...">
-                                                                </asp:TextBox>
+                                                                </asp:TextBox>                                                               
+                                                <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txtsalary" ID="RequiredFieldValidator3" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>
                                                             </div>
                                                         </div>
                                                         <div class="row mb-2">
@@ -229,7 +239,7 @@
                                                         <div class="row  mb-2">
                                                             <label for="exampleInputUsername3" class="col-sm-3 col-form-label">Qeydiyyat tarixi</label>
                                                             <div class="col-sm-9">
-                                                                <dx:ASPxDateEdit ID="dtRegstrDate" runat="server" CssClass="form-control"></dx:ASPxDateEdit>
+                                                                <dx:ASPxDateEdit ID="dtRegstrDate" runat="server" CssClass="form-control" DisplayFormatString="dd.MM.yyyy" EditFormat="Custom" EditFormatString="dd.MM.yyyy" Width="100%" Height="30px"></dx:ASPxDateEdit>
                                                             </div>
                                                         </div>
                                                          <div>
@@ -259,7 +269,7 @@
                 }
             </style>
 
- <%--       </ContentTemplate>
-    </asp:UpdatePanel>--%>
+        </ContentTemplate>
+    </asp:UpdatePanel>
 </asp:Content>
 

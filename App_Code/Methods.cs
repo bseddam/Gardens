@@ -2971,11 +2971,11 @@ where t.DeleteTime is null and t.TechniquesWorkDoneID=@TechniquesWorkDoneID", Sq
         }
     }
 
-    public Types.ProsesType OperationTechniqueWorkDoneInsert(int UserID, int TechniqueID, int CompanyID, int WorkID, int Odometer, int LineID, int TreeCount, int FactualCount, int OfficialCount, string Notes, string RegisterTime)
+    public Types.ProsesType OperationTechniqueWorkDoneInsert(int UserID, int TechniqueID, int CompanyID, int WorkID, int Odometer, int LineID, int TreeCount, string Notes, string RegisterTime)
     {
 
-        SqlCommand cmd = new SqlCommand(@"insert into TechniquesWorkDone (UserID,TechniqueID,CompanyID,WorkID,Odometer,LineID,TreeCount,FactualCount,OfficialCount,Notes,RegisterTime)
-                                            Values(@UserID,@TechniqueID,@CompanyID,@WorkID,@Odometer,@LineID,@TreeCount,@FactualCount,@OfficialCount,@Notes,@RegisterTime)", SqlConn);
+        SqlCommand cmd = new SqlCommand(@"insert into TechniquesWorkDone (UserID,TechniqueID,CompanyID,WorkID,Odometer,LineID,TreeCount,Notes,RegisterTime)
+                                            Values(@UserID,@TechniqueID,@CompanyID,@WorkID,@Odometer,@LineID,@TreeCount,@Notes,@RegisterTime)", SqlConn);
         cmd.Parameters.AddWithValue("@UserID", UserID);
         cmd.Parameters.AddWithValue("@TechniqueID", TechniqueID);
         cmd.Parameters.AddWithValue("@CompanyID", CompanyID);
@@ -2983,8 +2983,6 @@ where t.DeleteTime is null and t.TechniquesWorkDoneID=@TechniquesWorkDoneID", Sq
         cmd.Parameters.AddWithValue("@Odometer", Odometer);
         cmd.Parameters.AddWithValue("@LineID", LineID);        
         cmd.Parameters.AddWithValue("@TreeCount", TreeCount);
-        cmd.Parameters.AddWithValue("@FactualCount", FactualCount);
-        cmd.Parameters.AddWithValue("@OfficialCount", OfficialCount);
         cmd.Parameters.AddWithValue("@Notes", Notes);
         cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
         try
@@ -3004,9 +3002,9 @@ where t.DeleteTime is null and t.TechniquesWorkDoneID=@TechniquesWorkDoneID", Sq
         }
     }
 
-    public Types.ProsesType OperationTechniqueWorkDoneUpdate(int TechniquesWorkDoneID, int UserID, int TechniqueID, int CompanyID, int WorkID, int Odometer, int LineID, int TreeCount, int FactualCount, int OfficialCount, string Notes, string RegisterTime)
+    public Types.ProsesType OperationTechniqueWorkDoneUpdate(int TechniquesWorkDoneID, int UserID, int TechniqueID, int CompanyID, int WorkID, int Odometer, int LineID, int TreeCount, string Notes, string RegisterTime)
     {
-        SqlCommand cmd = new SqlCommand(@"update TechniquesWorkDone set UserID=@UserID, TechniqueID=@TechniqueID,CompanyID=@CompanyID,WorkID=@WorkID,Odometer=@Odometer,LineID=@LineID,TreeCount=@TreeCount,FactualCount=@FactualCount,OfficialCount=@OfficialCount,Notes=@Notes,RegisterTime=@RegisterTime where TechniquesWorkDoneID=@TechniquesWorkDoneID", SqlConn);
+        SqlCommand cmd = new SqlCommand(@"update TechniquesWorkDone set UserID=@UserID, TechniqueID=@TechniqueID,CompanyID=@CompanyID,WorkID=@WorkID,Odometer=@Odometer,LineID=@LineID,TreeCount=@TreeCount,Notes=@Notes,RegisterTime=@RegisterTime where TechniquesWorkDoneID=@TechniquesWorkDoneID", SqlConn);
         cmd.Parameters.AddWithValue("@UserID", UserID);
         cmd.Parameters.AddWithValue("@TechniqueID", TechniqueID);
         cmd.Parameters.AddWithValue("@CompanyID", CompanyID);
@@ -3014,8 +3012,6 @@ where t.DeleteTime is null and t.TechniquesWorkDoneID=@TechniquesWorkDoneID", Sq
         cmd.Parameters.AddWithValue("@Odometer", Odometer);
         cmd.Parameters.AddWithValue("@LineID", LineID);
         cmd.Parameters.AddWithValue("@TreeCount", TreeCount);
-        cmd.Parameters.AddWithValue("@FactualCount", FactualCount);
-        cmd.Parameters.AddWithValue("@OfficialCount", OfficialCount);
         cmd.Parameters.AddWithValue("@Notes", Notes);
         cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
         cmd.Parameters.AddWithValue("@TechniquesWorkDoneID", TechniquesWorkDoneID);
@@ -3046,7 +3042,7 @@ where t.DeleteTime is null and t.TechniquesWorkDoneID=@TechniquesWorkDoneID", Sq
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"select ROW_NUMBER() over( order by w.TechniquesWorkDoneID) sn,
 t.TechniquesName, s.WorkName,g.GardenName,z.ZonaName,sc.SectorName,
-l.LineName,w.Odometer,w.FactualCount,w.OfficialCount,
+l.LineName,w.Odometer,
 w.Note,w.RegstrTime,w.TechniquesWorkDoneID,w.UserID,w.LineID,w.WorkID,
 g.GardenID,z.ZoneID,sc.SectorsID
 from TechniquesWorkDone w

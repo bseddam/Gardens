@@ -10,7 +10,7 @@
          <div class="content-wrapper">
                 <div class="card">
                     <div class="card-body">                      
-                            <asp:LinkButton ID="btnAdd" runat="server" CommandArgument="add" OnClick="LnkPnlMenu_Click" CssClass="btn btn-info">Yeni vəzifə əlavə et</asp:LinkButton>
+                            <asp:LinkButton ID="btnAdd" runat="server" CommandArgument="add" OnClick="LnkPnlMenu_Click" CssClass="btn btn-dark">Yeni vəzifə əlavə et</asp:LinkButton>
                             <div class="row">
                                 <div class="col-12">
                                     <div class="table-responsive">
