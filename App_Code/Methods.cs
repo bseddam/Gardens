@@ -3526,18 +3526,29 @@ UserID=@UserID where WeatherConditionID=@WeatherConditionID;", SqlConn);
 
 
 
-
     //giris cixis
     public DataTable GetEntryExits()
     {
         try
         {
             DataTable dt = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [EntryExitID] desc) sn,
-e.*,c2.CardNumber,c1.Sname+' '+c1.Name+' '+c1.FName fullname,case when e.EntryExitStatus =1 then N'Giriş' 
-when e.EntryExitStatus =2 then N'Çıxış' else N'Xəta baş verdi!' end EntryExitName from [EntryExit] e 
+            SqlDataAdapter da = new SqlDataAdapter(@"
+
+select *, case when t.[Sıra nömrəsi] % 2 =0 then N'Giriş' 
+else N'Çıxış' end [Status] from (
+
+SELECT row_number() over(PARTITION BY c1.Sname,c1.Name,c1.FName order by c1.Sname,c1.Name,c1.FName,e.InsertTime desc) [Sıra nömrəsi],
+c2.CardNumber [Kartın nömrəsi],c1.Sname+' '+c1.Name+' '+c1.FName [İşçinin adı],e.InsertTime Tarix,e.EntryExitID,g.GardenName 
+from [EntryExit] e 
 left join Cadres c1 on e.CadreID=c1.CadreID 
-left join Cards c2 on c2.CardID=c1.CardID  where e.DeleteTime is null and c1.DeleteTime is null  and c2.DeleteTime is null ", SqlConn);
+left join Cards c2 on c2.CardID=c1.CardID 
+inner join Gardens g on g.GardenID=c1.GardenID
+where e.DeleteTime is null and c1.DeleteTime is null  and 
+c2.DeleteTime is null and g.DeleteTime is null
+
+) t
+", SqlConn);
+           
             da.Fill(dt);
             return dt;
         }
@@ -3546,6 +3557,25 @@ left join Cards c2 on c2.CardID=c1.CardID  where e.DeleteTime is null and c1.Del
             return null;
         }
     }
+//    //giris cixis
+//    public DataTable GetEntryExits()
+//    {
+//        try
+//        {
+//            DataTable dt = new DataTable();
+//            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [EntryExitID] desc) sn,
+//e.*,c2.CardNumber,c1.Sname+' '+c1.Name+' '+c1.FName fullname,case when e.EntryExitStatus =1 then N'Giriş' 
+//when e.EntryExitStatus =2 then N'Çıxış' else N'Xəta baş verdi!' end EntryExitName from [EntryExit] e 
+//left join Cadres c1 on e.CadreID=c1.CadreID 
+//left join Cards c2 on c2.CardID=c1.CardID  where e.DeleteTime is null and c1.DeleteTime is null  and c2.DeleteTime is null ", SqlConn);
+//            da.Fill(dt);
+//            return dt;
+//        }
+//        catch (Exception ex)
+//        {
+//            return null;
+//        }
+//    }
     public DataTable GetCadreByCardnumber(string cardnumber)
     {
         try

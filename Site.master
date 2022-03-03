@@ -120,6 +120,7 @@
                             <li><a href="#">Texnikalar</a></li>
                             <li><a href="#">Suvarma sistemləri</a></li>
                             <li><a href="#">Anbar</a></li>
+                            <li><a href="/reportexitentry">Kadrların davamiyyəti</a></li>
                         </ul>
                     </li>
                     <li><a class="nav-link scrollto" href="#contact">Servis</a></li>
