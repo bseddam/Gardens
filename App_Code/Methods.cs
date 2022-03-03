@@ -186,25 +186,34 @@ GardenID=@GardenID, CadreID=@CadreID, Login=@Login,Password=@Password,UserStatus
             cmddel.Dispose();
         }
 
-        foreach (string i in SiteMapID)
+
+        if (SiteMapID != null)
         {
-            SqlCommand cmd = new SqlCommand(@"insert into PermissionUser (UserID,SiteMapID) values 
-(@UserID,@SiteMapID)", SqlConn);
-            cmd.Parameters.AddWithValue("@UserID", UserID);
-            cmd.Parameters.AddWithValue("@SiteMapID", int.Parse(i));
-            try
+            if (SiteMapID.Length > 1)
             {
-                cmd.Connection.Open();
-                cmd.ExecuteNonQuery();
-            }
-            catch (Exception ex)
-            {
-                return Types.ProsesType.Error;
-            }
-            finally
-            {
-                cmd.Connection.Close();
-                cmd.Dispose();
+                foreach (string i in SiteMapID)
+                {
+                    SqlCommand cmd = new SqlCommand(@"insert into PermissionUser (UserID,SiteMapID) 
+values (@UserID,@SiteMapID)", SqlConn);
+                    cmd.Parameters.AddWithValue("@UserID", UserID);
+                    cmd.Parameters.AddWithValue("@SiteMapID", i.ToParseInt());
+
+
+                    try
+                    {
+                        cmd.Connection.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        return Types.ProsesType.Error;
+                    }
+                    finally
+                    {
+                        cmd.Connection.Close();
+                        cmd.Dispose();
+                    }
+                }
             }
         }
         return Types.ProsesType.Succes;
@@ -4036,6 +4045,25 @@ inner join SiteMap sm on p.SiteMapID = sm.SiteMapID where p.UserID=@UserID)", Sq
             return null;
         }
     }
+
+
+    public DataTable GetPermisionByUserID(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select * from PermissionUser p 
+where p.UserID=1", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("UserID", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
 
 
 

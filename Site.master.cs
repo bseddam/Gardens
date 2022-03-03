@@ -16,7 +16,7 @@ public partial class Site : System.Web.UI.MasterPage
 
         if (!Page.IsPostBack)
         {
-            Session["UserID"] = 1;
+            //Session["UserID"] = 1;
             if (Session["UserID"] == null)
             {
                 Config.Rd("/login");

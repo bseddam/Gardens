@@ -21,6 +21,8 @@ public partial class Users : System.Web.UI.Page
         txtpassword.Text = "";
         txtlogin.Text = "";
         lblPopError.Text = "";
+
+        poplblper.Text = "";
     }
     void _loadGridFromDb()
     {
@@ -144,11 +146,40 @@ public partial class Users : System.Web.UI.Page
     protected void lnkPermission_Click(object sender, EventArgs e)
     {
         int id = (sender as LinkButton).CommandArgument.ToParseInt();
-        DataTable dt = _db.GetUsersPermissions();
+        DataTable dtx = _db.GetUsersPermissions();
         chlist.DataValueField = "SiteMapID";
         chlist.DataTextField = "name";
-        chlist.DataSource = dt;
+        chlist.DataSource = dtx;
         chlist.DataBind();
+
+        DataTable dt = _db.GetPermisionByUserID(id);
+        DataTable dt1 = _db.GetUserByid(id);
+        chlist.ClearSelection();
+        for (int i = 0; i < chlist.Items.Count; i++)
+        {
+            if (dt1.Rows[0]["UserStatusID"].ToString() != "1")
+            {
+                if (dt != null)
+                {
+                    if (dt.Rows.Count > 0)
+                    {
+                        foreach (DataRow row in dt.Rows)
+                        {
+                            if (chlist.Items[i].Value == row["SiteMapID"].ToString())
+                            {
+                                chlist.Items[i].Selected = true;
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                chlist.Items[i].Selected = true;
+            }
+        }
+
+
         btnPermissionsSave.CommandArgument = id.ToString();
         popupPermission.ShowOnPageLoad = true;
     }
@@ -156,26 +187,29 @@ public partial class Users : System.Web.UI.Page
     protected void btnPermissionsSave_Click(object sender, EventArgs e)
     {
         lblPopError.Text = "";
-        Types.ProsesType val = Types.ProsesType.Error;        
+        Types.ProsesType val = Types.ProsesType.Error;
         string IDS = "";
+        
         foreach (ListItem item in chlist.Items)
         {
             if (item.Selected)
             {
-                IDS += item.Value+","; 
+                IDS += item.Value + ",";
             }
         }
+        string[] PermissionID = null;
         int id = btnPermissionsSave.CommandArgument.ToParseInt();
-
-       IDS=IDS.Substring(0, IDS.Length - 1);
-
-        string[] PermissionID = IDS.Split(',');
-
-        val = _db.UserInsertPermissions(id,PermissionID);
-
+        if (IDS.Length > 1)
+        {
+            IDS = IDS.Substring(0, IDS.Length - 1);
+            PermissionID = IDS.Split(',');
+        }
+        val = _db.UserInsertPermissions(id, PermissionID);
+       
         if (val == Types.ProsesType.Error)
         {
             lblPopError.Text = "XƏTA! Yadda saxlamaq mümkün olmadı.";
+            poplblper.Text = "XƏTA! Yadda saxlamaq mümkün olmadı.";
             return;
         }
 
