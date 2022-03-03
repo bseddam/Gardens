@@ -6,6 +6,9 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <!-- ======= Default Section ======= -->
+    <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+        <ContentTemplate>
     <section id="about" class="about section-bg">
         <div class="container">
 
@@ -103,7 +106,7 @@
                             HeaderText="Redaktə"
                             PopupHorizontalAlign="WindowCenter"
                             PopupVerticalAlign="WindowCenter"
-                            Height="600"
+                            Height="440"
                             ScrollBars="Vertical">
                             <ContentCollection>
                                 <dx:PopupControlContentControl>
@@ -187,5 +190,7 @@
         </div>
     </section>
     <!-- End Default -->
+              </ContentTemplate>
+    </asp:UpdatePanel>
 </asp:Content>
 

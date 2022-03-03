@@ -5,8 +5,9 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
-      <%--   <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-        <ContentTemplate>--%>
+    <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+         <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+        <ContentTemplate>
          <div class="content-wrapper">
                 <div class="card">
                     <div class="card-body">                      
@@ -133,7 +134,7 @@
                 }
             </style>
 
- <%--       </ContentTemplate>
-    </asp:UpdatePanel>--%>
+        </ContentTemplate>
+    </asp:UpdatePanel>
 </asp:Content>
 

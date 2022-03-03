@@ -20,8 +20,9 @@
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-     <%-- <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-        <ContentTemplate>--%>
+    <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+      <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+        <ContentTemplate>
             <div class="content-wrapper">
                 <div class="card">
                     <div class="card-body">                      
@@ -275,7 +276,7 @@
                                                         <div class="row  mb-2">
                                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Qeydiyyat tarixi</label>
                                                             <div class="col-sm-7">
-                                                                <dx:ASPxDateEdit ID="dtBoughtDate" runat="server"></dx:ASPxDateEdit>
+                                                                <dx:ASPxDateEdit ID="dtBoughtDate" runat="server" DisplayFormatString="dd.MM.yyyy" EditFormat="Custom" EditFormatString="dd.MM.yyyy" Width="100%" Height="30px"></dx:ASPxDateEdit>
                                                             </div>
                                                         </div>
                                                           
@@ -316,7 +317,7 @@
                 }
             </style>
 
- <%--       </ContentTemplate>
-    </asp:UpdatePanel>--%>
+        </ContentTemplate>
+    </asp:UpdatePanel>
 </asp:Content>
 

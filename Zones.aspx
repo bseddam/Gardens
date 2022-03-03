@@ -106,7 +106,7 @@
                             HeaderText="Redaktə"
                             PopupHorizontalAlign="WindowCenter"
                             PopupVerticalAlign="WindowCenter"
-                            Height="600"
+                            Height="400"
                             ScrollBars="Vertical">
                             <ContentCollection>
                                 <dx:PopupControlContentControl>
