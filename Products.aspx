@@ -5,6 +5,9 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+    <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+         <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+        <ContentTemplate>
     <!-- ======= Default Section ======= -->
     <section id="about" class="about section-bg">
         <div class="container">
@@ -228,5 +231,7 @@
         </div>
     </section>
     <!-- End Default -->
+                </ContentTemplate>
+    </asp:UpdatePanel>
 </asp:Content>
 

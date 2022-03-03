@@ -61,17 +61,15 @@
                     <li class="dropdown"><a href="#"><span>Kateqoriyalar</span>
                         <i class="bi bi-chevron-down"></i></a>
                         <ul>
+                            <li><a href="/companies">Şirkətlər</a></li>
                             <li><a href="/structure">Struktur</a></li>
                             <li><a href="/positions">Vəzifələr</a></li>
-                            <li><a href="/producttypes">Mal növü</a></li>
                             <li><a href="/works">İşlər</a></li>
-                            <li><a href="/treetypes">Ağac növləri</a></li>
                             <li><a href="/brands">Markalar</a></li>
                             <li><a href="/models">Modeller</a></li>
-                            <li><a href="/companies">Şirkətlər</a></li>
-                            <li><a href="/unitmeasurements">Ölçü vahidləri</a></li>
-                            <li><a href="/cards">Kartlar</a></li>
-                            <li><a href="/users">İstifadəçilər</a></li>
+                            <li><a href="/producttypes">Mal növü</a></li>                            
+                            <li><a href="/treetypes">Ağac növləri</a></li>                           
+                            <li><a href="/unitmeasurements">Ölçü vahidləri</a></li>                                                        
                         </ul>
                     </li>
 
@@ -83,6 +81,7 @@
                             <li><a href="/sectors">Sektorlar</a></li>
                             <li><a href="/lines">Sıralar</a></li>
                             <li><a href="/cadres">Kadrlar</a></li>
+                            <li><a href="/cards">Kartlar</a></li>
                             <li><a href="/technique">Texnikalar</a></li>
                             <li><a href="/wateringsystems">Suvarma sistemləri</a></li>
                             <li><a href="/products">Mallar</a></li>
@@ -122,7 +121,7 @@
                             <li><a href="#">Anbar</a></li>
                         </ul>
                     </li>
-                    <li><a class="nav-link scrollto" href="#contact">Servis</a></li>
+                    <li><a class="nav-link scrollto" href="/users">İstifadəçilər</a></li>
                 </ul>
                 <i class="bi bi-list mobile-nav-toggle"></i>
             </nav>
