@@ -48,10 +48,10 @@
                                 <dx:GridViewDataColumn Caption="Sıra nömrəsi" FieldName="sn" VisibleIndex="1">
                                     <EditFormSettings VisibleIndex="1" />
                                 </dx:GridViewDataColumn>
-                                <dx:GridViewDataColumn Caption="Ağac sayından" FieldName="FirstAge" VisibleIndex="1">
+                                <dx:GridViewDataColumn Caption="Ağac yaşından" FieldName="FirstAge" VisibleIndex="1">
                                     <EditFormSettings VisibleIndex="1" />
                                 </dx:GridViewDataColumn>
-                                <dx:GridViewDataColumn Caption="Ağac sayına" FieldName="LastAge" VisibleIndex="1">
+                                <dx:GridViewDataColumn Caption="Ağac yaşına" FieldName="LastAge" VisibleIndex="1">
                                     <EditFormSettings VisibleIndex="1" />
                                 </dx:GridViewDataColumn>
                                   <dx:GridViewDataColumn Caption="Əmsal" FieldName="Coefficient" VisibleIndex="1">
@@ -91,7 +91,7 @@
                                     <div class="container">
                                     
                                          <div class="row mb-2">
-                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ağac sayından</label>
+                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ağac yaşından</label>
                                             <div class="col-sm-7">
                                                 <asp:TextBox ID="txtFirstAge"  class="form-control" runat="server" placeholder="Mətni daxil edin..." TextMode="Number">
                                                 </asp:TextBox>
@@ -99,7 +99,7 @@
                                             </div>
                                         </div>
                                         <div class="row mb-2">
-                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ağac sayına</label>
+                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ağac yaşına</label>
                                             <div class="col-sm-7">
                                                 <asp:TextBox ID="txtLastAge"  class="form-control" runat="server" placeholder="Mətni daxil edin..." TextMode="Number">
                                                 </asp:TextBox>

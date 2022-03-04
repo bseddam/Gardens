@@ -202,7 +202,7 @@
 
 
                                             <div class="row mb-2">
-                                                <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Malın növü</label>
+                                                <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Malın kateqoriyası</label>
                                                 <div class="col-sm-7">
                                                     <dx:ASPxComboBox ID="cmbproducttype" runat="server" Width="100%" Height="30px" AutoPostBack="True" OnSelectedIndexChanged="cmbproducttype_SelectedIndexChanged">
                                                     </dx:ASPxComboBox>
@@ -277,7 +277,7 @@
                                             </div>
                                            
                                             <div class="row mb-2">
-                                                <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Servis qiyməti</label>
+                                                <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Xidmət haqqı</label>
                                                 <div class="col-sm-7">
                                                     <asp:TextBox ID="txtServicePrice" class="form-control mb-0 mt-0" runat="server" placeholder="Mətni daxil edin...">
                                                     </asp:TextBox>
@@ -287,7 +287,7 @@
                                                 </div>
                                             </div>
                                             <div class="row mb-2">
-                                                <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Yürüş</label>
+                                                <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Cari yürüş(km)</label>
                                                 <div class="col-sm-7">
                                                     <asp:TextBox ID="txtodometer" class="form-control mb-0 mt-0" runat="server" placeholder="Mətni daxil edin...">
                                                     </asp:TextBox>

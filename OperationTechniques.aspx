@@ -144,8 +144,8 @@
                                                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="cmTechnique" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
                                                             </div>
                                                         </div>
-                                                        <div class="row mb-2">
-                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Şirkət</label>
+                                                        <div class="row mb-2" >
+                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Şirkət pozqun</label>
                                                             <div class="col-sm-7">
                                                                 <dx:ASPxComboBox ID="cmCompany" 
                                                                     runat="server"
@@ -154,16 +154,7 @@
                                                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="cmCompany" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
                                                             </div>
                                                         </div>
-                                                        <div class="row mb-2">
-                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">İş</label>
-                                                            <div class="col-sm-7">
-                                                                <dx:ASPxComboBox ID="cmWork" 
-                                                                    runat="server"
-                                                                    Width="100%" Height="30px">
-                                                                </dx:ASPxComboBox>
-                                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ControlToValidate="cmWork" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
-                                                            </div>
-                                                        </div>
+                                                        
                                                         <div class="row mb-2">
                                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Bağ</label>
                                                             <div class="col-sm-7">
@@ -199,6 +190,16 @@
                                                                     runat="server"
                                                                     Width="100%" Height="30px">
                                                                 </dx:ASPxComboBox>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mb-2">
+                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">İş</label>
+                                                            <div class="col-sm-7">
+                                                                <dx:ASPxComboBox ID="cmWork" 
+                                                                    runat="server"
+                                                                    Width="100%" Height="30px">
+                                                                </dx:ASPxComboBox>
+                                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ControlToValidate="cmWork" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
                                                             </div>
                                                         </div>
                                                         <div class="row mb-2">

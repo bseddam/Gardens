@@ -45,6 +45,17 @@ public partial class Cadres : System.Web.UI.Page
     }
     void componentsload()
     {
+
+        cmCardNumber.Items.Clear();
+        DataTable dt3 = _db.GetCards();
+        cmCardNumber.ValueField = "CardID";
+        cmCardNumber.TextField = "CardNumber";
+        cmCardNumber.DataSource = dt3;
+        cmCardNumber.DataBind();
+        cmCardNumber.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmCardNumber.SelectedIndex = 0;
+
+
         cmStructure.Items.Clear();
         DataTable dt1 = _db.GetStructure();
         cmStructure.ValueField = "StructureID";
@@ -262,13 +273,6 @@ public partial class Cadres : System.Web.UI.Page
 
     protected void cmGarden_SelectedIndexChanged(object sender, EventArgs e)
     {
-        cmCardNumber.Items.Clear();
-        DataTable dt3 = _db.GetCardsByGardenID(cmGarden.Value.ToParseInt());
-        cmCardNumber.ValueField = "CardID";
-        cmCardNumber.TextField = "CardNumber";
-        cmCardNumber.DataSource = dt3;
-        cmCardNumber.DataBind();
-        cmCardNumber.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        cmCardNumber.SelectedIndex = 0;
+      
     }
 }

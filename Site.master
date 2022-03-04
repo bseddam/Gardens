@@ -67,8 +67,10 @@
                             <li><a href="/works">İşlər</a></li>
                             <li><a href="/brands">Markalar</a></li>
                             <li><a href="/models">Modeller</a></li>
-                            <li><a href="/producttypes">Mal növü</a></li>                            
-                            <li><a href="/treetypes">Ağac növləri</a></li>                           
+                            <li><a href="/producttypes">Mal kateqoriyası</a></li>   
+                             <li><a href="/treetypes">Ölkələr</a></li>  
+                            <li><a href="/treetypes">Ağac adı</a></li>  
+                            <li><a href="/treetypes">Ağac növü</a></li> 
                             <li><a href="/unitmeasurements">Ölçü vahidləri</a></li>                                                        
                         </ul>
                     </li>

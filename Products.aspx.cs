@@ -17,10 +17,8 @@ public partial class Products : System.Web.UI.Page
     }
     void ClearComponents()
     {
-        cmbregistertime.Text = "";
+       
         txtproductname.Text = "";
-        txtprice.Text = "";
-        txtpricediscount.Text = "";
         txtnotes.Text = "";
         lblPopError.Text = "";
         txtcode.Text = "";
@@ -89,15 +87,7 @@ public partial class Products : System.Web.UI.Page
 
         int id = (sender as LinkButton).CommandArgument.ToParseInt();
         DataTable dt = _db.GetProductById(id: id);
-        DateTime datevalue;
-        if (DateTime.TryParse(dt.Rows[0]["RegisterTime"].ToParseStr(), out datevalue))
-        {
-            cmbregistertime.Text = DateTime.Parse(dt.Rows[0]["RegisterTime"].ToParseStr()).ToString("dd.MM.yyyy");
-        }
-        else
-        {
-            cmbregistertime.Text = "";
-        }
+
         txtproductname.Text = dt.Rows[0]["ProductsName"].ToParseStr();
         ddlproducttype.SelectedValue = dt.Rows[0]["ProductTypeID"].ToParseStr();
         brandcomponentload();
@@ -112,8 +102,7 @@ public partial class Products : System.Web.UI.Page
         {
             ddlunitmeasurement.SelectedValue = dt.Rows[0]["UnitMeasurementID"].ToParseStr();
         }
-        txtprice.Text = dt.Rows[0]["Price"].ToParseStr();
-        txtpricediscount.Text = dt.Rows[0]["PriceDiscount"].ToParseStr();
+  
         txtnotes.Text = dt.Rows[0]["Notes"].ToParseStr();
 
         btnSave.CommandName = "update";
@@ -145,30 +134,25 @@ public partial class Products : System.Web.UI.Page
         Types.ProsesType val = Types.ProsesType.Error;
         if (btnSave.CommandName == "insert")
         {
-            val = _db.ProductInsert(RegisterTime: cmbregistertime.Text.ToParseStr(),
+            val = _db.ProductInsert(
                 ProductsName: txtproductname.Text.ToParseStr(),
                 ProductTypeID: ddlproducttype.SelectedValue.ToParseInt(),
                 BrandID: ddlbrand.SelectedValue.ToParseInt(),
                 ModelID: ddlmodel.SelectedValue.ToParseInt(),
                 Code: txtcode.Text.ToParseStr(),
                 UnitMeasurementID: ddlunitmeasurement.SelectedValue.ToParseInt(),
-                Price: txtprice.Text.ToParseStr(),
-                PriceDiscount: txtpricediscount.Text.ToParseStr(),
                 Notes: txtnotes.Text.ToParseStr()
                 );
         }
         else
         {
             val = _db.ProductUpdate(ProductID: btnSave.CommandArgument.ToParseInt(),
-                RegisterTime: cmbregistertime.Text.ToParseStr(),
                 ProductsName: txtproductname.Text.ToParseStr(),
                 ProductTypeID: ddlproducttype.SelectedValue.ToParseInt(),
                 BrandID: ddlbrand.SelectedValue.ToParseInt(),
                 ModelID: ddlmodel.SelectedValue.ToParseInt(),
                 Code: txtcode.Text.ToParseStr(),
                 UnitMeasurementID: ddlunitmeasurement.SelectedValue.ToParseInt(),
-                Price: txtprice.Text.ToParseStr(),
-                PriceDiscount: txtpricediscount.Text.ToParseStr(),
                 Notes: txtnotes.Text.ToParseStr()
                 );
         }
