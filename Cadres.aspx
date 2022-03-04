@@ -62,12 +62,6 @@
                                                 <dx:GridViewDataColumn Caption="Sıra nömrəsi" FieldName="sn" VisibleIndex="1">
                                                     <EditFormSettings VisibleIndex="1" />
                                                 </dx:GridViewDataColumn>                                             
-                                                <dx:GridViewDataColumn Caption="Struktur" FieldName="StructureName" VisibleIndex="1">
-                                                    <EditFormSettings VisibleIndex="1" />
-                                                </dx:GridViewDataColumn>
-                                                <dx:GridViewDataColumn Caption="Vəzifəsi" FieldName="PositionName" VisibleIndex="1">
-                                                    <EditFormSettings VisibleIndex="1" />
-                                                </dx:GridViewDataColumn>
                                                   <dx:GridViewDataColumn Caption="İş kartı" FieldName="CardNumber" VisibleIndex="1">
                                                     <EditFormSettings VisibleIndex="1" />
                                                 </dx:GridViewDataColumn>                                 
@@ -98,23 +92,10 @@
                                                  <dx:GridViewDataColumn Caption="Email" FieldName="Email" VisibleIndex="1">
                                                     <EditFormSettings VisibleIndex="1" />
                                                 </dx:GridViewDataColumn>
-                                                <dx:GridViewDataColumn Caption="İşə daxil olma tarixi" FieldName="JobEntryDate" VisibleIndex="1">
-                                                    <EditFormSettings VisibleIndex="1" />
-                                                </dx:GridViewDataColumn>
-                                                <dx:GridViewDataColumn Caption="İşədən çıxma tarixi" FieldName="JobExitDate" VisibleIndex="1">
-                                                    <EditFormSettings VisibleIndex="1" />
-                                                </dx:GridViewDataColumn>
-                                                <dx:GridViewDataColumn Caption="İşçi növü" FieldName="CadreTypeName" VisibleIndex="1">
-                                                    <EditFormSettings VisibleIndex="1" />
-                                                </dx:GridViewDataColumn>
-                                                <dx:GridViewDataColumn Caption="Əmək haqqı" FieldName="Salary" VisibleIndex="1">
-                                                    <EditFormSettings VisibleIndex="1" />
-                                                </dx:GridViewDataColumn>
                                                 <dx:GridViewDataColumn Caption="Şəkil" FieldName="Photo" VisibleIndex="1"> <DataItemTemplate>
                                                     <img src="imgcadres/<%#Eval("Photo") %>"  Width="50" Height="50"/>                                     </DataItemTemplate>                                                   
                                                     <EditFormSettings VisibleIndex="1" />
                                                 </dx:GridViewDataColumn>
-
                                                 <dx:GridViewDataColumn Caption="Qeydiyyat tarixi" FieldName="RegisterTime" VisibleIndex="1">
                                                     <EditFormSettings VisibleIndex="1" />
                                                 </dx:GridViewDataColumn>
@@ -153,7 +134,7 @@
                                             <ContentCollection>
                                                 <dx:PopupControlContentControl>
                                                     <div class="container">
-                                                        <div class="row mb-2">
+                                                        <%--<div class="row mb-2">
                                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Struktur</label>
                                                             <div class="col-sm-7">
                                                                 <dx:ASPxComboBox ID="cmStructure" 
@@ -161,8 +142,8 @@
                                                                     Width="100%" Height="30px">
                                                                 </dx:ASPxComboBox>
                                                             </div>
-                                                        </div>
-                                                        <div class="row mb-2">
+                                                        </div>--%>
+                                                        <%--<div class="row mb-2">
                                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Vəzifəsi</label>
                                                             <div class="col-sm-7">
                                                                 <dx:ASPxComboBox ID="cmPosition" 
@@ -170,8 +151,8 @@
                                                                     Width="100%" Height="30px">
                                                                 </dx:ASPxComboBox>
                                                             </div>
-                                                        </div>
-                                                        <div class="row mb-2">
+                                                        </div>--%>
+                                                      <%--  <div class="row mb-2">
                                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Bağ</label>
                                                             <div class="col-sm-7">
                                                                 <dx:ASPxComboBox ID="cmGarden" 
@@ -180,7 +161,7 @@
                                                                 </dx:ASPxComboBox>
                                                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ControlToValidate="cmGarden" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
                                                             </div>
-                                                        </div> 
+                                                        </div> --%>
                                                         <div class="row mb-2">
                                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">İş kartı</label>
                                                             <div class="col-sm-7">
@@ -268,7 +249,7 @@
                                                                 </asp:TextBox>
                                                             </div>
                                                         </div>
-                                                        <div class="row  mb-2">
+<%--                                                        <div class="row  mb-2">
                                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">İşə qəbul olma tarixi</label>
                                                             <div class="col-sm-7">
                                                                 <dx:ASPxDateEdit ID="dtJobEntryDate" runat="server" CssClass="form-control"></dx:ASPxDateEdit>
@@ -279,8 +260,8 @@
                                                             <div class="col-sm-7">
                                                                 <dx:ASPxDateEdit ID="dtJobExitDate" runat="server" CssClass="form-control"></dx:ASPxDateEdit>
                                                             </div>
-                                                        </div>
-                                                        <div class="row mb-2">
+                                                        </div>--%>
+                                                        <%--<div class="row mb-2">
                                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">İşçi növü</label>
                                                             <div class="col-sm-7">
                                                                 <dx:ASPxComboBox ID="cmbcardetype"
@@ -288,14 +269,14 @@
                                                                     Width="100%" Height="30px">
                                                                 </dx:ASPxComboBox>
                                                             </div>
-                                                        </div>  
-                                                        <div class="row mb-2">
+                                                        </div>  --%>
+                                                    <%--    <div class="row mb-2">
                                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Əmək haqqı</label>
                                                             <div class="col-sm-7">
                                                                 <asp:TextBox ID="txtSalary" class="form-control mb-0 mt-0" runat="server" placeholder="Rəqəm daxil edin...">
                                                                 </asp:TextBox>
                                                             </div>
-                                                        </div>
+                                                        </div>--%>
                                                         <div class="row  mb-2">
                                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Qeydiyyat tarixi</label>
                                                             <div class="col-sm-7">
