@@ -45,32 +45,32 @@ public partial class Cadres : System.Web.UI.Page
     }
     void componentsload()
     {
-        cmStructure.Items.Clear();
-        DataTable dt1 = _db.GetStructure();
-        cmStructure.ValueField = "StructureID";
-        cmStructure.TextField = "StructureName";
-        cmStructure.DataSource = dt1;
-        cmStructure.DataBind();
-        cmStructure.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        cmStructure.SelectedIndex = 0;
+        //cmStructure.Items.Clear();
+        //DataTable dt1 = _db.GetStructure();
+        //cmStructure.ValueField = "StructureID";
+        //cmStructure.TextField = "StructureName";
+        //cmStructure.DataSource = dt1;
+        //cmStructure.DataBind();
+        //cmStructure.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        //cmStructure.SelectedIndex = 0;
 
-        cmPosition.Items.Clear();
-        DataTable dt2 = _db.GetPositions();
-        cmPosition.ValueField = "PositionID";
-        cmPosition.TextField = "PositionName";
-        cmPosition.DataSource = dt2;
-        cmPosition.DataBind();
-        cmPosition.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        cmPosition.SelectedIndex = 0;
+        //cmPosition.Items.Clear();
+        //DataTable dt2 = _db.GetPositions();
+        //cmPosition.ValueField = "PositionID";
+        //cmPosition.TextField = "PositionName";
+        //cmPosition.DataSource = dt2;
+        //cmPosition.DataBind();
+        //cmPosition.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        //cmPosition.SelectedIndex = 0;
 
-        cmbcardetype.Items.Clear();
-        DataTable dt4 = _db.GetCadreType();
-        cmbcardetype.ValueField = "CadreTypeID";
-        cmbcardetype.TextField = "CadreTypeName";
-        cmbcardetype.DataSource = dt4;
-        cmbcardetype.DataBind();
-        cmbcardetype.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        cmbcardetype.SelectedIndex = 0;
+        //cmbcardetype.Items.Clear();
+        //DataTable dt4 = _db.GetCadreType();
+        //cmbcardetype.ValueField = "CadreTypeID";
+        //cmbcardetype.TextField = "CadreTypeName";
+        //cmbcardetype.DataSource = dt4;
+        //cmbcardetype.DataBind();
+        //cmbcardetype.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        //cmbcardetype.SelectedIndex = 0;
 
         cmGender.Items.Clear();
         DataTable dt5 = _db.GetGenders();
@@ -81,23 +81,23 @@ public partial class Cadres : System.Web.UI.Page
         cmGender.Items.Insert(0, new ListEditItem("Seçin", "-1"));
         cmGender.SelectedIndex = 0;
 
-        cmGarden.Items.Clear();
-        DataTable dt6 = _db.GetGardens();
-        cmGarden.ValueField = "GardenID";
-        cmGarden.TextField = "GardenName";
-        cmGarden.DataSource = dt6;
-        cmGarden.DataBind();
-        cmGarden.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        cmGarden.SelectedIndex = 0;
+        //cmGarden.Items.Clear();
+        //DataTable dt6 = _db.GetGardens();
+        //cmGarden.ValueField = "GardenID";
+        //cmGarden.TextField = "GardenName";
+        //cmGarden.DataSource = dt6;
+        //cmGarden.DataBind();
+        //cmGarden.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        //cmGarden.SelectedIndex = 0;
     }
     protected void lnkEdit_Click(object sender, EventArgs e)
     {
         componentsload();
         int id = (sender as LinkButton).CommandArgument.ToParseInt();
         DataTable dt = _db.GetCadresById(id: id);
-        cmStructure.Value = dt.Rows[0]["StructureID"].ToParseStr();
-        cmPosition.Value = dt.Rows[0]["PositionID"].ToParseStr();
-        cmGarden.Value = dt.Rows[0]["GardenID"].ToParseStr();
+        //cmStructure.Value = dt.Rows[0]["StructureID"].ToParseStr();
+        //cmPosition.Value = dt.Rows[0]["PositionID"].ToParseStr();
+        //cmGarden.Value = dt.Rows[0]["GardenID"].ToParseStr();
         cmGarden_SelectedIndexChanged(null,null);
         cmCardNumber.Value = dt.Rows[0]["CardID"].ToParseStr();
         txtSname.Text = dt.Rows[0]["Sname"].ToParseStr();
@@ -109,25 +109,25 @@ public partial class Cadres : System.Web.UI.Page
         txtAddress.Text = dt.Rows[0]["Address"].ToParseStr();
         txtPhoneNumber.Text = dt.Rows[0]["PhoneNumber"].ToParseStr();
         txtEmail.Text = dt.Rows[0]["Email"].ToParseStr();
-        DateTime datevalue;
-        if (DateTime.TryParse(dt.Rows[0]["JobEntryDate"].ToParseStr(), out datevalue))
-        {
-            dtJobEntryDate.Text = DateTime.Parse(dt.Rows[0]["JobEntryDate"].ToParseStr()).ToString("dd.MM.yyyy");
-        }
-        else
-        {
-            dtJobEntryDate.Text = "";
-        }
-        DateTime datevalue1;
-        if (DateTime.TryParse(dt.Rows[0]["JobExitDate"].ToParseStr(), out datevalue1))
-        {
-            dtJobExitDate.Text = DateTime.Parse(dt.Rows[0]["JobExitDate"].ToParseStr()).ToString("dd.MM.yyyy");
-        }
-        else
-        {
-            dtJobExitDate.Text = "";
-        }
-        cmbcardetype.Value = dt.Rows[0]["CadreTypeID"].ToParseStr();
+        //DateTime datevalue;
+        //if (DateTime.TryParse(dt.Rows[0]["JobEntryDate"].ToParseStr(), out datevalue))
+        //{
+        //    dtJobEntryDate.Text = DateTime.Parse(dt.Rows[0]["JobEntryDate"].ToParseStr()).ToString("dd.MM.yyyy");
+        //}
+        //else
+        //{
+        //    dtJobEntryDate.Text = "";
+        //}
+        //DateTime datevalue1;
+        //if (DateTime.TryParse(dt.Rows[0]["JobExitDate"].ToParseStr(), out datevalue1))
+        //{
+        //    dtJobExitDate.Text = DateTime.Parse(dt.Rows[0]["JobExitDate"].ToParseStr()).ToString("dd.MM.yyyy");
+        //}
+        //else
+        //{
+        //    dtJobExitDate.Text = "";
+        //}
+        //cmbcardetype.Value = dt.Rows[0]["CadreTypeID"].ToParseStr();
         Session["imgpath"] = dt.Rows[0]["Photo"].ToParseStr();
         imgUser.ImageUrl = @"imgCadres\" + dt.Rows[0]["Photo"].ToParseStr();
         DateTime datevalue3;
@@ -184,11 +184,13 @@ public partial class Cadres : System.Web.UI.Page
 
         if (btnSave.CommandName == "insert")
         {
-
+        //StructureID: cmStructure.Value.ToParseInt(),
+        //PositionID: cmPosition.Value.ToParseInt(),
+        //GardenID: cmGarden.Value.ToParseInt(),
+        //JobEntryDate: dtJobEntryDate.Text.ToParseStr(),
+        //JobExitDate: dtJobExitDate.Text.ToParseStr(),
+        //CadreTypeID: cmbcardetype.Value.ToParseInt(),
             val = _db.CadresInsert(UserID: Session["UserID"].ToString().ToParseInt(),
-                StructureID: cmStructure.Value.ToParseInt(),
-                PositionID: cmPosition.Value.ToParseInt(),
-                GardenID: cmGarden.Value.ToParseInt(),
                 CardID: cmCardNumber.Value.ToParseInt(),
                 Sname: txtSname.Text.ToParseStr(),
                 Name: txtName.Text.ToParseStr(),
@@ -199,10 +201,7 @@ public partial class Cadres : System.Web.UI.Page
                 PhoneNumber: txtPhoneNumber.Text.ToParseStr(),
                 Photo: Session["imgpath"].ToString(),
                 Email: txtEmail.Text.ToParseStr(),
-                Address: txtAddress.Text.ToParseStr(),
-                JobEntryDate: dtJobEntryDate.Text.ToParseStr(),
-                JobExitDate: dtJobExitDate.Text.ToParseStr(),
-                CadreTypeID: cmbcardetype.Value.ToParseInt(),
+                Address: txtAddress.Text.ToParseStr(),                
                 RegstrDate: dtRegstrDate.Text.ToParseStr()
                 );
             if (val == Types.ProsesType.Succes)
@@ -219,9 +218,6 @@ public partial class Cadres : System.Web.UI.Page
 
             val = _db.CadresUpdate(CadreID: btnSave.CommandArgument.ToParseInt(),
                 UserID: Session["UserID"].ToString().ToParseInt(),
-                StructureID: cmStructure.Value.ToParseInt(),
-                PositionID: cmPosition.Value.ToParseInt(),
-                GardenID: cmGarden.Value.ToParseInt(),
                 CardID: cmCardNumber.Value.ToParseInt(),
                 Sname: txtSname.Text.ToParseStr(),
                 Name: txtName.Text.ToParseStr(),
@@ -233,9 +229,6 @@ public partial class Cadres : System.Web.UI.Page
                 Photo: Session["imgpath"].ToString(),
                 Email: txtEmail.Text.ToParseStr(),
                 Address: txtAddress.Text.ToParseStr(),
-                JobEntryDate: dtJobEntryDate.Text.ToParseStr(),
-                JobExitDate: dtJobExitDate.Text.ToParseStr(),
-                CadreTypeID: cmbcardetype.Value.ToParseInt(),
                 RegstrDate: dtRegstrDate.Text.ToParseStr());
             if (val == Types.ProsesType.Succes)
             {
@@ -262,13 +255,13 @@ public partial class Cadres : System.Web.UI.Page
 
     protected void cmGarden_SelectedIndexChanged(object sender, EventArgs e)
     {
-        cmCardNumber.Items.Clear();
-        DataTable dt3 = _db.GetCardsByGardenID(cmGarden.Value.ToParseInt());
-        cmCardNumber.ValueField = "CardID";
-        cmCardNumber.TextField = "CardNumber";
-        cmCardNumber.DataSource = dt3;
-        cmCardNumber.DataBind();
-        cmCardNumber.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        cmCardNumber.SelectedIndex = 0;
+        //cmCardNumber.Items.Clear();
+        //DataTable dt3 = _db.GetCardsByGardenID(cmGarden.Value.ToParseInt());
+        //cmCardNumber.ValueField = "CardID";
+        //cmCardNumber.TextField = "CardNumber";
+        //cmCardNumber.DataSource = dt3;
+        //cmCardNumber.DataBind();
+        //cmCardNumber.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        //cmCardNumber.SelectedIndex = 0;
     }
 }

@@ -30,6 +30,7 @@
         routes.MapPageRoute("operationstock", "operationstock", "~/OperationStock.aspx");
         routes.MapPageRoute("operationtechniqueservices", "operationtechniqueservices", "~/OperationTechniqueServices.aspx");
         routes.MapPageRoute("otherexpenses", "otherexpenses", "~/OtherExpenses.aspx");
+        routes.MapPageRoute("employmenthistory", "employmenthistory", "~/EmploymentHistory.aspx");
         routes.MapPageRoute("weathercondition", "weathercondition", "~/WeatherCondition.aspx");
         routes.MapPageRoute("treeage", "treeage", "~/Treeage.aspx");
         routes.MapPageRoute("cards", "cards", "~/Cards.aspx");
