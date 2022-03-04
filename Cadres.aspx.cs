@@ -45,14 +45,14 @@ public partial class Cadres : System.Web.UI.Page
     }
     void componentsload()
     {
-        //cmStructure.Items.Clear();
-        //DataTable dt1 = _db.GetStructure();
-        //cmStructure.ValueField = "StructureID";
-        //cmStructure.TextField = "StructureName";
-        //cmStructure.DataSource = dt1;
-        //cmStructure.DataBind();
-        //cmStructure.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        //cmStructure.SelectedIndex = 0;
+        cmStructure.Items.Clear();
+        DataTable dt1 = _db.GetStructure();
+        cmStructure.ValueField = "StructureID";
+        cmStructure.TextField = "StructureName";
+        cmStructure.DataSource = dt1;
+        cmStructure.DataBind();
+        cmStructure.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmStructure.SelectedIndex = 0;
 
         //cmPosition.Items.Clear();
         //DataTable dt2 = _db.GetPositions();
@@ -255,13 +255,13 @@ public partial class Cadres : System.Web.UI.Page
 
     protected void cmGarden_SelectedIndexChanged(object sender, EventArgs e)
     {
-        //cmCardNumber.Items.Clear();
-        //DataTable dt3 = _db.GetCardsByGardenID(cmGarden.Value.ToParseInt());
-        //cmCardNumber.ValueField = "CardID";
-        //cmCardNumber.TextField = "CardNumber";
-        //cmCardNumber.DataSource = dt3;
-        //cmCardNumber.DataBind();
-        //cmCardNumber.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        //cmCardNumber.SelectedIndex = 0;
+        cmCardNumber.Items.Clear();
+        DataTable dt3 = _db.GetCardsByGardenID(cmGarden.Value.ToParseInt());
+        cmCardNumber.ValueField = "CardID";
+        cmCardNumber.TextField = "CardNumber";
+        cmCardNumber.DataSource = dt3;
+        cmCardNumber.DataBind();
+        cmCardNumber.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmCardNumber.SelectedIndex = 0;
     }
 }

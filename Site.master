@@ -67,8 +67,10 @@
                             <li><a href="/works">İşlər</a></li>
                             <li><a href="/brands">Markalar</a></li>
                             <li><a href="/models">Modeller</a></li>
-                            <li><a href="/producttypes">Mal növü</a></li>                            
-                            <li><a href="/treetypes">Ağac növləri</a></li>                           
+                            <li><a href="/producttypes">Mal kateqoriyası</a></li>   
+                             <li><a href="/countries">Ölkələr</a></li>  
+                            <li><a href="/trees">Ağac adı</a></li>  
+                            <li><a href="/treetypes">Ağac növü</a></li> 
                             <li><a href="/unitmeasurements">Ölçü vahidləri</a></li>                                                        
                         </ul>
                     </li>
@@ -120,6 +122,7 @@
                             <li><a href="#">Texnikalar</a></li>
                             <li><a href="#">Suvarma sistemləri</a></li>
                             <li><a href="#">Anbar</a></li>
+                            <li><a href="/reportexitentry">Kadrların davamiyyəti</a></li>
                         </ul>
                     </li>
                     <li><a class="nav-link scrollto" href="/users">İstifadəçilər</a></li>

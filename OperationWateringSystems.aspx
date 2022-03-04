@@ -107,7 +107,7 @@
                                                 <dx:PopupControlContentControl>
                                                     <div class="container">
                                                         <div class="row mb-2">
-                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Bağ üzrə suvarma sistemi</label>
+                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Bağ</label>
                                                             <div class="col-sm-7">
                                                                 <dx:ASPxComboBox ID="cmWateringSystemsGarden" 
                                                                     runat="server"

@@ -155,7 +155,7 @@
                                                       <%--  <div class="row mb-2">
                                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Bağ</label>
                                                             <div class="col-sm-7">
-                                                                <dx:ASPxComboBox ID="cmGarden" OnSelectedIndexChanged="cmGarden_SelectedIndexChanged"
+                                                                <dx:ASPxComboBox ID="cmGarden" 
                                                                     runat="server"
                                                                     Width="100%" Height="30px" AutoPostBack="true">
                                                                 </dx:ASPxComboBox>

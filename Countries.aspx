@@ -1,5 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="Treeage.aspx.cs" Inherits="Treeage" %>
-
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="Countries.aspx.cs" Inherits="Countries" %>
 
 <%@ Register Assembly="DevExpress.Web.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web" TagPrefix="dx" %>
 
@@ -10,7 +9,7 @@
     <section id="about" class="about section-bg">
         <div class="container">
 
-            <asp:LinkButton ID="btnAdd" runat="server" CommandArgument="add" OnClick="LnkPnlMenu_Click" CssClass="btn btn-dark">Yeni ağac yaşına görə tarif əlavə et</asp:LinkButton>
+            <asp:LinkButton ID="btnAdd" runat="server" CommandArgument="add" OnClick="LnkPnlMenu_Click" CssClass="btn btn-dark">Yeni ölkə əlavə et</asp:LinkButton>
 
             <div class="row">
                 <div class="col-12">
@@ -48,25 +47,22 @@
                                 <dx:GridViewDataColumn Caption="Sıra nömrəsi" FieldName="sn" VisibleIndex="1">
                                     <EditFormSettings VisibleIndex="1" />
                                 </dx:GridViewDataColumn>
-                                <dx:GridViewDataColumn Caption="Ağac yaşından" FieldName="FirstAge" VisibleIndex="1">
-                                    <EditFormSettings VisibleIndex="1" />
-                                </dx:GridViewDataColumn>
-                                <dx:GridViewDataColumn Caption="Ağac yaşına" FieldName="LastAge" VisibleIndex="1">
-                                    <EditFormSettings VisibleIndex="1" />
-                                </dx:GridViewDataColumn>
-                                  <dx:GridViewDataColumn Caption="Əmsal" FieldName="Coefficient" VisibleIndex="1">
+                              
+                                <dx:GridViewDataColumn Caption="Ölkələr" FieldName="CountryName" VisibleIndex="1">
                                     <EditFormSettings VisibleIndex="1" />
                                 </dx:GridViewDataColumn>
                              
                                 <dx:GridViewDataColumn VisibleIndex="1">
                                     <DataItemTemplate>
-                                        <asp:LinkButton ID="lnkEdit" OnClick="lnkEdit_Click" CommandArgument='<%#Eval("TariffAgeID") %>' Text="Düzəliş" runat="server" />
+                                        <asp:LinkButton ID="lnkEdit" OnClick="lnkEdit_Click" CommandArgument='<%#Eval("CountryID") %>' Text="Düzəliş" runat="server" />
                                     </DataItemTemplate>
                                 </dx:GridViewDataColumn>
 
+
+
                                 <dx:GridViewDataColumn VisibleIndex="1">
                                     <DataItemTemplate>
-                                        <asp:LinkButton ID="lnkDelete" OnClick="lnkDelete_Click" OnClientClick="return confirm('Silmək istədiyinizə əminsinizmi?');" CommandArgument='<%#Eval("TariffAgeID") %>' Text="Sil" runat="server" />
+                                        <asp:LinkButton ID="lnkDelete" OnClick="lnkDelete_Click" OnClientClick="return confirm('Silmək istədiyinizə əminsinizmi?');" CommandArgument='<%#Eval("CountryID") %>' Text="Sil" runat="server" />
                                     </DataItemTemplate>
                                 </dx:GridViewDataColumn>
 
@@ -84,45 +80,19 @@
                             HeaderText="Redaktə"
                             PopupHorizontalAlign="WindowCenter"
                             PopupVerticalAlign="WindowCenter"
-                            Height="300"
+                            Height="200"
                             ScrollBars="Vertical">
                             <ContentCollection>
                                 <dx:PopupControlContentControl>
                                     <div class="container">
-                                    
-                                         <div class="row mb-2">
-                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ağac yaşından</label>
-                                            <div class="col-sm-7">
-                                                <asp:TextBox ID="txtFirstAge"  class="form-control" runat="server" placeholder="Mətni daxil edin..." TextMode="Number">
-                                                </asp:TextBox>
-                                                <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txtFirstAge" ID="RequiredsFieldValidator21" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>
-                                            </div>
-                                        </div>
                                         <div class="row mb-2">
-                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ağac yaşına</label>
+                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ölkə</label>
                                             <div class="col-sm-7">
-                                                <asp:TextBox ID="txtLastAge"  class="form-control" runat="server" placeholder="Mətni daxil edin..." TextMode="Number">
-                                                </asp:TextBox>
-                                                <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txtLastAge" ID="RequiredFieldValidator3" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>
+                                                <asp:TextBox ID="txtcountry" runat="server" class="form-control"  placeholder="Mətni daxil edin..."></asp:TextBox>
+                                                <asp:RegularExpressionValidator ValidationGroup="qrup1" Display="Dynamic" ControlToValidate="txtcountry" ID="RegularExpressionValidator2" ValidationExpression="^[\s\S]{3,500}$" runat="server" ForeColor="Red" ErrorMessage="Mətn 3 simvoldan cox olmalıdır."></asp:RegularExpressionValidator>
+                                                <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txtcountry" ID="RequiredFieldValidator1" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>
                                             </div>
                                         </div>
-                                       
-
-                                       <div class="row mb-2">
-                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Əmsal</label>
-                                            <div class="col-sm-7">
-                                                <asp:TextBox ID="txtcoefficient" runat="server" class="form-control"  placeholder="Mətni daxil edin..."></asp:TextBox>
-                                                <%--<asp:RegularExpressionValidator ValidationGroup="qrup1" Display="Dynamic" ControlToValidate="txtunitmeasurementname" ID="RegularExpressionValidator2" ValidationExpression="^[\s\S]{3,500}$" runat="server" ForeColor="Red" ErrorMessage="Mətn 3 simvoldan cox olmalıdır."></asp:RegularExpressionValidator>--%>
-                                                <asp:CompareValidator ID="cv6" runat="server" ControlToValidate="txtcoefficient" ErrorMessage="Format düzgün deyil." Operator="DataTypeCheck" Type="Double" ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red" />
-                         
-                                                <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txtcoefficient" ID="RequiredFieldValidator2" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>
-                                           
-                                            </div>
-                                        </div>
-
-
-                                                                   
-
 
                                         <div>
                                             <asp:Label Text="" ForeColor="Red" ID="lblPopError" runat="server" />

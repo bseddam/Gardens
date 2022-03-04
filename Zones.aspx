@@ -118,7 +118,15 @@
                                                 </dx:ASPxDateEdit>
                                             </div>
                                         </div>
-
+                                         <div class="row mb-2">
+                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Bağ</label>
+                                            <div class="col-sm-7">
+                                                <asp:DropDownList ID="ddlgardens" class="form-control" runat="server"></asp:DropDownList>
+                                               <asp:RequiredFieldValidator ID="RequiredFieldValidator21" runat="server" ControlToValidate="ddlgardens" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
+                                                <%--asp:RegularExpressionValidator ValidationGroup="qrup1" Display="Dynamic" ControlToValidate="txtmovzuadi" ID="RegularExpressionValidator2" ValidationExpression="^[\s\S]{3,500}$" runat="server" ForeColor="Red" ErrorMessage="Mətn 3 simvoldan cox olmalıdır."></asp:RegularExpressionValidator>--%>
+                                                <%--<asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txtmovzuadi" ID="RequiredFieldValidator1" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>--%>
+                                            </div>
+                                        </div>
 
                                         <div class="row mb-2">
                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Zona adı</label>
@@ -130,15 +138,7 @@
                                             </div>
                                         </div>
                                         
-                                        <div class="row mb-2">
-                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Bağ</label>
-                                            <div class="col-sm-7">
-                                                <asp:DropDownList ID="ddlgardens" class="form-control" runat="server"></asp:DropDownList>
-                                               <asp:RequiredFieldValidator ID="RequiredFieldValidator21" runat="server" ControlToValidate="ddlgardens" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
-                                                <%--asp:RegularExpressionValidator ValidationGroup="qrup1" Display="Dynamic" ControlToValidate="txtmovzuadi" ID="RegularExpressionValidator2" ValidationExpression="^[\s\S]{3,500}$" runat="server" ForeColor="Red" ErrorMessage="Mətn 3 simvoldan cox olmalıdır."></asp:RegularExpressionValidator>--%>
-                                                <%--<asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txtmovzuadi" ID="RequiredFieldValidator1" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>--%>
-                                            </div>
-                                        </div>
+                                       
 
 
                                         <div class="row mb-2">

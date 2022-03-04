@@ -50,13 +50,11 @@
                                 <dx:GridViewDataColumn Caption="Sıra nömrəsi" FieldName="sn" VisibleIndex="1">
                                     <EditFormSettings VisibleIndex="1" />
                                 </dx:GridViewDataColumn>
-                                <dx:GridViewDataColumn Caption="Qeydiyyat tarixi" FieldName="RegisterTime" VisibleIndex="1">
-                                    <EditFormSettings VisibleIndex="1" />
-                                </dx:GridViewDataColumn>
+                                
                                 <dx:GridViewDataColumn Caption="Malın adı" FieldName="ProductsName" VisibleIndex="1">
                                     <EditFormSettings VisibleIndex="1" />
                                 </dx:GridViewDataColumn>
-                                <dx:GridViewDataColumn Caption="Malın növü" FieldName="ProductTypeName" VisibleIndex="1">
+                                <dx:GridViewDataColumn Caption="Malın kateqoriyası" FieldName="ProductTypeName" VisibleIndex="1">
                                     <EditFormSettings VisibleIndex="1" />
                                 </dx:GridViewDataColumn>
 
@@ -73,12 +71,7 @@
                                 <dx:GridViewDataColumn Caption="Ölüçü vahidi" FieldName="UnitMeasurementName" VisibleIndex="1">
                                     <EditFormSettings VisibleIndex="1" />
                                 </dx:GridViewDataColumn>
-                                <dx:GridViewDataColumn Caption="Qiyməti" FieldName="Price" VisibleIndex="1">
-                                    <EditFormSettings VisibleIndex="1" />
-                                </dx:GridViewDataColumn>
-                                <dx:GridViewDataColumn Caption="Endirimli qiyməti" FieldName="PriceDiscount" VisibleIndex="1">
-                                    <EditFormSettings VisibleIndex="1" />
-                                </dx:GridViewDataColumn>
+                               
 
                                 <dx:GridViewDataColumn Caption="Qeyd" FieldName="Notes" VisibleIndex="1">
                                     <EditFormSettings VisibleIndex="1" />
@@ -124,11 +117,28 @@
                             <ContentCollection>
                                 <dx:PopupControlContentControl>
                                     <div class="container">
-                                        <div class="row mb-2">
-                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Qeydiyyata alınma tarixi</label>
+                                   
+
+
+                                            <div class="row mb-2">
+                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Malın kateqoriyası</label>
                                             <div class="col-sm-7">
-                                                <dx:ASPxDateEdit ID="cmbregistertime" runat="server" DisplayFormatString="dd.MM.yyyy" EditFormat="Custom" EditFormatString="dd.MM.yyyy" Width="100%" Height="30px">
-                                                </dx:ASPxDateEdit>
+                                                <asp:DropDownList ID="ddlproducttype" class="form-control" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlproducttype_SelectedIndexChanged"></asp:DropDownList>
+                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator21" runat="server" ControlToValidate="ddlProductType" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Markası</label>
+                                            <div class="col-sm-7">
+                                                <asp:DropDownList ID="ddlbrand" class="form-control" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlbrand_SelectedIndexChanged"></asp:DropDownList>
+                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="ddlbrand" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Modeli</label>
+                                            <div class="col-sm-7">
+                                                <asp:DropDownList ID="ddlmodel" class="form-control" runat="server"></asp:DropDownList>
+                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="ddlmodel" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
                                             </div>
                                         </div>
 
@@ -158,46 +168,21 @@
 
                                             </div>
                                         </div>
+
                                           <div class="row mb-2">
-                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Qiyməti</label>
+                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Strixkodu</label>
                                             <div class="col-sm-7">
-                                                <asp:TextBox ID="txtprice"  class="form-control" runat="server" placeholder="Mətni daxil edin...">
-                                                </asp:TextBox>
-                                                <asp:CompareValidator ID="cv6" runat="server" ControlToValidate="txtprice" ErrorMessage="Format düzgün deyil." Operator="DataTypeCheck" Type="Double" ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red" />
+                                                <asp:TextBox ID="TextBox1" runat="server" class="form-control"  placeholder="Mətni daxil edin..."></asp:TextBox>
+                                                <asp:RegularExpressionValidator ValidationGroup="qrup1" Display="Dynamic" ControlToValidate="txtcode" ID="RegularExpressionValidator3" ValidationExpression="^[\s\S]{3,500}$" runat="server" ForeColor="Red" ErrorMessage="Mətn 3 simvoldan cox olmalıdır."></asp:RegularExpressionValidator>
+                                                <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txtcode" ID="RequiredFieldValidator6" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>
+
                                             </div>
                                         </div>
-                                        <div class="row mb-2">
-                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Endirimli qiyməti</label>
-                                            <div class="col-sm-7">
-                                                <asp:TextBox ID="txtpricediscount"  class="form-control" runat="server" placeholder="Mətni daxil edin...">
-                                                </asp:TextBox>
-                                                <asp:CompareValidator ID="CompareValidator1" runat="server" ControlToValidate="txtpricediscount" ErrorMessage="Format düzgün deyil." Operator="DataTypeCheck" Type="Double" ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red" />
-                                            </div>
-                                        </div>
+                                          
 
                                       
 
-                                        <div class="row mb-2">
-                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Malın növü</label>
-                                            <div class="col-sm-7">
-                                                <asp:DropDownList ID="ddlproducttype" class="form-control" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlproducttype_SelectedIndexChanged"></asp:DropDownList>
-                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator21" runat="server" ControlToValidate="ddlProductType" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-2">
-                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Markası</label>
-                                            <div class="col-sm-7">
-                                                <asp:DropDownList ID="ddlbrand" class="form-control" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlbrand_SelectedIndexChanged"></asp:DropDownList>
-                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="ddlbrand" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-2">
-                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Modeli</label>
-                                            <div class="col-sm-7">
-                                                <asp:DropDownList ID="ddlmodel" class="form-control" runat="server"></asp:DropDownList>
-                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="ddlmodel" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
-                                            </div>
-                                        </div>
+                                    
                              
                                        
                                       

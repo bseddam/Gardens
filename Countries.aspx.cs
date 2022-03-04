@@ -6,8 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
-public partial class TreeTypes : System.Web.UI.Page
+public partial class Countries : System.Web.UI.Page
 {
     Methods _db = new Methods();
     protected void Page_Load(object sender, EventArgs e)
@@ -15,36 +14,14 @@ public partial class TreeTypes : System.Web.UI.Page
         _loadGridFromDb();
         if (IsPostBack) return;
     }
-    void componentsload()
-    {
-        DataTable dt2x = _db.GetTrees();
-        cmbtrees.ValueField = "TreeID";
-        cmbtrees.TextField = "TreeName";
-        cmbtrees.DataSource = dt2x;
-        cmbtrees.DataBind();
-        cmbtrees.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        cmbtrees.SelectedIndex = 0;
-
-
-        DataTable dt1 = _db.GetCountries();
-        cmbcountry.ValueField = "CountryID";
-        cmbcountry.TextField = "CountryName";
-        cmbcountry.DataSource = dt1;
-        cmbcountry.DataBind();
-        cmbcountry.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        cmbcountry.SelectedIndex = 0;
-
-
-    }
     void ClearComponents()
     {
-        txttreetypename.Text = "";
-        txtcoefficient.Text = "";
+        txtcountry.Text = "";
         lblPopError.Text = "";
     }
     void _loadGridFromDb()
     {
-        DataTable dt = _db.GetTreeTypes();
+        DataTable dt = _db.GetCountries();
         if (dt != null)
         {
             Grid.SettingsPager.Summary.Text = "Cari səhifə: {0}, Ümumi səhifələrin sayı: {1}, Tapılmış məlumatların sayı: {2}";
@@ -56,13 +33,11 @@ public partial class TreeTypes : System.Web.UI.Page
 
     protected void lnkEdit_Click(object sender, EventArgs e)
     {
-        componentsload();
+
         int id = (sender as LinkButton).CommandArgument.ToParseInt();
-        DataTable dt = _db.GetTreeTypesByID(id: id);
-        cmbcountry.Value = dt.Rows[0]["CountryID"].ToParseStr();
-        cmbtrees.Value = dt.Rows[0]["TreeID"].ToParseStr();
-        txtcoefficient.Text = dt.Rows[0]["Coefficient"].ToParseStr();
-        txttreetypename.Text = dt.Rows[0]["TreeTypeName"].ToParseStr();
+        DataTable dt = _db.GetCountryByID(id: id);
+
+        txtcountry.Text = dt.Rows[0]["CountryName"].ToParseStr();
 
         btnSave.CommandName = "update";
         btnSave.CommandArgument = id.ToString();
@@ -71,12 +46,11 @@ public partial class TreeTypes : System.Web.UI.Page
     protected void lnkDelete_Click(object sender, EventArgs e)
     {
         int _id = (sender as LinkButton).CommandArgument.ToParseInt();
-        Types.ProsesType val = _db.DeleteTreeType(id: _id);
+        Types.ProsesType val = _db.DeleteCountry(id: _id);
         _loadGridFromDb();
     }
     protected void LnkPnlMenu_Click(object sender, EventArgs e)
     {
-        componentsload();
         ClearComponents();
         LinkButton btn = sender as LinkButton;
         switch (btn.CommandArgument)
@@ -93,21 +67,14 @@ public partial class TreeTypes : System.Web.UI.Page
         Types.ProsesType val = Types.ProsesType.Error;
         if (btnSave.CommandName == "insert")
         {
-            val = _db.TreeTypeInsert(
-                CountryID: cmbcountry.Value.ToParseInt(),
-                TreeID: cmbtrees.Value.ToParseInt(),
-                TreeTypeName: txttreetypename.Text.ToParseStr(),
-                Coefficient: txtcoefficient.Text.ToParseStr()
-                );
+            val = _db.CountryInsert(
+                CountryName: txtcountry.Text.ToParseStr());
         }
         else
         {
-            val = _db.TreeTypeUpdate(TreeTypeID: btnSave.CommandArgument.ToParseInt(),
-                CountryID: cmbcountry.Value.ToParseInt(),
-                TreeID: cmbtrees.Value.ToParseInt(),
-                TreeTypeName: txttreetypename.Text.ToParseStr(),
-                Coefficient: txtcoefficient.Text.ToParseStr()
-                );
+            val = _db.CountryUpdate(CountryID: btnSave.CommandArgument.ToParseInt(),
+
+                CountryName: txtcountry.Text.ToParseStr());
         }
 
         if (val == Types.ProsesType.Error)

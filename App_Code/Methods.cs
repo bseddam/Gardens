@@ -344,6 +344,129 @@ PhoneNumbers=@PhoneNumbers, Email=@Email, Adress=@Adress,Notes=@Notes,UpdateTime
         }
     }
 
+    //olkeler
+    public DataTable GetCountries()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by CountryID desc) sn,
+* FROM Countries where DeleteTime is null", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+    public DataTable GetCountryByID(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by CountryID desc) sn,
+* FROM Countries where DeleteTime is null and CountryID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+    public Types.ProsesType CountryInsert(string CountryName)
+    {
+        SqlCommand cmd = new SqlCommand(@"insert into Countries 
+(UserID,CountryName) values (@UserID,@CountryName)", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@CountryName", CountryName);
+
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+    public Types.ProsesType CountryUpdate(int CountryID, string CountryName)
+    {
+        SqlCommand cmd = new SqlCommand(@"update Countries set UserID=@UserID,
+CountryName=@CountryName,UpdateTime=getdate() where CountryID=@CountryID", SqlConn);
+        cmd.Parameters.AddWithValue("@CountryID", CountryID);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@CountryName", CountryName);
+
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+    public Types.ProsesType DeleteCountry(int id)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"Update Countries set deletetime=getdate(),
+UserID=@UserID where CountryID=@CountryID;", SqlConn);
+        cmd.Parameters.AddWithValue("@CountryID", id);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            //LogInsert(Utils.Tables.pages, Utils.LogType.delete, String.Format("IndicatorsDelete () "), ex.Message, "", true);
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     //Ölçü vahidi
     public DataTable GetUnitMeasurements()
     {
@@ -351,8 +474,7 @@ PhoneNumbers=@PhoneNumbers, Email=@Email, Adress=@Adress,Notes=@Notes,UpdateTime
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"select  row_number() over(order by UnitMeasurementID desc) sn,
-RegisterTime,UnitMeasurementID,UnitMeasurementName,InsertTime,UpdateTime,DeleteTime FROM UnitMeasurements
-  where DeleteTime is null", SqlConn);
+* FROM UnitMeasurements where DeleteTime is null", SqlConn);
             da.Fill(dt);
             return dt;
         }
@@ -367,8 +489,7 @@ RegisterTime,UnitMeasurementID,UnitMeasurementName,InsertTime,UpdateTime,DeleteT
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"select  row_number() over(order by UnitMeasurementID desc) sn,
-RegisterTime,UnitMeasurementID,UnitMeasurementName,InsertTime,UpdateTime,DeleteTime FROM UnitMeasurements
-  where DeleteTime is null  and UnitMeasurementID=@id", SqlConn);
+* FROM UnitMeasurements where DeleteTime is null  and UnitMeasurementID=@id", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
             da.Fill(dt);
             return dt;
@@ -1049,14 +1170,129 @@ where LineID=@LineID;", SqlConn);
     }
 
 
-    //Ağaclar
+    //agaclar
+    public DataTable GetTrees()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by TreeID desc) sn, 
+t.*  FROM [Trees] t where t.DeleteTime is null", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+    public DataTable GetTreesByID(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by TreeID desc) sn, 
+* FROM [Trees] where DeleteTime is null and TreeID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+    public Types.ProsesType TreeInsert(string TreeName)
+    {
+        SqlCommand cmd = new SqlCommand(@"insert into Trees (UserID,TreeName) values 
+(@UserID,@TreeName)", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@TreeName", TreeName);
+     
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+    public Types.ProsesType TreeUpdate(int TreeID, string TreeName)
+    {
+        SqlCommand cmd = new SqlCommand(@"update Trees set UserID=@UserID,
+TreeName=@TreeName,UpdateTime=getdate() where TreeID=@TreeID", SqlConn);
+        cmd.Parameters.AddWithValue("@TreeID", TreeID);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@TreeName", TreeName);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+    public Types.ProsesType DeleteTree(int id)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"Update Trees set deletetime=getdate(),UserID=@UserID 
+where TreeID=@TreeID;", SqlConn);
+        cmd.Parameters.AddWithValue("@TreeID", id);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            //LogInsert(Utils.Tables.pages, Utils.LogType.delete, String.Format("IndicatorsDelete () "), ex.Message, "", true);
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+    //Ağaclar tipleri
     public DataTable GetTreeTypes()
     {
         try
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by TreeTypeID desc) sn, 
-*  FROM [TreeTypes] where DeleteTime is null", SqlConn);
+tp.*,c.CountryName,t.TreeName  FROM [TreeTypes] tp left join Countries c on tp.CountryID=c.CountryID
+left join Trees t on tp.TreeID=t.TreeID where  tp.DeleteTime is null", SqlConn);
             da.Fill(dt);
             return dt;
         }
@@ -1081,11 +1317,13 @@ where LineID=@LineID;", SqlConn);
             return null;
         }
     }
-    public Types.ProsesType TreeTypeInsert(string TreeTypeName, string Coefficient)
+    public Types.ProsesType TreeTypeInsert(int CountryID,int TreeID, string TreeTypeName, string Coefficient)
     {
-        SqlCommand cmd = new SqlCommand(@"insert into TreeTypes 
-(UserID,TreeTypeName,Coefficient) values (@UserID,@TreeTypeName,@Coefficient)", SqlConn);
+        SqlCommand cmd = new SqlCommand(@"insert into TreeTypes (UserID,CountryID,TreeID,TreeTypeName,
+Coefficient) values (@UserID,@CountryID,@TreeID,@TreeTypeName,@Coefficient)", SqlConn);
         cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@CountryID", CountryID);
+        cmd.Parameters.AddWithValue("@TreeID", TreeID);
         cmd.Parameters.AddWithValue("@TreeTypeName", TreeTypeName);
         cmd.Parameters.AddWithValue("@Coefficient", Coefficient);
         try
@@ -1104,12 +1342,15 @@ where LineID=@LineID;", SqlConn);
             cmd.Dispose();
         }
     }
-    public Types.ProsesType TreeTypeUpdate(int TreeTypeID, string TreeTypeName, string Coefficient)
+    public Types.ProsesType TreeTypeUpdate(int TreeTypeID, int CountryID, int TreeID, string TreeTypeName, 
+        string Coefficient)
     {
-        SqlCommand cmd = new SqlCommand(@"update TreeTypes set UserID=@UserID,
+        SqlCommand cmd = new SqlCommand(@"update TreeTypes set UserID=@UserID,CountryID=@CountryID,TreeID=@TreeID,
 TreeTypeName=@TreeTypeName,Coefficient=@Coefficient,UpdateTime=getdate() where TreeTypeID=@TreeTypeID", SqlConn);
         cmd.Parameters.AddWithValue("@TreeTypeID", TreeTypeID);
         cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@CountryID", CountryID);
+        cmd.Parameters.AddWithValue("@TreeID", TreeID);
         cmd.Parameters.AddWithValue("@TreeTypeName", TreeTypeName);
         cmd.Parameters.AddWithValue("@Coefficient", Coefficient);
         try
@@ -1161,7 +1402,7 @@ where TreeTypeID=@TreeTypeID;", SqlConn);
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by ProductID desc) sn,
-       [ProductID],p.[UserID],p.[RegisterTime],[ProductsName],p.[ProductTypeID],pt.ProductTypeName
+       [ProductID],p.[UserID],[ProductsName],p.[ProductTypeID],pt.ProductTypeName
       ,p.[BrandID],b.BrandName,p.[ModelID],m.ModelName,[Code],p.[UnitMeasurementID] ,u.UnitMeasurementName
       ,[Price],[PriceDiscount],[Notes] from [Products] p 
   inner join ProductTypes pt on p.ProductTypeID=pt.ProductTypeID 
@@ -1184,7 +1425,7 @@ m.DeleteTime is null and u.DeleteTime is null", SqlConn);
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by ProductID desc) sn,
-       [ProductID],p.[UserID],p.[RegisterTime],[ProductsName],p.[ProductTypeID],pt.ProductTypeName
+       [ProductID],p.[UserID],[ProductsName],p.[ProductTypeID],pt.ProductTypeName
       ,p.[BrandID],b.BrandName,p.[ModelID],m.ModelName,[Code],p.[UnitMeasurementID] ,u.UnitMeasurementName
       ,[Price],[PriceDiscount],[Notes] from [Products] p 
   inner join ProductTypes pt on p.ProductTypeID=pt.ProductTypeID 
@@ -1202,25 +1443,21 @@ m.DeleteTime is null and u.DeleteTime is null and p.ProductID=@id", SqlConn);
             return null;
         }
     }
-    public Types.ProsesType ProductInsert(string RegisterTime, string ProductsName, int ProductTypeID,
-        int BrandID, int ModelID, string Code, int UnitMeasurementID, string Price,
-        string PriceDiscount, string Notes)
+    public Types.ProsesType ProductInsert(string ProductsName, int ProductTypeID,
+        int BrandID, int ModelID, string Code, int UnitMeasurementID,  string Notes)
     {
 
         SqlCommand cmd = new SqlCommand(@"insert into Products 
-(UserID,RegisterTime,ProductsName,ProductTypeID,BrandID,ModelID,Code,UnitMeasurementID,Price,
-PriceDiscount,Notes) values (@UserID,@RegisterTime,@ProductsName,@ProductTypeID,@BrandID,@ModelID,
-@Code,@UnitMeasurementID,@Price,@PriceDiscount,@Notes)", SqlConn);
+(UserID,ProductsName,ProductTypeID,BrandID,ModelID,Code,UnitMeasurementID,
+Notes) values (@UserID,@ProductsName,@ProductTypeID,@BrandID,@ModelID,
+@Code,@UnitMeasurementID,@Notes)", SqlConn);
         cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
-        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
         cmd.Parameters.AddWithValue("@ProductsName", ProductsName);
         cmd.Parameters.AddWithValue("@ProductTypeID", ProductTypeID);
         cmd.Parameters.AddWithValue("@BrandID", BrandID);
         cmd.Parameters.AddWithValue("@ModelID", ModelID);
         cmd.Parameters.AddWithValue("@Code", Code);
         cmd.Parameters.AddWithValue("@UnitMeasurementID", UnitMeasurementID);
-        cmd.Parameters.AddWithValue("@Price", Price);
-        cmd.Parameters.AddWithValue("@PriceDiscount", PriceDiscount);
         cmd.Parameters.AddWithValue("@Notes", Notes);
 
         try
@@ -1239,26 +1476,22 @@ PriceDiscount,Notes) values (@UserID,@RegisterTime,@ProductsName,@ProductTypeID,
             cmd.Dispose();
         }
     }
-    public Types.ProsesType ProductUpdate(int ProductID, string RegisterTime, string ProductsName, int ProductTypeID,
-        int BrandID, int ModelID, string Code, int UnitMeasurementID, string Price,
-        string PriceDiscount, string Notes)
+    public Types.ProsesType ProductUpdate(int ProductID, string ProductsName, int ProductTypeID,
+        int BrandID, int ModelID, string Code, int UnitMeasurementID,  string Notes)
     {
-        SqlCommand cmd = new SqlCommand(@"update Products set UserID=@UserID,RegisterTime=@RegisterTime,
+        SqlCommand cmd = new SqlCommand(@"update Products set UserID=@UserID,
 ProductsName=@ProductsName, ProductTypeID=@ProductTypeID, BrandID=@BrandID,ModelID=@ModelID,
-Code=@Code,UnitMeasurementID=@UnitMeasurementID,Price=@Price,PriceDiscount=@PriceDiscount,Notes=@Notes,UpdateTime=getdate() 
+Code=@Code,UnitMeasurementID=@UnitMeasurementID,Notes=@Notes,UpdateTime=getdate() 
 where ProductID=@ProductID", SqlConn);
 
         cmd.Parameters.AddWithValue("@ProductID", ProductID);
         cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
-        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
         cmd.Parameters.AddWithValue("@ProductsName", ProductsName);
         cmd.Parameters.AddWithValue("@ProductTypeID", ProductTypeID);
         cmd.Parameters.AddWithValue("@BrandID", BrandID);
         cmd.Parameters.AddWithValue("@ModelID", ModelID);
         cmd.Parameters.AddWithValue("@Code", Code);
         cmd.Parameters.AddWithValue("@UnitMeasurementID", UnitMeasurementID);
-        cmd.Parameters.AddWithValue("@Price", Price);
-        cmd.Parameters.AddWithValue("@PriceDiscount", PriceDiscount);
         cmd.Parameters.AddWithValue("@Notes", Notes);
 
         try
@@ -1309,7 +1542,7 @@ where ProductID=@ProductID;", SqlConn);
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [BrandID] desc) sn,
-b.RegisterTime,[BrandID],[BrandName],b.ProductTypeID,p.ProductTypeName
+[BrandID],[BrandName],b.ProductTypeID,p.ProductTypeName
   from [Brands] b inner join ProductTypes p on b.ProductTypeID=p.ProductTypeID where b.DeleteTime is null
 and p.DeleteTime is null and b.ProductTypeID=@id", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
@@ -1332,7 +1565,7 @@ and p.DeleteTime is null and b.ProductTypeID=@id", SqlConn);
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [BrandID] desc) sn,
-b.RegisterTime,[BrandID],[BrandName],p.ProductTypeName
+[BrandID],[BrandName],p.ProductTypeName
   from [Brands] b inner join ProductTypes p on b.ProductTypeID=p.ProductTypeID where b.DeleteTime is null", SqlConn);
             da.Fill(dt);
             return dt;
@@ -1348,7 +1581,7 @@ b.RegisterTime,[BrandID],[BrandName],p.ProductTypeName
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [BrandID] desc) sn,
-b.RegisterTime,[BrandID],[BrandName],b.ProductTypeID,p.ProductTypeName
+[BrandID],[BrandName],b.ProductTypeID,p.ProductTypeName
   from [Brands] b inner join ProductTypes p on b.ProductTypeID=p.ProductTypeID where b.DeleteTime is null
 and p.DeleteTime is null and BrandID=@id", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
@@ -1446,7 +1679,7 @@ where BrandID=@BrandID;", SqlConn);
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [ModelID] desc) sn,
-m.RegisterTime,[ModelID],m.[BrandID],b.BrandName,[ModelName] FROM [Models] m 
+[ModelID],m.[BrandID],b.BrandName,[ModelName] FROM [Models] m 
 inner join Brands b on m.BrandID=b.BrandID where m.DeleteTime is null and b.DeleteTime is null ", SqlConn);
             da.Fill(dt);
             return dt;
@@ -1462,7 +1695,7 @@ inner join Brands b on m.BrandID=b.BrandID where m.DeleteTime is null and b.Dele
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [ModelID] desc) sn,
-m.RegisterTime,[ModelID],m.[BrandID],b.BrandName,[ModelName] FROM [Models] m 
+[ModelID],m.[BrandID],b.BrandName,[ModelName] FROM [Models] m 
 inner join Brands b on m.BrandID=b.BrandID where m.DeleteTime is null and b.DeleteTime is null and m.BrandID=@id", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
             da.Fill(dt);
@@ -1479,7 +1712,7 @@ inner join Brands b on m.BrandID=b.BrandID where m.DeleteTime is null and b.Dele
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [ModelID] desc) sn,
-m.RegisterTime,[ModelID],m.[BrandID],b.BrandName,[ModelName] FROM [Models] m 
+[ModelID],m.[BrandID],b.BrandName,[ModelName] FROM [Models] m 
 inner join Brands b on m.BrandID=b.BrandID where m.DeleteTime is null and b.DeleteTime is null and ModelID=@id", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
             da.Fill(dt);
@@ -1593,9 +1826,7 @@ over(order by [ProductGeneralTypeID] desc) sn,
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [ProductTypeID] desc) sn,
-[ProductTypeID],RegisterTime,[UserID],[ProductTypeName],pgt.ProductGeneralTypeID,ProductGeneralTypeName
-  from [ProductTypes] pt inner join ProductGeneralTypes pgt on 
-pt.ProductGeneralTypeID=pgt.ProductGeneralTypeID   where pt.DeleteTime is null and pgt.DeleteTime is null", SqlConn);
+pt.* from [ProductTypes] pt  where pt.DeleteTime is null and pt.DeleteTime is null", SqlConn);
             da.Fill(dt);
             return dt;
         }
@@ -1610,9 +1841,8 @@ pt.ProductGeneralTypeID=pgt.ProductGeneralTypeID   where pt.DeleteTime is null a
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [ProductTypeID] desc) sn,
-[ProductTypeID],RegisterTime,[UserID],[ProductTypeName],pgt.ProductGeneralTypeID,ProductGeneralTypeName
-  from [ProductTypes] pt inner join ProductGeneralTypes pgt on 
-pt.ProductGeneralTypeID=pgt.ProductGeneralTypeID where pt.DeleteTime is null and ProductTypeID=@id", SqlConn);
+[ProductTypeID],RegisterTime,[UserID],[ProductTypeName]
+  from [ProductTypes] pt  where pt.DeleteTime is null and ProductTypeID=@id", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
             da.Fill(dt);
             return dt;
@@ -1622,12 +1852,11 @@ pt.ProductGeneralTypeID=pgt.ProductGeneralTypeID where pt.DeleteTime is null and
             return null;
         }
     }
-    public Types.ProsesType ProductTypeInsert(int ProductGeneralTypeID, string ProductTypeName)
+    public Types.ProsesType ProductTypeInsert(string ProductTypeName)
     {
         SqlCommand cmd = new SqlCommand(@"insert into ProductTypes 
-(UserID,ProductGeneralTypeID,ProductTypeName) values (@UserID,@ProductGeneralTypeID,@ProductTypeName)", SqlConn);
+(UserID,ProductTypeName) values (@UserID,@ProductTypeName)", SqlConn);
         cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
-        cmd.Parameters.AddWithValue("@ProductGeneralTypeID", ProductGeneralTypeID);
         cmd.Parameters.AddWithValue("@ProductTypeName", ProductTypeName);
 
         try
@@ -1646,13 +1875,12 @@ pt.ProductGeneralTypeID=pgt.ProductGeneralTypeID where pt.DeleteTime is null and
             cmd.Dispose();
         }
     }
-    public Types.ProsesType ProductTypeUpdate(int ProductTypeID, int ProductGeneralTypeID, string ProductTypeName)
+    public Types.ProsesType ProductTypeUpdate(int ProductTypeID, string ProductTypeName)
     {
         SqlCommand cmd = new SqlCommand(@"update ProductTypes set UserID=@UserID,
-ProductTypeName=@ProductTypeName,ProductGeneralTypeID=@ProductGeneralTypeID,UpdateTime=getdate() where ProductTypeID=@ProductTypeID", SqlConn);
+ProductTypeName=@ProductTypeName,UpdateTime=getdate() where ProductTypeID=@ProductTypeID", SqlConn);
         cmd.Parameters.AddWithValue("@ProductTypeID", ProductTypeID);
         cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
-        cmd.Parameters.AddWithValue("@ProductGeneralTypeID", ProductGeneralTypeID);
         cmd.Parameters.AddWithValue("@ProductTypeName", ProductTypeName);
 
         try
@@ -1705,7 +1933,7 @@ where ProductTypeID=@ProductTypeID;", SqlConn);
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by WorkID desc) sn,
-[WorkID],w.[RegisterTime],w.[WorkTypeID],wt.WorkTypeName,[WorkName],w.Price
+[WorkID],w.[WorkTypeID],wt.WorkTypeName,[WorkName],w.Price
 FROM Works w inner join WorkTypes wt on w.WorkTypeID=wt.WorkTypeID 
 where w.DeleteTime is null and wt.DeleteTime is null ", SqlConn);
             da.Fill(dt);
@@ -1722,7 +1950,7 @@ where w.DeleteTime is null and wt.DeleteTime is null ", SqlConn);
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by WorkID desc) sn,
-[WorkID],w.[RegisterTime],w.[WorkTypeID],wt.WorkTypeName,[WorkName],Price
+[WorkID],w.[WorkTypeID],wt.WorkTypeName,[WorkName],Price
 FROM Works w inner join WorkTypes wt on w.WorkTypeID=wt.WorkTypeID 
 where w.DeleteTime is null and wt.DeleteTime is null and w.WorkID=@id", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
@@ -1742,7 +1970,7 @@ where w.DeleteTime is null and wt.DeleteTime is null and w.WorkID=@id", SqlConn)
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by WorkID desc) sn,
-[WorkID],w.[RegisterTime],w.[WorkTypeID],wt.WorkTypeName,[WorkName],Price
+[WorkID],w.[WorkTypeID],wt.WorkTypeName,[WorkName],Price
 FROM Works w inner join WorkTypes wt on w.WorkTypeID=wt.WorkTypeID 
 where w.DeleteTime is null and wt.DeleteTime is null and w.WorkTypeID=@id", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
@@ -1894,9 +2122,7 @@ where DeleteTime is null", SqlConn);
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by c.CardID desc) sn,
-c.CardID,c.UserID,c.CardNumber,c.InsertTime,c.Updatetime,c.DeleteTime,
-g.GardenName,c.GardenID
-  FROM Cards c inner join Gardens g on g.GardenID=c.GardenID where c.DeleteTime is null", SqlConn);
+c.* FROM Cards c  where c.DeleteTime is null", SqlConn);
             da.Fill(dt);
             return dt;
         }
@@ -1905,31 +2131,31 @@ g.GardenName,c.GardenID
             return null;
         }
     }
-    public DataTable GetCardsByGardenID(int GardenID)
-    {  //and c.cardid not in (select cardid from cadres)
-        try
-        {
-            DataTable dt = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by c.CardID desc) sn,
-c.CardID,c.UserID,c.CardNumber,c.InsertTime,c.Updatetime,c.DeleteTime,
-g.GardenName,c.GardenID FROM Cards c inner join Gardens g on g.GardenID=c.GardenID 
-where c.DeleteTime is null and c.GardenID=@GardenID", SqlConn);
-            da.SelectCommand.Parameters.AddWithValue("GardenID", GardenID);
-            da.Fill(dt);
-            return dt;
-        }
-        catch (Exception ex)
-        {
-            return null;
-        }
-    }
+//    public DataTable GetCardsByGardenID(int GardenID)
+//    {  //and c.cardid not in (select cardid from cadres)
+//        try
+//        {
+//            DataTable dt = new DataTable();
+//            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by c.CardID desc) sn,
+//c.CardID,c.UserID,c.CardNumber,c.InsertTime,c.Updatetime,c.DeleteTime,
+//g.GardenName,c.GardenID FROM Cards c inner join Gardens g on g.GardenID=c.GardenID 
+//where c.DeleteTime is null and c.GardenID=@GardenID", SqlConn);
+//            da.SelectCommand.Parameters.AddWithValue("GardenID", GardenID);
+//            da.Fill(dt);
+//            return dt;
+//        }
+//        catch (Exception ex)
+//        {
+//            return null;
+//        }
+//    }
     public DataTable GetCardsByID(int id)
     {
         try
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [CardID] desc) sn,
-[CardID],[UserID],[CardNumber],[InsertTime],[Updatetime],[DeleteTime],GardenID
+*
   FROM [Cards] where DeleteTime is null and CardID=@CardID", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("CardID", id);
             da.Fill(dt);
@@ -1963,13 +2189,14 @@ where c.DeleteTime is null and c.GardenID=@GardenID", SqlConn);
             cmd.Dispose();
         }
     }
-    public Types.ProsesType CardsInsert(int UserID, string CardNumber, int GardenID)
+    public Types.ProsesType CardsInsert(int UserID, string CardNumber, string CardBarcode)
     {
 
-        SqlCommand cmd = new SqlCommand(@"insert into Cards (UserID, CardNumber,GardenID)  Values(@UserID, @CardNumber,@GardenID)", SqlConn);
+        SqlCommand cmd = new SqlCommand(@"insert into Cards (UserID,CardNumber,CardBarcode)  
+values (@UserID,@CardNumber,@CardBarcode)", SqlConn);
         cmd.Parameters.AddWithValue("@UserID", UserID);
         cmd.Parameters.AddWithValue("@CardNumber", CardNumber);
-        cmd.Parameters.AddWithValue("@GardenID", GardenID);
+        cmd.Parameters.AddWithValue("@CardBarcode", CardBarcode);
         try
         {
             cmd.Connection.Open();
@@ -1986,12 +2213,13 @@ where c.DeleteTime is null and c.GardenID=@GardenID", SqlConn);
             cmd.Dispose();
         }
     }
-    public Types.ProsesType CardsUpdate(int CardID, int UserID, string CardNumber, int GardenID)
+    public Types.ProsesType CardsUpdate(int CardID, int UserID, string CardNumber, string CardBarcode)
     {
-        SqlCommand cmd = new SqlCommand(@"update Cards set UserID=@UserID, CardNumber=@CardNumber,GardenID=@GardenID where CardID=@CardID", SqlConn);
+        SqlCommand cmd = new SqlCommand(@"update Cards set UserID=@UserID,CardNumber=@CardNumber,
+CardBarcode=@CardBarcode where CardID=@CardID", SqlConn);
         cmd.Parameters.AddWithValue("@UserID", UserID);
         cmd.Parameters.AddWithValue("@CardNumber", CardNumber);
-        cmd.Parameters.AddWithValue("@GardenID", GardenID);
+        cmd.Parameters.AddWithValue("@CardBarcode", CardBarcode);
         cmd.Parameters.AddWithValue("@CardID", CardID);
         try
         {
@@ -3040,9 +3268,13 @@ where w.DeleteTime is null and w.WorkDoneID=@WorkDoneID", SqlConn);
         }
     }
 
-    public Types.ProsesType OperationCadreUpdate(int WorkDoneID, int UserID, int CadreID, int WorkID, int LinesID, int WeatherConditionID, int TreeTypeID, int TariffAgeID, int TreeCount, float Salary, string Notes, string RegisterTime)
+    public Types.ProsesType OperationCadreUpdate(int WorkDoneID, int UserID, int CadreID, int WorkID, int LinesID, 
+        int WeatherConditionID, int TreeTypeID, int TariffAgeID, int TreeCount, float Salary, string Notes, 
+        string RegisterTime)
     {
-        SqlCommand cmd = new SqlCommand(@"update WorkDone set UserID=@UserID, CadreID=@CadreID,WorkID=@WorkID,LinesID=@LinesID,WeatherConditionID=@WeatherConditionID,TreeTypeID=@TreeTypeID,TariffAgeID=@TariffAgeID,TreeCount=@TreeCount,Salary=@Salary,Notes=@Notes,RegisterTime=@RegisterTime where WorkDoneID=@WorkDoneID", SqlConn);
+        SqlCommand cmd = new SqlCommand(@"update WorkDone set UserID=@UserID, CadreID=@CadreID,WorkID=@WorkID,
+LinesID=@LinesID,WeatherConditionID=@WeatherConditionID,TreeTypeID=@TreeTypeID,TariffAgeID=@TariffAgeID,
+TreeCount=@TreeCount,Salary=@Salary,Notes=@Notes,RegisterTime=@RegisterTime where WorkDoneID=@WorkDoneID", SqlConn);
         cmd.Parameters.AddWithValue("@UserID", UserID);
         cmd.Parameters.AddWithValue("@CadreID", CadreID);
         cmd.Parameters.AddWithValue("@WorkID", WorkID);
@@ -3162,7 +3394,8 @@ where t.DeleteTime is null and t.TechniquesWorkDoneID=@TechniquesWorkDoneID", Sq
         }
     }
 
-    public Types.ProsesType OperationTechniqueWorkDoneInsert(int UserID, int TechniqueID, int CompanyID, int WorkID, int Odometer, int LineID, int TreeCount, string Notes, string RegisterTime)
+    public Types.ProsesType OperationTechniqueWorkDoneInsert(int UserID, int TechniqueID, int CompanyID, int WorkID, 
+        int Odometer, int LineID, int TreeCount, string Notes, string RegisterTime)
     {
 
         SqlCommand cmd = new SqlCommand(@"insert into TechniquesWorkDone (UserID,TechniqueID,CompanyID,WorkID,Odometer,LineID,TreeCount,Notes,RegisterTime)
@@ -3193,7 +3426,8 @@ where t.DeleteTime is null and t.TechniquesWorkDoneID=@TechniquesWorkDoneID", Sq
         }
     }
 
-    public Types.ProsesType OperationTechniqueWorkDoneUpdate(int TechniquesWorkDoneID, int UserID, int TechniqueID, int CompanyID, int WorkID, int Odometer, int LineID, int TreeCount, string Notes, string RegisterTime)
+    public Types.ProsesType OperationTechniqueWorkDoneUpdate(int TechniquesWorkDoneID, int UserID, int TechniqueID, 
+        int CompanyID, int WorkID, int Odometer, int LineID, int TreeCount, string Notes, string RegisterTime)
     {
         SqlCommand cmd = new SqlCommand(@"update TechniquesWorkDone set UserID=@UserID, TechniqueID=@TechniqueID,CompanyID=@CompanyID,WorkID=@WorkID,Odometer=@Odometer,LineID=@LineID,TreeCount=@TreeCount,Notes=@Notes,RegisterTime=@RegisterTime where TechniquesWorkDoneID=@TechniquesWorkDoneID", SqlConn);
         cmd.Parameters.AddWithValue("@UserID", UserID);
@@ -3354,11 +3588,13 @@ where WateringSystemWorkID=@id ", SqlConn);
         }
     }
 
-    public Types.ProsesType OperationWateringSystemsWorkDoneInsert(int UserID, int GardenID, int WateringSystemID, string WateringSystemSize, int UnitMeasurementID, int EntryExitStatus, string Notes, string RegisterTime)
+    public Types.ProsesType OperationWateringSystemsWorkDoneInsert(int UserID, int GardenID, int WateringSystemID, 
+        string WateringSystemSize, int UnitMeasurementID, int EntryExitStatus, string Notes, string RegisterTime)
     {
 
-        SqlCommand cmd = new SqlCommand(@"insert into WateringSystemWorkDone (UserID,GardenID,WateringSystemID,WateringSystemSize,UnitMeasurementID,EntryExitStatus,Notes,RegisterTime)
-                                            Values(@UserID,@GardenID,@WateringSystemID,@WateringSystemSize,@UnitMeasurementID,@EntryExitStatus,@Notes,@RegisterTime)", SqlConn);
+        SqlCommand cmd = new SqlCommand(@"insert into WateringSystemWorkDone (UserID,GardenID,WateringSystemID,WateringSystemSize,
+UnitMeasurementID,EntryExitStatus,Notes,RegisterTime)
+ Values(@UserID,@GardenID,@WateringSystemID,@WateringSystemSize,@UnitMeasurementID,@EntryExitStatus,@Notes,@RegisterTime)", SqlConn);
         cmd.Parameters.AddWithValue("@UserID", UserID);
         cmd.Parameters.AddWithValue("@GardenID", GardenID);
         cmd.Parameters.AddWithValue("@WateringSystemID", WateringSystemID);
@@ -3386,7 +3622,9 @@ where WateringSystemWorkID=@id ", SqlConn);
 
     public Types.ProsesType OperationWateringSystemsWorkDoneUpdate(int WateringSystemWorkID, int UserID, int GardenID, int WateringSystemID, string WateringSystemSize, int UnitMeasurementID, int EntryExitStatus, string Notes, string RegisterTime)
     {
-        SqlCommand cmd = new SqlCommand(@"update WateringSystemWorkDone set UserID=@UserID, GardenID=@GardenID,WateringSystemID=@WateringSystemID,WateringSystemSize=@WateringSystemSize,UnitMeasurementID=@UnitMeasurementID,EntryExitStatus=@EntryExitStatus,Notes=@Notes,RegisterTime=@RegisterTime where WateringSystemWorkID=@WateringSystemWorkID", SqlConn);
+        SqlCommand cmd = new SqlCommand(@"update WateringSystemWorkDone set UserID=@UserID, GardenID=@GardenID,
+WateringSystemID=@WateringSystemID,WateringSystemSize=@WateringSystemSize,UnitMeasurementID=@UnitMeasurementID,
+EntryExitStatus=@EntryExitStatus,Notes=@Notes,RegisterTime=@RegisterTime where WateringSystemWorkID=@WateringSystemWorkID", SqlConn);
         cmd.Parameters.AddWithValue("@UserID", UserID);
         cmd.Parameters.AddWithValue("@GardenID", GardenID);
         cmd.Parameters.AddWithValue("@WateringSystemID", WateringSystemID);
@@ -3635,18 +3873,29 @@ UserID=@UserID where WeatherConditionID=@WeatherConditionID;", SqlConn);
 
 
 
-
     //giris cixis
     public DataTable GetEntryExits()
     {
         try
         {
             DataTable dt = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [EntryExitID] desc) sn,
-e.*,c2.CardNumber,c1.Sname+' '+c1.Name+' '+c1.FName fullname,case when e.EntryExitStatus =1 then N'Giriş' 
-when e.EntryExitStatus =2 then N'Çıxış' else N'Xəta baş verdi!' end EntryExitName from [EntryExit] e 
+            SqlDataAdapter da = new SqlDataAdapter(@"
+
+select *, case when t.[Sıra nömrəsi] % 2 =0 then N'Çıxış' 
+else N'Giriş' end [Status] from (
+
+SELECT row_number() over(PARTITION BY c1.Sname,c1.Name,c1.FName order by c1.Sname,c1.Name,c1.FName,e.InsertTime desc) [Sıra nömrəsi],
+c2.CardNumber [Kartın nömrəsi],c1.Sname+' '+c1.Name+' '+c1.FName [İşçinin adı],e.InsertTime Tarix,e.EntryExitID,g.GardenName 
+from [EntryExit] e 
 left join Cadres c1 on e.CadreID=c1.CadreID 
-left join Cards c2 on c2.CardID=c1.CardID  where e.DeleteTime is null and c1.DeleteTime is null  and c2.DeleteTime is null ", SqlConn);
+left join Cards c2 on c2.CardID=c1.CardID 
+inner join Gardens g on g.GardenID=c1.GardenID
+where e.DeleteTime is null and c1.DeleteTime is null  and 
+c2.DeleteTime is null and g.DeleteTime is null
+
+) t
+", SqlConn);
+           
             da.Fill(dt);
             return dt;
         }
@@ -3655,6 +3904,25 @@ left join Cards c2 on c2.CardID=c1.CardID  where e.DeleteTime is null and c1.Del
             return null;
         }
     }
+//    //giris cixis
+//    public DataTable GetEntryExits()
+//    {
+//        try
+//        {
+//            DataTable dt = new DataTable();
+//            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [EntryExitID] desc) sn,
+//e.*,c2.CardNumber,c1.Sname+' '+c1.Name+' '+c1.FName fullname,case when e.EntryExitStatus =1 then N'Giriş' 
+//when e.EntryExitStatus =2 then N'Çıxış' else N'Xəta baş verdi!' end EntryExitName from [EntryExit] e 
+//left join Cadres c1 on e.CadreID=c1.CadreID 
+//left join Cards c2 on c2.CardID=c1.CardID  where e.DeleteTime is null and c1.DeleteTime is null  and c2.DeleteTime is null ", SqlConn);
+//            da.Fill(dt);
+//            return dt;
+//        }
+//        catch (Exception ex)
+//        {
+//            return null;
+//        }
+//    }
     public DataTable GetCadreByCardnumber(string cardnumber)
     {
         try
@@ -3968,7 +4236,7 @@ where ProductStockInputOutputID=@ProductStockInputOutputID;", SqlConn);
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by ProductID desc) sn,
-       [ProductID],p.[UserID],p.[RegisterTime],[ProductsName],p.[ProductTypeID],pt.ProductTypeName
+       [ProductID],p.[UserID],[ProductsName],p.[ProductTypeID],pt.ProductTypeName
       ,p.[BrandID],b.BrandName,p.[ModelID],m.ModelName,[Code],p.[UnitMeasurementID] ,u.UnitMeasurementName
       ,[Price],[PriceDiscount],[Notes] from [Products] p 
   inner join ProductTypes pt on p.ProductTypeID=pt.ProductTypeID 

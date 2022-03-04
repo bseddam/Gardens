@@ -123,20 +123,7 @@
                                             </div>
                                         </div>
 
-
-                                        <div class="row mb-2">
-                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Sektor adı</label>
-                                            <div class="col-sm-7">
-                                                <asp:TextBox ID="txtsectorname" runat="server" class="form-control"  placeholder="Mətni daxil edin..."></asp:TextBox>
-                                                <asp:RegularExpressionValidator ValidationGroup="qrup1" Display="Dynamic" ControlToValidate="txtsectorname" ID="RegularExpressionValidator2" ValidationExpression="^[\s\S]{3,500}$" runat="server" ForeColor="Red" ErrorMessage="Mətn 3 simvoldan cox olmalıdır."></asp:RegularExpressionValidator>
-                                                <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txtsectorname" ID="RequiredFieldValidator1" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>
-
-                                            </div>
-                                        </div>
-
-
-                                        
-                                        <div class="row mb-2">
+                                         <div class="row mb-2">
                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Bağ</label>
                                             <div class="col-sm-7">
                                                 <asp:DropDownList ID="ddlgardens" class="form-control" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlgardens_SelectedIndexChanged"></asp:DropDownList>
@@ -151,6 +138,19 @@
                                             </div>
                                         </div>
 
+                                        <div class="row mb-2">
+                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Sektor adı</label>
+                                            <div class="col-sm-7">
+                                                <asp:TextBox ID="txtsectorname" runat="server" class="form-control"  placeholder="Mətni daxil edin..."></asp:TextBox>
+                                                <asp:RegularExpressionValidator ValidationGroup="qrup1" Display="Dynamic" ControlToValidate="txtsectorname" ID="RegularExpressionValidator2" ValidationExpression="^[\s\S]{3,500}$" runat="server" ForeColor="Red" ErrorMessage="Mətn 3 simvoldan cox olmalıdır."></asp:RegularExpressionValidator>
+                                                <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txtsectorname" ID="RequiredFieldValidator1" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>
+
+                                            </div>
+                                        </div>
+
+
+                                        
+                                       
                                         <div class="row mb-2">
                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ümumi sahəsi</label>
                                             <div class="col-sm-7">

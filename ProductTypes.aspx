@@ -9,7 +9,7 @@
     <section id="about" class="about section-bg">
         <div class="container">
 
-            <asp:LinkButton ID="btnAdd" runat="server" CommandArgument="add" OnClick="LnkPnlMenu_Click" CssClass="btn btn-dark">Yeni mal növü əlavə et</asp:LinkButton>
+            <asp:LinkButton ID="btnAdd" runat="server" CommandArgument="add" OnClick="LnkPnlMenu_Click" CssClass="btn btn-dark">Yeni mal kateqoriyası əlavə et</asp:LinkButton>
 
             <div class="row">
                 <div class="col-12">
@@ -47,10 +47,8 @@
                                 <dx:GridViewDataColumn Caption="Sıra nömrəsi" FieldName="sn" VisibleIndex="1">
                                     <EditFormSettings VisibleIndex="1" />
                                 </dx:GridViewDataColumn>
-                               <dx:GridViewDataColumn Caption="Aid edildiyi sinif" FieldName="ProductGeneralTypeName" VisibleIndex="1">
-                                    <EditFormSettings VisibleIndex="1" />
-                                </dx:GridViewDataColumn>
-                                <dx:GridViewDataColumn Caption="Mal növü" FieldName="ProductTypeName" VisibleIndex="1">
+                             
+                                <dx:GridViewDataColumn Caption="Mal kateqoriyası" FieldName="ProductTypeName" VisibleIndex="1">
                                     <EditFormSettings VisibleIndex="1" />
                                 </dx:GridViewDataColumn>
                              
@@ -90,18 +88,12 @@
                      
 
 
-                                       <div class="row mb-2">
-                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Aid edildiyi sinif</label>
-                                            <div class="col-sm-7">
-                                                <asp:DropDownList ID="ddlproductgeneraltype" class="form-control" runat="server" ></asp:DropDownList>
-                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator21" runat="server" ControlToValidate="ddlproductgeneraltype" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
-                                            </div>
-                                        </div>
+                                     
 
 
 
                                         <div class="row mb-2">
-                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Malın növü</label>
+                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Malın kateqoriyası</label>
                                             <div class="col-sm-7">
                                                 <asp:TextBox ID="txtproducttypename" runat="server" class="form-control"  placeholder="Mətni daxil edin..."></asp:TextBox>
                                                 <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txtproducttypename" ID="RequiredFieldValidator1" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>
