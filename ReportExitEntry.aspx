@@ -47,7 +47,7 @@
                                 <dx:GridViewDataColumn Caption="Sıra nömrəsi" FieldName="Sıra nömrəsi" VisibleIndex="1">
                                     <EditFormSettings VisibleIndex="1" />
                                 </dx:GridViewDataColumn>
-                                  <dx:GridViewDataColumn Caption="Bağ adı" FieldName="GardenName" VisibleIndex="1">
+                                  <dx:GridViewDataColumn Caption="Bağ adı" FieldName="Bağın adı" VisibleIndex="1">
                                     <EditFormSettings VisibleIndex="1" />
                                 </dx:GridViewDataColumn>
                                 <dx:GridViewDataColumn Caption="Tam adı" FieldName="İşçinin adı" VisibleIndex="1">

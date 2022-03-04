@@ -3771,18 +3771,19 @@ UserID=@UserID where WeatherConditionID=@WeatherConditionID;", SqlConn);
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"
+select t.[Bağın adı],t.[İşçinin adı],t.Barkod,t.[Kartın nömrəsi],t.[Tarix], case when t.[sn] % 2 =0 then N'Çıxış' 
+else N'Giriş' end [Status],EntryExitID,
+row_number() over( order by t.Tarix desc) [Sıra nömrəsi] from (
 
-select *, case when t.[Sıra nömrəsi] % 2 =0 then N'Çıxış' 
-else N'Giriş' end [Status] from (
-
-SELECT row_number() over(PARTITION BY c1.Sname,c1.Name,c1.FName order by c1.Sname,c1.Name,c1.FName,e.InsertTime desc) [Sıra nömrəsi],
-c2.CardNumber [Kartın nömrəsi],c1.Sname+' '+c1.Name+' '+c1.FName [İşçinin adı],e.InsertTime Tarix,e.EntryExitID,g.GardenName 
+SELECT row_number() over(PARTITION BY c1.Sname,c1.Name,c1.FName order by c1.Sname,c1.Name,c1.FName,e.InsertTime) [sn],
+c2.CardNumber [Kartın nömrəsi],c1.Sname+' '+c1.Name+' '+c1.FName [İşçinin adı],e.InsertTime Tarix,e.EntryExitID,g.GardenName [Bağın adı], c2.CardBarcode [Barkod]
 from [EntryExit] e 
 left join Cadres c1 on e.CadreID=c1.CadreID 
 left join Cards c2 on c2.CardID=c1.CardID 
-inner join Gardens g on g.GardenID=c1.GardenID
+left join Users u on u.UserID=e.UserID
+left join Gardens g on u.GardenID=g.GardenID
 where e.DeleteTime is null and c1.DeleteTime is null  and 
-c2.DeleteTime is null and g.DeleteTime is null
+c2.DeleteTime is null and u.DeleteTime is null and g.DeleteTime is null
 
 ) t
 ", SqlConn);
