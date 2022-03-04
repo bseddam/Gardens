@@ -68,8 +68,8 @@
                             <li><a href="/brands">Markalar</a></li>
                             <li><a href="/models">Modeller</a></li>
                             <li><a href="/producttypes">Mal kateqoriyası</a></li>   
-                             <li><a href="/treetypes">Ölkələr</a></li>  
-                            <li><a href="/treetypes">Ağac adı</a></li>  
+                             <li><a href="/countries">Ölkələr</a></li>  
+                            <li><a href="/trees">Ağac adı</a></li>  
                             <li><a href="/treetypes">Ağac növü</a></li> 
                             <li><a href="/unitmeasurements">Ölçü vahidləri</a></li>                                                        
                         </ul>

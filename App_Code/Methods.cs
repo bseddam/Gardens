@@ -344,6 +344,129 @@ PhoneNumbers=@PhoneNumbers, Email=@Email, Adress=@Adress,Notes=@Notes,UpdateTime
         }
     }
 
+    //olkeler
+    public DataTable GetCountries()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by CountryID desc) sn,
+* FROM Countries where DeleteTime is null", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+    public DataTable GetCountryByID(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by CountryID desc) sn,
+* FROM Countries where DeleteTime is null and CountryID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+    public Types.ProsesType CountryInsert(string CountryName)
+    {
+        SqlCommand cmd = new SqlCommand(@"insert into Countries 
+(UserID,CountryName) values (@UserID,@CountryName)", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@CountryName", CountryName);
+
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+    public Types.ProsesType CountryUpdate(int CountryID, string CountryName)
+    {
+        SqlCommand cmd = new SqlCommand(@"update Countries set UserID=@UserID,
+CountryName=@CountryName,UpdateTime=getdate() where CountryID=@CountryID", SqlConn);
+        cmd.Parameters.AddWithValue("@CountryID", CountryID);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@CountryName", CountryName);
+
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+    public Types.ProsesType DeleteCountry(int id)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"Update Countries set deletetime=getdate(),
+UserID=@UserID where CountryID=@CountryID;", SqlConn);
+        cmd.Parameters.AddWithValue("@CountryID", id);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            //LogInsert(Utils.Tables.pages, Utils.LogType.delete, String.Format("IndicatorsDelete () "), ex.Message, "", true);
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     //Ölçü vahidi
     public DataTable GetUnitMeasurements()
     {
@@ -1047,14 +1170,129 @@ where LineID=@LineID;", SqlConn);
     }
 
 
-    //Ağaclar
+    //agaclar
+    public DataTable GetTrees()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by TreeID desc) sn, 
+t.*  FROM [Trees] t where t.DeleteTime is null", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+    public DataTable GetTreesByID(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by TreeID desc) sn, 
+* FROM [Trees] where DeleteTime is null and TreeID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+    public Types.ProsesType TreeInsert(string TreeName)
+    {
+        SqlCommand cmd = new SqlCommand(@"insert into Trees (UserID,TreeName) values 
+(@UserID,@TreeName)", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@TreeName", TreeName);
+     
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+    public Types.ProsesType TreeUpdate(int TreeID, string TreeName)
+    {
+        SqlCommand cmd = new SqlCommand(@"update Trees set UserID=@UserID,
+TreeName=@TreeName,UpdateTime=getdate() where TreeID=@TreeID", SqlConn);
+        cmd.Parameters.AddWithValue("@TreeID", TreeID);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@TreeName", TreeName);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+    public Types.ProsesType DeleteTree(int id)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"Update Trees set deletetime=getdate(),UserID=@UserID 
+where TreeID=@TreeID;", SqlConn);
+        cmd.Parameters.AddWithValue("@TreeID", id);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            //LogInsert(Utils.Tables.pages, Utils.LogType.delete, String.Format("IndicatorsDelete () "), ex.Message, "", true);
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+    //Ağaclar tipleri
     public DataTable GetTreeTypes()
     {
         try
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by TreeTypeID desc) sn, 
-*  FROM [TreeTypes] where DeleteTime is null", SqlConn);
+tp.*,c.CountryName,t.TreeName  FROM [TreeTypes] tp left join Countries c on tp.CountryID=c.CountryID
+left join Trees t on tp.TreeID=t.TreeID where  tp.DeleteTime is null", SqlConn);
             da.Fill(dt);
             return dt;
         }
@@ -1079,11 +1317,13 @@ where LineID=@LineID;", SqlConn);
             return null;
         }
     }
-    public Types.ProsesType TreeTypeInsert(string TreeTypeName, string Coefficient)
+    public Types.ProsesType TreeTypeInsert(int CountryID,int TreeID, string TreeTypeName, string Coefficient)
     {
-        SqlCommand cmd = new SqlCommand(@"insert into TreeTypes 
-(UserID,TreeTypeName,Coefficient) values (@UserID,@TreeTypeName,@Coefficient)", SqlConn);
+        SqlCommand cmd = new SqlCommand(@"insert into TreeTypes (UserID,CountryID,TreeID,TreeTypeName,
+Coefficient) values (@UserID,@CountryID,@TreeID,@TreeTypeName,@Coefficient)", SqlConn);
         cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@CountryID", CountryID);
+        cmd.Parameters.AddWithValue("@TreeID", TreeID);
         cmd.Parameters.AddWithValue("@TreeTypeName", TreeTypeName);
         cmd.Parameters.AddWithValue("@Coefficient", Coefficient);
         try
@@ -1102,12 +1342,15 @@ where LineID=@LineID;", SqlConn);
             cmd.Dispose();
         }
     }
-    public Types.ProsesType TreeTypeUpdate(int TreeTypeID, string TreeTypeName, string Coefficient)
+    public Types.ProsesType TreeTypeUpdate(int TreeTypeID, int CountryID, int TreeID, string TreeTypeName, 
+        string Coefficient)
     {
-        SqlCommand cmd = new SqlCommand(@"update TreeTypes set UserID=@UserID,
+        SqlCommand cmd = new SqlCommand(@"update TreeTypes set UserID=@UserID,CountryID=@CountryID,TreeID=@TreeID,
 TreeTypeName=@TreeTypeName,Coefficient=@Coefficient,UpdateTime=getdate() where TreeTypeID=@TreeTypeID", SqlConn);
         cmd.Parameters.AddWithValue("@TreeTypeID", TreeTypeID);
         cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@CountryID", CountryID);
+        cmd.Parameters.AddWithValue("@TreeID", TreeID);
         cmd.Parameters.AddWithValue("@TreeTypeName", TreeTypeName);
         cmd.Parameters.AddWithValue("@Coefficient", Coefficient);
         try

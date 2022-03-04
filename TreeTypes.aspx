@@ -48,11 +48,16 @@
                                 <dx:GridViewDataColumn Caption="Sıra nömrəsi" FieldName="sn" VisibleIndex="1">
                                     <EditFormSettings VisibleIndex="1" />
                                 </dx:GridViewDataColumn>
-                      
+                                <dx:GridViewDataColumn Caption="Ölkələr" FieldName="CountryName" VisibleIndex="1">
+                                    <EditFormSettings VisibleIndex="1" />
+                                </dx:GridViewDataColumn>
+                                 <dx:GridViewDataColumn Caption="Ağac adı" FieldName="TreeName" VisibleIndex="1">
+                                    <EditFormSettings VisibleIndex="1" />
+                                </dx:GridViewDataColumn>
                                 <dx:GridViewDataColumn Caption="Ağac növü" FieldName="TreeTypeName" VisibleIndex="1">
                                     <EditFormSettings VisibleIndex="1" />
                                 </dx:GridViewDataColumn>
-                                  <dx:GridViewDataColumn Caption="Əmsal" FieldName="Coefficient" VisibleIndex="1">
+                                <dx:GridViewDataColumn Caption="Əmsal" FieldName="Coefficient" VisibleIndex="1">
                                     <EditFormSettings VisibleIndex="1" />
                                 </dx:GridViewDataColumn>
                              
@@ -84,12 +89,35 @@
                             HeaderText="Redaktə"
                             PopupHorizontalAlign="WindowCenter"
                             PopupVerticalAlign="WindowCenter"
-                            Height="200"
+                            Height="300"
                             ScrollBars="Vertical">
                             <ContentCollection>
                                 <dx:PopupControlContentControl>
                                     <div class="container">
                                     
+
+                                        <div class="row mb-2">
+                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ölkələr</label>
+                                            <div class="col-sm-7">
+                                                <dx:ASPxComboBox ID="cmbcountry" runat="server" Width="100%" Height="30px">
+                                                </dx:ASPxComboBox>
+                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="cmbcountry"
+                                                    ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
+                                            </div>
+                                        </div>
+
+
+
+                                       <div class="row mb-2">
+                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ağac</label>
+                                            <div class="col-sm-7">
+                                                <dx:ASPxComboBox ID="cmbtrees" runat="server" Width="100%" Height="30px">
+                                                </dx:ASPxComboBox>
+                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator9" runat="server" ControlToValidate="cmbtrees" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
+                                            </div>
+                                        </div>
+
+
 
                                         <div class="row mb-2">
                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ağac növü</label>
@@ -111,10 +139,6 @@
                                            
                                             </div>
                                         </div>
-
-
-                                                                   
-
 
                                         <div>
                                             <asp:Label Text="" ForeColor="Red" ID="lblPopError" runat="server" />
