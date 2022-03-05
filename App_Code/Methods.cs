@@ -1169,6 +1169,22 @@ where LineID=@LineID;", SqlConn);
         }
     }
 
+    public DataTable GetTreeSitiuations()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by TreesSitiuationID desc) sn, 
+ * FROM [TreesSitiuation] t where t.DeleteTime is null", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
 
     //agaclar
     public DataTable GetTrees()
@@ -1276,7 +1292,26 @@ where TreeID=@TreeID;", SqlConn);
 
 
 
-
+    public DataTable GetTreeTypeByTreeCountryID(int TreeID,int CountryID)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"
+select row_number() over(order by TreeTypeID desc) sn, 
+tp.*,c.CountryName,t.TreeName  FROM [TreeTypes] tp left join Countries c on tp.CountryID=c.CountryID
+left join Trees t on tp.TreeID=t.TreeID where  tp.DeleteTime is null and tp.TreeID=@TreeID 
+and c.CountryID=@CountryID", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("TreeID", TreeID);
+            da.SelectCommand.Parameters.AddWithValue("CountryID", CountryID);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
 
 
 
@@ -2403,13 +2438,11 @@ FROM [TechniqueService] t
 left join Techniques tc on t.TechniqueID=tc.TechniqueID
 left join Models m1 on m1.ModelID=tc.ModelID
 left join Brands b1 on m1.BrandID=b1.BrandID
-
 left join Gardens g on t.GardenID=g.GardenID 
 left join Works w on t.WorkID=w.WorkID
 left join Products p on p.ProductID=t.ProductID
 left join Models m2 on m2.ModelID=p.ModelID
 left join Brands b2 on m2.BrandID=b2.BrandID
-
 left join UnitMeasurements u on u.UnitMeasurementID=t.UnitMeasurementID where t.DeleteTime is null", SqlConn);
             da.Fill(dt);
             return dt;
@@ -4445,5 +4478,140 @@ where p.UserID=1", SqlConn);
 
 
 
+
+
+
+
+
+
+
+    public DataTable GetTreesCounts()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"
+
+SELECT row_number() 
+over(order by TreeCountID desc) sn,tc.*,l.LineName,s.SectorName,z.ZoneName,g.GardenName,ts.TreesSitiuationName,
+tt.TreeTypeName,t.TreeName,c.CountryName
+  FROM [TreesCount] tc 
+  left join Lines l on  tc.LineID=l.LineID 
+  left join Sectors s on s.SectorID=l.SectorID
+  left join Zones z on z.ZoneID=s.ZoneID
+  left join Gardens g on g.GardenID=z.GardenID 
+  left join TreesSitiuation ts on tc.TreeSitiuation=ts.TreesSitiuationID
+  left join TreeTypes tt on tc.TreeTypeID=tt.TreeTypeID
+  left join Countries c on c.CountryID=tt.CountryID
+  left join Trees t on t.TreeID=tt.TreeID
+  where tc.DeleteTime is null ", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+
+    public DataTable GetTreesCountsByID(int id)
+    {
+        //try
+        //{
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"
+
+SELECT row_number() 
+over(order by TreeCountID desc) sn,tc.*,l.LineName,s.SectorName,z.ZoneName,g.GardenName,ts.TreesSitiuationName,
+tt.TreeTypeName,t.TreeName,c.CountryName,s.SectorID,g.GardenID,z.ZoneID,c.CountryID,t.TreeID,ts.TreesSitiuationID
+  FROM [TreesCount] tc 
+  left join Lines l on  tc.LineID=l.LineID 
+  left join Sectors s on s.SectorID=l.SectorID
+  left join Zones z on z.ZoneID=s.ZoneID
+  left join Gardens g on g.GardenID=z.GardenID 
+  left join TreesSitiuation ts on tc.TreeSitiuation=ts.TreesSitiuationID
+  left join TreeTypes tt on tc.TreeTypeID=tt.TreeTypeID
+  left join Countries c on c.CountryID=tt.CountryID
+  left join Trees t on t.TreeID=tt.TreeID
+  where tc.DeleteTime is null and TreeCountID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        //}
+        //catch (Exception ex)
+        //{
+        //    return null;
+        //}
+    }
+
+
+
+
+
+    public Types.ProsesType TreeCountInsert(int LineID, int TreeTypeID,
+    int TreeCount, int TreeSitiuation, string RegisterTime)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"insert into TreesCount 
+(UserID,RegisterTime,LineID,TreeTypeID,TreeCount,TreeSitiuation) 
+values (@UserID,@RegisterTime,@LineID,@TreeTypeID,@TreeCount,@TreeSitiuation)", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        cmd.Parameters.AddWithValue("@LineID", LineID);
+        cmd.Parameters.AddWithValue("@TreeTypeID", TreeTypeID);
+        cmd.Parameters.AddWithValue("@TreeCount", TreeCount);
+        cmd.Parameters.AddWithValue("@TreeSitiuation", TreeSitiuation);
+
+
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+
+
+
+    public Types.ProsesType TreeCountUpdate(int TreeCountID, int LineID, int TreeTypeID,
+    int TreeCount, int TreeSitiuation, string RegisterTime)
+    {
+        SqlCommand cmd = new SqlCommand(@"update TreesCount set UserID=@UserID,
+RegisterTime=@RegisterTime,LineID=@LineID,TreeTypeID=@TreeTypeID,TreeCount=@TreeCount,
+TreeSitiuation=@TreeSitiuation,UpdateTime=getdate() where TreeCountID=@TreeCountID", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@TreeCountID", TreeCountID);
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        cmd.Parameters.AddWithValue("@LineID", LineID);
+        cmd.Parameters.AddWithValue("@TreeTypeID", TreeTypeID);
+        cmd.Parameters.AddWithValue("@TreeCount", TreeCount);
+        cmd.Parameters.AddWithValue("@TreeSitiuation", TreeSitiuation);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
 
 }

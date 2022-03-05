@@ -39,6 +39,7 @@
         routes.MapPageRoute("reportexitentry", "reportexitentry", "~/ReportExitEntry.aspx");
         routes.MapPageRoute("countries", "countries", "~/Countries.aspx");
         routes.MapPageRoute("trees", "trees", "~/Trees.aspx");
+        routes.MapPageRoute("treescount", "treescount", "~/TreesCount.aspx");
     }
 
     void Application_End(object sender, EventArgs e)
