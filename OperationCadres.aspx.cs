@@ -239,7 +239,7 @@ public partial class OperationCadres : System.Web.UI.Page
     protected void cmSektor_SelectedIndexChanged(object sender, EventArgs e)
     {
         cmLine.Items.Clear();
-        DataTable dt5 = _db.GetLineBySectorID(_db.GetSectorById(cmSektor.Value.ToParseInt()).Rows[0]["SectorID"].ToParseInt());
+        DataTable dt5 = _db.GetLineBySectorID(cmSektor.Value.ToParseInt());
         cmLine.ValueField = "LineID";
         cmLine.TextField = "LineName";
         cmLine.DataSource = dt5;
