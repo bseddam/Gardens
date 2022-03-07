@@ -1325,7 +1325,7 @@ Coefficient) values (@UserID,@CountryID,@TreeID,@TreeTypeName,@Coefficient)", Sq
         cmd.Parameters.AddWithValue("@CountryID", CountryID);
         cmd.Parameters.AddWithValue("@TreeID", TreeID);
         cmd.Parameters.AddWithValue("@TreeTypeName", TreeTypeName);
-        cmd.Parameters.AddWithValue("@Coefficient", Coefficient);
+        cmd.Parameters.AddWithValue("@Coefficient", Coefficient.ToParseFloat());
         try
         {
             cmd.Connection.Open();
@@ -1352,7 +1352,7 @@ TreeTypeName=@TreeTypeName,Coefficient=@Coefficient,UpdateTime=getdate() where T
         cmd.Parameters.AddWithValue("@CountryID", CountryID);
         cmd.Parameters.AddWithValue("@TreeID", TreeID);
         cmd.Parameters.AddWithValue("@TreeTypeName", TreeTypeName);
-        cmd.Parameters.AddWithValue("@Coefficient", Coefficient);
+        cmd.Parameters.AddWithValue("@Coefficient", Coefficient.ToParseFloat());
         try
         {
             cmd.Connection.Open();
@@ -1841,7 +1841,7 @@ pt.* from [ProductTypes] pt  where pt.DeleteTime is null and pt.DeleteTime is nu
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [ProductTypeID] desc) sn,
-[ProductTypeID],RegisterTime,[UserID],[ProductTypeName]
+[ProductTypeID],[UserID],[ProductTypeName]
   from [ProductTypes] pt  where pt.DeleteTime is null and ProductTypeID=@id", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
             da.Fill(dt);

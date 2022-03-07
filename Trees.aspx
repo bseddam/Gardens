@@ -90,9 +90,6 @@
                                     <div class="container">
 
 
-
-
-
                                         <div class="row mb-2">
                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ağac adı</label>
                                             <div class="col-sm-7">
@@ -101,9 +98,6 @@
                                                 <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txttreename" ID="RequiredFieldValidator1" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>
                                             </div>
                                         </div>
-
-                                       
-
 
                                         <div>
                                             <asp:Label Text="" ForeColor="Red" ID="lblPopError" runat="server" />
