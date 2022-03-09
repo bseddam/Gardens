@@ -75,7 +75,7 @@ public partial class OperationStockTransfer : System.Web.UI.Page
             int id = (sender as LinkButton).CommandArgument.ToParseInt();
             DataTable dt = _db.GetProductStockByID(id);
 
-            val = _db.ProductStockInsertTransfer(UserID: Session["UserID"].ToParseInt(),
+            val = _db.ProductStockInsertTransfer(id:id,UserID: Session["UserID"].ToParseInt(),
                 ProductID: dt.Rows[0]["ProductID"].ToParseInt(),
                 GardenID:cmbgarden.Value.ToParseInt(),                
                 ProductSize: txtProductSize.Text.ToParseStr(),

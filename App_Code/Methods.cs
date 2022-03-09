@@ -4655,7 +4655,7 @@ inner join Gardens gs on gs.GardenID=ps.GardenID
     }
 
 
-    public Types.ProsesType ProductStockInsertTransfer(int UserID,int ProductID, int GardenID, string ProductSize, int UnitMeasurementID,
+    public Types.ProsesType ProductStockInsertTransfer(int id,int UserID,int ProductID, int GardenID, string ProductSize, int UnitMeasurementID,
                 string Price, string PriceDiscount, string Amount, string AmountDiscount, string RegisterTime, string Notes)
     {
         SqlCommand cmd = new SqlCommand(@"insert into ProductStock 
@@ -4671,10 +4671,26 @@ values (@UserID, @ProductID,  @GardenID, @ProductSize, @UnitMeasurementID, @Pric
         cmd.Parameters.AddWithValue("@AmountDiscount", ConvertTypes.ToParseFloat(AmountDiscount));
         cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
         cmd.Parameters.AddWithValue("@Notes", Notes);
+
+        SqlCommand cmd1 = new SqlCommand(@"Update ProductStock set ProductSize=ProductSize-@p1 where ProductStockID=@ProductStockID ", SqlConn);
+        cmd1.Parameters.AddWithValue("@ProductStockID", id);
+        cmd1.Parameters.AddWithValue("@p1", ConvertTypes.ToParseFloat(ProductSize));
+
+        SqlCommand cmd2 = new SqlCommand(@"Insert into ProductStockTransfer (UserID,ProductStockID,GardenID,ProductSize,RegisterTime) Values (@UserID,@ProductStockID,@GardenID,@ProductSize,@RegisterTime)", SqlConn);
+        cmd2.Parameters.AddWithValue("@UserID", UserID);
+        cmd2.Parameters.AddWithValue("@ProductStockID", id);
+        cmd2.Parameters.AddWithValue("@GardenID", GardenID);
+        cmd2.Parameters.AddWithValue("@ProductSize", ConvertTypes.ToParseFloat(ProductSize));
+        cmd2.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+
         try
         {
             cmd.Connection.Open();
             cmd.ExecuteNonQuery();
+            cmd1.Connection.Open();
+            cmd1.ExecuteNonQuery();
+            cmd2.Connection.Open();
+            cmd2.ExecuteNonQuery();
             return Types.ProsesType.Succes;
         }
         catch (Exception ex)
@@ -4685,6 +4701,10 @@ values (@UserID, @ProductID,  @GardenID, @ProductSize, @UnitMeasurementID, @Pric
         {
             cmd.Connection.Close();
             cmd.Dispose();
+            cmd1.Connection.Close();
+            cmd1.Dispose();
+            cmd2.Connection.Close();
+            cmd2.Dispose();
         }
     }
 
