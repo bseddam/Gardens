@@ -1360,7 +1360,7 @@ Coefficient) values (@UserID,@CountryID,@TreeID,@TreeTypeName,@Coefficient)", Sq
         cmd.Parameters.AddWithValue("@CountryID", CountryID);
         cmd.Parameters.AddWithValue("@TreeID", TreeID);
         cmd.Parameters.AddWithValue("@TreeTypeName", TreeTypeName);
-        cmd.Parameters.AddWithValue("@Coefficient", Coefficient);
+        cmd.Parameters.AddWithValue("@Coefficient", Coefficient.ToParseFloat());
         try
         {
             cmd.Connection.Open();
@@ -1387,7 +1387,7 @@ TreeTypeName=@TreeTypeName,Coefficient=@Coefficient,UpdateTime=getdate() where T
         cmd.Parameters.AddWithValue("@CountryID", CountryID);
         cmd.Parameters.AddWithValue("@TreeID", TreeID);
         cmd.Parameters.AddWithValue("@TreeTypeName", TreeTypeName);
-        cmd.Parameters.AddWithValue("@Coefficient", Coefficient);
+        cmd.Parameters.AddWithValue("@Coefficient", Coefficient.ToParseFloat());
         try
         {
             cmd.Connection.Open();
@@ -1876,7 +1876,7 @@ pt.* from [ProductTypes] pt  where pt.DeleteTime is null and pt.DeleteTime is nu
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [ProductTypeID] desc) sn,
-[ProductTypeID],RegisterTime,[UserID],[ProductTypeName]
+[ProductTypeID],[UserID],[ProductTypeName]
   from [ProductTypes] pt  where pt.DeleteTime is null and ProductTypeID=@id", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
             da.Fill(dt);
@@ -4613,5 +4613,100 @@ TreeSitiuation=@TreeSitiuation,UpdateTime=getdate() where TreeCountID=@TreeCount
             cmd.Dispose();
         }
     }
+    //Anbar Kocurmeleri
+    public DataTable GetProductStock()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by ps.ProductStockID desc) sn,ps.ProductStockID,ps.UserID,ps.ProductID,ps.GardenID,ps.ProductSize,
+ps.UnitMeasurementID,ps.Price,ps.PriceDiscount,ps.Amount,ps.AmountDiscount,ps.RegisterTime,ps.Notes,
+gs.gardenname,pt.ProductTypeID,pt.ProductTypeName,
+p.ProductsName,um.UnitMeasurementName,m.ModelID,m.ModelName,b.BrandID,b.BrandName FROM [ProductStock] ps 
+inner join Products p on ps.ProductID=p.ProductID
+inner join Models m on m.ModelID=p.ModelID
+inner join brands b on b.BrandID=m.BrandID
+inner join UnitMeasurements um on ps.UnitMeasurementID=um.UnitMeasurementID
+inner join ProductTypes pt on pt.ProductTypeID=p.ProductTypeID
+inner join Gardens gs on gs.GardenID=ps.GardenID
+ where ps.DeleteTime is null", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+    public DataTable GetProductStockByID(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT * from ProductStock where DeleteTime is null and ProductStockID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+
+    public Types.ProsesType ProductStockInsertTransfer(int id,int UserID,int ProductID, int GardenID, string ProductSize, int UnitMeasurementID,
+                string Price, string PriceDiscount, string Amount, string AmountDiscount, string RegisterTime, string Notes)
+    {
+        SqlCommand cmd = new SqlCommand(@"insert into ProductStock 
+(UserID, ProductID,  GardenID,  ProductSize,  UnitMeasurementID, Price, PriceDiscount, Amount, AmountDiscount, RegisterTime, Notes) 
+values (@UserID, @ProductID,  @GardenID, @ProductSize, @UnitMeasurementID, @Price, @PriceDiscount, @Amount, @AmountDiscount, @RegisterTime, @Notes)", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());        
+        cmd.Parameters.AddWithValue("@ProductID", ProductID);
+        cmd.Parameters.AddWithValue("@GardenID", GardenID);
+        cmd.Parameters.AddWithValue("@ProductSize", ConvertTypes.ToParseFloat(ProductSize));
+        cmd.Parameters.AddWithValue("@Price", ConvertTypes.ToParseFloat(Price));
+        cmd.Parameters.AddWithValue("@PriceDiscount", ConvertTypes.ToParseFloat(PriceDiscount));
+        cmd.Parameters.AddWithValue("@Amount", ConvertTypes.ToParseFloat(Amount));
+        cmd.Parameters.AddWithValue("@AmountDiscount", ConvertTypes.ToParseFloat(AmountDiscount));
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        cmd.Parameters.AddWithValue("@Notes", Notes);
+
+        SqlCommand cmd1 = new SqlCommand(@"Update ProductStock set ProductSize=ProductSize-@p1 where ProductStockID=@ProductStockID ", SqlConn);
+        cmd1.Parameters.AddWithValue("@ProductStockID", id);
+        cmd1.Parameters.AddWithValue("@p1", ConvertTypes.ToParseFloat(ProductSize));
+
+        SqlCommand cmd2 = new SqlCommand(@"Insert into ProductStockTransfer (UserID,ProductStockID,GardenID,ProductSize,RegisterTime) Values (@UserID,@ProductStockID,@GardenID,@ProductSize,@RegisterTime)", SqlConn);
+        cmd2.Parameters.AddWithValue("@UserID", UserID);
+        cmd2.Parameters.AddWithValue("@ProductStockID", id);
+        cmd2.Parameters.AddWithValue("@GardenID", GardenID);
+        cmd2.Parameters.AddWithValue("@ProductSize", ConvertTypes.ToParseFloat(ProductSize));
+        cmd2.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            cmd1.Connection.Open();
+            cmd1.ExecuteNonQuery();
+            cmd2.Connection.Open();
+            cmd2.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+            cmd1.Connection.Close();
+            cmd1.Dispose();
+            cmd2.Connection.Close();
+            cmd2.Dispose();
+        }
+    }
+
 
 }

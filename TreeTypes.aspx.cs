@@ -123,4 +123,91 @@ public partial class TreeTypes : System.Web.UI.Page
     {
         popupEdit.ShowOnPageLoad = false;
     }
+
+    protected void btnCountriesSave_Click(object sender, EventArgs e)
+    {
+        lblerrorcountries.Text = "";
+        Types.ProsesType val = Types.ProsesType.Error;
+        if (btnCountriesSave.CommandName == "insert")
+        {
+            val = _db.CountryInsert(
+                CountryName: txtcountry.Text.ToParseStr());
+        }
+        else
+        {
+            val = _db.CountryUpdate(CountryID: btnSave.CommandArgument.ToParseInt(),
+
+                CountryName: txtcountry.Text.ToParseStr());
+        }
+
+        if (val == Types.ProsesType.Error)
+        {
+            lblerrorcountries.Text = "XƏTA! Yadda saxlamaq mümkün olmadı.";
+            return;
+        }
+
+        componentsload();
+        PopupCountries.ShowOnPageLoad = false;
+    }
+
+    protected void btnCountriesCancel_Click(object sender, EventArgs e)
+    {
+        componentsload();
+        PopupCountries.ShowOnPageLoad = true;
+    }
+
+    protected void linkbtnOlke_Click(object sender, EventArgs e)
+    {
+        LinkButton btn = sender as LinkButton;
+        switch (btn.CommandArgument)
+        {
+            case "addOlke":
+                btnCountriesSave.CommandName = "insert";
+                PopupCountries.ShowOnPageLoad = true;
+                break;
+        }
+    }
+
+    protected void lnkbtnTree_Click(object sender, EventArgs e)
+    {
+        LinkButton btn = sender as LinkButton;
+        switch (btn.CommandArgument)
+        {
+            case "addTree":
+                btnTreeSave.CommandName = "insert";
+                PopupTree.ShowOnPageLoad = true;
+                break;
+        }
+    }
+
+    protected void btnTreeCancel_Click(object sender, EventArgs e)
+    {
+        componentsload();
+        PopupTree.ShowOnPageLoad = false;
+    }
+
+    protected void btnTreeSave_Click(object sender, EventArgs e)
+    {
+        lblPopErrorTree.Text = "";
+        Types.ProsesType val = Types.ProsesType.Error;
+        if (btnTreeSave.CommandName == "insert")
+        {
+            val = _db.TreeInsert(
+                TreeName: txttreename.Text.ToParseStr());
+        }
+        else
+        {
+            val = _db.TreeUpdate(TreeID: btnSave.CommandArgument.ToParseInt(),
+                TreeName: txttreename.Text.ToParseStr());
+        }
+
+        if (val == Types.ProsesType.Error)
+        {
+            lblPopErrorTree.Text = "XƏTA! Yadda saxlamaq mümkün olmadı.";
+            return;
+        }
+
+        componentsload();
+        PopupTree.ShowOnPageLoad = false;
+    }
 }

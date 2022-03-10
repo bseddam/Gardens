@@ -106,4 +106,58 @@ public partial class Models : System.Web.UI.Page
     {
         popupEdit.ShowOnPageLoad = false;
     }
+
+    protected void btnBrends_Click(object sender, EventArgs e)
+    {
+        DataTable dt7 = _db.GetProductTypes();
+        ddlproducttype.DataValueField = "ProductTypeID";
+        ddlproducttype.DataTextField = "ProductTypeName";
+        ddlproducttype.DataSource = dt7;
+        ddlproducttype.DataBind();
+        ddlproducttype.Items.Insert(0, new ListItem("Seçin", "-1"));
+        ddlproducttype.SelectedIndex = 0;
+        LinkButton btn = sender as LinkButton;
+        switch (btn.CommandArgument)
+        {
+            case "addBrend":
+                btnBrendSave.CommandName = "insert";
+                popupBrends.ShowOnPageLoad = true;
+                break;
+        }
+        
+    }
+
+    protected void btnBrendSave_Click(object sender, EventArgs e)
+    {
+        Label1.Text = "";
+        Types.ProsesType val = Types.ProsesType.Error;
+        if (btnBrendSave.CommandName == "insert")
+        {
+            val = _db.BrandInsert(
+                BrandName: txtbrandname.Text.ToParseStr(),
+                ProductTypeID: ddlproducttype.SelectedValue.ToParseInt()
+                );
+        }
+        else
+        {
+            val = _db.BrandUpdate(BrandID: btnSave.CommandArgument.ToParseInt(),
+                BrandName: txtbrandname.Text.ToParseStr(),
+                ProductTypeID: ddlproducttype.SelectedValue.ToParseInt()
+                );
+        }
+
+        if (val == Types.ProsesType.Error)
+        {
+            Label1.Text = "XƏTA! Yadda saxlamaq mümkün olmadı.";
+            return;
+        }
+        componentsload();
+        popupBrends.ShowOnPageLoad = false;
+    }
+
+    protected void btnBrendCancel_Click(object sender, EventArgs e)
+    {
+        componentsload();
+        popupBrends.ShowOnPageLoad = false;
+    }
 }

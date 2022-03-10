@@ -6,6 +6,9 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+    <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+        <ContentTemplate>
     <!-- ======= Default Section ======= -->
     <section id="about" class="about section-bg">
         <div class="container">
@@ -98,11 +101,15 @@
 
                                         <div class="row mb-2">
                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ölkələr</label>
-                                            <div class="col-sm-7">
+                                            <div class="col-sm-6">
                                                 <dx:ASPxComboBox ID="cmbcountry" runat="server" Width="100%" Height="30px">
                                                 </dx:ASPxComboBox>
                                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="cmbcountry"
                                                     ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
+                                            </div>
+                                            <div class="col-sm-1">
+            <asp:LinkButton ID="linkbtnOlke" runat="server" CommandArgument="addOlke" OnClick="linkbtnOlke_Click" CssClass="btn btn-dark">...</asp:LinkButton>
+
                                             </div>
                                         </div>
 
@@ -110,10 +117,14 @@
 
                                        <div class="row mb-2">
                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ağac</label>
-                                            <div class="col-sm-7">
+                                            <div class="col-sm-6">
                                                 <dx:ASPxComboBox ID="cmbtrees" runat="server" Width="100%" Height="30px">
                                                 </dx:ASPxComboBox>
                                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator9" runat="server" ControlToValidate="cmbtrees" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
+                                            </div>
+                                           <div class="col-sm-1">
+            <asp:LinkButton ID="lnkbtnTree" runat="server" CommandArgument="addTree" OnClick="lnkbtnTree_Click" CssClass="btn btn-dark">...</asp:LinkButton>
+
                                             </div>
                                         </div>
 
@@ -151,6 +162,77 @@
                         </dx:ASPxPopupControl>
 
 
+                        <dx:ASPxPopupControl ID="PopupCountries"
+                            runat="server"
+                            ClientInstanceName="popup"
+                            AllowDragging="true"
+                            AllowResize="true"
+                            Modal="true"
+                            DragElement="Header"
+                            Width="600"
+                            HeaderText="Redaktə"
+                            PopupHorizontalAlign="WindowCenter"
+                            PopupVerticalAlign="WindowCenter"
+                            Height="200"
+                            ScrollBars="Vertical">
+                            <ContentCollection>
+                                <dx:PopupControlContentControl>
+                                    <div class="container">
+                                        <div class="row mb-2">
+                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ölkə</label>
+                                            <div class="col-sm-7">
+                                                <asp:TextBox ID="txtcountry" runat="server" class="form-control"  placeholder="Mətni daxil edin..."></asp:TextBox>
+                                                <asp:RegularExpressionValidator ValidationGroup="qrup2" Display="Dynamic" ControlToValidate="txtcountry" ID="RegularExpressionValidator2" ValidationExpression="^[\s\S]{3,500}$" runat="server" ForeColor="Red" ErrorMessage="Mətn 3 simvoldan cox olmalıdır."></asp:RegularExpressionValidator>
+                                                <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup2" ControlToValidate="txtcountry" ID="RequiredFieldValidator4" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <asp:Label Text="" ForeColor="Red" ID="lblerrorcountries" runat="server" />
+                                        </div>
+                                        <asp:Button ID="btnCountriesSave" runat="server" ValidationGroup="qrup2" CssClass="btn btn-success mr-2" Text="Yadda saxla" OnClick="btnCountriesSave_Click" />
+                                        <asp:Button ID="btnCountriesCancel" runat="server" CssClass="btn btn-light" Text="Ləğv et" OnClick="btnCountriesCancel_Click" />
+                                    </div>
+                                </dx:PopupControlContentControl>
+                            </ContentCollection>
+                        </dx:ASPxPopupControl>
+
+                        <dx:ASPxPopupControl ID="PopupTree"
+                            runat="server"
+                            ClientInstanceName="popup"
+                            AllowDragging="true"
+                            AllowResize="true"
+                            Modal="true"
+                            DragElement="Header"
+                            Width="600"
+                            HeaderText="Redaktə"
+                            PopupHorizontalAlign="WindowCenter"
+                            PopupVerticalAlign="WindowCenter"
+                            Height="200"
+                            ScrollBars="Vertical">
+                            <ContentCollection>
+                                <dx:PopupControlContentControl>
+                                    <div class="container">
+
+
+                                        <div class="row mb-2">
+                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ağac adı</label>
+                                            <div class="col-sm-7">
+                                                <asp:TextBox ID="txttreename" runat="server" class="form-control" placeholder="Mətni daxil edin..."></asp:TextBox>
+                                                <%--<asp:RegularExpressionValidator ValidationGroup="qrup1" Display="Dynamic" ControlToValidate="txtunitmeasurementname" ID="RegularExpressionValidator2" ValidationExpression="^[\s\S]{3,500}$" runat="server" ForeColor="Red" ErrorMessage="Mətn 3 simvoldan cox olmalıdır."></asp:RegularExpressionValidator>--%>
+                                                <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup3" ControlToValidate="txttreename" ID="RequiredFieldValidator5" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <asp:Label Text="" ForeColor="Red" ID="lblPopErrorTree" runat="server" />
+                                        </div>
+                                        <asp:Button ID="btnTreeSave" runat="server" ValidationGroup="qrup3" CssClass="btn btn-success mr-2" Text="Yadda saxla" OnClick="btnTreeSave_Click" />
+                                        <asp:Button ID="btnTreeCancel" runat="server" CssClass="btn btn-light" Text="Ləğv et" OnClick="btnTreeCancel_Click" />
+                                    </div>
+                                </dx:PopupControlContentControl>
+                            </ContentCollection>
+                        </dx:ASPxPopupControl>
                     </div>
                 </div>
             </div>
@@ -159,6 +241,8 @@
         </div>
     </section>
     <!-- End Default -->
+        </ContentTemplate>
+    </asp:UpdatePanel>
 </asp:Content>
 
 
