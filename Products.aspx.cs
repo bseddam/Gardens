@@ -41,6 +41,7 @@ public partial class Products : System.Web.UI.Page
         ddlmodel.DataSource = dt6;
         ddlmodel.DataBind();
         ddlmodel.Items.Insert(0, new ListItem("Seçin", "-1"));
+        ddlmodel.Items.Insert(1, new ListItem("Yoxdur", "0"));
         ddlmodel.SelectedIndex = 0;
     }
     void brandcomponentload()
@@ -51,6 +52,7 @@ public partial class Products : System.Web.UI.Page
         ddlbrand.DataSource = dt6;
         ddlbrand.DataBind();
         ddlbrand.Items.Insert(0, new ListItem("Seçin", "-1"));
+        ddlbrand.Items.Insert(1, new ListItem("Yoxdur", "0"));
         ddlbrand.SelectedIndex = 0;
     }
 

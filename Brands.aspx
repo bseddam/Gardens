@@ -97,7 +97,7 @@
                                                 <div class="row mb-2">
                                                     <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Malın kateqoriyası</label>
                                                     <div class="col-sm-7">
-                                                        <asp:DropDownList ID="ddlproducttype" class="dropdown dropdown-menu" runat="server"></asp:DropDownList>
+                                                        <asp:DropDownList ID="ddlproducttype" class="form-control" runat="server"></asp:DropDownList>
                                                         <asp:RequiredFieldValidator ID="RequiredFieldValidator21" runat="server" ControlToValidate="ddlProductType" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
                                                     </div>
                                                 </div>

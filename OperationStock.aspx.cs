@@ -59,6 +59,7 @@ public partial class OperationStock : System.Web.UI.Page
         cmbbrand.DataSource = dt6;
         cmbbrand.DataBind();
         cmbbrand.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmbbrand.Items.Insert(1, new ListEditItem("Yoxdur", "0"));
         cmbbrand.SelectedIndex = 0;
     }
 
@@ -70,6 +71,7 @@ public partial class OperationStock : System.Web.UI.Page
         cmbmodel.DataSource = dt6;
         cmbmodel.DataBind();
         cmbmodel.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmbmodel.Items.Insert(1, new ListEditItem("Yoxdur", "0"));
         cmbmodel.SelectedIndex = 0;
     }
 

@@ -1440,9 +1440,9 @@ where TreeTypeID=@TreeTypeID;", SqlConn);
        [ProductID],p.[UserID],[ProductsName],p.[ProductTypeID],pt.ProductTypeName
       ,p.[BrandID],b.BrandName,p.[ModelID],m.ModelName,[Code],p.[UnitMeasurementID] ,u.UnitMeasurementName
       ,[Price],[PriceDiscount],[Notes] from [Products] p 
-  inner join ProductTypes pt on p.ProductTypeID=pt.ProductTypeID 
-  inner join Brands b on p.BrandID=b.BrandID
-  inner join Models m on p.ModelID=m.ModelID
+  left join ProductTypes pt on p.ProductTypeID=pt.ProductTypeID 
+  left join Brands b on p.BrandID=b.BrandID
+  left join Models m on p.ModelID=m.ModelID
   left join UnitMeasurements u on p.UnitMeasurementID=u.UnitMeasurementID 
   where p.DeleteTime is null and pt.DeleteTime is null and b.DeleteTime is null and 
 m.DeleteTime is null and u.DeleteTime is null", SqlConn);
@@ -1463,9 +1463,9 @@ m.DeleteTime is null and u.DeleteTime is null", SqlConn);
        [ProductID],p.[UserID],[ProductsName],p.[ProductTypeID],pt.ProductTypeName
       ,p.[BrandID],b.BrandName,p.[ModelID],m.ModelName,[Code],p.[UnitMeasurementID] ,u.UnitMeasurementName
       ,[Price],[PriceDiscount],[Notes] from [Products] p 
-  inner join ProductTypes pt on p.ProductTypeID=pt.ProductTypeID 
-  inner join Brands b on p.BrandID=b.BrandID
-  inner join Models m on p.ModelID=m.ModelID
+  left join ProductTypes pt on p.ProductTypeID=pt.ProductTypeID 
+  left join Brands b on p.BrandID=b.BrandID
+  left join Models m on p.ModelID=m.ModelID
   left join UnitMeasurements u on p.UnitMeasurementID=u.UnitMeasurementID 
   where p.DeleteTime is null and pt.DeleteTime is null and b.DeleteTime is null and 
 m.DeleteTime is null and u.DeleteTime is null and p.ProductID=@id", SqlConn);
@@ -1578,7 +1578,7 @@ where ProductID=@ProductID;", SqlConn);
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [BrandID] desc) sn,
 [BrandID],[BrandName],b.ProductTypeID,p.ProductTypeName
-  from [Brands] b inner join ProductTypes p on b.ProductTypeID=p.ProductTypeID where b.DeleteTime is null
+  from [Brands] b left join ProductTypes p on b.ProductTypeID=p.ProductTypeID where b.DeleteTime is null
 and p.DeleteTime is null and b.ProductTypeID=@id", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
             da.Fill(dt);
@@ -1601,7 +1601,7 @@ and p.DeleteTime is null and b.ProductTypeID=@id", SqlConn);
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [BrandID] desc) sn,
 [BrandID],[BrandName],p.ProductTypeName
-  from [Brands] b inner join ProductTypes p on b.ProductTypeID=p.ProductTypeID where b.DeleteTime is null", SqlConn);
+  from [Brands] b left join ProductTypes p on b.ProductTypeID=p.ProductTypeID where b.DeleteTime is null", SqlConn);
             da.Fill(dt);
             return dt;
         }
@@ -1617,7 +1617,7 @@ and p.DeleteTime is null and b.ProductTypeID=@id", SqlConn);
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [BrandID] desc) sn,
 [BrandID],[BrandName],b.ProductTypeID,p.ProductTypeName
-  from [Brands] b inner join ProductTypes p on b.ProductTypeID=p.ProductTypeID where b.DeleteTime is null
+  from [Brands] b left join ProductTypes p on b.ProductTypeID=p.ProductTypeID where b.DeleteTime is null
 and p.DeleteTime is null and BrandID=@id", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
             da.Fill(dt);
@@ -1715,7 +1715,7 @@ where BrandID=@BrandID;", SqlConn);
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [ModelID] desc) sn,
 [ModelID],m.[BrandID],b.BrandName,[ModelName] FROM [Models] m 
-inner join Brands b on m.BrandID=b.BrandID where m.DeleteTime is null and b.DeleteTime is null ", SqlConn);
+left join Brands b on m.BrandID=b.BrandID where m.DeleteTime is null and b.DeleteTime is null ", SqlConn);
             da.Fill(dt);
             return dt;
         }
@@ -1731,7 +1731,7 @@ inner join Brands b on m.BrandID=b.BrandID where m.DeleteTime is null and b.Dele
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [ModelID] desc) sn,
 [ModelID],m.[BrandID],b.BrandName,[ModelName] FROM [Models] m 
-inner join Brands b on m.BrandID=b.BrandID where m.DeleteTime is null and b.DeleteTime is null and m.BrandID=@id", SqlConn);
+left join Brands b on m.BrandID=b.BrandID where m.DeleteTime is null and b.DeleteTime is null and m.BrandID=@id", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
             da.Fill(dt);
             return dt;
@@ -1748,7 +1748,7 @@ inner join Brands b on m.BrandID=b.BrandID where m.DeleteTime is null and b.Dele
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [ModelID] desc) sn,
 [ModelID],m.[BrandID],b.BrandName,[ModelName] FROM [Models] m 
-inner join Brands b on m.BrandID=b.BrandID where m.DeleteTime is null and b.DeleteTime is null and ModelID=@id", SqlConn);
+left join Brands b on m.BrandID=b.BrandID where m.DeleteTime is null and b.DeleteTime is null and ModelID=@id", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
             da.Fill(dt);
             return dt;
@@ -4100,14 +4100,14 @@ where EntryExitID=@EntryExitID;", SqlConn);
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by ProductStockInputOutputID desc) sn,psio.*,gs.gardenname,pot.ProductOperationTypeName,pt.ProductTypeID,pt.ProductTypeName,
 sor.ReasonName,p.ProductsName,um.UnitMeasurementName,m.ModelID,m.ModelName,b.BrandID,b.BrandName FROM [ProductStockInputOutput] psio 
-inner join ProductOperationTypes pot on psio.ProductOperationTypeID=pot.ProductOperationTypeID
-inner join StockOperationReasons sor on psio.StockOperationReasonID=sor.StockOperationReasonID and sor.ProductOperationTypeID=pot.ProductOperationTypeID
-inner join Products p on psio.ProductID=p.ProductID
-inner join Models m on m.ModelID=p.ModelID
-inner join brands b on b.BrandID=m.BrandID
-inner join UnitMeasurements um on psio.UnitMeasurementID=um.UnitMeasurementID
-inner join ProductTypes pt on pt.ProductTypeID=p.ProductTypeID
-inner join Gardens gs on gs.GardenID=psio.GardenID
+left join ProductOperationTypes pot on psio.ProductOperationTypeID=pot.ProductOperationTypeID
+left join StockOperationReasons sor on psio.StockOperationReasonID=sor.StockOperationReasonID and sor.ProductOperationTypeID=pot.ProductOperationTypeID
+left join Products p on psio.ProductID=p.ProductID
+left join Models m on m.ModelID=p.ModelID
+left join brands b on b.BrandID=m.BrandID
+left join UnitMeasurements um on psio.UnitMeasurementID=um.UnitMeasurementID
+left join ProductTypes pt on pt.ProductTypeID=p.ProductTypeID
+left join Gardens gs on gs.GardenID=psio.GardenID
  where psio.DeleteTime is null
 ", SqlConn);
             da.Fill(dt);
@@ -4126,17 +4126,16 @@ inner join Gardens gs on gs.GardenID=psio.GardenID
         try
         {
             DataTable dt = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter(@"SELECT 
-row_number() over(order by ProductStockInputOutputID desc) sn,psio.*,gs.gardenname,pot.ProductOperationTypeName,pt.ProductTypeID,pt.ProductTypeName,
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by ProductStockInputOutputID desc) sn,psio.*,gs.gardenname,pot.ProductOperationTypeName,pt.ProductTypeID,pt.ProductTypeName,
 sor.ReasonName,p.ProductsName,um.UnitMeasurementName,m.ModelID,m.ModelName,b.BrandID,b.BrandName FROM [ProductStockInputOutput] psio 
-inner join ProductOperationTypes pot on psio.ProductOperationTypeID=pot.ProductOperationTypeID
-inner join StockOperationReasons sor on psio.StockOperationReasonID=sor.StockOperationReasonID and sor.ProductOperationTypeID=pot.ProductOperationTypeID
-inner join Products p on psio.ProductID=p.ProductID
-inner join Models m on m.ModelID=p.ModelID
-inner join brands b on b.BrandID=m.BrandID
-inner join UnitMeasurements um on psio.UnitMeasurementID=um.UnitMeasurementID
-inner join ProductTypes pt on pt.ProductTypeID=p.ProductTypeID
-inner join Gardens gs on gs.GardenID=psio.GardenID
+left join ProductOperationTypes pot on psio.ProductOperationTypeID=pot.ProductOperationTypeID
+left join StockOperationReasons sor on psio.StockOperationReasonID=sor.StockOperationReasonID and sor.ProductOperationTypeID=pot.ProductOperationTypeID
+left join Products p on psio.ProductID=p.ProductID
+left join Models m on m.ModelID=p.ModelID
+left join brands b on b.BrandID=m.BrandID
+left join UnitMeasurements um on psio.UnitMeasurementID=um.UnitMeasurementID
+left join ProductTypes pt on pt.ProductTypeID=p.ProductTypeID
+left join Gardens gs on gs.GardenID=psio.GardenID
  where psio.DeleteTime is null
  and ProductStockInputOutputID=@id", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
@@ -4280,12 +4279,12 @@ where ProductStockInputOutputID=@ProductStockInputOutputID;", SqlConn);
        [ProductID],p.[UserID],[ProductsName],p.[ProductTypeID],pt.ProductTypeName
       ,p.[BrandID],b.BrandName,p.[ModelID],m.ModelName,[Code],p.[UnitMeasurementID] ,u.UnitMeasurementName
       ,[Price],[PriceDiscount],[Notes] from [Products] p 
-  inner join ProductTypes pt on p.ProductTypeID=pt.ProductTypeID 
-  inner join Brands b on p.BrandID=b.BrandID
-  inner join Models m on p.ModelID=m.ModelID
+  left join ProductTypes pt on p.ProductTypeID=pt.ProductTypeID 
+  left join Brands b on p.BrandID=b.BrandID
+  left join Models m on p.ModelID=m.ModelID
   left join UnitMeasurements u on p.UnitMeasurementID=u.UnitMeasurementID 
   where p.DeleteTime is null and pt.DeleteTime is null and b.DeleteTime is null and 
-m.DeleteTime is null and u.DeleteTime is null and m.ModelID=@id", SqlConn);
+m.DeleteTime is null and u.DeleteTime is null and p.ModelID=@id", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
             da.Fill(dt);
             return dt;
@@ -4307,8 +4306,8 @@ m.DeleteTime is null and u.DeleteTime is null and m.ModelID=@id", SqlConn);
             SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by TechniqueID desc) sn,
  p.* from Techniques p
 
-  inner join Brands b on p.BrandID=b.BrandID
-  inner join Models m on p.ModelID=m.ModelID
+  left join Brands b on p.BrandID=b.BrandID
+  left join Models m on p.ModelID=m.ModelID
 
   where p.DeleteTime is null  and b.DeleteTime is null and 
 m.DeleteTime is null  and m.ModelID=@id", SqlConn);
@@ -4630,12 +4629,12 @@ TreeSitiuation=@TreeSitiuation,UpdateTime=getdate() where TreeCountID=@TreeCount
 ps.UnitMeasurementID,ps.Price,ps.PriceDiscount,ps.Amount,ps.AmountDiscount,ps.RegisterTime,ps.Notes,
 gs.gardenname,pt.ProductTypeID,pt.ProductTypeName,
 p.ProductsName,um.UnitMeasurementName,m.ModelID,m.ModelName,b.BrandID,b.BrandName FROM [ProductStock] ps 
-inner join Products p on ps.ProductID=p.ProductID
-inner join Models m on m.ModelID=p.ModelID
-inner join brands b on b.BrandID=m.BrandID
-inner join UnitMeasurements um on ps.UnitMeasurementID=um.UnitMeasurementID
-inner join ProductTypes pt on pt.ProductTypeID=p.ProductTypeID
-inner join Gardens gs on gs.GardenID=ps.GardenID
+left join Products p on ps.ProductID=p.ProductID
+left join Models m on m.ModelID=p.ModelID
+left join brands b on b.BrandID=m.BrandID
+left join UnitMeasurements um on ps.UnitMeasurementID=um.UnitMeasurementID
+left join ProductTypes pt on pt.ProductTypeID=p.ProductTypeID
+left join Gardens gs on gs.GardenID=ps.GardenID
  where ps.DeleteTime is null", SqlConn);
             da.Fill(dt);
             return dt;
