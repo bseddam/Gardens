@@ -153,7 +153,7 @@ public partial class TreeTypes : System.Web.UI.Page
     protected void btnCountriesCancel_Click(object sender, EventArgs e)
     {
         componentsload();
-        PopupCountries.ShowOnPageLoad = true;
+        PopupCountries.ShowOnPageLoad = false;
     }
 
     protected void linkbtnOlke_Click(object sender, EventArgs e)
@@ -164,6 +164,7 @@ public partial class TreeTypes : System.Web.UI.Page
             case "addOlke":
                 btnCountriesSave.CommandName = "insert";
                 PopupCountries.ShowOnPageLoad = true;
+                txtcountry.Text = "";
                 break;
         }
     }
@@ -175,6 +176,7 @@ public partial class TreeTypes : System.Web.UI.Page
         {
             case "addTree":
                 btnTreeSave.CommandName = "insert";
+                txttreename.Text = "";
                 PopupTree.ShowOnPageLoad = true;
                 break;
         }

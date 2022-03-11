@@ -52,12 +52,12 @@
                                     <dx:GridViewDataColumn Caption="Bağ adı" FieldName="gardenname" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
-                                    <dx:GridViewDataColumn Caption="Əməliyyat növü" FieldName="ProductOperationTypeName" VisibleIndex="1">
+                                  <%--  <dx:GridViewDataColumn Caption="Əməliyyat növü" FieldName="ProductOperationTypeName" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
-                                    </dx:GridViewDataColumn>
-                                    <dx:GridViewDataColumn Caption="Əməliyyat səbəbi" FieldName="ReasonName" VisibleIndex="1">
+                                    </dx:GridViewDataColumn>--%>
+                                   <%-- <dx:GridViewDataColumn Caption="Əməliyyat səbəbi" FieldName="ReasonName" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
-                                    </dx:GridViewDataColumn>
+                                    </dx:GridViewDataColumn>--%>
                                     <dx:GridViewDataColumn Caption="Marka adı" FieldName="BrandName" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>

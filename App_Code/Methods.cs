@@ -1860,8 +1860,12 @@ over(order by [ProductGeneralTypeID] desc) sn,
         try
         {
             DataTable dt = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [ProductTypeID] desc) sn,
-pt.* from [ProductTypes] pt  where pt.DeleteTime is null and pt.DeleteTime is null", SqlConn);
+            SqlDataAdapter da = new SqlDataAdapter(@"
+SELECT row_number() over(order by [ProductTypeID] desc) sn,
+[ProductTypeID],[UserID],[ProductTypeName],pgt.ProductGeneralTypeID,ProductGeneralTypeName
+  from [ProductTypes] pt inner join ProductGeneralTypes pgt on 
+pt.ProductGeneralTypeID=pgt.ProductGeneralTypeID   where pt.DeleteTime is null and pgt.DeleteTime is null
+", SqlConn);
             da.Fill(dt);
             return dt;
         }
@@ -1876,8 +1880,9 @@ pt.* from [ProductTypes] pt  where pt.DeleteTime is null and pt.DeleteTime is nu
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [ProductTypeID] desc) sn,
-[ProductTypeID],[UserID],[ProductTypeName]
-  from [ProductTypes] pt  where pt.DeleteTime is null and ProductTypeID=@id", SqlConn);
+[ProductTypeID],[UserID],[ProductTypeName],pgt.ProductGeneralTypeID,ProductGeneralTypeName
+  from [ProductTypes] pt inner join ProductGeneralTypes pgt on 
+pt.ProductGeneralTypeID=pgt.ProductGeneralTypeID where pt.DeleteTime is null and ProductTypeID=@id", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
             da.Fill(dt);
             return dt;
@@ -1887,11 +1892,12 @@ pt.* from [ProductTypes] pt  where pt.DeleteTime is null and pt.DeleteTime is nu
             return null;
         }
     }
-    public Types.ProsesType ProductTypeInsert(string ProductTypeName)
+    public Types.ProsesType ProductTypeInsert(int ProductGeneralTypeID, string ProductTypeName)
     {
         SqlCommand cmd = new SqlCommand(@"insert into ProductTypes 
-(UserID,ProductTypeName) values (@UserID,@ProductTypeName)", SqlConn);
+(UserID,ProductGeneralTypeID,ProductTypeName) values (@UserID,@ProductGeneralTypeID,@ProductTypeName)", SqlConn);
         cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@ProductGeneralTypeID", ProductGeneralTypeID);
         cmd.Parameters.AddWithValue("@ProductTypeName", ProductTypeName);
 
         try
@@ -1910,12 +1916,13 @@ pt.* from [ProductTypes] pt  where pt.DeleteTime is null and pt.DeleteTime is nu
             cmd.Dispose();
         }
     }
-    public Types.ProsesType ProductTypeUpdate(int ProductTypeID, string ProductTypeName)
+    public Types.ProsesType ProductTypeUpdate(int ProductTypeID, int ProductGeneralTypeID, string ProductTypeName)
     {
         SqlCommand cmd = new SqlCommand(@"update ProductTypes set UserID=@UserID,
-ProductTypeName=@ProductTypeName,UpdateTime=getdate() where ProductTypeID=@ProductTypeID", SqlConn);
+ProductTypeName=@ProductTypeName,ProductGeneralTypeID=@ProductGeneralTypeID,UpdateTime=getdate() where ProductTypeID=@ProductTypeID", SqlConn);
         cmd.Parameters.AddWithValue("@ProductTypeID", ProductTypeID);
         cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@ProductGeneralTypeID", ProductGeneralTypeID);
         cmd.Parameters.AddWithValue("@ProductTypeName", ProductTypeName);
 
         try

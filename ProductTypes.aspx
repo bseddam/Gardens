@@ -47,7 +47,10 @@
                                 <dx:GridViewDataColumn Caption="Sıra nömrəsi" FieldName="sn" VisibleIndex="1">
                                     <EditFormSettings VisibleIndex="1" />
                                 </dx:GridViewDataColumn>
-                             
+                             <dx:GridViewDataColumn Caption="Aid edildiyi sinif" FieldName="ProductGeneralTypeName" VisibleIndex="1">
+                                    <EditFormSettings VisibleIndex="1" />
+                                </dx:GridViewDataColumn>
+
                                 <dx:GridViewDataColumn Caption="Mal kateqoriyası" FieldName="ProductTypeName" VisibleIndex="1">
                                     <EditFormSettings VisibleIndex="1" />
                                 </dx:GridViewDataColumn>
@@ -86,7 +89,13 @@
                                 <dx:PopupControlContentControl>
                                     <div class="container">
                      
-
+                                       <div class="row mb-2">
+                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Aid edildiyi sinif</label>
+                                            <div class="col-sm-7">
+                                                <asp:DropDownList ID="ddlproductgeneraltype" class="form-control" runat="server" ></asp:DropDownList>
+                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator21" runat="server" ControlToValidate="ddlproductgeneraltype" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
+                                            </div>
+                                        </div>
 
                                      
 
