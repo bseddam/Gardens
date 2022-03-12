@@ -28,7 +28,7 @@
         routes.MapPageRoute("operationtechniques", "operationtechniques", "~/OperationTechniques.aspx");
         routes.MapPageRoute("operationcadres", "operationcadres", "~/OperationCadres.aspx");
         routes.MapPageRoute("operationstock", "operationstock", "~/OperationStock.aspx");
-        routes.MapPageRoute("operationotockoransfer", "operationotockoransfer", "~/OperationStockTransfer.aspx");
+        routes.MapPageRoute("operationstocktransfer", "operationstocktransfer", "~/OperationStockTransfer.aspx");
         routes.MapPageRoute("operationtechniqueservices", "operationtechniqueservices", "~/OperationTechniqueServices.aspx");
         routes.MapPageRoute("otherexpenses", "otherexpenses", "~/OtherExpenses.aspx");
         routes.MapPageRoute("employmenthistory", "employmenthistory", "~/EmploymentHistory.aspx");
@@ -41,6 +41,7 @@
         routes.MapPageRoute("countries", "countries", "~/Countries.aspx");
         routes.MapPageRoute("trees", "trees", "~/Trees.aspx");
         routes.MapPageRoute("treescount", "treescount", "~/TreesCount.aspx");
+
     }
 
     void Application_End(object sender, EventArgs e)

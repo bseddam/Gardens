@@ -1439,7 +1439,7 @@ where TreeTypeID=@TreeTypeID;", SqlConn);
             SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by ProductID desc) sn,
        [ProductID],p.[UserID],[ProductsName],p.[ProductTypeID],pt.ProductTypeName
       ,p.[BrandID],b.BrandName,p.[ModelID],m.ModelName,[Code],p.[UnitMeasurementID] ,u.UnitMeasurementName
-      ,[Price],[PriceDiscount],[Notes] from [Products] p 
+      ,[Notes] from [Products] p 
   left join ProductTypes pt on p.ProductTypeID=pt.ProductTypeID 
   left join Brands b on p.BrandID=b.BrandID
   left join Models m on p.ModelID=m.ModelID
@@ -1862,10 +1862,17 @@ over(order by [ProductGeneralTypeID] desc) sn,
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"
 SELECT row_number() over(order by [ProductTypeID] desc) sn,
-[ProductTypeID],[UserID],[ProductTypeName],pgt.ProductGeneralTypeID,ProductGeneralTypeName
-  from [ProductTypes] pt inner join ProductGeneralTypes pgt on 
-pt.ProductGeneralTypeID=pgt.ProductGeneralTypeID   where pt.DeleteTime is null and pgt.DeleteTime is null
-", SqlConn);
+[ProductTypeID],[UserID],[ProductTypeName]
+  from [ProductTypes] pt  where pt.DeleteTime is null ", SqlConn);
+
+
+//            DataTable dt = new DataTable();
+//            SqlDataAdapter da = new SqlDataAdapter(@"
+//SELECT row_number() over(order by [ProductTypeID] desc) sn,
+//[ProductTypeID],[UserID],[ProductTypeName],pgt.ProductGeneralTypeID,ProductGeneralTypeName
+//  from [ProductTypes] pt inner join ProductGeneralTypes pgt on 
+//pt.ProductGeneralTypeID=pgt.ProductGeneralTypeID   where pt.DeleteTime is null and pgt.DeleteTime is null
+//", SqlConn);
             da.Fill(dt);
             return dt;
         }
@@ -4625,17 +4632,17 @@ TreeSitiuation=@TreeSitiuation,UpdateTime=getdate() where TreeCountID=@TreeCount
         try
         {
             DataTable dt = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by ps.ProductStockID desc) sn,ps.ProductStockID,ps.UserID,ps.ProductID,ps.GardenID,ps.ProductSize,
-ps.UnitMeasurementID,ps.Price,ps.PriceDiscount,ps.Amount,ps.AmountDiscount,ps.RegisterTime,ps.Notes,
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by ps.gardenid desc) sn,ps.ProductID,ps.GardenID,
 gs.gardenname,pt.ProductTypeID,pt.ProductTypeName,
-p.ProductsName,um.UnitMeasurementName,m.ModelID,m.ModelName,b.BrandID,b.BrandName FROM [ProductStock] ps 
+p.ProductsName,um.UnitMeasurementName,m.ModelID,m.ModelName,b.BrandID,b.BrandName
+      ,[productsizesum]
+  FROM [dbo].[vProductStock] ps 
 left join Products p on ps.ProductID=p.ProductID
 left join Models m on m.ModelID=p.ModelID
 left join brands b on b.BrandID=m.BrandID
-left join UnitMeasurements um on ps.UnitMeasurementID=um.UnitMeasurementID
+left join UnitMeasurements um on p.UnitMeasurementID=um.UnitMeasurementID
 left join ProductTypes pt on pt.ProductTypeID=p.ProductTypeID
-left join Gardens gs on gs.GardenID=ps.GardenID
- where ps.DeleteTime is null", SqlConn);
+left join Gardens gs on gs.GardenID=ps.GardenID", SqlConn);
             da.Fill(dt);
             return dt;
         }
@@ -4661,57 +4668,38 @@ left join Gardens gs on gs.GardenID=ps.GardenID
     }
 
 
-    public Types.ProsesType ProductStockInsertTransfer(int id,int UserID,int ProductID, int GardenID, string ProductSize, int UnitMeasurementID,
-                string Price, string PriceDiscount, string Amount, string AmountDiscount, string RegisterTime, string Notes)
+    public Types.ProsesType ProductStockInsertTransfer(int GardenFromID, int UserID,int ProductID, int GardenToID, 
+        string ProductSize,string RegisterTime)
     {
-        SqlCommand cmd = new SqlCommand(@"insert into ProductStock 
-(UserID, ProductID,  GardenID,  ProductSize,  UnitMeasurementID, Price, PriceDiscount, Amount, AmountDiscount, RegisterTime, Notes) 
-values (@UserID, @ProductID,  @GardenID, @ProductSize, @UnitMeasurementID, @Price, @PriceDiscount, @Amount, @AmountDiscount, @RegisterTime, @Notes)", SqlConn);
-        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());        
-        cmd.Parameters.AddWithValue("@ProductID", ProductID);
-        cmd.Parameters.AddWithValue("@GardenID", GardenID);
-        cmd.Parameters.AddWithValue("@ProductSize", ConvertTypes.ToParseFloat(ProductSize));
-        cmd.Parameters.AddWithValue("@Price", ConvertTypes.ToParseFloat(Price));
-        cmd.Parameters.AddWithValue("@PriceDiscount", ConvertTypes.ToParseFloat(PriceDiscount));
-        cmd.Parameters.AddWithValue("@Amount", ConvertTypes.ToParseFloat(Amount));
-        cmd.Parameters.AddWithValue("@AmountDiscount", ConvertTypes.ToParseFloat(AmountDiscount));
-        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
-        cmd.Parameters.AddWithValue("@Notes", Notes);
-
-        SqlCommand cmd1 = new SqlCommand(@"Update ProductStock set ProductSize=ProductSize-@p1 where ProductStockID=@ProductStockID ", SqlConn);
-        cmd1.Parameters.AddWithValue("@ProductStockID", id);
-        cmd1.Parameters.AddWithValue("@p1", ConvertTypes.ToParseFloat(ProductSize));
-
-        SqlCommand cmd2 = new SqlCommand(@"Insert into ProductStockTransfer (UserID,ProductStockID,GardenID,ProductSize,RegisterTime) Values (@UserID,@ProductStockID,@GardenID,@ProductSize,@RegisterTime)", SqlConn);
+    
+        SqlCommand cmd2 = new SqlCommand(@"Insert into ProductStockTransfer (UserID,GardenFromID,GardenToID,ProductID,
+ProductSize,RegisterTime) 
+Values (@UserID,@GardenFromID,@GardenToID,@ProductID,@ProductSize,@RegisterTime)", SqlConn);
         cmd2.Parameters.AddWithValue("@UserID", UserID);
-        cmd2.Parameters.AddWithValue("@ProductStockID", id);
-        cmd2.Parameters.AddWithValue("@GardenID", GardenID);
+        cmd2.Parameters.AddWithValue("@GardenFromID", GardenFromID);
+        cmd2.Parameters.AddWithValue("@GardenToID", GardenToID);
+        cmd2.Parameters.AddWithValue("@ProductID", ProductID);
         cmd2.Parameters.AddWithValue("@ProductSize", ConvertTypes.ToParseFloat(ProductSize));
         cmd2.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+       
 
-        try
-        {
-            cmd.Connection.Open();
-            cmd.ExecuteNonQuery();
-            cmd1.Connection.Open();
-            cmd1.ExecuteNonQuery();
+        //try
+        //{
+
             cmd2.Connection.Open();
             cmd2.ExecuteNonQuery();
             return Types.ProsesType.Succes;
-        }
-        catch (Exception ex)
-        {
-            return Types.ProsesType.Error;
-        }
-        finally
-        {
-            cmd.Connection.Close();
-            cmd.Dispose();
-            cmd1.Connection.Close();
-            cmd1.Dispose();
-            cmd2.Connection.Close();
-            cmd2.Dispose();
-        }
+        //}
+        //catch (Exception ex)
+        //{
+        //    return Types.ProsesType.Error;
+        //}
+        //finally
+        //{
+            
+        //    cmd2.Connection.Close();
+        //    cmd2.Dispose();
+        //}
     }
 
 
