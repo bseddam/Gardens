@@ -49,7 +49,7 @@
                                     <dx:GridViewDataColumn Caption="Sıra nömrəsi" FieldName="sn" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
-                                    <dx:GridViewDataColumn Caption="Bağ adı" FieldName="gardenname" VisibleIndex="1">
+                                    <dx:GridViewDataColumn Caption="Bağ adı" FieldName="StockName" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
                                  
@@ -75,7 +75,7 @@
                                    
                                     <dx:GridViewDataColumn VisibleIndex="1">
                                         <DataItemTemplate>
-                                            <asp:LinkButton ID="lnkEdit" OnClick="lnkEdit_Click" CommandArgument='<%#Eval("GardenID")+","+ Eval("ProductID")%>' Text="Köçür" runat="server" />
+                                            <asp:LinkButton ID="lnkEdit" OnClick="lnkEdit_Click" CommandArgument='<%#Eval("StockID")+","+ Eval("ProductID")%>' Text="Köçür" runat="server" />
                                         </DataItemTemplate>
                                     </dx:GridViewDataColumn>
                                      <%--

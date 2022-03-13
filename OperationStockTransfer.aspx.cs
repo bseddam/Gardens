@@ -75,16 +75,16 @@ public partial class OperationStockTransfer : System.Web.UI.Page
         if (btnSave.CommandName == "insert")
         {
             string[] cma = btnSave.CommandArgument.ToString().Split(new char[] { ',' });
-            string GardenFromID = cma[0];
+            string StockFromID = cma[0];
             string ProductID = cma[1];
             
 
            
 
-            val = _db.ProductStockInsertTransfer(GardenFromID: GardenFromID.ToParseInt(),
+            val = _db.ProductStockInsertTransfer(StockFromID: StockFromID.ToParseInt(),
                 UserID: Session["UserID"].ToParseInt(),
                 ProductID: ProductID.ToParseInt(),
-                GardenToID: cmbgarden.Value.ToParseInt(),                
+                StockToID: cmbgarden.Value.ToParseInt(),                
                 ProductSize: txtProductSize.Text.ToParseStr(),   
                 RegisterTime: cmbregistertime.Text.ToParseStr()
                 );
