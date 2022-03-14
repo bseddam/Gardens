@@ -7,12 +7,16 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
       <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
-     <%--  <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-        <ContentTemplate>--%>
+      <%--<asp:LinkButton ID="btnAdd" runat="server" CommandArgument="add" OnClick="LnkPnlMenu_Click" CssClass="btn btn-info">Yeni</asp:LinkButton>--%>
     <div class="content-wrapper">
         <div class="card">
             <div class="card-body">
-                <%--<asp:LinkButton ID="btnAdd" runat="server" CommandArgument="add" OnClick="LnkPnlMenu_Click" CssClass="btn btn-info">Yeni</asp:LinkButton>--%>
+                <%--
+                                    <dx:GridViewDataColumn VisibleIndex="1">
+                                        <DataItemTemplate>
+                                            <asp:LinkButton ID="lnkDelete" OnClick="lnkDelete_Click" OnClientClick="return confirm('Silmək istədiyinizə əminsinizmi?');" CommandArgument='<%#Eval("ProductStockInputOutputID") %>' Text="Sil" runat="server" />
+                                        </DataItemTemplate>
+                                    </dx:GridViewDataColumn>--%>
                 <div class="row">
                     <div class="col-12">
                         <div class="table-responsive">
@@ -49,7 +53,7 @@
                                     <dx:GridViewDataColumn Caption="Sıra nömrəsi" FieldName="sn" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
-                                    <dx:GridViewDataColumn Caption="Bağ adı" FieldName="StockName" VisibleIndex="1">
+                                    <dx:GridViewDataColumn Caption="Anbar adı" FieldName="StockName" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
                                  
@@ -107,11 +111,11 @@
                                                 <div class="container">
 
                                                     <div class="row mb-2">
-                                                        <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Bağ adı</label>
+                                                        <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Anbar adı</label>
                                                         <div class="col-sm-7">
-                                                            <dx:ASPxComboBox ID="cmbgarden" runat="server" Width="100%" Height="30px">
+                                                            <dx:ASPxComboBox ID="cmbstock" runat="server" Width="100%" Height="30px">
                                                             </dx:ASPxComboBox>
-                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator13" runat="server" ControlToValidate="cmbgarden" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
+                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator13" runat="server" ControlToValidate="cmbstock" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
                                                         </div>
                                                     </div>
                                                     <div class="row mb-2">

@@ -35,14 +35,23 @@ public partial class OperationStockTransfer : System.Web.UI.Page
 
     void componentsload()
     {
-        cmbgarden.Items.Clear();
-        DataTable d2t1 = _db.GetGardens();
-        cmbgarden.ValueField = "GardenID";
-        cmbgarden.TextField = "GardenName";
-        cmbgarden.DataSource = d2t1;
-        cmbgarden.DataBind();
-        cmbgarden.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        cmbgarden.SelectedIndex = 0;
+        cmbstock.Items.Clear();
+        DataTable d2t1 = _db.GetStocks();
+        cmbstock.ValueField = "StockID";
+        cmbstock.TextField = "StockName";
+        cmbstock.DataSource = d2t1;
+        cmbstock.DataBind();
+        cmbstock.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmbstock.SelectedIndex = 0;
+
+        //cmbgarden.Items.Clear();
+        //DataTable d2t1 = _db.GetGardens();
+        //cmbgarden.ValueField = "GardenID";
+        //cmbgarden.TextField = "GardenName";
+        //cmbgarden.DataSource = d2t1;
+        //cmbgarden.DataBind();
+        //cmbgarden.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        //cmbgarden.SelectedIndex = 0;
     }
     protected void lnkEdit_Click(object sender, EventArgs e)
     {
@@ -84,7 +93,7 @@ public partial class OperationStockTransfer : System.Web.UI.Page
             val = _db.ProductStockInsertTransfer(StockFromID: StockFromID.ToParseInt(),
                 UserID: Session["UserID"].ToParseInt(),
                 ProductID: ProductID.ToParseInt(),
-                StockToID: cmbgarden.Value.ToParseInt(),                
+                StockToID: cmbstock.Value.ToParseInt(),                
                 ProductSize: txtProductSize.Text.ToParseStr(),   
                 RegisterTime: cmbregistertime.Text.ToParseStr()
                 );
