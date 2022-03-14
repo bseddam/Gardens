@@ -57,9 +57,7 @@
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
                                  
-                                    <dx:GridViewDataColumn Caption="Marka adı" FieldName="BrandName" VisibleIndex="1">
-                                        <EditFormSettings VisibleIndex="1" />
-                                    </dx:GridViewDataColumn>
+                                   
                                     <dx:GridViewDataColumn Caption="Model adı" FieldName="ModelName" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>

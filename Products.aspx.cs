@@ -35,7 +35,7 @@ public partial class Products : System.Web.UI.Page
     }
     void modelcomponentload()
     {
-        DataTable dt6 = _db.GetModelsByBrandID(ddlbrand.SelectedValue.ToParseInt());
+        DataTable dt6 = _db.GetModelsByProductTypeID(ddlproducttype.SelectedValue.ToParseInt());
         ddlmodel.DataValueField = "ModelID";
         ddlmodel.DataTextField = "ModelName";
         ddlmodel.DataSource = dt6;
@@ -44,17 +44,7 @@ public partial class Products : System.Web.UI.Page
         ddlmodel.Items.Insert(1, new ListItem("Yoxdur", "0"));
         ddlmodel.SelectedIndex = 0;
     }
-    void brandcomponentload()
-    {
-        DataTable dt6 = _db.GetBrandsByProductTypeID(ddlproducttype.SelectedValue.ToParseInt());
-        ddlbrand.DataValueField = "BrandID";
-        ddlbrand.DataTextField = "BrandName";
-        ddlbrand.DataSource = dt6;
-        ddlbrand.DataBind();
-        ddlbrand.Items.Insert(0, new ListItem("Seçin", "-1"));
-        ddlbrand.Items.Insert(1, new ListItem("Yoxdur", "0"));
-        ddlbrand.SelectedIndex = 0;
-    }
+   
 
     void componentsload()
     {
@@ -74,7 +64,7 @@ public partial class Products : System.Web.UI.Page
         ddlproducttype.Items.Insert(0, new ListItem("Seçin", "-1"));
         ddlproducttype.SelectedIndex = 0;
 
-        brandcomponentload();
+       
 
 
 
@@ -92,13 +82,13 @@ public partial class Products : System.Web.UI.Page
 
         txtproductname.Text = dt.Rows[0]["ProductsName"].ToParseStr();
         ddlproducttype.SelectedValue = dt.Rows[0]["ProductTypeID"].ToParseStr();
-        brandcomponentload();
-        if (dt.Rows[0]["BrandID"].ToParseStr() != "")
-        {
-            ddlbrand.SelectedValue = dt.Rows[0]["BrandID"].ToParseStr();
-        }
+   
+       
         modelcomponentload();
-        ddlmodel.SelectedValue = dt.Rows[0]["ModelID"].ToParseStr();
+        if (dt.Rows[0]["ModelID"].ToParseStr() != "")
+        {
+            ddlmodel.SelectedValue = dt.Rows[0]["ModelID"].ToParseStr();
+        }
         txtcode.Text = dt.Rows[0]["Code"].ToParseStr();
         if (dt.Rows[0]["UnitMeasurementID"].ToParseStr() != "")
         {
@@ -139,7 +129,7 @@ public partial class Products : System.Web.UI.Page
             val = _db.ProductInsert(
                 ProductsName: txtproductname.Text.ToParseStr(),
                 ProductTypeID: ddlproducttype.SelectedValue.ToParseInt(),
-                BrandID: ddlbrand.SelectedValue.ToParseInt(),
+             
                 ModelID: ddlmodel.SelectedValue.ToParseInt(),
                 Code: txtcode.Text.ToParseStr(),
                 UnitMeasurementID: ddlunitmeasurement.SelectedValue.ToParseInt(),
@@ -151,7 +141,7 @@ public partial class Products : System.Web.UI.Page
             val = _db.ProductUpdate(ProductID: btnSave.CommandArgument.ToParseInt(),
                 ProductsName: txtproductname.Text.ToParseStr(),
                 ProductTypeID: ddlproducttype.SelectedValue.ToParseInt(),
-                BrandID: ddlbrand.SelectedValue.ToParseInt(),
+               
                 ModelID: ddlmodel.SelectedValue.ToParseInt(),
                 Code: txtcode.Text.ToParseStr(),
                 UnitMeasurementID: ddlunitmeasurement.SelectedValue.ToParseInt(),
@@ -174,18 +164,8 @@ public partial class Products : System.Web.UI.Page
     }
 
 
-
-
-
-
-    protected void ddlbrand_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        modelcomponentload();
-    }
-
     protected void ddlproducttype_SelectedIndexChanged(object sender, EventArgs e)
     {
-        brandcomponentload();
         modelcomponentload();
     }
 }

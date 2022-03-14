@@ -6,9 +6,9 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+  <%--  <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
        <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-        <ContentTemplate>
+        <ContentTemplate>--%>
     <div class="content-wrapper">
         <div class="card">
             <div class="card-body">
@@ -55,9 +55,7 @@
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
                                   
-                                    <dx:GridViewDataColumn Caption="Marka texnika" FieldName="brandtex" VisibleIndex="1">
-                                        <EditFormSettings VisibleIndex="1" />
-                                    </dx:GridViewDataColumn>
+                                    
                                     <dx:GridViewDataColumn Caption="Model texnika" FieldName="modeltex" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
@@ -65,9 +63,7 @@
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
 
-                                    <dx:GridViewDataColumn Caption="Marka mal" FieldName="modelbrand" VisibleIndex="1">
-                                        <EditFormSettings VisibleIndex="1" />
-                                    </dx:GridViewDataColumn>
+                                   
                                     <dx:GridViewDataColumn Caption="Model mal" FieldName="modelprod" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
@@ -169,12 +165,12 @@
                                            
                                                 </div>
                                             </div>
-                                            <div class="row mb-2">
-                                                <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Texnikanın markası</label>
+                                           <div class="row mb-2">
+                                                <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Malın kateqoriyası</label>
                                                 <div class="col-sm-7">
-                                                    <dx:ASPxComboBox ID="cmbbrand" runat="server" Width="100%" Height="30px" AutoPostBack="True" OnSelectedIndexChanged="cmbbrand_SelectedIndexChanged">
+                                                    <dx:ASPxComboBox ID="cmbproducttypetex" runat="server" Width="100%" Height="30px" AutoPostBack="True" OnSelectedIndexChanged="cmbproducttypetex_SelectedIndexChanged" >
                                                     </dx:ASPxComboBox>
-                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="cmbbrand" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
+                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="cmbproducttypetex" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
                                                 </div>
                                             </div>
                                             <div class="row mb-2">
@@ -204,19 +200,12 @@
                                             <div class="row mb-2">
                                                 <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Malın kateqoriyası</label>
                                                 <div class="col-sm-7">
-                                                    <dx:ASPxComboBox ID="cmbproducttype" runat="server" Width="100%" Height="30px" AutoPostBack="True" OnSelectedIndexChanged="cmbproducttype_SelectedIndexChanged">
+                                                    <dx:ASPxComboBox ID="cmbproducttype" runat="server" Width="100%" Height="30px" AutoPostBack="True" OnSelectedIndexChanged="cmbproducttype_SelectedIndexChanged"  >
                                                     </dx:ASPxComboBox>
                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator21" runat="server" ControlToValidate="cmbproducttype" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
                                                 </div>
                                             </div>
-                                             <div class="row mb-2">
-                                                <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Malın markası</label>
-                                                <div class="col-sm-7">
-                                                    <dx:ASPxComboBox ID="cmbbrandspareparts" runat="server" Width="100%" Height="30px" AutoPostBack="True" OnSelectedIndexChanged="cmbbrandspareparts_SelectedIndexChanged">
-                                                    </dx:ASPxComboBox>
-                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="cmbbrandspareparts" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
-                                                </div>
-                                            </div>
+                                            
                                             <div class="row mb-2">
                                                 <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Malın modeli</label>
                                                 <div class="col-sm-7">
@@ -340,7 +329,7 @@
         }
     </style>
 
-           </ContentTemplate>
-    </asp:UpdatePanel>
+         <%--  </ContentTemplate>
+    </asp:UpdatePanel>--%>
 </asp:Content>
 

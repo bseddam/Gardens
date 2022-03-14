@@ -65,9 +65,9 @@
                             <li><a href="/structure">Struktur</a></li>
                             <li><a href="/positions">Vəzifələr</a></li>
                             <li><a href="/works">İşlər</a></li>
-                            <li><a href="/brands">Markalar</a></li>
+                             <li><a href="/producttypes">Mal kateqoriyası</a></li>  
                             <li><a href="/models">Modeller</a></li>
-                            <li><a href="/producttypes">Mal kateqoriyası</a></li>   
+                            
                              <li><a href="/countries">Ölkələr</a></li>  
                             <li><a href="/trees">Ağac adı</a></li>  
                             <li><a href="/treetypes">Ağac növü</a></li> 

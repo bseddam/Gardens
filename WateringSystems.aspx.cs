@@ -34,29 +34,21 @@ public partial class WateringSystems : System.Web.UI.Page
         }
     }
 
-    void modelsload()
+   
+
+    void componentsload()
     {
         cmmodels.Items.Clear();
-        DataTable dt2 = _db.GetModelsByBrandID(cmBrand.Value.ToParseInt());
+        DataTable dt2 = _db.GetModels();
         cmmodels.ValueField = "ModelID";
         cmmodels.TextField = "ModelName";
         cmmodels.DataSource = dt2;
         cmmodels.DataBind();
         cmmodels.Items.Insert(0, new ListEditItem("Seçin", "-1"));
         cmmodels.SelectedIndex = 0;
-    }
 
-    void componentsload()
-    {
-        cmBrand.Items.Clear();
-        DataTable dt1 = _db.GetBrands();
-        cmBrand.ValueField = "BrandID";
-        cmBrand.TextField = "BrandName";
-        cmBrand.DataSource = dt1;
-        cmBrand.DataBind();
-        cmBrand.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        cmBrand.SelectedIndex = 0;
 
+        
       
 
         cmbWateringSystemSituationName.Items.Clear();
@@ -67,7 +59,7 @@ public partial class WateringSystems : System.Web.UI.Page
         cmbWateringSystemSituationName.DataBind();
         cmbWateringSystemSituationName.Items.Insert(0, new ListEditItem("Seçin", "-1"));
         cmbWateringSystemSituationName.SelectedIndex = 0;
-        modelsload();
+
     }
 
     protected void lnkEdit_Click(object sender, EventArgs e)
@@ -75,8 +67,8 @@ public partial class WateringSystems : System.Web.UI.Page
         componentsload();
         int id = (sender as LinkButton).CommandArgument.ToParseInt();
         DataTable dt = _db.GetWateringSystemsById(id: id);
-        cmBrand.Value = dt.Rows[0]["BrandID"].ToParseStr();
-        modelsload();
+  
+ 
         cmmodels.Value = dt.Rows[0]["ModelID"].ToParseStr();
         txtname.Text = dt.Rows[0]["WateringSystemName"].ToParseStr();
         txtnotes.Text = dt.Rows[0]["Notes"].ToParseStr();
@@ -126,7 +118,6 @@ public partial class WateringSystems : System.Web.UI.Page
         if (btnSave.CommandName == "insert")
         {
             val = _db.WateringSystemsInsert(UserID: Session["UserID"].ToString().ToParseInt(),
-                BrandID: cmBrand.Value.ToParseInt(),
                 ModelID: cmmodels.Value.ToParseInt(),
                 WateringSystemName: txtname.Text.ToParseStr(),
                 Notes: txtnotes.Text.ToParseStr(),
@@ -138,7 +129,6 @@ public partial class WateringSystems : System.Web.UI.Page
         {
             val = _db.WateringSystemsUpdate(WateringSystemID: btnSave.CommandArgument.ToParseInt(),
                 UserID: Session["UserID"].ToString().ToParseInt(),
-                BrandID: cmBrand.Value.ToParseInt(),
                 ModelID: cmmodels.Value.ToParseInt(),
                 WateringSystemName: txtname.Text.ToParseStr(),
                 Notes: txtnotes.Text.ToParseStr(),
@@ -160,8 +150,5 @@ public partial class WateringSystems : System.Web.UI.Page
         popupEdit.ShowOnPageLoad = false;
     }
 
-    protected void cmBrand_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        modelsload();
-    }
+   
 }

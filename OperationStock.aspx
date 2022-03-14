@@ -58,9 +58,7 @@
                                     <dx:GridViewDataColumn Caption="Əməliyyat səbəbi" FieldName="ReasonName" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
-                                    <dx:GridViewDataColumn Caption="Marka adı" FieldName="BrandName" VisibleIndex="1">
-                                        <EditFormSettings VisibleIndex="1" />
-                                    </dx:GridViewDataColumn>
+                                   
                                     <dx:GridViewDataColumn Caption="Model adı" FieldName="ModelName" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
@@ -167,15 +165,7 @@
                                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator21" runat="server" ControlToValidate="cmbproducttype" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
                                                         </div>
                                                     </div>
-                                                    <div class="row mb-2">
-                                                        <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Markası</label>
-                                                        <div class="col-sm-7">
-                                                            <dx:ASPxComboBox ID="cmbbrand" runat="server" Width="100%" Height="30px" AutoPostBack="True" OnSelectedIndexChanged="cmbbrand_SelectedIndexChanged">
-                                                            </dx:ASPxComboBox>
-                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="cmbbrand" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
-                                                        
-                                                        </div>
-                                                    </div>
+                                                 
                                                     <div class="row mb-2">
                                                         <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Modeli</label>
                                                         <div class="col-sm-7">

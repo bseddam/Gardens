@@ -41,27 +41,18 @@ public partial class Technique : System.Web.UI.Page
             Grid.DataBind();
         }
     }
-    void modelsload() 
+    
+    void componentsload()
     {
-        DataTable dt2 = _db.GetModelsByBrandID(cmBrand.Value.ToParseInt());
+
+
+        DataTable dt2 = _db.GetModels();
         cmmodels.ValueField = "ModelID";
         cmmodels.TextField = "ModelName";
         cmmodels.DataSource = dt2;
         cmmodels.DataBind();
         cmmodels.Items.Insert(0, new ListEditItem("Seçin", "-1"));
         cmmodels.SelectedIndex = 0;
-    }
-    void componentsload()
-    {
-        DataTable dt1 = _db.GetBrands();
-        cmBrand.ValueField = "BrandID";
-        cmBrand.TextField = "BrandName";
-        cmBrand.DataSource = dt1;
-        cmBrand.DataBind();
-        cmBrand.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        cmBrand.SelectedIndex = 0;
-
-        modelsload();
 
         DataTable dt3 = _db.GetCompanies();
         cmCompany.ValueField = "CompanyID";
@@ -101,8 +92,8 @@ public partial class Technique : System.Web.UI.Page
         componentsload();
         int id = (sender as LinkButton).CommandArgument.ToParseInt();
         DataTable dt = _db.GetTechniqueById(id: id);
-        cmBrand.Value = dt.Rows[0]["BrandID"].ToParseStr();
-        modelsload();
+
+        cmbgarden.Value = dt.Rows[0]["GardenID"].ToParseStr();
         cmmodels.Value = dt.Rows[0]["ModelID"].ToParseStr();
         txtRegisterNumber.Text = dt.Rows[0]["RegisterNumber"].ToParseStr();
         txtSerieNumber.Text = dt.Rows[0]["SerieNumber"].ToParseStr();
@@ -166,7 +157,7 @@ public partial class Technique : System.Web.UI.Page
         {
 
             val = _db.TechniqueInsert(UserID: Session["UserID"].ToString().ToParseInt(),
-                BrandID: cmBrand.Value.ToParseInt(),
+                GardenID: cmbgarden.Value.ToParseInt(),
                 ModelID: cmmodels.Value.ToParseInt(),
                 RegisterNumber: txtRegisterNumber.Text.ToParseStr(),
                 SerieNumber: txtSerieNumber.Text.ToParseStr(),
@@ -197,7 +188,7 @@ public partial class Technique : System.Web.UI.Page
 
             val = _db.TechniqueUpdate(TechniqueID: btnSave.CommandArgument.ToParseInt(),
                 UserID: Session["UserID"].ToString().ToParseInt(),
-                BrandID: cmBrand.Value.ToParseInt(),
+                GardenID: cmbgarden.Value.ToParseInt(),
                 ModelID: cmmodels.Value.ToParseInt(),
                 RegisterNumber: txtRegisterNumber.Text.ToParseStr(),
                 SerieNumber: txtSerieNumber.Text.ToParseStr(),
@@ -236,9 +227,4 @@ public partial class Technique : System.Web.UI.Page
         popupEdit.ShowOnPageLoad = false;
     }
 
-
-    protected void cmBrand_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        modelsload();
-    }
 }

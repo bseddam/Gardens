@@ -31,26 +31,29 @@ public partial class Models : System.Web.UI.Page
             Grid.DataBind();
         }
     }
-
     void componentsload()
     {
-        DataTable dt7 = _db.GetBrands();
-        ddlbrand.DataValueField = "BrandID";
-        ddlbrand.DataTextField = "BrandName";
-        ddlbrand.DataSource = dt7;
-        ddlbrand.DataBind();
-        ddlbrand.Items.Insert(0, new ListItem("Seçin", "-1"));
-        ddlbrand.SelectedIndex = 0;
+
+        cmbproducttype.Items.Clear();
+        DataTable dt2 = _db.GetProductTypes();
+        cmbproducttype.ValueField = "ProductTypeID";
+        cmbproducttype.TextField = "ProductTypeName";
+        cmbproducttype.DataSource = dt2;
+        cmbproducttype.DataBind();
+        cmbproducttype.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmbproducttype.SelectedIndex = 0;
     }
-    protected void lnkEdit_Click(object sender, EventArgs e)
+
+        protected void lnkEdit_Click(object sender, EventArgs e)
     {
         componentsload();
         int id = (sender as LinkButton).CommandArgument.ToParseInt();
         DataTable dt = _db.GetModelByID(id: id);
 
-        
+        cmbproducttype.Value = dt.Rows[0]["ProductTypeID"].ToParseStr();
+
         txtmodelname.Text = dt.Rows[0]["ModelName"].ToParseStr();
-        ddlbrand.SelectedValue = dt.Rows[0]["BrandID"].ToParseStr();
+      
         btnSave.CommandName = "update";
         btnSave.CommandArgument = id.ToString();
         popupEdit.ShowOnPageLoad = true;
@@ -81,15 +84,16 @@ public partial class Models : System.Web.UI.Page
         if (btnSave.CommandName == "insert")
         {
             val = _db.ModelInsert(
-                ModelName: txtmodelname.Text.ToParseStr(),
-                BrandID: ddlbrand.SelectedValue.ToParseInt()
+                ProductTypeID: cmbproducttype.Value.ToParseInt(),
+                ModelName: txtmodelname.Text.ToParseStr()
+              
                 );
         }
         else
         {
             val = _db.ModelUpdate(ModelID: btnSave.CommandArgument.ToParseInt(),
-                ModelName: txtmodelname.Text.ToParseStr(),
-                BrandID: ddlbrand.SelectedValue.ToParseInt()
+                ProductTypeID: cmbproducttype.Value.ToParseInt(),
+                ModelName: txtmodelname.Text.ToParseStr()
                 );
         }
 
@@ -107,57 +111,8 @@ public partial class Models : System.Web.UI.Page
         popupEdit.ShowOnPageLoad = false;
     }
 
-    protected void btnBrends_Click(object sender, EventArgs e)
-    {
-        DataTable dt7 = _db.GetProductTypes();
-        ddlproducttype.DataValueField = "ProductTypeID";
-        ddlproducttype.DataTextField = "ProductTypeName";
-        ddlproducttype.DataSource = dt7;
-        ddlproducttype.DataBind();
-        ddlproducttype.Items.Insert(0, new ListItem("Seçin", "-1"));
-        ddlproducttype.SelectedIndex = 0;
-        LinkButton btn = sender as LinkButton;
-        switch (btn.CommandArgument)
-        {
-            case "addBrend":
-                btnBrendSave.CommandName = "insert";
-                popupBrends.ShowOnPageLoad = true;
-                break;
-        }
-        
-    }
+    
 
-    protected void btnBrendSave_Click(object sender, EventArgs e)
-    {
-        Label1.Text = "";
-        Types.ProsesType val = Types.ProsesType.Error;
-        if (btnBrendSave.CommandName == "insert")
-        {
-            val = _db.BrandInsert(
-                BrandName: txtbrandname.Text.ToParseStr(),
-                ProductTypeID: ddlproducttype.SelectedValue.ToParseInt()
-                );
-        }
-        else
-        {
-            val = _db.BrandUpdate(BrandID: btnSave.CommandArgument.ToParseInt(),
-                BrandName: txtbrandname.Text.ToParseStr(),
-                ProductTypeID: ddlproducttype.SelectedValue.ToParseInt()
-                );
-        }
-
-        if (val == Types.ProsesType.Error)
-        {
-            Label1.Text = "XƏTA! Yadda saxlamaq mümkün olmadı.";
-            return;
-        }
-        componentsload();
-        popupBrends.ShowOnPageLoad = false;
-    }
-
-    protected void btnBrendCancel_Click(object sender, EventArgs e)
-    {
-        componentsload();
-        popupBrends.ShowOnPageLoad = false;
-    }
+    
+   
 }

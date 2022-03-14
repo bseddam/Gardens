@@ -52,29 +52,9 @@ public partial class OperationStock : System.Web.UI.Page
     }
 
 
-    void brandcomponentload()
-    {
-        DataTable dt6 = _db.GetBrandsByProductTypeID(cmbproducttype.Value.ToParseInt());
-        cmbbrand.ValueField = "BrandID";
-        cmbbrand.TextField = "BrandName";
-        cmbbrand.DataSource = dt6;
-        cmbbrand.DataBind();
-        cmbbrand.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        cmbbrand.Items.Insert(1, new ListEditItem("Yoxdur", "0"));
-        cmbbrand.SelectedIndex = 0;
-    }
+   
 
-    void modelcomponentload()
-    {
-        DataTable dt6 = _db.GetModelsByBrandID(cmbbrand.Value.ToParseInt());
-        cmbmodel.ValueField = "ModelID";
-        cmbmodel.TextField = "ModelName";
-        cmbmodel.DataSource = dt6;
-        cmbmodel.DataBind();
-        cmbmodel.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        cmbmodel.Items.Insert(1, new ListEditItem("Yoxdur", "0"));
-        cmbmodel.SelectedIndex = 0;
-    }
+   
 
     void productcomponentload()
     {
@@ -87,10 +67,22 @@ public partial class OperationStock : System.Web.UI.Page
         cmbProducts.Items.Insert(0, new ListEditItem("Seçin", "-1"));
         cmbProducts.SelectedIndex = 0;
     }
-
+    void modelcomponentload()
+    {
+        cmbmodel.Items.Clear();
+        DataTable dt4x = _db.GetModelsByProductTypeID(cmbproducttype.Value.ToParseInt().ToParseInt());
+        cmbmodel.ValueField = "ModelID";
+        cmbmodel.TextField = "ModelName";
+        cmbmodel.DataSource = dt4x;
+        cmbmodel.DataBind();
+        cmbmodel.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmbmodel.SelectedIndex = 0;
+    }
 
     void componentsload()
     {
+
+        
 
         cmbstock.Items.Clear();
         DataTable d2t1 = _db.GetStocks();
@@ -136,11 +128,10 @@ public partial class OperationStock : System.Web.UI.Page
 
 
 
-
+       
         Reasoncomponentload();
-        brandcomponentload();
-        modelcomponentload();
         productcomponentload();
+        modelcomponentload();
     }
     protected void lnkEdit_Click(object sender, EventArgs e)
     {
@@ -158,11 +149,8 @@ public partial class OperationStock : System.Web.UI.Page
         }
         Reasoncomponentload();
         cmbStockOperationReason.Value = dt.Rows[0]["StockOperationReasonID"].ToParseStr();
-        brandcomponentload();
-        
-        cmbbrand.Value = dt.Rows[0]["BrandID"].ToParseStr();
+
         modelcomponentload();
-       
         cmbmodel.Value = dt.Rows[0]["ModelID"].ToParseStr();
         productcomponentload();
        
@@ -280,16 +268,11 @@ public partial class OperationStock : System.Web.UI.Page
 
     protected void cmbproducttype_SelectedIndexChanged(object sender, EventArgs e)
     {
-        brandcomponentload();
         modelcomponentload();
         productcomponentload();
     }
 
-    protected void cmbbrand_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        modelcomponentload();
-        productcomponentload();
-    }
+   
 
     protected void cmbmodel_SelectedIndexChanged(object sender, EventArgs e)
     {

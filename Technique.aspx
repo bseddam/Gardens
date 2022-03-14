@@ -70,9 +70,7 @@
                                                 <dx:GridViewDataColumn Caption="Texnikanın adi" FieldName="TechniquesName" VisibleIndex="1">
                                                     <EditFormSettings VisibleIndex="1" />
                                                 </dx:GridViewDataColumn>
-                                                <dx:GridViewDataColumn Caption="Markası" FieldName="BrandName" VisibleIndex="1">
-                                                    <EditFormSettings VisibleIndex="1" />
-                                                </dx:GridViewDataColumn>
+                                              
                                                   <dx:GridViewDataColumn Caption="Modeli" FieldName="ModelName" VisibleIndex="1">
                                                     <EditFormSettings VisibleIndex="1" />
                                                 </dx:GridViewDataColumn>                                 
@@ -153,15 +151,7 @@
                                             <ContentCollection>
                                                 <dx:PopupControlContentControl>
                                                     <div class="container">
-                                                        <div class="row mb-2">
-                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Texnikanın markası</label>
-                                                            <div class="col-sm-7">
-                                                                <dx:ASPxComboBox ID="cmBrand" 
-                                                                    runat="server"
-                                                                    Width="100%" Height="30px" AutoPostBack="True" OnSelectedIndexChanged="cmBrand_SelectedIndexChanged">
-                                                                </dx:ASPxComboBox>
-                                                            </div>
-                                                        </div>
+                                                       
                                                         <div class="row mb-2">
                                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Texnikanın modeli</label>
                                                             <div class="col-sm-7">

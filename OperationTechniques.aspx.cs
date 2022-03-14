@@ -32,16 +32,29 @@ public partial class OperationTechniques : System.Web.UI.Page
             Grid.DataBind();
         }
     }
+    void modelcomponentload()
+    {
+        cmModel.Items.Clear();
+        DataTable dt4x = _db.GetModelsByProductTypeID(cmbproducttype.Value.ToParseInt().ToParseInt());
+        cmModel.ValueField = "ModelID";
+        cmModel.TextField = "ModelName";
+        cmModel.DataSource = dt4x;
+        cmModel.DataBind();
+        cmModel.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmModel.SelectedIndex = 0;
+    }
     void componentsload()
     {
-        cmMarka.Items.Clear();
-        DataTable dt1 = _db.GetBrands();
-        cmMarka.ValueField = "BrandID";
-        cmMarka.TextField = "BrandName";
-        cmMarka.DataSource = dt1;
-        cmMarka.DataBind();
-        cmMarka.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        cmMarka.SelectedIndex = 0;
+        DataTable dt6 = _db.GetProductTypes();
+        cmbproducttype.ValueField = "ProductTypeID";
+        cmbproducttype.TextField = "ProductTypeName";
+        cmbproducttype.DataSource = dt6;
+        cmbproducttype.DataBind();
+        cmbproducttype.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmbproducttype.Items.Insert(1, new ListEditItem("Yoxdur", "0"));
+        cmbproducttype.SelectedIndex = 0;
+
+       
 
         cmCompany.Items.Clear();
         DataTable dt2 = _db.GetCompanies();
@@ -69,14 +82,16 @@ public partial class OperationTechniques : System.Web.UI.Page
         cmGarden.DataBind();
         cmGarden.Items.Insert(0, new ListEditItem("Seçin", "-1"));
         cmGarden.SelectedIndex = 0;
+        modelcomponentload();
     }
     protected void lnkEdit_Click(object sender, EventArgs e)
     {
         componentsload();
         int id = (sender as LinkButton).CommandArgument.ToParseInt();
         DataTable dt = _db.GetOperationTechniqueWorkDoneByID(id: id);
-        cmMarka.Value = dt.Rows[0]["BrandID"].ToParseStr();
-        cmMarka_SelectedIndexChanged(null,null);
+
+        cmbproducttype.Value = dt.Rows[0]["ProductTypeID"].ToParseStr();
+        modelcomponentload();
         cmModel.Value = dt.Rows[0]["ModelID"].ToParseStr();
         cmModel_SelectedIndexChanged(null, null);
         cmTechnique.Value = dt.Rows[0]["TechniqueID"].ToParseStr();
@@ -178,17 +193,7 @@ public partial class OperationTechniques : System.Web.UI.Page
         popupEdit.ShowOnPageLoad = false;
     }
 
-    protected void cmMarka_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        cmModel.Items.Clear();
-        DataTable dt4 = _db.GetModelsByBrandID(cmMarka.Value.ToParseInt());
-        cmModel.ValueField = "ModelID";
-        cmModel.TextField = "ModelName";
-        cmModel.DataSource = dt4;
-        cmModel.DataBind();
-        cmModel.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        cmModel.SelectedIndex = 0;
-    }
+   
 
     protected void cmModel_SelectedIndexChanged(object sender, EventArgs e)
     {
@@ -236,5 +241,10 @@ public partial class OperationTechniques : System.Web.UI.Page
         cmLine.DataBind();
         cmLine.Items.Insert(0, new ListEditItem("Seçin", "-1"));
         cmLine.SelectedIndex = 0;
+    }
+
+    protected void cmbproducttype_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        modelcomponentload();
     }
 }

@@ -13,7 +13,7 @@
         routes.MapPageRoute("zones", "zones", "~/Zones.aspx");
         routes.MapPageRoute("sectors", "sectors", "~/Sectors.aspx");
         routes.MapPageRoute("lines", "lines", "~/Lines.aspx");
-        routes.MapPageRoute("brands", "brands", "~/Brands.aspx");
+    
         routes.MapPageRoute("models", "models", "~/Models.aspx");
         routes.MapPageRoute("unitmeasurements", "unitmeasurements", "~/UnitMeasurements.aspx");
         routes.MapPageRoute("treetypes", "treetypes", "~/TreeTypes.aspx");

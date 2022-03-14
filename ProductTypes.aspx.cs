@@ -82,13 +82,13 @@ public partial class ProductTypes : System.Web.UI.Page
         {
             val = _db.ProductTypeInsert(
                 //ProductGeneralTypeID: ddlproductgeneraltype.SelectedValue.ToParseInt(),
-                ProductGeneralTypeID: 1,
+          
                 ProductTypeName: txtproducttypename.Text.ToParseStr());
         }
         else
         {
             val = _db.ProductTypeUpdate(ProductTypeID: btnSave.CommandArgument.ToParseInt(),
-                ProductGeneralTypeID: 1,
+       
                 ProductTypeName: txtproducttypename.Text.ToParseStr());
         }
 

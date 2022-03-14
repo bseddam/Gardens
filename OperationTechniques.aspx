@@ -114,16 +114,18 @@
                                             <ContentCollection>
                                                 <dx:PopupControlContentControl>
                                                     <div class="container">
-                                                        <div class="row mb-2">
-                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Marka</label>
+                                                        
+                                                          <div class="row mb-2">
+                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Mal kateqoriyası</label>
                                                             <div class="col-sm-7">
-                                                                <dx:ASPxComboBox ID="cmMarka" 
+                                                                <dx:ASPxComboBox ID="cmbproducttype" 
                                                                     runat="server" AutoPostBack="true"
-                                                                    Width="100%" Height="30px" OnSelectedIndexChanged="cmMarka_SelectedIndexChanged">
+                                                                    Width="100%" Height="30px" OnSelectedIndexChanged="cmbproducttype_SelectedIndexChanged" >
                                                                 </dx:ASPxComboBox>
-                                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" ControlToValidate="cmMarka" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
+                                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" ControlToValidate="cmbproducttype" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
                                                             </div>
-                                                        </div>
+                                                        </div>      
+
                                                         <div class="row mb-2">
                                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Model</label>
                                                             <div class="col-sm-7">
@@ -145,7 +147,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="row mb-2" >
-                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Şirkət pozqun</label>
+                                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Şirkət</label>
                                                             <div class="col-sm-7">
                                                                 <dx:ASPxComboBox ID="cmCompany" 
                                                                     runat="server"

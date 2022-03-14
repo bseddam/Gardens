@@ -6,8 +6,8 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
-         <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-        <ContentTemplate>
+        <%-- <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+        <ContentTemplate>--%>
     <!-- ======= Default Section ======= -->
     <section id="about" class="about section-bg">
         <div class="container">
@@ -55,10 +55,6 @@
                                     <EditFormSettings VisibleIndex="1" />
                                 </dx:GridViewDataColumn>
                                 <dx:GridViewDataColumn Caption="Malın kateqoriyası" FieldName="ProductTypeName" VisibleIndex="1">
-                                    <EditFormSettings VisibleIndex="1" />
-                                </dx:GridViewDataColumn>
-
-                                <dx:GridViewDataColumn Caption="Marka" FieldName="BrandName" VisibleIndex="1">
                                     <EditFormSettings VisibleIndex="1" />
                                 </dx:GridViewDataColumn>
 
@@ -127,13 +123,7 @@
                                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator21" runat="server" ControlToValidate="ddlProductType" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
                                             </div>
                                         </div>
-                                        <div class="row mb-2">
-                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Markası</label>
-                                            <div class="col-sm-7">
-                                                <asp:DropDownList ID="ddlbrand" class="form-control" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlbrand_SelectedIndexChanged"></asp:DropDownList>
-                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="ddlbrand" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
-                                            </div>
-                                        </div>
+                                       
                                         <div class="row mb-2">
                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Modeli</label>
                                             <div class="col-sm-7">
@@ -216,7 +206,7 @@
         </div>
     </section>
     <!-- End Default -->
-                </ContentTemplate>
-    </asp:UpdatePanel>
+              <%--  </ContentTemplate>
+    </asp:UpdatePanel>--%>
 </asp:Content>
 

@@ -39,6 +39,16 @@ public partial class OperationTechniqueServices : System.Web.UI.Page
     }
     void componentsload()
     {
+
+        DataTable dt21x = _db.GetProductTypes();
+        cmbproducttypetex.ValueField = "ProductTypeID";
+        cmbproducttypetex.TextField = "ProductTypeName";
+        cmbproducttypetex.DataSource = dt21x;
+        cmbproducttypetex.DataBind();
+        cmbproducttypetex.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmbproducttypetex.SelectedIndex = 0;
+
+
         DataTable dt2x = _db.GetProductTypes();
         cmbproducttype.ValueField = "ProductTypeID";
         cmbproducttype.TextField = "ProductTypeName";
@@ -73,16 +83,10 @@ public partial class OperationTechniqueServices : System.Web.UI.Page
         cmbWork.Items.Insert(0, new ListEditItem("Seçin", "-1"));
         cmbWork.SelectedIndex = 0;
 
-        DataTable dt6 = _db.GetBrandsByProductTypeID(4);
-        cmbbrand.ValueField = "BrandID";
-        cmbbrand.TextField = "BrandName";
-        cmbbrand.DataSource = dt6;
-        cmbbrand.DataBind();
-        cmbbrand.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        cmbbrand.SelectedIndex = 0;
+       
 
 
-        brandsparepartscomponentload();
+    
 
         modeltechniquecomponentload();
         techniquecomponentload();
@@ -90,29 +94,21 @@ public partial class OperationTechniqueServices : System.Web.UI.Page
         modelsparepartscomponentload();
         sparepartscomponentload();
     }
-    void brandsparepartscomponentload()
-    {
-        DataTable dt7 = _db.GetBrandsByProductTypeID(cmbproducttype.Value.ToParseInt());
-        cmbbrandspareparts.ValueField = "BrandID";
-        cmbbrandspareparts.TextField = "BrandName";
-        cmbbrandspareparts.DataSource = dt7;
-        cmbbrandspareparts.DataBind();
-        cmbbrandspareparts.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        cmbbrandspareparts.SelectedIndex = 0;
-    }
     void modeltechniquecomponentload()
     {
-        DataTable dt6 = _db.GetModelsByBrandID(cmbbrand.Value.ToParseInt());
+        cmbmodel.Items.Clear();
+        DataTable dt4x = _db.GetModelsByProductTypeID(cmbproducttypetex.Value.ToParseInt().ToParseInt());
         cmbmodel.ValueField = "ModelID";
         cmbmodel.TextField = "ModelName";
-        cmbmodel.DataSource = dt6;
+        cmbmodel.DataSource = dt4x;
         cmbmodel.DataBind();
         cmbmodel.Items.Insert(0, new ListEditItem("Seçin", "-1"));
         cmbmodel.SelectedIndex = 0;
     }
+   
     void modelsparepartscomponentload()
     {
-        DataTable dt6 = _db.GetModelsByBrandID(cmbbrandspareparts.Value.ToParseInt());
+        DataTable dt6 = _db.GetModelsByProductTypeID(cmbproducttype.Value.ToParseInt().ToParseInt());
         cmbmodelspareparts.ValueField = "ModelID";
         cmbmodelspareparts.TextField = "ModelName";
         cmbmodelspareparts.DataSource = dt6;
@@ -150,8 +146,9 @@ public partial class OperationTechniqueServices : System.Web.UI.Page
 
         cmbGarden.Value = dt.Rows[0]["GardenID"].ToParseStr();
         cmbWork.Value = dt.Rows[0]["WorkID"].ToParseStr();
-        cmbbrand.Value = dt.Rows[0]["brandtexid"].ToParseStr();
-        cmbproducttype.Value = dt.Rows[0]["ProductTypeID"].ToParseStr();
+
+        cmbproducttypetex.Value = dt.Rows[0]["ProductTypeID1"].ToParseStr();
+        cmbproducttype.Value = dt.Rows[0]["ProductTypeID2"].ToParseStr();
         cmbUnitMeasurement.Value = dt.Rows[0]["UnitMeasurementID"].ToParseStr();
         txtProductSize.Text= dt.Rows[0]["ProductSize"].ToParseStr();
         txtPrice.Text = dt.Rows[0]["Price"].ToParseStr();
@@ -164,8 +161,7 @@ public partial class OperationTechniqueServices : System.Web.UI.Page
         techniquecomponentload();
         cmTechnique.Value = dt.Rows[0]["TechniqueID"].ToParseStr();
 
-        brandsparepartscomponentload();
-        cmbbrandspareparts.Value = dt.Rows[0]["brandprodid"].ToParseStr();
+      
 
 
         modelsparepartscomponentload();
@@ -270,28 +266,30 @@ public partial class OperationTechniqueServices : System.Web.UI.Page
         popupEdit.ShowOnPageLoad = false;
     }
 
-    protected void cmbbrand_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        modeltechniquecomponentload();
-    }
+    
 
     protected void cmbmodel_SelectedIndexChanged(object sender, EventArgs e)
     {
         techniquecomponentload();
     }
 
-    protected void cmbbrandspareparts_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        modelsparepartscomponentload();
-    }
+   
 
     protected void cmbmodelspareparts_SelectedIndexChanged(object sender, EventArgs e)
     {
         sparepartscomponentload();
     }
 
+
+
+    protected void cmbproducttypetex_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        modeltechniquecomponentload();
+        techniquecomponentload();
+    }
+
     protected void cmbproducttype_SelectedIndexChanged(object sender, EventArgs e)
     {
-        brandsparepartscomponentload();
+        modelsparepartscomponentload();
     }
 }
