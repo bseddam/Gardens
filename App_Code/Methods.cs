@@ -1599,7 +1599,7 @@ where ProductID=@ProductID;", SqlConn);
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by [ModelID] desc) sn,
 [ModelID],[ModelName],pt.ProductTypeName FROM [Models] m 
-inner join ProductTypes pt on m.ProductTypeID=pt.ProductTypeID  where m.DeleteTime is null ", SqlConn);
+left join ProductTypes pt on m.ProductTypeID=pt.ProductTypeID  where m.DeleteTime is null ", SqlConn);
             da.Fill(dt);
             return dt;
         }
