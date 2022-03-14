@@ -132,7 +132,7 @@ public partial class OperationTechniqueServices : System.Web.UI.Page
     }
     void sparepartscomponentload()
     {
-        DataTable dt6 = _db.GetProductByModelId(cmbmodelspareparts.Value.ToParseInt());
+        DataTable dt6 = _db.GetProductByModelProductId(cmbmodelspareparts.Value.ToParseInt(),cmbproducttype.Value.ToParseInt());
         cmbspareparts.ValueField = "ProductID";
         cmbspareparts.TextField = "ProductsName";
         cmbspareparts.DataSource = dt6;

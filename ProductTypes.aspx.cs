@@ -30,24 +30,24 @@ public partial class ProductTypes : System.Web.UI.Page
             Grid.DataBind();
         }
     }
-    void componentsload()
-    {
-        DataTable dt7 = _db.GetProductGeneralTypes();
-        ddlproductgeneraltype.DataValueField = "ProductGeneralTypeID";
-        ddlproductgeneraltype.DataTextField = "ProductGeneralTypeName";
-        ddlproductgeneraltype.DataSource = dt7;
-        ddlproductgeneraltype.DataBind();
-        ddlproductgeneraltype.Items.Insert(0, new ListItem("Seçin", "-1"));
-        ddlproductgeneraltype.SelectedIndex = 0;
-    }
+    //void componentsload()
+    //{
+    //    DataTable dt7 = _db.GetProductGeneralTypes();
+    //    ddlproductgeneraltype.DataValueField = "ProductGeneralTypeID";
+    //    ddlproductgeneraltype.DataTextField = "ProductGeneralTypeName";
+    //    ddlproductgeneraltype.DataSource = dt7;
+    //    ddlproductgeneraltype.DataBind();
+    //    ddlproductgeneraltype.Items.Insert(0, new ListItem("Seçin", "-1"));
+    //    ddlproductgeneraltype.SelectedIndex = 0;
+    //}
 
     protected void lnkEdit_Click(object sender, EventArgs e)
     {
 
-        componentsload();
+        //componentsload();
         int id = (sender as LinkButton).CommandArgument.ToParseInt();
         DataTable dt = _db.GetProductTypeByID(id: id);
-        ddlproductgeneraltype.SelectedValue = dt.Rows[0]["ProductGeneralTypeID"].ToParseStr();
+        //ddlproductgeneraltype.SelectedValue = dt.Rows[0]["ProductGeneralTypeID"].ToParseStr();
 
         txtproducttypename.Text = dt.Rows[0]["ProductTypeName"].ToParseStr();
 
@@ -63,7 +63,7 @@ public partial class ProductTypes : System.Web.UI.Page
     }
     protected void LnkPnlMenu_Click(object sender, EventArgs e)
     {
-        componentsload();
+        //componentsload();
         ClearComponents();
         LinkButton btn = sender as LinkButton;
         switch (btn.CommandArgument)
@@ -81,13 +81,14 @@ public partial class ProductTypes : System.Web.UI.Page
         if (btnSave.CommandName == "insert")
         {
             val = _db.ProductTypeInsert(
-                ProductGeneralTypeID: ddlproductgeneraltype.SelectedValue.ToParseInt(),
+                //ProductGeneralTypeID: ddlproductgeneraltype.SelectedValue.ToParseInt(),
+                ProductGeneralTypeID: 1,
                 ProductTypeName: txtproducttypename.Text.ToParseStr());
         }
         else
         {
             val = _db.ProductTypeUpdate(ProductTypeID: btnSave.CommandArgument.ToParseInt(),
-                ProductGeneralTypeID: ddlproductgeneraltype.SelectedValue.ToParseInt(),
+                ProductGeneralTypeID: 1,
                 ProductTypeName: txtproducttypename.Text.ToParseStr());
         }
 

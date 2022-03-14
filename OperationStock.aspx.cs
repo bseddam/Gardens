@@ -25,6 +25,7 @@ public partial class OperationStock : System.Web.UI.Page
         txtPriceDiscount.Text = "";
         txtProductSize.Text = "";
         cmbregistertime.Text = "";
+       
     }
     void _loadGridFromDb()
     {
@@ -77,7 +78,8 @@ public partial class OperationStock : System.Web.UI.Page
 
     void productcomponentload()
     {
-        DataTable dt6 = _db.GetProductByModelId(cmbmodel.Value.ToParseInt());
+        cmbProducts.Items.Clear();
+        DataTable dt6 = _db.GetProductByModelProductId(cmbmodel.Value.ToParseInt(),cmbproducttype.Value.ToParseInt());
         cmbProducts.ValueField = "ProductID";
         cmbProducts.TextField = "ProductsName";
         cmbProducts.DataSource = dt6;
@@ -90,14 +92,14 @@ public partial class OperationStock : System.Web.UI.Page
     void componentsload()
     {
 
-        cmbgarden.Items.Clear();
-        DataTable d2t1 = _db.GetGardens();
-        cmbgarden.ValueField = "GardenID";
-        cmbgarden.TextField = "GardenName";
-        cmbgarden.DataSource = d2t1;
-        cmbgarden.DataBind();
-        cmbgarden.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        cmbgarden.SelectedIndex = 0;
+        cmbstock.Items.Clear();
+        DataTable d2t1 = _db.GetStocks();
+        cmbstock.ValueField = "StockID";
+        cmbstock.TextField = "StockName";
+        cmbstock.DataSource = d2t1;
+        cmbstock.DataBind();
+        cmbstock.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmbstock.SelectedIndex = 0;
 
 
 
@@ -146,17 +148,24 @@ public partial class OperationStock : System.Web.UI.Page
         int id = (sender as LinkButton).CommandArgument.ToParseInt();
         DataTable dt = _db.GetProductStockInputOutputByID(id: id);
         componentsload();
-        cmbgarden.Value = dt.Rows[0]["GardenID"].ToParseStr();
+        cmbstock.Value = dt.Rows[0]["StockID"].ToParseStr();
         cmbProductOperationType.Value = dt.Rows[0]["ProductOperationTypeID"].ToParseStr();
         cmbproducttype.Value = dt.Rows[0]["ProductTypeID"].ToParseStr();
-        cmbUnitMeasurement.Value = dt.Rows[0]["UnitMeasurementID"].ToParseStr();
+
+        if (dt.Rows[0]["UnitMeasurementID"].ToParseStr() != "")
+        {
+            cmbUnitMeasurement.Value = dt.Rows[0]["UnitMeasurementID"].ToParseStr();
+        }
         Reasoncomponentload();
         cmbStockOperationReason.Value = dt.Rows[0]["StockOperationReasonID"].ToParseStr();
         brandcomponentload();
+        
         cmbbrand.Value = dt.Rows[0]["BrandID"].ToParseStr();
         modelcomponentload();
+       
         cmbmodel.Value = dt.Rows[0]["ModelID"].ToParseStr();
         productcomponentload();
+       
         cmbProducts.Value = dt.Rows[0]["ProductID"].ToParseStr();
 
         txtAmount.Text = dt.Rows[0]["Amount"].ToParseStr();
@@ -220,11 +229,10 @@ public partial class OperationStock : System.Web.UI.Page
         if (btnSave.CommandName == "insert")
         {
             val = _db.ProductStockInputOutputInsert(
-                GardenID:cmbgarden.Value.ToParseInt(),
+                StockID: cmbstock.Value.ToParseInt(),
                 ProductOperationTypeID: cmbProductOperationType.Value.ToParseInt(),
                 StockOperationReasonID: cmbStockOperationReason.Value.ToParseInt(),
                 ProductID: cmbProducts.Value.ToParseInt(),
-                UnitMeasurementID: cmbUnitMeasurement.Value.ToParseInt(),
                 ProductSize: txtProductSize.Text.ToParseStr(),
                 Price: txtPrice.Text.ToParseStr(),
                 PriceDiscount: txtPriceDiscount.Text.ToParseStr(),
@@ -237,11 +245,10 @@ public partial class OperationStock : System.Web.UI.Page
         else
         {
             val = _db.ProductStockInputOutputUpdate(ProductStockInputOutputID: btnSave.CommandArgument.ToParseInt(),
-                GardenID: cmbgarden.Value.ToParseInt(),
+                StockID: cmbstock.Value.ToParseInt(),
                 ProductOperationTypeID: cmbProductOperationType.Value.ToParseInt(),
                 StockOperationReasonID: cmbStockOperationReason.Value.ToParseInt(),
                 ProductID: cmbProducts.Value.ToParseInt(),
-                UnitMeasurementID: cmbUnitMeasurement.Value.ToParseInt(),
                 ProductSize: txtProductSize.Text.ToParseStr(),
                 Price: txtPrice.Text.ToParseStr(),
                 PriceDiscount: txtPriceDiscount.Text.ToParseStr(),
@@ -274,11 +281,14 @@ public partial class OperationStock : System.Web.UI.Page
     protected void cmbproducttype_SelectedIndexChanged(object sender, EventArgs e)
     {
         brandcomponentload();
+        modelcomponentload();
+        productcomponentload();
     }
 
     protected void cmbbrand_SelectedIndexChanged(object sender, EventArgs e)
     {
         modelcomponentload();
+        productcomponentload();
     }
 
     protected void cmbmodel_SelectedIndexChanged(object sender, EventArgs e)

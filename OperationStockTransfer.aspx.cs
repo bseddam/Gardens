@@ -18,7 +18,7 @@ public partial class OperationStockTransfer : System.Web.UI.Page
     }
     void ClearComponents()
     {
-        txtNotes.Text = "";
+      
         txtProductSize.Text = "";
         cmbregistertime.Text = "";
     }
@@ -35,23 +35,34 @@ public partial class OperationStockTransfer : System.Web.UI.Page
 
     void componentsload()
     {
-        cmbgarden.Items.Clear();
-        DataTable d2t1 = _db.GetGardens();
-        cmbgarden.ValueField = "GardenID";
-        cmbgarden.TextField = "GardenName";
-        cmbgarden.DataSource = d2t1;
-        cmbgarden.DataBind();
-        cmbgarden.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        cmbgarden.SelectedIndex = 0;
+        cmbstock.Items.Clear();
+        DataTable d2t1 = _db.GetStocks();
+        cmbstock.ValueField = "StockID";
+        cmbstock.TextField = "StockName";
+        cmbstock.DataSource = d2t1;
+        cmbstock.DataBind();
+        cmbstock.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmbstock.SelectedIndex = 0;
+
+        //cmbgarden.Items.Clear();
+        //DataTable d2t1 = _db.GetGardens();
+        //cmbgarden.ValueField = "GardenID";
+        //cmbgarden.TextField = "GardenName";
+        //cmbgarden.DataSource = d2t1;
+        //cmbgarden.DataBind();
+        //cmbgarden.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        //cmbgarden.SelectedIndex = 0;
     }
     protected void lnkEdit_Click(object sender, EventArgs e)
     {
+        string commandArgs = (sender as LinkButton).CommandArgument.ToString();
+        
 
-        int id = (sender as LinkButton).CommandArgument.ToParseInt();
+        //int id = (sender as LinkButton).CommandArgument.ToParseInt();
         componentsload();
         ClearComponents();
         btnSave.CommandName = "insert";
-        btnSave.CommandArgument = id.ToString();
+        btnSave.CommandArgument = commandArgs.ToString();
         popupEdit.ShowOnPageLoad = true;
     }
     //protected void lnkDelete_Click(object sender, EventArgs e)
@@ -72,20 +83,19 @@ public partial class OperationStockTransfer : System.Web.UI.Page
         
         if (btnSave.CommandName == "insert")
         {
-            int id = (sender as LinkButton).CommandArgument.ToParseInt();
-            DataTable dt = _db.GetProductStockByID(id);
+            string[] cma = btnSave.CommandArgument.ToString().Split(new char[] { ',' });
+            string StockFromID = cma[0];
+            string ProductID = cma[1];
+            
 
-            val = _db.ProductStockInsertTransfer(id:id,UserID: Session["UserID"].ToParseInt(),
-                ProductID: dt.Rows[0]["ProductID"].ToParseInt(),
-                GardenID:cmbgarden.Value.ToParseInt(),                
-                ProductSize: txtProductSize.Text.ToParseStr(),
-                UnitMeasurementID: dt.Rows[0]["UnitMeasurementID"].ToParseInt(),
-                Price: dt.Rows[0]["Price"].ToParseStr(),
-                PriceDiscount: dt.Rows[0]["PriceDiscount"].ToParseStr(),
-                Amount: dt.Rows[0]["Amount"].ToParseStr(),
-                AmountDiscount: dt.Rows[0]["AmountDiscount"].ToParseStr(),               
-                RegisterTime: cmbregistertime.Text.ToParseStr(),
-                Notes: txtNotes.Text.ToParseStr()
+           
+
+            val = _db.ProductStockInsertTransfer(StockFromID: StockFromID.ToParseInt(),
+                UserID: Session["UserID"].ToParseInt(),
+                ProductID: ProductID.ToParseInt(),
+                StockToID: cmbstock.Value.ToParseInt(),                
+                ProductSize: txtProductSize.Text.ToParseStr(),   
+                RegisterTime: cmbregistertime.Text.ToParseStr()
                 );
         }        
 
