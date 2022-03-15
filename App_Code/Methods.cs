@@ -1214,7 +1214,7 @@ where LineID=@LineID;", SqlConn);
         try
         {
             DataTable dt = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by TreeID desc) sn, 
+            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by t.TreeID desc) sn, 
 t.*  FROM [Trees] t where t.DeleteTime is null", SqlConn);
             da.Fill(dt);
             return dt;
@@ -4489,6 +4489,27 @@ TreeSitiuation=@TreeSitiuation,UpdateTime=getdate() where TreeCountID=@TreeCount
         cmd.Parameters.AddWithValue("@TreeTypeID", TreeTypeID);
         cmd.Parameters.AddWithValue("@TreeCount", TreeCount);
         cmd.Parameters.AddWithValue("@TreeSitiuation", TreeSitiuation);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+    public Types.ProsesType TreeCountDelete(int TreeCountID)
+    {
+        SqlCommand cmd = new SqlCommand(@"update TreesCount set UserID=@UserID,DeleteTime=getdate() where TreeCountID=@TreeCountID", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@TreeCountID", TreeCountID);
         try
         {
             cmd.Connection.Open();
