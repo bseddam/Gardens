@@ -67,8 +67,7 @@
                             <li><a href="/works">İşlər</a></li>
                              <li><a href="/producttypes">Mal kateqoriyası</a></li>  
                             <li><a href="/models">Modeller</a></li>
-                            
-                             <li><a href="/countries">Ölkələr</a></li>  
+                            <li><a href="/countries">Ölkələr</a></li>  
                             <li><a href="/trees">Ağac adı</a></li>  
                             <li><a href="/treetypes">Ağac növü</a></li> 
                             <li><a href="/unitmeasurements">Ölçü vahidləri</a></li>                                                        
@@ -103,7 +102,8 @@
                             <li><a href="/operationstocktransfer">Anbarlar üzrə mal köçürmələri </a></li>
                             <li><a href="/operationtechniqueservices">Texniki servis</a></li>
                             <li><a href="/otherexpenses">Digər xərclər</a></li>
-                            <li><a href="/EmploymentHistory">Əmək kitabçası</a></li>
+                            <li><a href="/employmentHistory">Əmək kitabçası</a></li>
+                            <li><a href="/orders">Sifarişlər</a></li>
                         </ul>
                     </li>
                     <li class="dropdown"><a href="#"><span>Axtarış</span> <i class="bi bi-chevron-down"></i></a>

@@ -53,13 +53,7 @@
                                     <dx:GridViewDataColumn Caption="Anbar adı" FieldName="StockName" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
-                                    <dx:GridViewDataColumn Caption="Əməliyyat növü" FieldName="ProductOperationTypeName" VisibleIndex="1">
-                                        <EditFormSettings VisibleIndex="1" />
-                                    </dx:GridViewDataColumn>
-                                    <dx:GridViewDataColumn Caption="Əməliyyat səbəbi" FieldName="ReasonName" VisibleIndex="1">
-                                        <EditFormSettings VisibleIndex="1" />
-                                    </dx:GridViewDataColumn>
-                                   
+                                                                       
                                     <dx:GridViewDataColumn Caption="Model adı" FieldName="ModelName" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
@@ -75,18 +69,7 @@
                                     <dx:GridViewDataColumn Caption="Ölçüsü" FieldName="ProductSize" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
-                                    <dx:GridViewDataColumn Caption="Qiyməti" FieldName="Price" VisibleIndex="1">
-                                        <EditFormSettings VisibleIndex="1" />
-                                    </dx:GridViewDataColumn>
-                                    <dx:GridViewDataColumn Caption="Endirimli qiyməti" FieldName="PriceDiscount" VisibleIndex="1">
-                                        <EditFormSettings VisibleIndex="1" />
-                                    </dx:GridViewDataColumn>
-                                    <dx:GridViewDataColumn Caption="Məbləğ" FieldName="Amount" VisibleIndex="1">
-                                        <EditFormSettings VisibleIndex="1" />
-                                    </dx:GridViewDataColumn>
-                                    <dx:GridViewDataColumn Caption="Endirimli məbləğ" FieldName="AmountDiscount" VisibleIndex="1">
-                                        <EditFormSettings VisibleIndex="1" />
-                                    </dx:GridViewDataColumn>
+                                  
                                     <dx:GridViewDataColumn Caption="Qeyd" FieldName="Notes" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
@@ -136,28 +119,7 @@
                                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator13" runat="server" ControlToValidate="cmbstock" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
                                                         </div>
                                                     </div>
-
-
-                                                    <div class="row mb-2">
-                                                        <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Əməliyyatın növü</label>
-                                                        <div class="col-sm-7">
-                                                            <dx:ASPxComboBox ID="cmbProductOperationType" runat="server" Width="100%" Height="30px" AutoPostBack="True" OnSelectedIndexChanged="cmbProductOperationType_SelectedIndexChanged">
-                                                            </dx:ASPxComboBox>
-                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ControlToValidate="cmbProductOperationType" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div class="row mb-2">
-                                                        <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Əməliyyatın səbəbi</label>
-                                                        <div class="col-sm-7">
-
-                                                            <dx:ASPxComboBox ID="cmbStockOperationReason" runat="server" Width="100%" Height="30px">
-                                                            </dx:ASPxComboBox>
-                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="cmbStockOperationReason" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
-                                                        </div>
-                                                    </div>
-
+                                                    
                                                     <div class="row mb-2">
                                                         <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Malın kateqoriyası</label>
                                                         <div class="col-sm-7">
@@ -186,16 +148,7 @@
                                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" ControlToValidate="cmbProducts" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
                                                         </div>
                                                     </div>
-                                                    <div class="row mb-2">
-                                                        <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ölçü vahidi</label>
-                                                        <div class="col-sm-7">
-                                                            <dx:ASPxComboBox ID="cmbUnitMeasurement" runat="server" Width="100%" Height="30px">
-                                                            </dx:ASPxComboBox>
-                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" ControlToValidate="cmbUnitMeasurement" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
-
-
-                                                        </div>
-                                                    </div>
+                                                    
                                                     <div class="row mb-2">
                                                         <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ölçü</label>
                                                         <div class="col-sm-7">
@@ -206,46 +159,7 @@
 
                                                         </div>
                                                     </div>
-                                                    <div class="row mb-2">
-                                                        <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Qiyməti</label>
-                                                        <div class="col-sm-7">
-                                                            <asp:TextBox ID="txtPrice" class="form-control mb-0 mt-0" runat="server" placeholder="Mətni daxil edin...">
-                                                            </asp:TextBox>
-                                                            <asp:CompareValidator ID="CompareValidator1" runat="server" ControlToValidate="txtPrice" ErrorMessage="Format düzgün deyil." Operator="DataTypeCheck" Type="Double" ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red" />
-                                                           <%-- <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txtPrice" ID="RequiredFieldValidator8" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>--%>
-
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mb-2">
-                                                        <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Endirimli qiyməti</label>
-                                                        <div class="col-sm-7">
-                                                            <asp:TextBox ID="txtPriceDiscount" class="form-control mb-0 mt-0" runat="server" placeholder="Mətni daxil edin...">
-                                                            </asp:TextBox>
-                                                            <asp:CompareValidator ID="CompareValidator2" runat="server" ControlToValidate="txtPriceDiscount" ErrorMessage="Format düzgün deyil." Operator="DataTypeCheck" Type="Double" ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red" />
-                                                          <%--  <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txtPriceDiscount" ID="RequiredFieldValidator9" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>--%>
-
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mb-2">
-                                                        <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Məbləğ</label>
-                                                        <div class="col-sm-7">
-                                                            <asp:TextBox ID="txtAmount" class="form-control mb-0 mt-0" runat="server" placeholder="Mətni daxil edin...">
-                                                            </asp:TextBox>
-                                                            <asp:CompareValidator ID="CompareValidator3" runat="server" ControlToValidate="txtAmount" ErrorMessage="Format düzgün deyil." Operator="DataTypeCheck" Type="Double" ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red" />
-                                                           <%-- <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txtAmount" ID="RequiredFieldValidator10" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>--%>
-
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mb-2">
-                                                        <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Endirimli məbləğ</label>
-                                                        <div class="col-sm-7">
-                                                            <asp:TextBox ID="txtAmountDiscount" class="form-control mb-0 mt-0" runat="server" placeholder="Mətni daxil edin...">
-                                                            </asp:TextBox>
-                                                            <asp:CompareValidator ID="CompareValidator4" runat="server" ControlToValidate="txtAmountDiscount" ErrorMessage="Format düzgün deyil." Operator="DataTypeCheck" Type="Double" ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red" />
-                                                            <%--<asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txtAmountDiscount" ID="RequiredFieldValidator11" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>--%>
-
-                                                        </div>
-                                                    </div>
+                                                    
                                                     <div class="row mb-2">
                                                         <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Qeyd</label>
                                                         <div class="col-sm-7">

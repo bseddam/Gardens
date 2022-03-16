@@ -117,14 +117,7 @@ public partial class OperationStock : System.Web.UI.Page
 
 
 
-        cmbUnitMeasurement.Items.Clear();
-        DataTable dt3 = _db.GetUnitMeasurements();
-        cmbUnitMeasurement.ValueField = "UnitMeasurementID";
-        cmbUnitMeasurement.TextField = "UnitMeasurementName";
-        cmbUnitMeasurement.DataSource = dt3;
-        cmbUnitMeasurement.DataBind();
-        cmbUnitMeasurement.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        cmbUnitMeasurement.SelectedIndex = 0;
+       
 
 
 
@@ -143,10 +136,7 @@ public partial class OperationStock : System.Web.UI.Page
         cmbProductOperationType.Value = dt.Rows[0]["ProductOperationTypeID"].ToParseStr();
         cmbproducttype.Value = dt.Rows[0]["ProductTypeID"].ToParseStr();
 
-        if (dt.Rows[0]["UnitMeasurementID"].ToParseStr() != "")
-        {
-            cmbUnitMeasurement.Value = dt.Rows[0]["UnitMeasurementID"].ToParseStr();
-        }
+      
         Reasoncomponentload();
         cmbStockOperationReason.Value = dt.Rows[0]["StockOperationReasonID"].ToParseStr();
 

@@ -185,16 +185,7 @@
                                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" ControlToValidate="cmbProducts" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
                                                         </div>
                                                     </div>
-                                                    <div class="row mb-2">
-                                                        <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ölçü vahidi</label>
-                                                        <div class="col-sm-7">
-                                                            <dx:ASPxComboBox ID="cmbUnitMeasurement" runat="server" Width="100%" Height="30px">
-                                                            </dx:ASPxComboBox>
-                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" ControlToValidate="cmbUnitMeasurement" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
-
-
-                                                        </div>
-                                                    </div>
+                                                  
                                                     <div class="row mb-2">
                                                         <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ölçü</label>
                                                         <div class="col-sm-7">
