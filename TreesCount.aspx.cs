@@ -166,7 +166,7 @@ public partial class TreesCount : System.Web.UI.Page
     protected void lnkDelete_Click(object sender, EventArgs e)
     {
         int _id = (sender as LinkButton).CommandArgument.ToParseInt();
-        Types.ProsesType val = _db.DeleteLine(id: _id);
+        Types.ProsesType val = _db.TreeCountDelete(TreeCountID: _id);
         _loadGridFromDb();
     }
     protected void LnkPnlMenu_Click(object sender, EventArgs e)
