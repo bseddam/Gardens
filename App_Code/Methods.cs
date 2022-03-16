@@ -4356,7 +4356,7 @@ inner join SiteMap sm on p.SiteMapID = sm.SiteMapID where p.UserID=@UserID)", Sq
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"select * from PermissionUser p 
-where p.UserID=1", SqlConn);
+where p.UserID=@UserID", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("UserID", id);
             da.Fill(dt);
             return dt;

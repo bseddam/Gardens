@@ -43,6 +43,7 @@ public partial class Users : System.Web.UI.Page
         cmbgarden.DataSource = dt7;
         cmbgarden.DataBind();
         cmbgarden.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmbgarden.Items.Insert(1, new ListEditItem("Rəhbərlik", "0"));
         cmbgarden.SelectedIndex = 0;
 
 
