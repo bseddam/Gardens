@@ -49,7 +49,10 @@ public partial class OperationStock : System.Web.UI.Page
         cmbStockOperationReason.Items.Insert(0, new ListEditItem("Seçin", "-1"));
         cmbStockOperationReason.SelectedIndex = 0;
 
-    }  
+    }
+
+
+   
 
    
 
@@ -194,7 +197,10 @@ public partial class OperationStock : System.Web.UI.Page
     {
         lblPopError.Text = "";
         Types.ProsesType val = Types.ProsesType.Error;
-       
+        if (Session["UserID"] != null)
+        {
+            Session["UserID"] = 1;
+        }
 
 
 

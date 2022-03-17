@@ -70,8 +70,7 @@
                             <li><a href="/countries">Ölkələr</a></li>  
                             <li><a href="/trees">Ağac adı</a></li>  
                             <li><a href="/treetypes">Ağac növü</a></li> 
-                            <li><a href="/unitmeasurements">Ölçü vahidləri</a></li>    
-                            <li><a href="/stock">Anbar</a></li>  
+                            <li><a href="/unitmeasurements">Ölçü vahidləri</a></li>                                                        
                         </ul>
                     </li>
 
@@ -90,7 +89,6 @@
                             <li><a href="/products">Mallar</a></li>
                             <li><a href="/weathercondition">Hava səraitinə görə tarif</a></li>
                             <li><a href="/treeage">Ağac yaşına görə tarif</a></li>
-                            <li><a href="/gardeninformation">Bağ çıxarışları</a></li>
                                
 
                         </ul>

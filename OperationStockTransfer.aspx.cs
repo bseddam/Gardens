@@ -31,14 +31,6 @@ public partial class OperationStockTransfer : System.Web.UI.Page
             Grid.DataSource = dt;
             Grid.DataBind();
         }
-
-        DataTable dt1 = _db.GetProductTransfer();
-        if (dt1 != null)
-        {
-            Gridtransfer.SettingsPager.Summary.Text = "Cari səhifə: {0}, Ümumi səhifələrin sayı: {1}, Tapılmış məlumatların sayı: {2}";
-            Gridtransfer.DataSource = dt1;
-            Gridtransfer.DataBind();
-        }
     }
 
     void componentsload()
@@ -52,60 +44,52 @@ public partial class OperationStockTransfer : System.Web.UI.Page
         cmbstock.Items.Insert(0, new ListEditItem("Seçin", "-1"));
         cmbstock.SelectedIndex = 0;
 
-       
+        //cmbgarden.Items.Clear();
+        //DataTable d2t1 = _db.GetGardens();
+        //cmbgarden.ValueField = "GardenID";
+        //cmbgarden.TextField = "GardenName";
+        //cmbgarden.DataSource = d2t1;
+        //cmbgarden.DataBind();
+        //cmbgarden.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        //cmbgarden.SelectedIndex = 0;
     }
-    protected void lnkInsert_Click(object sender, EventArgs e)
+    protected void lnkEdit_Click(object sender, EventArgs e)
     {
         string commandArgs = (sender as LinkButton).CommandArgument.ToString();
         
+
+        //int id = (sender as LinkButton).CommandArgument.ToParseInt();
         componentsload();
         ClearComponents();
         btnSave.CommandName = "insert";
         btnSave.CommandArgument = commandArgs.ToString();
         popupEdit.ShowOnPageLoad = true;
     }
-    //protected void lnkEdit_Click(object sender, EventArgs e)
+    //protected void lnkDelete_Click(object sender, EventArgs e)
     //{
-    //    int id = (sender as LinkButton).CommandArgument.ToParseInt();
-    //    DataTable dt = _db.GetProductStockInputOutputByID(id: id);
-    //    componentsload();
-       
-    //    txtProductSize.Text = dt.Rows[0]["ProductSize"].ToParseStr();
-    //    cmbstock.Value = dt.Rows[0]["StockToID"].ToParseStr();
-
-    //    DateTime datevalue;
-    //    if (DateTime.TryParse(dt.Rows[0]["RegisterTime"].ToParseStr(), out datevalue))
-    //    {
-    //        cmbregistertime.Text = DateTime.Parse(dt.Rows[0]["RegisterTime"].ToParseStr()).ToString("dd.MM.yyyy");
-    //    }
-    //    else
-    //    {
-    //        cmbregistertime.Text = "";
-    //    }
-
-    //    btnSave.CommandName = "update";
-    //    btnSave.CommandArgument = id.ToString();
-    //    popupEdit.ShowOnPageLoad = true;
+    //    int _id = (sender as LinkButton).CommandArgument.ToParseInt();
+    //    Types.ProsesType val = _db.DeleteProductStock(id: _id);
+    //    _loadGridFromDb();
     //}
-    protected void lnkDelete_Click(object sender, EventArgs e)
-    {
-        int _id = (sender as LinkButton).CommandArgument.ToParseInt();
-        Types.ProsesType val = _db.DeleteProductTransfer(id: _id);
-        _loadGridFromDb();
-    }
-
+   
     protected void btntesdiq_Click(object sender, EventArgs e)
     {
         lblPopError.Text = "";
         Types.ProsesType val = Types.ProsesType.Error;
-      
-        string[] cma = btnSave.CommandArgument.ToString().Split(new char[] { ',' });
-        string StockFromID = cma[0];
-        string ProductID = cma[1];
+        if (Session["UserID"] != null)
+        {
+            Session["UserID"] = 1;
+        }
+        
         if (btnSave.CommandName == "insert")
         {
-          
-  
+            string[] cma = btnSave.CommandArgument.ToString().Split(new char[] { ',' });
+            string StockFromID = cma[0];
+            string ProductID = cma[1];
+            
+
+           
+
             val = _db.ProductStockInsertTransfer(StockFromID: StockFromID.ToParseInt(),
                 UserID: Session["UserID"].ToParseInt(),
                 ProductID: ProductID.ToParseInt(),
@@ -113,18 +97,7 @@ public partial class OperationStockTransfer : System.Web.UI.Page
                 ProductSize: txtProductSize.Text.ToParseStr(),   
                 RegisterTime: cmbregistertime.Text.ToParseStr()
                 );
-        }
-        else
-        {
-            val = _db.ProductStockUpdateTransfer(ProductStockTransferID: btnSave.CommandArgument.ToParseInt(),
-                StockFromID: StockFromID.ToParseInt(),
-                UserID: Session["UserID"].ToParseInt(),
-                ProductID: ProductID.ToParseInt(),
-                StockToID: cmbstock.Value.ToParseInt(),
-                ProductSize: txtProductSize.Text.ToParseStr(),
-                RegisterTime: cmbregistertime.Text.ToParseStr()
-                );
-        }
+        }        
 
         if (val == Types.ProsesType.Error)
         {
