@@ -43,8 +43,9 @@
         routes.MapPageRoute("treescount", "treescount", "~/TreesCount.aspx");
         routes.MapPageRoute("orders", "orders", "~/Orders.aspx");
         routes.MapPageRoute("gardeninformation", "gardeninformation", "~/GardenInformation.aspx");
+        routes.MapPageRoute("stock", "stock", "~/Stock.aspx");
 
-
+        
 
     }
 
