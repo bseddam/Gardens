@@ -20,6 +20,8 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="table-responsive">
+                            <div class="col-12"><b>Anbardakı mallar</b></div>
+
                             <dx:ASPxGridViewExporter ID="gridExporter" runat="server" PaperKind="A4" Landscape="True"></dx:ASPxGridViewExporter>
                             <dx:ASPxGridView ID="Grid" runat="server"
                                 ClientInstanceName="grid"
@@ -77,19 +79,106 @@
                                    
                                     <dx:GridViewDataColumn VisibleIndex="1">
                                         <DataItemTemplate>
-                                            <asp:LinkButton ID="lnkEdit" OnClick="lnkEdit_Click" CommandArgument='<%#Eval("StockID")+","+ Eval("ProductID")%>' Text="Köçür" runat="server" />
+                                            <asp:LinkButton ID="lnkInsert" OnClick="lnkInsert_Click" CommandArgument='<%#Eval("StockID")+","+ Eval("ProductID")%>' Text="Köçür" runat="server" />
                                         </DataItemTemplate>
                                     </dx:GridViewDataColumn>
-                                     <%--
-                                    <dx:GridViewDataColumn VisibleIndex="1">
-                                        <DataItemTemplate>
-                                            <asp:LinkButton ID="lnkDelete" OnClick="lnkDelete_Click" OnClientClick="return confirm('Silmək istədiyinizə əminsinizmi?');" CommandArgument='<%#Eval("ProductStockInputOutputID") %>' Text="Sil" runat="server" />
-                                        </DataItemTemplate>
-                                    </dx:GridViewDataColumn>--%>
+                                   
 
 
                                 </Columns>
                             </dx:ASPxGridView>
+                             
+
+                            <br />
+<div class="col-12"><b>Transfer olunan mallar</b></div>
+ <dx:ASPxGridViewExporter ID="ASPxGridViewExporter1" runat="server" PaperKind="A4" Landscape="True"></dx:ASPxGridViewExporter>
+                            <dx:ASPxGridView ID="Gridtransfer" runat="server"
+                                ClientInstanceName="grid"
+                                AutoGenerateColumns="False"
+                                Width="100%"
+                                SettingsBehavior-ConfirmDelete="true"
+                                SettingsBehavior-EnableCustomizationWindow="true"
+                                KeyFieldName="id" Theme="Office2010Blue" CssClass="griddizayn" SettingsText-GroupPanel="Qruplaşdırmaq istədiyiniz sütun başlıqlarını buraya sürüşdürün">
+                                <Settings ShowFilterRow="True" GridLines="Both" ShowGroupPanel="True" />
+
+                                <SettingsEditing Mode="EditFormAndDisplayRow"></SettingsEditing>
+
+                                <SettingsText CommandNew="Yeni" PopupEditFormCaption="Form" CommandDelete="Sil"
+                                    CommandCancel="Ləğv et" CommandEdit="Yenilə" CommandUpdate="Yadda saxla"
+                                    CustomizationWindowCaption="Sütun seçin" ConfirmDelete="Silmək istəditinizə əminsiniz?" />
+
+
+
+                                <SettingsDataSecurity AllowDelete="True" AllowEdit="True" AllowInsert="True" />
+
+
+
+                                <SettingsPager Summary-Visible="True" PageSizeItemSettings-Visible="False">
+                                    <PageSizeItemSettings Visible="False"></PageSizeItemSettings>
+
+                                </SettingsPager>
+
+
+                                <Columns>
+
+                                   <dx:GridViewDataColumn Caption="Sıra nömrəsi" FieldName="sn" VisibleIndex="1">
+                                        <EditFormSettings VisibleIndex="1" />
+                                    </dx:GridViewDataColumn>
+                                    <dx:GridViewDataColumn Caption="Mal adı" FieldName="ProductsName" VisibleIndex="1">
+                                        <EditFormSettings VisibleIndex="1" />
+                                    </dx:GridViewDataColumn>
+                                    <dx:GridViewDataColumn Caption="Anbardan" FieldName="StockFromName" VisibleIndex="1">
+                                        <EditFormSettings VisibleIndex="1" />
+                                    </dx:GridViewDataColumn>
+                                    <dx:GridViewDataColumn Caption="Anbara" FieldName="StockToName" VisibleIndex="1">
+                                        <EditFormSettings VisibleIndex="1" />
+                                    </dx:GridViewDataColumn>
+                                   
+                                    <dx:GridViewDataColumn Caption="Ölçüsü" FieldName="ProductSize" VisibleIndex="1">
+                                        <EditFormSettings VisibleIndex="1" />
+                                    </dx:GridViewDataColumn>
+
+                                     <dx:GridViewDataColumn Caption="Ölçüsü vahidi" FieldName="UnitMeasurementName" VisibleIndex="1">
+                                        <EditFormSettings VisibleIndex="1" />
+                                    </dx:GridViewDataColumn>
+                                   
+                                  
+                                    <dx:GridViewDataColumn Caption="Qeydiyyat tarixi" FieldName="RegisterTime" VisibleIndex="1">
+                                        <EditFormSettings VisibleIndex="1" />
+                                    </dx:GridViewDataColumn>
+
+                                 <%-- <dx:GridViewDataColumn VisibleIndex="1">
+                                        <DataItemTemplate>
+                                            <asp:LinkButton ID="lnkEdit" OnClick="lnkEdit_Click" CommandArgument='<%#Eval("ProductStockTransferID") %>' Text="Düzəliş" runat="server" />
+                                        </DataItemTemplate>
+                                    </dx:GridViewDataColumn>--%>
+
+                                    <dx:GridViewDataColumn VisibleIndex="1">
+                                        <DataItemTemplate>
+                                            <asp:LinkButton ID="lnkDelete" OnClick="lnkDelete_Click" OnClientClick="return confirm('Silmək istədiyinizə əminsinizmi?');" CommandArgument='<%#Eval("ProductStockTransferID") %>' Text="Sil" runat="server" />
+                                        </DataItemTemplate>
+                                    </dx:GridViewDataColumn>
+
+
+                                </Columns>
+                            </dx:ASPxGridView>
+
+
+
+
+
+
+
+                            
+
+
+
+
+
+
+
+
+
                             <dx:ASPxPopupControl ID="popupEdit"
                                 runat="server"
                                 ClientInstanceName="popup"
