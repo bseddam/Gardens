@@ -60,16 +60,21 @@
                                     <dx:GridViewDataColumn Caption="Tarix" FieldName="InvoiceDate" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
-
                                     <dx:GridViewDataColumn VisibleIndex="1">
                                         <DataItemTemplate>
-                                            <asp:LinkButton ID="lnkEdit" OnClick="lnkEdit_Click" CommandArgument='<%#Eval("ProductStockInputOutputID") %>' Text="Düzəliş" runat="server" />
+                                            <asp:LinkButton ID="lnkProducts" OnClick="lnkProducts_Click" CommandArgument='<%#Eval("OrderInvoiceID") %>' Text="Sifariş malları" runat="server" />
                                         </DataItemTemplate>
                                     </dx:GridViewDataColumn>
 
                                     <dx:GridViewDataColumn VisibleIndex="1">
                                         <DataItemTemplate>
-                                            <asp:LinkButton ID="lnkDelete" OnClick="lnkDelete_Click" OnClientClick="return confirm('Silmək istədiyinizə əminsinizmi?');" CommandArgument='<%#Eval("ProductStockInputOutputID") %>' Text="Sil" runat="server" />
+                                            <asp:LinkButton ID="lnkEdit" OnClick="lnkEdit_Click" CommandArgument='<%#Eval("OrderInvoiceID") %>' Text="Düzəliş" runat="server" />
+                                        </DataItemTemplate>
+                                    </dx:GridViewDataColumn>
+
+                                    <dx:GridViewDataColumn VisibleIndex="1">
+                                        <DataItemTemplate>
+                                            <asp:LinkButton ID="lnkDelete" OnClick="lnkDelete_Click" OnClientClick="return confirm('Silmək istədiyinizə əminsinizmi?');" CommandArgument='<%#Eval("OrderInvoiceID") %>' Text="Sil" runat="server" />
                                         </DataItemTemplate>
                                     </dx:GridViewDataColumn>
 
@@ -87,7 +92,7 @@
                                 HeaderText="Redaktə"
                                 PopupHorizontalAlign="WindowCenter"
                                 PopupVerticalAlign="WindowCenter"
-                                Height="600"
+                                Height="250"
                                 ScrollBars="Vertical">
                                 <ContentCollection>
                                     <dx:PopupControlContentControl>
@@ -106,7 +111,7 @@
                                                     <div class="row mb-2">
                                                         <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Malın kateqoriyası</label>
                                                         <div class="col-sm-7">
-                                                            <dx:ASPxComboBox ID="cmbStatus" runat="server" Width="100%" Height="30px" AutoPostBack="True">
+                                                            <dx:ASPxComboBox ID="cmbStatus" runat="server" Width="100%" Height="30px">
                                                             </dx:ASPxComboBox>
                                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="cmbStatus" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
                                                         </div>
@@ -124,7 +129,7 @@
                                                         </div>
                                                     </div>
                                                     <div>
-                                                        <asp:Label Text="" ForeColor="Red" ID="Label1" runat="server" />
+                                                        <asp:Label Text="" ForeColor="Red" ID="lblErrorInvoice" runat="server" />
                                                     </div>
                                                     <asp:Button ID="btnInvoiceSave" runat="server" ValidationGroup="qrup1" CssClass="btn btn-success mr-2" Text="Yadda saxla" OnClick="btnInvoiceSave_Click" />
                                                     <asp:Button ID="btnInvoiceCancel" runat="server" CssClass="btn btn-light" Text="Ləğv et" OnClick="btnInvoiceCancel_Click" />
@@ -142,7 +147,7 @@
             </div>
         </div>
     </div>
-    <div class="content-wrapper">
+<%--    <div class="content-wrapper">
         <div class="card">
             <div class="card-body">
                 <asp:LinkButton ID="btnAdd" runat="server" CommandArgument="add" OnClick="LnkPnlMenu_Click" CssClass="btn btn-info">Yeni</asp:LinkButton>
@@ -328,7 +333,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>--%>
     <style>
         .griddizayn {
             font-size: 0.875rem;

@@ -4817,4 +4817,18 @@ RegisterTime=@RegisterTime where GardenInformationID=@GardenInformationID", SqlC
         }
     }
 
+    public DataTable GetInvoiceStatus()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select * FROM InvoiceStatus", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
 }
