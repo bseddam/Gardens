@@ -574,21 +574,7 @@ UserID=@UserID where UnitMeasurementID=@UnitMeasurementID;", SqlConn);
 
 
 
-    public DataTable GetStocks()
-    {
-        try
-        {
-            DataTable dt = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by StockID) sn,
-StockID,StockName from Stocks s where s.DeleteTime is null", SqlConn);
-            da.Fill(dt);
-            return dt;
-        }
-        catch (Exception ex)
-        {
-            return null;
-        }
-    }
+   
 
 
 
@@ -4817,18 +4803,4 @@ RegisterTime=@RegisterTime where GardenInformationID=@GardenInformationID", SqlC
         }
     }
 
-    public DataTable GetInvoiceStatus()
-    {
-        try
-        {
-            DataTable dt = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter(@"select * FROM InvoiceStatus", SqlConn);
-            da.Fill(dt);
-            return dt;
-        }
-        catch (Exception ex)
-        {
-            return null;
-        }
-    }
 }

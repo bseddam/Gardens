@@ -70,7 +70,8 @@
                             <li><a href="/countries">Ölkələr</a></li>  
                             <li><a href="/trees">Ağac adı</a></li>  
                             <li><a href="/treetypes">Ağac növü</a></li> 
-                            <li><a href="/unitmeasurements">Ölçü vahidləri</a></li>                                                        
+                            <li><a href="/unitmeasurements">Ölçü vahidləri</a></li>    
+                            <li><a href="/stock">Anbar</a></li>  
                         </ul>
                     </li>
 
