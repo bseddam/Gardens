@@ -213,4 +213,19 @@ public partial class Orders : System.Web.UI.Page
     {
         productcomponentload();
     }
+
+    protected void btnNewInvoice_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    protected void btnInvoiceCancel_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    protected void btnInvoiceSave_Click(object sender, EventArgs e)
+    {
+
+    }
 }
