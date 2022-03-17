@@ -571,27 +571,7 @@ UserID=@UserID where UnitMeasurementID=@UnitMeasurementID;", SqlConn);
         }
     }
 
-    public DataTable GetStocks()
-    {
-        try
-        {
-            DataTable dt = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by StockID) sn,
-StockID,StockName from Stocks s where s.DeleteTime is null", SqlConn);
-            da.Fill(dt);
-            return dt;
-        }
-        catch (Exception ex)
-        {
-            return null;
-        }
-    }
-
-
-
-
-
-
+   
     //Bağlar
     public DataTable GetGardens()
     {
@@ -2035,9 +2015,8 @@ where DeleteTime is null", SqlConn);
         try
         {
             DataTable dt = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter(@"SELECT  [CadreTypeID]
-      ,[CadreTypeName]
-  FROM [Gardens].[dbo].[CadreType]", SqlConn);
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT  CadreTypeID
+      ,CadreTypeName  FROM CadreType", SqlConn);
             da.Fill(dt);
             return dt;
         }
@@ -2498,7 +2477,7 @@ left join Cadres c on u.CadreID=c.CadreID
 left join Models m on m.ModelID=t.ModelID
 left join Companies cp on cp.CompanyID=t.CompanyID 
 left join TechniqueSituation ts on ts.TechniqueSituationID=t.TechniqueSituationID 
-where m.DeleteTime is null order by t.UserID desc", SqlConn);
+where t.DeleteTime is null order by t.UserID desc", SqlConn);
             da.Fill(dt);
             return dt;
         }
@@ -2644,46 +2623,48 @@ where WateringSystemID=@WateringSystemID", SqlConn);
         }
     }
 
-    public Types.ProsesType EmploymentHistoryInsert(int UserID, int StructureID, int CadreID, int GardenID, int CadreTypeID, int PositionID, string EmploymentNumber, string EntryDate, string ExitDate)
+    public Types.ProsesType EmploymentHistoryInsert(int UserID, int StructureID, int CadreID, int CompanyID, int GardenID, int CadreTypeID, int PositionID, string EmploymentNumber, string EntryDate, string ExitDate)
     {
 
-        SqlCommand cmd = new SqlCommand(@"insert into EmploymentHistory (UserID,StructureID,CadreID,GardenID,CadreTypeID,PositionID,EmploymentNumber,EntryDate,ExitDate)  
-Values(@UserID,@StructureID,@CadreID,@GardenID,@CadreTypeID,@PositionID,@EmploymentNumber,@EntryDate,@ExitDate)", SqlConn);
+        SqlCommand cmd = new SqlCommand(@"insert into EmploymentHistory (UserID,StructureID,CadreID,CompanyID,GardenID,CadreTypeID,PositionID,EmploymentNumber,EntryDate,ExitDate)  
+Values(@UserID,@StructureID,@CadreID,@CompanyID,@GardenID,@CadreTypeID,@PositionID,@EmploymentNumber,@EntryDate,@ExitDate)", SqlConn);
         cmd.Parameters.AddWithValue("@UserID", UserID);
         cmd.Parameters.AddWithValue("@StructureID", StructureID);
-        cmd.Parameters.AddWithValue("@CadreID", CadreID);        
+        cmd.Parameters.AddWithValue("@CadreID", CadreID);
+        cmd.Parameters.AddWithValue("@CompanyID", CompanyID);
         cmd.Parameters.AddWithValue("@GardenID", GardenID);
         cmd.Parameters.AddWithValue("@CadreTypeID", CadreTypeID);
         cmd.Parameters.AddWithValue("@PositionID", PositionID);
         cmd.Parameters.AddWithValue("@EmploymentNumber", EmploymentNumber);
         cmd.Parameters.AddWithValue("@EntryDate", ConvertTypes.ToParseDatetime(EntryDate));
         cmd.Parameters.AddWithValue("@ExitDate", ConvertTypes.ToParseDatetime(ExitDate));
-        try
-        {
+        //try
+        //{
             cmd.Connection.Open();
             cmd.ExecuteNonQuery();
             return Types.ProsesType.Succes;
-        }
-        catch (Exception ex)
-        {
-            return Types.ProsesType.Error;
-        }
-        finally
-        {
-            cmd.Connection.Close();
-            cmd.Dispose();
-        }
+        //}
+        //catch (Exception ex)
+        //{
+        //    return Types.ProsesType.Error;
+        //}
+        //finally
+        //{
+        //    cmd.Connection.Close();
+        //    cmd.Dispose();
+        //}
     }
 
-    public Types.ProsesType EmploymentHistoryUpdate(int EmploymentHistoryID, int UserID, int StructureID, int CadreID, int GardenID, int CadreTypeID, int PositionID, string EmploymentNumber, string EntryDate, string ExitDate)
+    public Types.ProsesType EmploymentHistoryUpdate(int EmploymentHistoryID, int UserID, int StructureID, int CadreID,int CompanyID, int GardenID, int CadreTypeID, int PositionID, string EmploymentNumber, string EntryDate, string ExitDate)
     {
         SqlCommand cmd = new SqlCommand(@"update EmploymentHistory set UserID=@UserID,StructureID=@StructureID,
-CadreID=@CadreID,GardenID=@GardenID,CadreTypeID=@CadreTypeID,PositionID=@PositionID,
+CadreID=@CadreID,CompanyID=@CompanyID,GardenID=@GardenID,CadreTypeID=@CadreTypeID,PositionID=@PositionID,
 EmploymentNumber=@EmploymentNumber,EntryDate=@EntryDate,ExitDate=@ExitDate 
 where EmploymentHistoryID=@EmploymentHistoryID", SqlConn);
         cmd.Parameters.AddWithValue("@UserID", UserID);
         cmd.Parameters.AddWithValue("@StructureID", StructureID);
         cmd.Parameters.AddWithValue("@CadreID", CadreID);
+        cmd.Parameters.AddWithValue("@CompanyID", CompanyID);
         cmd.Parameters.AddWithValue("@GardenID", GardenID);
         cmd.Parameters.AddWithValue("@CadreTypeID", CadreTypeID);
         cmd.Parameters.AddWithValue("@PositionID", PositionID);
@@ -2736,7 +2717,7 @@ where EmploymentHistoryID=@EmploymentHistoryID", SqlConn);
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"Select ROW_NUMBER() over(order by c.EmploymentHistoryID desc) sn,c.UserID,s.StructureID, s.StructureName, k.CardID,
  c.CadreID,c.CadreTypeID,ct.CadreTypeName,c.EmploymentHistoryID, k.CardNumber, g.GenderName,gd.GardenName,
-c.EntryDate,c.ExitDate,c.EmploymentNumber, p.PositionName, 
+c.EntryDate,c.ExitDate,c.EmploymentNumber, p.PositionName, cp.CompanyName,c.CompanyID,
 cd.Gender, isnull(k.CardNumber,'')+' '+cd.Sname+' '+ cd.Name+' '+ cd.FName NameDDL
 from EmploymentHistory c 
 left join Structure s on s.StructureID=c.StructureID 
@@ -2745,6 +2726,7 @@ left join Cards k on cd.CardID=k.CardID
 left join Positions p on c.PositionID=p.PositionID
 left join CadreType ct on ct.CadreTypeID=c.CadreTypeID
 left join Gardens gd on gd.GardenID=c.GardenID
+left join Companies cp on cp.CompanyID=c.CompanyID
 left join Genders g on g.GenderID=cd.Gender where c.DeleteTime is null", SqlConn);
             da.Fill(dt);
             return dt;
@@ -4687,5 +4669,304 @@ RegisterTime=@RegisterTime where GardenInformationID=@GardenInformationID", SqlC
             cmd.Dispose();
         }
     }
+    public DataTable GetGardenInformations()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT  row_number() over(order by gi.GardenInformationID desc) sn,
+gi.*,g.GardenName,c.CompanyName FROM GardenInformations gi left join Gardens g on gi.GardenID=g.GardenID
+  left join Companies c on gi.CompanyID=c.CompanyID where gi.DeleteTime is null", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
 
+    public DataTable GetGardenInformationByID(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT  row_number() over(order by gi.GardenInformationID desc) sn,
+gi.*,g.GardenName,c.CompanyName FROM GardenInformations gi left join Gardens g on gi.GardenID=g.GardenID
+  left join Companies c on gi.CompanyID=c.CompanyID where gi.DeleteTime is null and GardenInformationID=@id ", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+    //anbar yarat
+
+    public DataTable GetStocks()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by s.StockID) sn,
+StockID,StockName,g.GardenName from Stocks s left join Gardens g on s.GardenID=g.GardenID where s.DeleteTime is null", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+    public DataTable GetStockById(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by s.StockID) sn,
+StockID,StockName,g.GardenName,s.GardenID from Stocks s left join Gardens g on s.GardenID=g.GardenID 
+where s.DeleteTime is null and s.StockID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+
+
+
+    public Types.ProsesType StockInsert(int GardenID, string StockName)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"insert into Stocks (UserID,GardenID,StockName) 
+Values(@UserID, @GardenID,@StockName)", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@GardenID", GardenID);
+        cmd.Parameters.AddWithValue("@StockName", StockName);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+    public Types.ProsesType StockUpdate(int StockID, int GardenID, string StockName)
+    {
+        SqlCommand cmd = new SqlCommand(@"update Stocks set UserID=@UserID,GardenID=@GardenID,StockName=@StockName
+where StockID=@StockID", SqlConn);
+        cmd.Parameters.AddWithValue("@StockID", StockID);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@GardenID", GardenID);
+        cmd.Parameters.AddWithValue("@StockName", StockName);
+
+
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+    public Types.ProsesType DeleteStock(int id)
+    {
+        SqlCommand cmd = new SqlCommand(@"Update Stocks set DeleteTime=GetDate() where StockID=@id ", SqlConn);
+        cmd.Parameters.AddWithValue("@id", id);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+    public DataTable GetInvoiceStatus()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT InvoiceStatusID
+      ,InvoiceStatusName
+  FROM InvoiceStatus", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+    
+    public DataTable GetOrderInvoice()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"Select ROW_NUMBER() over(order by o.OrderInvoiceID desc) sn,o.OrderInvoiceID,o.UserID,o.InvoiceDate, o.StockID,o.InvoiceStatusID,
+s.StockName,i.InvoiceStatusName
+from OrderInvoice o
+left join Stocks s on s.StockID=o.StockID 
+left join InvoiceStatus i on i.InvoiceStatusID=o.InvoiceStatusID
+ where o.DeteletTime is null", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+    public DataTable GetOrderInvoiceByID(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"Select ROW_NUMBER() over(order by o.OrderInvoiceID desc) sn,o.UserID,o.InvoiceDate, o.StockID,o.InvoiceStatusID,
+s.StockName,i.InvoiceStatusName
+from OrderInvoice o
+left join Stocks s on s.StockID=o.StockID 
+left join InvoiceStatus i on i.InvoiceStatusID=o.InvoiceStatusID
+ where o.DeteletTime is null and o.OrderInvoiceID=@p", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("@p", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+    public Types.ProsesType DeleteOrderInvoice(int id)
+    {
+        SqlCommand cmd = new SqlCommand(@"Update OrderInvoice set DeleteTime=GetDate() where OrderInvoiceID=@id ", SqlConn);
+        cmd.Parameters.AddWithValue("@id", id);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+    public Types.ProsesType OrderInvoiceInsert(int StockID, string InvoiceDate,int InvoiceStatusID)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"insert into OrderInvoice (UserID, InvoiceDate, StockID, InvoiceStatusID) 
+Values(@UserID, @InvoiceDate, @StockID, @InvoiceStatusID)", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@StockID", StockID);
+        cmd.Parameters.AddWithValue("@InvoiceDate", ConvertTypes.ToParseDatetime(InvoiceDate));
+        cmd.Parameters.AddWithValue("@InvoiceStatusID", InvoiceStatusID);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+    public Types.ProsesType OrderInvoiceUpdate(int OrderInvoiceID, int StockID, string InvoiceDate, int InvoiceStatusID)
+    {
+        SqlCommand cmd = new SqlCommand(@"update OrderInvoice set UserID=@UserID,StockID=@StockID,InvoiceDate=@InvoiceDate,InvoiceStatusID=@InvoiceStatusID
+where OrderInvoiceID=@OrderInvoiceID", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@StockID", StockID);
+        cmd.Parameters.AddWithValue("@InvoiceDate", ConvertTypes.ToParseDatetime(InvoiceDate));
+        cmd.Parameters.AddWithValue("@InvoiceStatusID", InvoiceStatusID);
+        cmd.Parameters.AddWithValue("@OrderInvoiceID", OrderInvoiceID);
+
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+    
+
+     public DataTable GetOrderProductByIDInvoice(int idinvoice)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by op.OrderProductID desc) sn,
+       p.[ProductsName],p.[ProductTypeID],pt.ProductTypeName
+      ,p.[ModelID],m.ModelName,[Code],p.[UnitMeasurementID] ,u.UnitMeasurementName,
+	  op.UserID,op.OrderInvoiceID, op.ProductID,op.ProductSize
+       from OrderProduct op left join[Products] p on op.ProductID=p.ProductID
+ left join ProductTypes pt on p.ProductTypeID=pt.ProductTypeID
+ left join Models m on p.ModelID=m.ModelID
+ left join UnitMeasurements u on p.UnitMeasurementID=u.UnitMeasurementID
+ where op.DeleteTime is null and op.OrderInvoiceID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id",idinvoice);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
 }

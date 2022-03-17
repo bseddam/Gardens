@@ -82,6 +82,15 @@ public partial class EmploymentHistory : System.Web.UI.Page
         cmGarden.DataBind();
         cmGarden.Items.Insert(0, new ListEditItem("Seçin", "-1"));
         cmGarden.SelectedIndex = 0;
+
+        cmCompany.Items.Clear();
+        DataTable dt7 = _db.GetCompanies();
+        cmCompany.ValueField = "CompanyID";
+        cmCompany.TextField = "CompanyName";
+        cmCompany.DataSource = dt7;
+        cmCompany.DataBind();
+        cmCompany.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmCompany.SelectedIndex = 0;
     }
     protected void lnkEdit_Click(object sender, EventArgs e)
     {
@@ -90,6 +99,7 @@ public partial class EmploymentHistory : System.Web.UI.Page
         DataTable dt = _db.GetEmploymentHistoryById(id: id);
         cmStructure.Value = dt.Rows[0]["StructureID"].ToParseStr();
         cmPosition.Value = dt.Rows[0]["PositionID"].ToParseStr();
+        cmCompany.Value = dt.Rows[0]["CompanyID"].ToParseStr();
         cmGarden.Value = dt.Rows[0]["GardenID"].ToParseStr();
         cmCadre.Value = dt.Rows[0]["CadreID"].ToParseStr();
         cmbcardetype.Value = dt.Rows[0]["CadreTypeID"].ToParseStr();
@@ -151,7 +161,8 @@ public partial class EmploymentHistory : System.Web.UI.Page
         {            
             val = _db.EmploymentHistoryInsert(UserID: Session["UserID"].ToString().ToParseInt(),
                 StructureID: cmStructure.Value.ToParseInt(),
-                CadreID: cmGarden.Value.ToParseInt(),                
+                CadreID: cmCadre.Value.ToParseInt(),
+                CompanyID: cmCompany.Value.ToParseInt(),
                 GardenID: cmGarden.Value.ToParseInt(),
                 CadreTypeID: cmbcardetype.Value.ToParseInt(),
                 PositionID: cmPosition.Value.ToParseInt(),                
@@ -166,7 +177,8 @@ public partial class EmploymentHistory : System.Web.UI.Page
             val = _db.EmploymentHistoryUpdate(EmploymentHistoryID: btnSave.CommandArgument.ToParseInt(),
                 UserID: Session["UserID"].ToString().ToParseInt(),
                 StructureID: cmStructure.Value.ToParseInt(),
-                CadreID: cmGarden.Value.ToParseInt(),
+                CadreID: cmCadre.Value.ToParseInt(),
+                CompanyID: cmCompany.Value.ToParseInt(),
                 GardenID: cmGarden.Value.ToParseInt(),
                 CadreTypeID: cmbcardetype.Value.ToParseInt(),
                 PositionID: cmPosition.Value.ToParseInt(),
@@ -187,17 +199,5 @@ public partial class EmploymentHistory : System.Web.UI.Page
     protected void btnCancel_Click(object sender, EventArgs e)
     {
         popupEdit.ShowOnPageLoad = false;
-    }
-
-    protected void cmGarden_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        //cmCardNumber.Items.Clear();
-        //DataTable dt3 = _db.GetCardsByGardenID(cmGarden.Value.ToParseInt());
-        //cmCardNumber.ValueField = "CardID";
-        //cmCardNumber.TextField = "CardNumber";
-        //cmCardNumber.DataSource = dt3;
-        //cmCardNumber.DataBind();
-        //cmCardNumber.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        //cmCardNumber.SelectedIndex = 0;
-    }
+    }    
 }

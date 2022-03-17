@@ -70,7 +70,8 @@
                             <li><a href="/countries">Ölkələr</a></li>  
                             <li><a href="/trees">Ağac adı</a></li>  
                             <li><a href="/treetypes">Ağac növü</a></li> 
-                            <li><a href="/unitmeasurements">Ölçü vahidləri</a></li>                                                        
+                            <li><a href="/unitmeasurements">Ölçü vahidləri</a></li>  
+                            <li><a href="/stock">Anbar</a></li>  
                         </ul>
                     </li>
 
@@ -128,6 +129,7 @@
                         </ul>
                     </li>
                     <li><a class="nav-link scrollto" href="/users">İstifadəçilər</a></li>
+                    <li><a class="nav-link bi-door-closed" href="/login">Çıxış</a></li>
                 </ul>
                 <i class="bi bi-list mobile-nav-toggle"></i>
             </nav>

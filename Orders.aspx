@@ -13,7 +13,7 @@
     <div class="content-wrapper">
         <div class="card">
             <div class="card-body">
-                <asp:LinkButton ID="btnNewInvoice" runat="server" CommandArgument="add" OnClick="btnNewInvoice_Click" CssClass="btn btn-info">Yeni</asp:LinkButton>
+                <asp:LinkButton ID="btnNewInvoice" runat="server" CommandArgument="add" OnClick="btnNewInvoice_Click" CssClass="btn btn-dark">Yeni qaimə əlavə et</asp:LinkButton>
                 <div class="row">
                     <div class="col-12">
                         <div class="table-responsive">
@@ -100,7 +100,7 @@
                                                 <div class="container">
 
                                                     <div class="row mb-2">
-                                                        <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Anbar adı</label>
+                                                        <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Anbar</label>
                                                         <div class="col-sm-7">
                                                             <dx:ASPxComboBox ID="cmbstock" runat="server" Width="100%" Height="30px" >
                                                             </dx:ASPxComboBox>
@@ -109,7 +109,7 @@
                                                     </div>
                                                     
                                                     <div class="row mb-2">
-                                                        <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Malın kateqoriyası</label>
+                                                        <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Qaimənin statusu</label>
                                                         <div class="col-sm-7">
                                                             <dx:ASPxComboBox ID="cmbStatus" runat="server" Width="100%" Height="30px">
                                                             </dx:ASPxComboBox>
@@ -147,10 +147,10 @@
             </div>
         </div>
     </div>
-<%--    <div class="content-wrapper">
+    <div class="content-wrapper">
         <div class="card">
             <div class="card-body">
-                <asp:LinkButton ID="btnAdd" runat="server" CommandArgument="add" OnClick="LnkPnlMenu_Click" CssClass="btn btn-info">Yeni</asp:LinkButton>
+                <asp:LinkButton ID="btnAddProduct" runat="server" CommandArgument="add" OnClick="btnAddProduct_Click" CssClass="btn btn-dark">Yeni mal əlavə et</asp:LinkButton>
                 <div class="row">
                     <div class="col-12">
                         <div class="table-responsive">
@@ -186,20 +186,17 @@
 
                                     <dx:GridViewDataColumn Caption="Sıra nömrəsi" FieldName="sn" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
-                                    </dx:GridViewDataColumn>
-                                    <dx:GridViewDataColumn Caption="Anbar" FieldName="StockName" VisibleIndex="1">
+                                    </dx:GridViewDataColumn>  
+                                    <dx:GridViewDataColumn Caption="Malın kateqoriyası" FieldName="ProductTypeName" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
-                                                                       
                                     <dx:GridViewDataColumn Caption="Model" FieldName="ModelName" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
                                     <dx:GridViewDataColumn Caption="Malın adı" FieldName="ProductsName" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
-                                    <dx:GridViewDataColumn Caption="Malın kateqoriyası" FieldName="ProductTypeName" VisibleIndex="1">
-                                        <EditFormSettings VisibleIndex="1" />
-                                    </dx:GridViewDataColumn>
+
                                     <dx:GridViewDataColumn Caption="Ölçü vahidi" FieldName="UnitMeasurementName" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
@@ -207,30 +204,26 @@
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
                                   
-                                    <dx:GridViewDataColumn Caption="Qeyd" FieldName="Notes" VisibleIndex="1">
+<%--                                    <dx:GridViewDataColumn Caption="Qeyd" FieldName="Notes" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
-                                    </dx:GridViewDataColumn>
-
-                                    <dx:GridViewDataColumn Caption="Qeydiyyat tarixi" FieldName="RegisterTime" VisibleIndex="1">
-                                        <EditFormSettings VisibleIndex="1" />
-                                    </dx:GridViewDataColumn>
+                                    </dx:GridViewDataColumn>--%>
 
                                     <dx:GridViewDataColumn VisibleIndex="1">
                                         <DataItemTemplate>
-                                            <asp:LinkButton ID="lnkEdit" OnClick="lnkEdit_Click" CommandArgument='<%#Eval("ProductStockInputOutputID") %>' Text="Düzəliş" runat="server" />
+                                            <asp:LinkButton ID="lnkEditProduct" OnClick="lnkEditProduct_Click" CommandArgument='<%#Eval("OrderProductID") %>' Text="Düzəliş" runat="server" />
                                         </DataItemTemplate>
                                     </dx:GridViewDataColumn>
 
                                     <dx:GridViewDataColumn VisibleIndex="1">
                                         <DataItemTemplate>
-                                            <asp:LinkButton ID="lnkDelete" OnClick="lnkDelete_Click" OnClientClick="return confirm('Silmək istədiyinizə əminsinizmi?');" CommandArgument='<%#Eval("ProductStockInputOutputID") %>' Text="Sil" runat="server" />
+                                            <asp:LinkButton ID="lnkDeleteProduct" OnClick="lnkDeleteProduct_Click" OnClientClick="return confirm('Silmək istədiyinizə əminsinizmi?');" CommandArgument='<%#Eval("OrderProductID") %>' Text="Sil" runat="server" />
                                         </DataItemTemplate>
                                     </dx:GridViewDataColumn>
 
 
                                 </Columns>
                             </dx:ASPxGridView>
-                            <dx:ASPxPopupControl ID="popupEdit"
+                            <dx:ASPxPopupControl ID="popupEditProduct"
                                 runat="server"
                                 ClientInstanceName="popup"
                                 AllowDragging="true"
@@ -246,17 +239,7 @@
                                 <ContentCollection>
                                     <dx:PopupControlContentControl>
                                       
-                                                <div class="container">
-
-                                                    <div class="row mb-2">
-                                                        <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Anbar adı</label>
-                                                        <div class="col-sm-7">
-                                                            <dx:ASPxComboBox ID="cmbstock1" runat="server" Width="100%" Height="30px" >
-                                                            </dx:ASPxComboBox>
-                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator13" runat="server" ControlToValidate="cmbstock" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
-                                                        </div>
-                                                    </div>
-                                                    
+                                                <div class="container">                                                    
                                                     <div class="row mb-2">
                                                         <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Malın kateqoriyası</label>
                                                         <div class="col-sm-7">
@@ -297,29 +280,19 @@
                                                         </div>
                                                     </div>
                                                     
-                                                    <div class="row mb-2">
+                                                   <%-- <div class="row mb-2">
                                                         <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Qeyd</label>
                                                         <div class="col-sm-7">
                                                             <asp:TextBox ID="txtNote" class="form-control mb-0 mt-0" runat="server" placeholder="Mətni daxil edin..." TextMode="MultiLine">
                                                             </asp:TextBox>
                                                         </div>
-                                                    </div>
+                                                    </div>--%>
 
-                                                    <div class="row  mb-2">
-                                                        <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Qeydiyyat tarixi</label>
-                                                        <div class="col-sm-7">
-
-                                                            <dx:ASPxDateEdit ID="cmbregistertime" runat="server" DisplayFormatString="dd.MM.yyyy" EditFormat="Custom" EditFormatString="dd.MM.yyyy" Width="100%" Height="30px">
-                                                            </dx:ASPxDateEdit>
-                                                            <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="cmbregistertime" ID="RequiredFieldValidator12" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>
-
-                                                        </div>
-                                                    </div>
                                                     <div>
                                                         <asp:Label Text="" ForeColor="Red" ID="lblPopError" runat="server" />
                                                     </div>
-                                                    <asp:Button ID="btnSave" runat="server" ValidationGroup="qrup1" CssClass="btn btn-success mr-2" Text="Yadda saxla" OnClick="btntesdiq_Click" />
-                                                    <asp:Button ID="btnCancel" runat="server" CssClass="btn btn-light" Text="Ləğv et" OnClick="btnCancel_Click" />
+                                                    <asp:Button ID="btnProductSave" runat="server" ValidationGroup="qrup1" CssClass="btn btn-success mr-2" Text="Yadda saxla" OnClick="btnProductSave_Click" />
+                                                    <asp:Button ID="btnProductCancel" runat="server" CssClass="btn btn-light" Text="Ləğv et" OnClick="btnProductCancel_Click" />
                                                 </div>
 
                                            
@@ -333,7 +306,7 @@
                 </div>
             </div>
         </div>
-    </div>--%>
+    </div>
     <style>
         .griddizayn {
             font-size: 0.875rem;
