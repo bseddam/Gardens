@@ -57,18 +57,22 @@ public partial class Orders : System.Web.UI.Page
         DataTable dt = _db.GetProductStockInputOutputByID(id: id);
         componentsload();
         cmbstock.Value = dt.Rows[0]["StockID"].ToParseStr();
-        cmbStatus.Value = dt.Rows[0]["InvoiceStatusID"].ToParseStr();
+       
+        cmbproducttype.Value = dt.Rows[0]["ProductTypeID"].ToParseStr();
 
-        //modelcomponentload();
-        //cmbmodel.Value = dt.Rows[0]["ModelID"].ToParseStr();
-        //productcomponentload();
+       
+        
 
-        //cmbProducts.Value = dt.Rows[0]["ProductID"].ToParseStr();
+        modelcomponentload();
+        cmbmodel.Value = dt.Rows[0]["ModelID"].ToParseStr();
+        productcomponentload();
 
+        cmbProducts.Value = dt.Rows[0]["ProductID"].ToParseStr();
 
-        //txtNote.Text = dt.Rows[0]["Notes"].ToParseStr();
-
-        //txtProductSize.Text = dt.Rows[0]["ProductSize"].ToParseStr();
+        
+        txtNote.Text = dt.Rows[0]["Notes"].ToParseStr();
+        
+        txtProductSize.Text = dt.Rows[0]["ProductSize"].ToParseStr();
 
 
 
@@ -96,8 +100,7 @@ public partial class Orders : System.Web.UI.Page
         // Types.ProsesType val = _db.DeleteProductStockInputOutput(id: _id);
         _loadGridFromDb();
     }
-
-    protected void btnNewInvoice_Click(object sender, EventArgs e)
+    protected void LnkPnlMenu_Click(object sender, EventArgs e)
     {
         componentsload();
         ClearComponents();
