@@ -159,7 +159,7 @@ public partial class EmploymentHistory : System.Web.UI.Page
 
         if (btnSave.CommandName == "insert")
         {            
-            val = _db.EmploymentHistoryInsert(UserID: Session["UserID"].ToString().ToParseInt(),
+            val = _db.EmploymentHistoryInsert(UserID: Session["UserID"].ToParseInt(),
                 StructureID: cmStructure.Value.ToParseInt(),
                 CadreID: cmCadre.Value.ToParseInt(),
                 CompanyID: cmCompany.Value.ToParseInt(),
@@ -175,7 +175,7 @@ public partial class EmploymentHistory : System.Web.UI.Page
         {
 
             val = _db.EmploymentHistoryUpdate(EmploymentHistoryID: btnSave.CommandArgument.ToParseInt(),
-                UserID: Session["UserID"].ToString().ToParseInt(),
+                UserID: Session["UserID"].ToParseInt(),
                 StructureID: cmStructure.Value.ToParseInt(),
                 CadreID: cmCadre.Value.ToParseInt(),
                 CompanyID: cmCompany.Value.ToParseInt(),

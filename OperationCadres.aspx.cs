@@ -168,7 +168,7 @@ public partial class OperationCadres : System.Web.UI.Page
 
         if (btnSave.CommandName == "insert")
         {
-            val = _db.OperationCadreInsert(UserID: Session["UserID"].ToString().ToParseInt(),
+            val = _db.OperationCadreInsert(UserID: Session["UserID"].ToParseInt(),
                 CadreID: cmCadre.Value.ToParseInt(),
                 WorkID: cmWork.Value.ToParseInt(),
                 LinesID: cmLine.Value.ToParseInt(),
@@ -185,7 +185,7 @@ public partial class OperationCadres : System.Web.UI.Page
         {
 
             val = _db.OperationCadreUpdate(WorkDoneID: btnSave.CommandArgument.ToParseInt(),
-                UserID: Session["UserID"].ToString().ToParseInt(),
+                UserID: Session["UserID"].ToParseInt(),
                 CadreID: cmCadre.Value.ToParseInt(),
                 WorkID: cmWork.Value.ToParseInt(),
                 LinesID: cmLine.Value.ToParseInt(),

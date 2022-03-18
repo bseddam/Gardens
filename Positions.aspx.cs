@@ -67,13 +67,13 @@ public partial class Positins : System.Web.UI.Page
 
         if (btnSave.CommandName == "insert")
         {
-            val = _db.PositionInsert(UserID: Session["UserID"].ToString().ToParseInt(),
+            val = _db.PositionInsert(UserID: Session["UserID"].ToParseInt(),
                 PositionName: txtname.Text.ToParseStr());
         }
         else
         {
             val = _db.PositionUpdate(PositionID: btnSave.CommandArgument.ToParseInt(),
-                UserID: Session["UserID"].ToString().ToParseInt(),
+                UserID: Session["UserID"].ToParseInt(),
                 PositionName: txtname.Text.ToParseStr());
         }
 

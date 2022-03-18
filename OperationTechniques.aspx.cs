@@ -153,7 +153,7 @@ public partial class OperationTechniques : System.Web.UI.Page
         if (btnSave.CommandName == "insert")
         {
 
-            val = _db.OperationTechniqueWorkDoneInsert(UserID: Session["UserID"].ToString().ToParseInt(),
+            val = _db.OperationTechniqueWorkDoneInsert(UserID: Session["UserID"].ToParseInt(),
                 TechniqueID: cmTechnique.Value.ToParseInt(),
                 CompanyID: cmCompany.Value.ToParseInt(),
                 WorkID: cmWork.Value.ToParseInt(),
@@ -168,7 +168,7 @@ public partial class OperationTechniques : System.Web.UI.Page
         {
 
             val = _db.OperationTechniqueWorkDoneUpdate(TechniquesWorkDoneID: btnSave.CommandArgument.ToParseInt(),
-                UserID: Session["UserID"].ToString().ToParseInt(),
+                UserID: Session["UserID"].ToParseInt(),
                 TechniqueID: cmTechnique.Value.ToParseInt(),
                 CompanyID: cmCompany.Value.ToParseInt(),
                 WorkID: cmWork.Value.ToParseInt(),

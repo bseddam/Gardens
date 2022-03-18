@@ -158,7 +158,7 @@ public partial class Users : System.Web.UI.Page
         chlist.ClearSelection();
         for (int i = 0; i < chlist.Items.Count; i++)
         {
-            if (dt1.Rows[0]["UserStatusID"].ToString() != "1")
+            if (dt1.Rows[0]["UserStatusID"].ToParseStr() != "1")
             {
                 if (dt != null)
                 {
@@ -166,7 +166,7 @@ public partial class Users : System.Web.UI.Page
                     {
                         foreach (DataRow row in dt.Rows)
                         {
-                            if (chlist.Items[i].Value == row["SiteMapID"].ToString())
+                            if (chlist.Items[i].Value == row["SiteMapID"].ToParseStr())
                             {
                                 chlist.Items[i].Selected = true;
                             }

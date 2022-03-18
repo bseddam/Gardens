@@ -156,7 +156,7 @@ public partial class Technique : System.Web.UI.Page
         if (btnSave.CommandName == "insert")
         {
 
-            val = _db.TechniqueInsert(UserID: Session["UserID"].ToString().ToParseInt(),
+            val = _db.TechniqueInsert(UserID: Session["UserID"].ToParseInt(),
                 GardenID: cmbgarden.Value.ToParseInt(),
                 ModelID: cmmodels.Value.ToParseInt(),
                 RegisterNumber: txtRegisterNumber.Text.ToParseStr(),
@@ -168,7 +168,7 @@ public partial class Technique : System.Web.UI.Page
                 GPSLogin: txtlogin.Text.ToParseStr(),
                 GPSPassword: txtpass.Text.ToParseStr(),
                 ProductionYear: txtProductionYear.Text.ToParseInt(),
-                Photourl: Session["imgpath"].ToString(),
+                Photourl: Session["imgpath"].ToParseStr(),
                 Birka: txtBirka.Text.ToParseStr(),
                 TechniquesName: txtname.Text.ToParseStr(),
                 Passport: txtpassport.Text.ToParseStr(),
@@ -178,7 +178,7 @@ public partial class Technique : System.Web.UI.Page
             {
                 if (FileUpload1.HasFile)
                 {
-                    FileUpload1.SaveAs(Server.MapPath("/imgtechnique/" + Session["imgpath"].ToString()));
+                    FileUpload1.SaveAs(Server.MapPath("/imgtechnique/" + Session["imgpath"].ToParseStr()));
                 }
             }
 
@@ -187,7 +187,7 @@ public partial class Technique : System.Web.UI.Page
         {
 
             val = _db.TechniqueUpdate(TechniqueID: btnSave.CommandArgument.ToParseInt(),
-                UserID: Session["UserID"].ToString().ToParseInt(),
+                UserID: Session["UserID"].ToParseInt(),
                 GardenID: cmbgarden.Value.ToParseInt(),
                 ModelID: cmmodels.Value.ToParseInt(),
                 RegisterNumber: txtRegisterNumber.Text.ToParseStr(),
@@ -199,7 +199,7 @@ public partial class Technique : System.Web.UI.Page
                 GPSLogin: txtlogin.Text.ToParseStr(),
                 GPSPassword: txtpass.Text.ToParseStr(),
                 ProductionYear: txtProductionYear.Text.ToParseInt(),
-                Photourl: Session["imgpath"].ToString(),
+                Photourl: Session["imgpath"].ToParseStr(),
                 Birka: txtBirka.Text.ToParseStr(),
                 TechniquesName: txtname.Text.ToParseStr(),
                 Passport: txtpassport.Text.ToParseStr(),
@@ -208,7 +208,7 @@ public partial class Technique : System.Web.UI.Page
             {
                 if (FileUpload1.HasFile)
                 {
-                    FileUpload1.SaveAs(Server.MapPath("/imgtechnique/" + Session["imgpath"].ToString()));
+                    FileUpload1.SaveAs(Server.MapPath("/imgtechnique/" + Session["imgpath"].ToParseStr()));
                 }
             }
         }

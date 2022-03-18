@@ -73,14 +73,14 @@ public partial class Cards : System.Web.UI.Page
 
         if (btnSave.CommandName == "insert")
         {
-            val = _db.CardsInsert(UserID: Session["UserID"].ToString().ToParseInt(),
+            val = _db.CardsInsert(UserID: Session["UserID"].ToParseInt(),
                 CardNumber: txtcardnumber.Text.ToParseStr(),
                 CardBarcode: txtcardbarkod.Text.ToParseStr());
         }
         else
         {
             val = _db.CardsUpdate(CardID: btnSave.CommandArgument.ToParseInt(),
-                UserID: Session["UserID"].ToString().ToParseInt(),
+                UserID: Session["UserID"].ToParseInt(),
                 CardNumber: txtcardnumber.Text.ToParseStr(),
                 CardBarcode: txtcardbarkod.Text.ToParseStr());
         }

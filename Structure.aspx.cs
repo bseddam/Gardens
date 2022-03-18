@@ -69,14 +69,14 @@ public partial class Structure : System.Web.UI.Page
 
         if (btnSave.CommandName == "insert")
         {
-            val = _db.StructureInsert(UserID: Session["UserID"].ToString().ToParseInt(),
+            val = _db.StructureInsert(UserID: Session["UserID"].ToParseInt(),
                 StructureName: txtname.Text.ToParseStr(),
                 StructureSort: float.Parse(txtsort.Text.ToParseStr()));
         }
         else
         {
             val = _db.StructureUpdate(StructureID: btnSave.CommandArgument.ToParseInt(),
-                UserID: Session["UserID"].ToString().ToParseInt(),
+                UserID: Session["UserID"].ToParseInt(),
                 StructureName: txtname.Text.ToParseStr(),
                 StructureSort: float.Parse(txtsort.Text.ToParseStr()));
         }

@@ -2202,9 +2202,9 @@ CardBarcode=@CardBarcode where CardID=@CardID", SqlConn);
         int TechniqueSituationID, int GPS, string GPSLogin, string GPSPassword, int ProductionYear, string Photourl, string Birka, string TechniquesName, string Passport, string BoughtDate)
     {
 
-        SqlCommand cmd = new SqlCommand(@"insert into Techniques (UserID,GardenID,  ModelID,  RegisterNumber,  SerieNumber, 
+        SqlCommand cmd = new SqlCommand(@"insert into Techniques (GardenID,  ModelID,  RegisterNumber,  SerieNumber, 
 Motor,  CompanyID,  TechniqueSituationID,  GPS, GPSLogin, GPSPassword,  ProductionYear,  Photo,  Birka,  TechniquesName,  
-Passport,  BoughtDate)    Values( @UserID,@GardenID,  @ModelID,  @RegisterNumber,  @SerieNumber,  @Motor,  @CompanyID,  @TechniqueSituationID,  @GPS, @GPSLogin, @GPSPassword, @ProductionYear,  @Photourl,  @Birka,  @TechniquesName,  @Passport,  @BoughtDate)", SqlConn);
+Passport,  BoughtDate)    Values( @GardenID,  @ModelID,  @RegisterNumber,  @SerieNumber,  @Motor,  @CompanyID,  @TechniqueSituationID,  @GPS, @GPSLogin, @GPSPassword, @ProductionYear,  @Photourl,  @Birka,  @TechniquesName,  @Passport,  @BoughtDate)", SqlConn);
         cmd.Parameters.AddWithValue("@UserID", UserID);
         cmd.Parameters.AddWithValue("@GardenID", GardenID);
         cmd.Parameters.AddWithValue("@ModelID", ModelID);
@@ -2222,21 +2222,21 @@ Passport,  BoughtDate)    Values( @UserID,@GardenID,  @ModelID,  @RegisterNumber
         cmd.Parameters.AddWithValue("@TechniquesName", TechniquesName);
         cmd.Parameters.AddWithValue("@Passport", Passport);
         cmd.Parameters.AddWithValue("@BoughtDate", ConvertTypes.ToParseDatetime(BoughtDate));
-        try
-        {
+        //try
+        //{
             cmd.Connection.Open();
             cmd.ExecuteNonQuery();
             return Types.ProsesType.Succes;
-        }
-        catch (Exception ex)
-        {
-            return Types.ProsesType.Error;
-        }
-        finally
-        {
-            cmd.Connection.Close();
-            cmd.Dispose();
-        }
+        //}
+        //catch (Exception ex)
+        //{
+        //    return Types.ProsesType.Error;
+        //}
+        //finally
+        //{
+        //    cmd.Connection.Close();
+        //    cmd.Dispose();
+        //}
     }
 
     public Types.ProsesType TechniqueUpdate(int TechniqueID, int UserID,int GardenID, int ModelID, string RegisterNumber, 

@@ -134,7 +134,7 @@ public partial class Cadres : System.Web.UI.Page
 
         if (btnSave.CommandName == "insert")
         {
-            val = _db.CadresInsert(UserID: Session["UserID"].ToString().ToParseInt(),
+            val = _db.CadresInsert(UserID: Session["UserID"].ToParseInt(),
                 CardID: cmCardNumber.Value.ToParseInt(),
                 Sname: txtSname.Text.ToParseStr(),
                 Name: txtName.Text.ToParseStr(),
@@ -143,7 +143,7 @@ public partial class Cadres : System.Web.UI.Page
                 PassportN: txtPassportN.Text.ToParseStr(),
                 PIN: txtPIN.Text.ToParseStr(),
                 PhoneNumber: txtPhoneNumber.Text.ToParseStr(),
-                Photo: Session["imgpath"].ToString(),
+                Photo: Session["imgpath"].ToParseStr(),
                 Email: txtEmail.Text.ToParseStr(),
                 Address: txtAddress.Text.ToParseStr(),                
                 RegstrDate: dtRegstrDate.Text.ToParseStr()
@@ -152,7 +152,7 @@ public partial class Cadres : System.Web.UI.Page
             {
                 if (FileUpload1.HasFile)
                 {
-                    FileUpload1.SaveAs(Server.MapPath("/imgcadres/" + Session["imgpath"].ToString()));
+                    FileUpload1.SaveAs(Server.MapPath("/imgcadres/" + Session["imgpath"].ToParseStr()));
                 }
             }
 
@@ -161,7 +161,7 @@ public partial class Cadres : System.Web.UI.Page
         {
 
             val = _db.CadresUpdate(CadreID: btnSave.CommandArgument.ToParseInt(),
-                UserID: Session["UserID"].ToString().ToParseInt(),
+                UserID: Session["UserID"].ToParseInt(),
                 CardID: cmCardNumber.Value.ToParseInt(),
                 Sname: txtSname.Text.ToParseStr(),
                 Name: txtName.Text.ToParseStr(),
@@ -170,7 +170,7 @@ public partial class Cadres : System.Web.UI.Page
                 PassportN: txtPassportN.Text.ToParseStr(),
                 PIN: txtPIN.Text.ToParseStr(),
                 PhoneNumber: txtPhoneNumber.Text.ToParseStr(),
-                Photo: Session["imgpath"].ToString(),
+                Photo: Session["imgpath"].ToParseStr(),
                 Email: txtEmail.Text.ToParseStr(),
                 Address: txtAddress.Text.ToParseStr(),
                 RegstrDate: dtRegstrDate.Text.ToParseStr());
@@ -178,7 +178,7 @@ public partial class Cadres : System.Web.UI.Page
             {
                 if (FileUpload1.HasFile)
                 {
-                    FileUpload1.SaveAs(Server.MapPath("/imgcadres/" + Session["imgpath"].ToString()));
+                    FileUpload1.SaveAs(Server.MapPath("/imgcadres/" + Session["imgpath"].ToParseStr()));
                 }
             }
         }

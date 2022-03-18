@@ -126,7 +126,7 @@ public partial class OperationWateringSystems : System.Web.UI.Page
         if (btnSave.CommandName == "insert")
         {
 
-            val = _db.OperationWateringSystemsWorkDoneInsert(UserID: Session["UserID"].ToString().ToParseInt(),
+            val = _db.OperationWateringSystemsWorkDoneInsert(UserID: Session["UserID"].ToParseInt(),
                 GardenID: cmWateringSystemsGarden.Value.ToParseInt(),
                 WateringSystemID: cmWateringSystemsName.Value.ToParseInt(),
                 WateringSystemSize: txtWateringSystemSize.Text.ToParseStr(),
@@ -140,7 +140,7 @@ public partial class OperationWateringSystems : System.Web.UI.Page
         {
 
             val = _db.OperationWateringSystemsWorkDoneUpdate(WateringSystemWorkID: btnSave.CommandArgument.ToParseInt(),
-                UserID: Session["UserID"].ToString().ToParseInt(),
+                UserID: Session["UserID"].ToParseInt(),
                 GardenID: cmWateringSystemsGarden.Value.ToParseInt(),
                 WateringSystemID: cmWateringSystemsName.Value.ToParseInt(),
                 WateringSystemSize: txtWateringSystemSize.Text.ToParseStr(),

@@ -55,14 +55,14 @@ public partial class OperationStockTransfer : System.Web.UI.Page
     }
     protected void lnkEdit_Click(object sender, EventArgs e)
     {
-        string commandArgs = (sender as LinkButton).CommandArgument.ToString();
+        string commandArgs = (sender as LinkButton).CommandArgument.ToParseStr();
         
 
         //int id = (sender as LinkButton).CommandArgument.ToParseInt();
         componentsload();
         ClearComponents();
         btnSave.CommandName = "insert";
-        btnSave.CommandArgument = commandArgs.ToString();
+        btnSave.CommandArgument = commandArgs.ToParseStr();
         popupEdit.ShowOnPageLoad = true;
     }
     //protected void lnkDelete_Click(object sender, EventArgs e)
@@ -83,7 +83,7 @@ public partial class OperationStockTransfer : System.Web.UI.Page
         
         if (btnSave.CommandName == "insert")
         {
-            string[] cma = btnSave.CommandArgument.ToString().Split(new char[] { ',' });
+            string[] cma = btnSave.CommandArgument.ToParseStr().Split(new char[] { ',' });
             string StockFromID = cma[0];
             string ProductID = cma[1];
             
