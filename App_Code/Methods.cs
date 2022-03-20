@@ -2222,21 +2222,21 @@ Passport,  BoughtDate)    Values( @GardenID,  @ModelID,  @RegisterNumber,  @Seri
         cmd.Parameters.AddWithValue("@TechniquesName", TechniquesName);
         cmd.Parameters.AddWithValue("@Passport", Passport);
         cmd.Parameters.AddWithValue("@BoughtDate", ConvertTypes.ToParseDatetime(BoughtDate));
-        //try
-        //{
+        try
+        {
             cmd.Connection.Open();
             cmd.ExecuteNonQuery();
             return Types.ProsesType.Succes;
-        //}
-        //catch (Exception ex)
-        //{
-        //    return Types.ProsesType.Error;
-        //}
-        //finally
-        //{
-        //    cmd.Connection.Close();
-        //    cmd.Dispose();
-        //}
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
     }
 
     public Types.ProsesType TechniqueUpdate(int TechniqueID, int UserID,int GardenID, int ModelID, string RegisterNumber, 
@@ -4150,7 +4150,7 @@ where ProductStockInputOutputID=@ProductStockInputOutputID;", SqlConn);
             SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by ProductID desc) sn,
        [ProductID],p.[UserID],[ProductsName],p.[ProductTypeID],pt.ProductTypeName
       ,p.[ModelID],m.ModelName,[Code],p.[UnitMeasurementID] ,u.UnitMeasurementName
-      ,[Notes] from [Products] p 
+      ,[Notes],ProductsName+N', ölçü vahidi:'+isnull(UnitMeasurementName,'') ddlname from [Products] p 
   left join ProductTypes pt on p.ProductTypeID=pt.ProductTypeID
   left join Models m on p.ModelID=m.ModelID
   left join UnitMeasurements u on p.UnitMeasurementID=u.UnitMeasurementID 
@@ -4954,7 +4954,7 @@ where OrderInvoiceID=@OrderInvoiceID", SqlConn);
             SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by op.OrderProductID desc) sn,
        p.[ProductsName],p.[ProductTypeID],pt.ProductTypeName
       ,p.[ModelID],m.ModelName,[Code],p.[UnitMeasurementID] ,u.UnitMeasurementName,
-	  op.UserID,op.OrderInvoiceID, op.ProductID,op.ProductSize
+	  op.UserID,op.OrderInvoiceID, op.ProductID,op.ProductSize,op.OrderProductID
        from OrderProduct op left join[Products] p on op.ProductID=p.ProductID
  left join ProductTypes pt on p.ProductTypeID=pt.ProductTypeID
  left join Models m on p.ModelID=m.ModelID
@@ -4969,4 +4969,95 @@ where OrderInvoiceID=@OrderInvoiceID", SqlConn);
             return null;
         }
     }
+    public DataTable GetOrderProductByID(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select op.ProductID,op.ProductSize,p.ModelID,p.ProductTypeID from 
+OrderProduct op inner join Products p on p.ProductID=op.ProductID
+ where op.DeleteTime is null and op.OrderProductID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+    public Types.ProsesType DeleteOrderProduct(int id)
+    {
+        SqlCommand cmd = new SqlCommand(@"Update OrderProduct set DeleteTime=GetDate() where OrderProductID=@id ", SqlConn);
+        cmd.Parameters.AddWithValue("@id", id);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+    public Types.ProsesType OrderProductInsert(int ProductID, int OrderInvoiceID, string ProductSize)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"insert into OrderProduct (UserID, OrderInvoiceID, ProductID, ProductSize) 
+Values(@UserID, @OrderInvoiceID, @ProductID, @ProductSize)", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@OrderInvoiceID", OrderInvoiceID);
+        cmd.Parameters.AddWithValue("@ProductID", ProductID);
+        cmd.Parameters.AddWithValue("@ProductSize", ConvertTypes.ToParseFloat(ProductSize));
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+    public Types.ProsesType OrderProductUpdate(int OrderProductID, int ProductID, int OrderInvoiceID, string ProductSize)
+    {
+        SqlCommand cmd = new SqlCommand(@"update OrderProduct set UserID=@UserID,ProductID=@ProductID,OrderInvoiceID=@OrderInvoiceID,ProductSize=@ProductSize
+where OrderProductID=@OrderProductID", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@OrderInvoiceID", OrderInvoiceID);
+        cmd.Parameters.AddWithValue("@ProductID", ProductID);
+        cmd.Parameters.AddWithValue("@ProductSize", ConvertTypes.ToParseFloat(ProductSize));
+        cmd.Parameters.AddWithValue("@OrderProductID", OrderProductID);
+
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
 }
