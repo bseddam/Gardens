@@ -20,9 +20,9 @@
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-   <%-- <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+    <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
       <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-        <ContentTemplate>--%>
+        <ContentTemplate>
             <div class="content-wrapper">
                 <div class="card">
                     <div class="card-body">                      
@@ -73,7 +73,10 @@
                                               
                                                   <dx:GridViewDataColumn Caption="Modeli" FieldName="ModelName" VisibleIndex="1">
                                                     <EditFormSettings VisibleIndex="1" />
-                                                </dx:GridViewDataColumn>                                 
+                                                </dx:GridViewDataColumn>   
+                                                     <dx:GridViewDataColumn Caption="Bağ" FieldName="GardenName" VisibleIndex="1">
+                                                    <EditFormSettings VisibleIndex="1" />
+                                                </dx:GridViewDataColumn>
                                                 <dx:GridViewDataColumn Caption="Şirkət" FieldName="CompanyName" VisibleIndex="1">
                                                     <EditFormSettings VisibleIndex="1" />
                                                 </dx:GridViewDataColumn>
@@ -307,7 +310,7 @@
                 }
             </style>
 
-     <%--   </ContentTemplate>
-    </asp:UpdatePanel>--%>
+        </ContentTemplate>
+    </asp:UpdatePanel>
 </asp:Content>
 

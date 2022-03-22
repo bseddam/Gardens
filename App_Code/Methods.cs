@@ -2469,13 +2469,14 @@ where TechniqueServiceID=@TechniqueServiceID", SqlConn);
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"select  row_number() 
-over(order by t.TechniqueID desc) sn,c.Sname+' '+c.Name UsingUsers,
+over(order by t.TechniqueID desc) sn,c.Sname+' '+c.Name UsingUsers,g.GardenID,g.GardenName,
 t.TechniquesName, m.ModelName, cp.CompanyName,t.Motor,t.RegisterNumber,t.SerieNumber,t.Passport,t.ProductionYear,t.Birka,ts.TechniqueSituationName,t.GPS,t.GPSLogin,t.GPSPassword,t.BoughtDate,t.Photo,t.TechniqueID,t.ModelID,t.UserID ID,t.CompanyID,t.TechniqueSituationID
 from Techniques t 
 left join Users u on t.UserID=u.UserID
 left join Cadres c on u.CadreID=c.CadreID
 left join Models m on m.ModelID=t.ModelID
 left join Companies cp on cp.CompanyID=t.CompanyID 
+left join Gardens g on g.GardenID=t.GardenID 
 left join TechniqueSituation ts on ts.TechniqueSituationID=t.TechniqueSituationID 
 where t.DeleteTime is null order by t.UserID desc", SqlConn);
             da.Fill(dt);

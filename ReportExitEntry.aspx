@@ -8,7 +8,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
       <!-- ======= Default Section ======= -->
     <section id="about" class="about section-bg">
-        <div class="container">
+
 
            
             <div class="row">
@@ -83,7 +83,7 @@
             </div>
 
 
-        </div>
+
     </section>
     <!-- End Default -->
 </asp:Content>

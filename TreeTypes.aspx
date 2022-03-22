@@ -11,7 +11,7 @@
         <ContentTemplate>
     <!-- ======= Default Section ======= -->
     <section id="about" class="about section-bg">
-        <div class="container">
+
 
             <asp:LinkButton ID="btnAdd" runat="server" CommandArgument="add" OnClick="LnkPnlMenu_Click" CssClass="btn btn-dark">Yeni ağac növü əlavə et</asp:LinkButton>
 
@@ -238,7 +238,7 @@
             </div>
 
 
-        </div>
+
     </section>
     <!-- End Default -->
         </ContentTemplate>

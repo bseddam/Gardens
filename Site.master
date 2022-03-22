@@ -140,7 +140,7 @@
     <!-- End Header -->
 
     <main>
-        <div class="container">
+        <div class="container-fluid">
             <div class="row">
                 <form id="form1" runat="server">
                     <div>

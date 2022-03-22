@@ -7,7 +7,6 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <!-- ======= Default Section ======= -->
     <section id="about" class="about section-bg">
-        <div class="container">
 
             <asp:LinkButton ID="btnAdd" runat="server" CommandArgument="add" OnClick="LnkPnlMenu_Click" CssClass="btn btn-dark">Yeni iş əlavə et</asp:LinkButton>
 
@@ -143,7 +142,6 @@
             </div>
 
 
-        </div>
     </section>
     <!-- End Default -->
 </asp:Content>
