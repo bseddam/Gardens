@@ -18,9 +18,13 @@ public partial class GardenInformation : System.Web.UI.Page
     }
     void ClearComponents()
     {
- 
         dtRegstrDate.Text = "";
-
+        txtadress.Text = "";
+        txtarea.Text = "";
+        txtregisternum.Text = "";
+        txtregistrynum.Text = "";
+        txtXCoordinate.Text = "";
+        txtYCoordinate.Text = "";
     }
     void _loadGridFromDb()
     {
@@ -68,6 +72,9 @@ public partial class GardenInformation : System.Web.UI.Page
         txtarea.Text = dt.Rows[0]["Area"].ToParseStr();
         txtregistrynum.Text = dt.Rows[0]["RegistryNumber"].ToParseStr();
         txtregisternum.Text = dt.Rows[0]["RegisterNumber"].ToParseStr();
+        txtXCoordinate.Text = dt.Rows[0]["XCoordinate"].ToParseStr();
+        txtYCoordinate.Text = dt.Rows[0]["YCoordinate"].ToParseStr();
+
         DateTime datevalue;
         if (DateTime.TryParse(dt.Rows[0]["RegisterTime"].ToParseStr(), out datevalue))
         {
@@ -118,7 +125,9 @@ public partial class GardenInformation : System.Web.UI.Page
                 Area: txtarea.Text.ToParseStr(),
                 RegisterNumber:txtregisternum.Text.ToParseStr(),
                 RegistryNumber: txtregistrynum.Text.ToParseStr(),
-                RegisterTime: dtRegstrDate.Text.ToParseStr()
+                RegisterTime: dtRegstrDate.Text.ToParseStr(),
+                XCoordinate: txtXCoordinate.Text.ToParseStr(),
+                YCoordinate: txtYCoordinate.Text.ToParseStr()
                 );
         }
         else
@@ -131,7 +140,9 @@ public partial class GardenInformation : System.Web.UI.Page
                 Area: txtarea.Text.ToParseStr(),
                 RegisterNumber: txtregisternum.Text.ToParseStr(),
                 RegistryNumber: txtregistrynum.Text.ToParseStr(),
-                RegisterTime: dtRegstrDate.Text.ToParseStr()
+                RegisterTime: dtRegstrDate.Text.ToParseStr(),
+                XCoordinate: txtXCoordinate.Text.ToParseStr(),
+                YCoordinate: txtYCoordinate.Text.ToParseStr()
                 );
         }
 

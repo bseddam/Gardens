@@ -4607,12 +4607,12 @@ Values (@UserID,@StockFromID,@StockToID,@ProductID,@ProductSize,@RegisterTime)",
 
 
     public Types.ProsesType GardenInformationInsert(int GardenID, int CompanyID, string Adress, string Area, string RegisterNumber,
-        string RegistryNumber, string RegisterTime)
+        string RegistryNumber,string XCoordinate, string YCoordinate, string RegisterTime)
     {
 
         SqlCommand cmd = new SqlCommand(@"insert into GardenInformations (UserID,GardenID,CompanyID,Adress,Area,RegisterNumber,
-RegistryNumber,RegisterTime)  Values(@UserID, @GardenID,@CompanyID,@Adress,@Area,@RegisterNumber,
-@RegistryNumber,@RegisterTime)", SqlConn);
+RegistryNumber,XCoordinate,YCoordinate,RegisterTime)  Values(@UserID, @GardenID,@CompanyID,@Adress,@Area,@RegisterNumber,
+@RegistryNumber,@XCoordinate,@YCoordinate,@RegisterTime)", SqlConn);
         cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
         cmd.Parameters.AddWithValue("@GardenID", GardenID);
         cmd.Parameters.AddWithValue("@CompanyID", CompanyID);
@@ -4620,6 +4620,8 @@ RegistryNumber,RegisterTime)  Values(@UserID, @GardenID,@CompanyID,@Adress,@Area
         cmd.Parameters.AddWithValue("@Area", ConvertTypes.ToParseFloat(Area));
         cmd.Parameters.AddWithValue("@RegisterNumber", RegisterNumber);
         cmd.Parameters.AddWithValue("@RegistryNumber", RegistryNumber);
+        cmd.Parameters.AddWithValue("@XCoordinate", XCoordinate);
+        cmd.Parameters.AddWithValue("@YCoordinate", YCoordinate);
         cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
         try
         {
@@ -4639,10 +4641,10 @@ RegistryNumber,RegisterTime)  Values(@UserID, @GardenID,@CompanyID,@Adress,@Area
     }
 
     public Types.ProsesType GardenInformationUpdate(int GardenInformationID, int GardenID, int CompanyID, string Adress, string Area, string RegisterNumber,
-        string RegistryNumber, string RegisterTime)
+        string RegistryNumber,string XCoordinate,string YCoordinate,string RegisterTime)
     {
         SqlCommand cmd = new SqlCommand(@"update GardenInformations set UserID=@UserID, GardenID=@GardenID,CompanyID=@CompanyID,
-Adress=@Adress,Area=@Area,RegisterNumber=@RegisterNumber,RegistryNumber=@RegistryNumber,
+Adress=@Adress,Area=@Area,RegisterNumber=@RegisterNumber,RegistryNumber=@RegistryNumber,XCoordinate=@XCoordinate,YCoordinate=@YCoordinate,
 RegisterTime=@RegisterTime where GardenInformationID=@GardenInformationID", SqlConn);
         cmd.Parameters.AddWithValue("@GardenInformationID", GardenInformationID);
         cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
@@ -4652,6 +4654,8 @@ RegisterTime=@RegisterTime where GardenInformationID=@GardenInformationID", SqlC
         cmd.Parameters.AddWithValue("@Area", ConvertTypes.ToParseFloat(Area));
         cmd.Parameters.AddWithValue("@RegisterNumber", RegisterNumber);
         cmd.Parameters.AddWithValue("@RegistryNumber", RegistryNumber);
+        cmd.Parameters.AddWithValue("@XCoordinate", XCoordinate);
+        cmd.Parameters.AddWithValue("@YCoordinate", YCoordinate);
         cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
 
         try
