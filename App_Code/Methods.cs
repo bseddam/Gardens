@@ -5065,4 +5065,86 @@ where OrderProductID=@OrderProductID", SqlConn);
         }
     }
 
+
+
+    
+
+    public DataTable GetProductTransfer()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"
+SELECT row_number() over(order by pst.ProductStockTransferID desc) sn,
+pst.*,p.ProductsName,m.ModelName,um.UnitMeasurementName,pt.ProductTypeName,
+s.StockName StockFromName,s1.StockName StockToName
+
+  FROM ProductStockTransfer pst
+left join Products p on pst.ProductID=p.ProductID
+left join Models m on m.ModelID=p.ModelID
+left join UnitMeasurements um on p.UnitMeasurementID=um.UnitMeasurementID
+left join ProductTypes pt on pt.ProductTypeID=p.ProductTypeID
+left join Stocks s on s.StockID=pst.StockFromID
+left join Stocks s1 on s1.StockID=pst.StockToID where pst.DeleteTime is null", SqlConn);
+
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+    public Types.ProsesType DeleteProductTransfer(int id)
+    {
+        SqlCommand cmd = new SqlCommand(@"Update ProductStockTransfer set DeleteTime=GetDate() where ProductStockTransferID=@id ", SqlConn);
+        cmd.Parameters.AddWithValue("@id", id);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+    public Types.ProsesType ProductStockUpdateTransfer(int ProductStockTransferID, int StockFromID, int UserID, int ProductID, int StockToID,
+       string ProductSize, string RegisterTime)
+    {
+
+
+        SqlCommand cmd = new SqlCommand(@"update ProductStockTransfer set UserID=@UserID,
+StockFromID=@StockFromID,StockToID=@StockToID,ProductID=@ProductID,ProductSize=@ProductSize,RegisterTime=@RegisterTime,
+UpdateTime=getdate() where ProductStockTransferID=@ProductStockTransferID", SqlConn);
+        cmd.Parameters.AddWithValue("@ProductStockTransferID", ProductStockTransferID);
+        cmd.Parameters.AddWithValue("@UserID", UserID);
+        cmd.Parameters.AddWithValue("@StockFromID", StockFromID);
+        cmd.Parameters.AddWithValue("@StockToID", StockToID);
+        cmd.Parameters.AddWithValue("@ProductID", ProductID);
+        cmd.Parameters.AddWithValue("@ProductSize", ConvertTypes.ToParseFloat(ProductSize));
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
 }
