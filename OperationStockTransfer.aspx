@@ -90,7 +90,7 @@
                              
 
                             <br />
-<div class="col-12"><b>Kocurulen mallar</b></div>
+<div class="col-12"><b>Köçürülen mallar</b></div>
  <dx:ASPxGridViewExporter ID="ASPxGridViewExporter1" runat="server" PaperKind="A4" Landscape="True"></dx:ASPxGridViewExporter>
                             <dx:ASPxGridView ID="Gridtransfer" runat="server"
                                 ClientInstanceName="grid"
