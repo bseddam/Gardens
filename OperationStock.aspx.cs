@@ -37,19 +37,6 @@ public partial class OperationStock : System.Web.UI.Page
             Grid.DataBind();
         }
     }
-    void Reasoncomponentload()
-    {
-        cmbStockOperationReason.Items.Clear();
-        DataTable dt3 = _db.GetStockOperationReasonsByProductOperationTypeID
-            (cmbProductOperationType.Value.ToParseInt());
-        cmbStockOperationReason.ValueField = "StockOperationReasonID";
-        cmbStockOperationReason.TextField = "ReasonName";
-        cmbStockOperationReason.DataSource = dt3;
-        cmbStockOperationReason.DataBind();
-        cmbStockOperationReason.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        cmbStockOperationReason.SelectedIndex = 0;
-
-    }
 
 
    
@@ -76,6 +63,7 @@ public partial class OperationStock : System.Web.UI.Page
         cmbmodel.DataSource = dt4x;
         cmbmodel.DataBind();
         cmbmodel.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmbmodel.Items.Insert(1, new ListEditItem("Yoxdur", "0"));
         cmbmodel.SelectedIndex = 0;
     }
 
@@ -95,14 +83,7 @@ public partial class OperationStock : System.Web.UI.Page
 
 
 
-        cmbProductOperationType.Items.Clear();
-        DataTable dt1 = _db.GetProductOperationTypes();
-        cmbProductOperationType.ValueField = "ProductOperationTypeID";
-        cmbProductOperationType.TextField = "ProductOperationTypeName";
-        cmbProductOperationType.DataSource = dt1;
-        cmbProductOperationType.DataBind();
-        cmbProductOperationType.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        cmbProductOperationType.SelectedIndex = 0;
+       
 
 
 
@@ -117,12 +98,19 @@ public partial class OperationStock : System.Web.UI.Page
 
 
 
+        cmbStockOperationReason.Items.Clear();
+        DataTable dt3 = _db.GetStockOperationReasonsByProductOperationTypeID(1);
+        cmbStockOperationReason.ValueField = "StockOperationReasonID";
+        cmbStockOperationReason.TextField = "ReasonName";
+        cmbStockOperationReason.DataSource = dt3;
+        cmbStockOperationReason.DataBind();
+        cmbStockOperationReason.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmbStockOperationReason.SelectedIndex = 0;
+
+
+
+
        
-
-
-
-       
-        Reasoncomponentload();
         productcomponentload();
         modelcomponentload();
     }
@@ -133,11 +121,11 @@ public partial class OperationStock : System.Web.UI.Page
         DataTable dt = _db.GetProductStockInputOutputByID(id: id);
         componentsload();
         cmbstock.Value = dt.Rows[0]["StockID"].ToParseStr();
-        cmbProductOperationType.Value = dt.Rows[0]["ProductOperationTypeID"].ToParseStr();
+      
         cmbproducttype.Value = dt.Rows[0]["ProductTypeID"].ToParseStr();
 
       
-        Reasoncomponentload();
+    
         cmbStockOperationReason.Value = dt.Rows[0]["StockOperationReasonID"].ToParseStr();
 
         modelcomponentload();
@@ -208,7 +196,7 @@ public partial class OperationStock : System.Web.UI.Page
         {
             val = _db.ProductStockInputOutputInsert(
                 StockID: cmbstock.Value.ToParseInt(),
-                ProductOperationTypeID: cmbProductOperationType.Value.ToParseInt(),
+                ProductOperationTypeID: 1,
                 StockOperationReasonID: cmbStockOperationReason.Value.ToParseInt(),
                 ProductID: cmbProducts.Value.ToParseInt(),
                 ProductSize: txtProductSize.Text.ToParseStr(),
@@ -224,7 +212,7 @@ public partial class OperationStock : System.Web.UI.Page
         {
             val = _db.ProductStockInputOutputUpdate(ProductStockInputOutputID: btnSave.CommandArgument.ToParseInt(),
                 StockID: cmbstock.Value.ToParseInt(),
-                ProductOperationTypeID: cmbProductOperationType.Value.ToParseInt(),
+                ProductOperationTypeID: 1,
                 StockOperationReasonID: cmbStockOperationReason.Value.ToParseInt(),
                 ProductID: cmbProducts.Value.ToParseInt(),
                 ProductSize: txtProductSize.Text.ToParseStr(),
@@ -251,10 +239,7 @@ public partial class OperationStock : System.Web.UI.Page
         popupEdit.ShowOnPageLoad = false;
     }
 
-    protected void cmbProductOperationType_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        Reasoncomponentload();
-    }
+    
 
     protected void cmbproducttype_SelectedIndexChanged(object sender, EventArgs e)
     {

@@ -68,12 +68,13 @@
                                     <dx:GridViewDataColumn Caption="Malın kateqoriyası" FieldName="ProductTypeName" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
+                                          <dx:GridViewDataColumn Caption="Ölçüsü" FieldName="ProductSize" VisibleIndex="1">
+                                        <EditFormSettings VisibleIndex="1" />
+                                    </dx:GridViewDataColumn>
                                     <dx:GridViewDataColumn Caption="Ölçü vahidi" FieldName="UnitMeasurementName" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
-                                    <dx:GridViewDataColumn Caption="Ölçüsü" FieldName="ProductSize" VisibleIndex="1">
-                                        <EditFormSettings VisibleIndex="1" />
-                                    </dx:GridViewDataColumn>
+                              
                                     <dx:GridViewDataColumn Caption="Qiyməti" FieldName="Price" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
@@ -137,14 +138,7 @@
                                                     </div>
 
 
-                                                    <div class="row mb-2">
-                                                        <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Əməliyyatın növü</label>
-                                                        <div class="col-sm-7">
-                                                            <dx:ASPxComboBox ID="cmbProductOperationType" runat="server" Width="100%" Height="30px" AutoPostBack="True" OnSelectedIndexChanged="cmbProductOperationType_SelectedIndexChanged">
-                                                            </dx:ASPxComboBox>
-                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ControlToValidate="cmbProductOperationType" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
-                                                        </div>
-                                                    </div>
+                                                   
 
 
                                                     <div class="row mb-2">

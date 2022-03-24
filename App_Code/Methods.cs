@@ -5096,6 +5096,35 @@ left join Stocks s1 on s1.StockID=pst.StockToID where pst.DeleteTime is null", S
         }
     }
 
+
+    public DataTable GetProductTransferByID(int id)
+    {
+        //try
+        //{
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"
+SELECT row_number() over(order by pst.ProductStockTransferID desc) sn,
+pst.*,p.ProductsName,m.ModelName,um.UnitMeasurementName,pt.ProductTypeName,
+s.StockName StockFromName,s1.StockName StockToName
+
+  FROM ProductStockTransfer pst
+left join Products p on pst.ProductID=p.ProductID
+left join Models m on m.ModelID=p.ModelID
+left join UnitMeasurements um on p.UnitMeasurementID=um.UnitMeasurementID
+left join ProductTypes pt on pt.ProductTypeID=p.ProductTypeID
+left join Stocks s on s.StockID=pst.StockFromID
+left join Stocks s1 on s1.StockID=pst.StockToID where pst.DeleteTime is null and 
+pst.ProductStockTransferID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        //}
+        //catch (Exception ex)
+        //{
+        //    return null;
+        //}
+    }
+
     public Types.ProsesType DeleteProductTransfer(int id)
     {
         SqlCommand cmd = new SqlCommand(@"Update ProductStockTransfer set DeleteTime=GetDate() where ProductStockTransferID=@id ", SqlConn);
@@ -5116,6 +5145,8 @@ left join Stocks s1 on s1.StockID=pst.StockToID where pst.DeleteTime is null", S
             cmd.Dispose();
         }
     }
+
+
     public Types.ProsesType ProductStockUpdateTransfer(int ProductStockTransferID, int StockFromID, int UserID, int ProductID, int StockToID,
        string ProductSize, string RegisterTime)
     {
@@ -5147,4 +5178,96 @@ UpdateTime=getdate() where ProductStockTransferID=@ProductStockTransferID", SqlC
             cmd.Dispose();
         }
     }
+
+
+
+    public DataTable GetProductStockOutput()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by ProductStockInputOutputID desc) sn,psio.*,s.StockName,pot.ProductOperationTypeName,pt.ProductTypeID,pt.ProductTypeName,
+sor.ReasonName,p.ProductsName,um.UnitMeasurementName,m.ModelID,m.ModelName FROM [ProductStockInputOutput] psio 
+left join ProductOperationTypes pot on psio.ProductOperationTypeID=pot.ProductOperationTypeID
+left join StockOperationReasons sor on psio.StockOperationReasonID=sor.StockOperationReasonID and sor.ProductOperationTypeID=pot.ProductOperationTypeID
+left join Products p on psio.ProductID=p.ProductID
+left join Models m on m.ModelID=p.ModelID
+left join UnitMeasurements um on p.UnitMeasurementID=um.UnitMeasurementID
+left join ProductTypes pt on pt.ProductTypeID=p.ProductTypeID
+left join Stocks s on s.StockID=psio.StockID
+ where psio.DeleteTime is null and psio.ProductOperationTypeID=2
+", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+
+
+
+    public Types.ProsesType ProductStockOutputInsert(int StockID,int ProductID, string ProductSize,
+        string RegisterTime, string Notes)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"insert into ProductStockInputOutput 
+(UserID,StockID,ProductOperationTypeID,StockOperationReasonID,ProductID,
+ProductSize,RegisterTime,Notes) values 
+(@UserID,@StockID,@ProductOperationTypeID,@StockOperationReasonID,@ProductID,
+@ProductSize,@RegisterTime,@Notes)", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@StockID", StockID);
+        cmd.Parameters.AddWithValue("@ProductOperationTypeID", 2);
+        cmd.Parameters.AddWithValue("@StockOperationReasonID", 4);
+        cmd.Parameters.AddWithValue("@ProductID", ProductID);
+        cmd.Parameters.AddWithValue("@ProductSize", ConvertTypes.ToParseFloat(ProductSize));
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        cmd.Parameters.AddWithValue("@Notes", Notes);
+        //try
+        //{
+        cmd.Connection.Open();
+        cmd.ExecuteNonQuery();
+        return Types.ProsesType.Succes;
+        //}
+        //catch (Exception ex)
+        //{
+        //    return Types.ProsesType.Error;
+        //}
+        //finally
+        //{
+        //    cmd.Connection.Close();
+        //    cmd.Dispose();
+        //}
+    }
+
+
+    public Types.ProsesType DeleteProductOutput(int id)
+    {
+        SqlCommand cmd = new SqlCommand(@"Update ProductStockInputOutput set DeleteTime=GetDate() where ProductStockInputOutputID=@id ", SqlConn);
+        cmd.Parameters.AddWithValue("@id", id);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+
+
+
+
+
 }

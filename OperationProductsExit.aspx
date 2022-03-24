@@ -1,4 +1,5 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="OperationStockTransfer.aspx.cs" Inherits="OperationStockTransfer" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="OperationProductsExit.aspx.cs" Inherits="OperationProductsExit" %>
+
 
 
 <%@ Register Assembly="DevExpress.Web.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web" TagPrefix="dx" %>
@@ -63,17 +64,18 @@
                                     <dx:GridViewDataColumn Caption="Malın kateqoriyası" FieldName="ProductTypeName" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
+                                             <dx:GridViewDataColumn Caption="Ölçüsü" FieldName="productsizesum" VisibleIndex="1">
+                                        <EditFormSettings VisibleIndex="1" />
+                                    </dx:GridViewDataColumn>
                                     <dx:GridViewDataColumn Caption="Ölçü vahidi" FieldName="UnitMeasurementName" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
-                                    <dx:GridViewDataColumn Caption="Ölçüsü" FieldName="productsizesum" VisibleIndex="1">
-                                        <EditFormSettings VisibleIndex="1" />
-                                    </dx:GridViewDataColumn>
+                           
 
 
                                     <dx:GridViewDataColumn VisibleIndex="1">
                                         <DataItemTemplate>
-                                            <asp:LinkButton ID="lnkInsert" OnClick="lnkInsert_Click" CommandArgument='<%#Eval("StockID")+","+ Eval("ProductID")%>' Text="Köçür" runat="server" />
+                                            <asp:LinkButton ID="lnkInsert" OnClick="lnkInsert_Click" CommandArgument='<%#Eval("StockID")+","+ Eval("ProductID")%>' Text="Məxaric" runat="server" />
                                         </DataItemTemplate>
                                     </dx:GridViewDataColumn>
 
@@ -84,7 +86,7 @@
 
 
                             <br />
-                            <div class="col-12"><b>Köçürülən mallar</b></div>
+                            <div class="col-12"><b>Məxaric</b></div>
                             <dx:ASPxGridViewExporter ID="ASPxGridViewExporter1" runat="server" PaperKind="A4" Landscape="True"></dx:ASPxGridViewExporter>
                             <dx:ASPxGridView ID="Gridtransfer" runat="server"
                                 ClientInstanceName="grid"
@@ -115,33 +117,46 @@
 
                                 <Columns>
 
+                                  
                                     <dx:GridViewDataColumn Caption="Sıra nömrəsi" FieldName="sn" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
-                                    <dx:GridViewDataColumn Caption="Mal adı" FieldName="ProductsName" VisibleIndex="1">
+                                    <dx:GridViewDataColumn Caption="Anbar adı" FieldName="StockName" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
-                                    <dx:GridViewDataColumn Caption="Anbardan" FieldName="StockFromName" VisibleIndex="1">
+                                    <dx:GridViewDataColumn Caption="Əməliyyat növü" FieldName="ProductOperationTypeName" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
-                                    <dx:GridViewDataColumn Caption="Anbara" FieldName="StockToName" VisibleIndex="1">
+                                    <dx:GridViewDataColumn Caption="Əməliyyat səbəbi" FieldName="ReasonName" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
-
-                                    <dx:GridViewDataColumn Caption="Ölçüsü" FieldName="ProductSize" VisibleIndex="1">
+                                   
+                                    <dx:GridViewDataColumn Caption="Model adı" FieldName="ModelName" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
-
-                                    <dx:GridViewDataColumn Caption="Ölçüsü vahidi" FieldName="UnitMeasurementName" VisibleIndex="1">
+                                    <dx:GridViewDataColumn Caption="Malın adı" FieldName="ProductsName" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
-
+                                    <dx:GridViewDataColumn Caption="Malın kateqoriyası" FieldName="ProductTypeName" VisibleIndex="1">
+                                        <EditFormSettings VisibleIndex="1" />
+                                    </dx:GridViewDataColumn>
+                                        <dx:GridViewDataColumn Caption="Ölçüsü" FieldName="ProductSize" VisibleIndex="1">
+                                        <EditFormSettings VisibleIndex="1" />
+                                    </dx:GridViewDataColumn>
+                                    <dx:GridViewDataColumn Caption="Ölçü vahidi" FieldName="UnitMeasurementName" VisibleIndex="1">
+                                        <EditFormSettings VisibleIndex="1" />
+                                    </dx:GridViewDataColumn>
+                                
+                                   
+                                    <dx:GridViewDataColumn Caption="Qeyd" FieldName="Notes" VisibleIndex="1">
+                                        <EditFormSettings VisibleIndex="1" />
+                                    </dx:GridViewDataColumn>
 
                                     <dx:GridViewDataColumn Caption="Qeydiyyat tarixi" FieldName="RegisterTime" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
 
-                             <%--        <dx:GridViewDataColumn VisibleIndex="1">
+                                    <%-- <dx:GridViewDataColumn VisibleIndex="1">
                                         <DataItemTemplate>
                                             <asp:LinkButton ID="lnkEdit" OnClick="lnkEdit_Click" CommandArgument='<%#Eval("ProductStockTransferID") %>' Text="Düzəliş" runat="server" />
                                         </DataItemTemplate>
@@ -149,7 +164,7 @@
 
                                     <dx:GridViewDataColumn VisibleIndex="1">
                                         <DataItemTemplate>
-                                            <asp:LinkButton ID="lnkDelete" OnClick="lnkDelete_Click" OnClientClick="return confirm('Silmək istədiyinizə əminsinizmi?');" CommandArgument='<%#Eval("ProductStockTransferID") %>' Text="Sil" runat="server" />
+                                            <asp:LinkButton ID="lnkDelete" OnClick="lnkDelete_Click" OnClientClick="return confirm('Silmək istədiyinizə əminsinizmi?');" CommandArgument='<%#Eval("ProductStockInputOutputID") %>' Text="Sil" runat="server" />
                                         </DataItemTemplate>
                                     </dx:GridViewDataColumn>
 
@@ -184,21 +199,18 @@
                                 HeaderText="Redaktə"
                                 PopupHorizontalAlign="WindowCenter"
                                 PopupVerticalAlign="WindowCenter"
-                                Height="300"
+                                Height="400"
                                 ScrollBars="Vertical">
                                 <ContentCollection>
                                     <dx:PopupControlContentControl>
 
                                         <div class="container">
 
-                                            <div class="row mb-2">
-                                                <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Anbar adı</label>
-                                                <div class="col-sm-7">
-                                                    <dx:ASPxComboBox ID="cmbstock" runat="server" Width="100%" Height="30px">
-                                                    </dx:ASPxComboBox>
-                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator13" runat="server" ControlToValidate="cmbstock" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
-                                                </div>
-                                            </div>
+
+
+
+
+
                                             <div class="row mb-2">
                                                 <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ölçü</label>
                                                 <div class="col-sm-7">
@@ -209,6 +221,14 @@
 
                                                 </div>
                                             </div>
+
+                                              <div class="row mb-2">
+                                                        <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Qeyd</label>
+                                                        <div class="col-sm-7">
+                                                            <asp:TextBox ID="txtNote" class="form-control mb-0 mt-0" runat="server" placeholder="Mətni daxil edin..." TextMode="MultiLine">
+                                                            </asp:TextBox>
+                                                        </div>
+                                                    </div>
 
                                             <div class="row  mb-2">
                                                 <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Qeydiyyat tarixi</label>
@@ -247,6 +267,6 @@
         }
     </style>
 
-  
+
 </asp:Content>
 
