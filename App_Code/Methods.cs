@@ -4357,7 +4357,7 @@ where p.UserID=@UserID", SqlConn);
 
 
 
-
+    //Agac sayı
 
     public DataTable GetTreesCounts()
     {
@@ -4391,8 +4391,8 @@ tt.TreeTypeName,t.TreeName,c.CountryName
 
     public DataTable GetTreesCountsByID(int id)
     {
-        //try
-        //{
+        try
+        {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"
 
@@ -4412,11 +4412,11 @@ tt.TreeTypeName,t.TreeName,c.CountryName,s.SectorID,g.GardenID,z.ZoneID,c.Countr
             da.SelectCommand.Parameters.AddWithValue("id", id);
             da.Fill(dt);
             return dt;
-        //}
-        //catch (Exception ex)
-        //{
-        //    return null;
-        //}
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
     }
 
 
@@ -4508,6 +4508,171 @@ TreeSitiuation=@TreeSitiuation,UpdateTime=getdate() where TreeCountID=@TreeCount
             cmd.Dispose();
         }
     }
+
+
+
+    //Direk sayi
+
+    public DataTable GetPoleTypes()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by PoleTypeID desc) sn, 
+ * FROM [PoleTypes] p where p.DeleteTime is null", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+    public DataTable GetPolesCounts()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"
+SELECT row_number() over(order by PoleCountID desc) sn,pc.*,l.LineName,s.SectorName,z.ZoneName,g.GardenName,pt.PoleTypeName
+  FROM PolesCount pc 
+  left join Lines l on  pc.LineID=l.LineID 
+  left join Sectors s on s.SectorID=l.SectorID
+  left join Zones z on z.ZoneID=s.ZoneID
+  left join Gardens g on g.GardenID=z.GardenID 
+  left join PoleTypes pt on pc.PoleTypeID=pt.PoleTypeID
+  where pc.DeleteTime is null ", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+
+    public DataTable GetPolesCountsByID(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"
+SELECT row_number() 
+over(order by PoleCountID desc) sn,pc.*,l.LineName,s.SectorName,z.ZoneName,g.GardenName,pt.PoleTypeName,
+s.SectorID,g.GardenID,z.ZoneID
+  FROM PolesCount pc 
+  left join Lines l on  pc.LineID=l.LineID 
+  left join Sectors s on s.SectorID=l.SectorID
+  left join Zones z on z.ZoneID=s.ZoneID
+  left join Gardens g on g.GardenID=z.GardenID 
+  left join PoleTypes pt on pc.PoleTypeID=pt.PoleTypeID
+  where pc.DeleteTime is null and PoleCountID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+
+
+
+
+    public Types.ProsesType PoleCountInsert(int LineID, int PoleTypeID,
+    int PoleCount, string RegisterTime)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"insert into PolesCount 
+(UserID,RegisterTime,LineID,PoleTypeID,PoleCount) 
+values (@UserID,@RegisterTime,@LineID,@PoleTypeID,@PoleCount)", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        cmd.Parameters.AddWithValue("@LineID", LineID);
+        cmd.Parameters.AddWithValue("@PoleTypeID", PoleTypeID);
+        cmd.Parameters.AddWithValue("@PoleCount", PoleCount);
+   
+
+
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+
+
+
+    public Types.ProsesType PoleCountUpdate(int PoleCountID, int LineID, int PoleTypeID,
+    int PoleCount, string RegisterTime)
+    {
+        SqlCommand cmd = new SqlCommand(@"update PolesCount set UserID=@UserID,
+RegisterTime=@RegisterTime,LineID=@LineID,PoleTypeID=@PoleTypeID,PoleCount=@PoleCount,
+UpdateTime=getdate() where PoleCountID=@PoleCountID", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        cmd.Parameters.AddWithValue("@LineID", LineID);
+        cmd.Parameters.AddWithValue("@PoleTypeID", PoleTypeID);
+        cmd.Parameters.AddWithValue("@PoleCount", PoleCount);
+        cmd.Parameters.AddWithValue("@PoleCountID", PoleCountID);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+    public Types.ProsesType PoleCountDelete(int id)
+    {
+        SqlCommand cmd = new SqlCommand(@"update PolesCount set UserID=@UserID,DeleteTime=getdate() where PoleCountID=@id", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@id", id);
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+
+
+
+
+
     //Anbar Kocurmeleri
     public DataTable GetProductStock()
     {
