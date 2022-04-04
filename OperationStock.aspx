@@ -7,12 +7,21 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
    <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
-      <%-- <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-        <ContentTemplate>--%>
+       <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+        <ContentTemplate>
     <div class="content-wrapper">
         <div class="card">
             <div class="card-body">
-                <asp:LinkButton ID="btnAdd" runat="server" CommandArgument="add" OnClick="LnkPnlMenu_Click" CssClass="btn btn-info">Yeni</asp:LinkButton>
+                <div class="row">
+                    <div class="col-3">
+                    <asp:LinkButton ID="btnQaime" runat="server" CommandArgument="add" OnClick="btnQaime_Click" CssClass="btn btn-dark">Yeni qaimə əlavə et</asp:LinkButton>
+                </div>
+                <div class="col-6"></div>
+                <div class="col-3" style="text-align:right;">
+                     <asp:LinkButton ID="btnAdd" runat="server" CommandArgument="add" OnClick="LnkPnlMenu_Click" CssClass="btn btn-dark">Yeni mal əlavə et</asp:LinkButton>
+                </div>
+                </div>
+                
                 <div class="row">
                     <div class="col-12">
                         <div class="table-responsive">
@@ -277,7 +286,7 @@
         }
     </style>
 
-           <%--</ContentTemplate>
-    </asp:UpdatePanel>--%>
+           </ContentTemplate>
+    </asp:UpdatePanel>
 </asp:Content>
 

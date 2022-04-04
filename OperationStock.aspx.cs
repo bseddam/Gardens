@@ -253,4 +253,9 @@ public partial class OperationStock : System.Web.UI.Page
     {
         productcomponentload();
     }
+
+    protected void btnQaime_Click(object sender, EventArgs e)
+    {
+
+    }
 }
