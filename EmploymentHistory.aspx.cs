@@ -152,10 +152,7 @@ public partial class EmploymentHistory : System.Web.UI.Page
     {
         lblPopError.Text = "";
         Types.ProsesType val = Types.ProsesType.Error;
-        if (Session["UserID"] != null)
-        {
-            Session["UserID"] = 1;
-        }
+       
 
         if (btnSave.CommandName == "insert")
         {            

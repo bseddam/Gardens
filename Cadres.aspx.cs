@@ -118,10 +118,7 @@ public partial class Cadres : System.Web.UI.Page
     {
         lblPopError.Text = "";
         Types.ProsesType val = Types.ProsesType.Error;
-        if (Session["UserID"] != null)
-        {
-            Session["UserID"] = 1;
-        }
+       
 
         if (FileUpload1.HasFile)
         {

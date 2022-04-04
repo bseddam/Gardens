@@ -3966,6 +3966,172 @@ where EntryExitID=@EntryExitID;", SqlConn);
         }
     }
 
+    public DataTable GetInvoiceInput()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by InvoiceStockID desc) sn,
+invs.*,sor.ReasonName,S.StockName,st.InvoiceStatusName from InvoiceStock invs
+left join ProductOperationTypes pot on invs.ProductOperationTypeID=pot.ProductOperationTypeID
+left join StockOperationReasons sor on invs.StockOperationReasonID=sor.StockOperationReasonID 
+and sor.ProductOperationTypeID=pot.ProductOperationTypeID
+left join Stocks s on s.StockID=invs.StockID
+left join InvoiceStatus st on invs.InvoiceStatusID=st.InvoiceStatusID
+ where invs.DeleteTime is null", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+
+    public DataTable GetProductStockInputByID(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by InvoiceStockID desc) sn,
+invs.*,sor.ReasonName,S.StockName,st.InvoiceStatusName from InvoiceStock invs
+left join ProductOperationTypes pot on invs.ProductOperationTypeID=pot.ProductOperationTypeID
+left join StockOperationReasons sor on invs.StockOperationReasonID=sor.StockOperationReasonID 
+and sor.ProductOperationTypeID=pot.ProductOperationTypeID
+left join Stocks s on s.StockID=invs.StockID
+left join InvoiceStatus st on invs.InvoiceStatusID=st.InvoiceStatusID
+ where invs.DeleteTime is null
+ and InvoiceStockID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+    public DataTable GetProductStockInputByInvoiceID(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by ProductStockInputOutputID desc) sn,psio.*,s.StockName,pot.ProductOperationTypeName,pt.ProductTypeID,pt.ProductTypeName,
+sor.ReasonName,p.ProductsName,um.UnitMeasurementName,m.ModelID,m.ModelName FROM [ProductStockInputOutput] psio 
+left join ProductOperationTypes pot on psio.ProductOperationTypeID=pot.ProductOperationTypeID
+left join StockOperationReasons sor on psio.StockOperationReasonID=sor.StockOperationReasonID and sor.ProductOperationTypeID=pot.ProductOperationTypeID
+left join Products p on psio.ProductID=p.ProductID
+left join Models m on m.ModelID=p.ModelID
+left join UnitMeasurements um on p.UnitMeasurementID=um.UnitMeasurementID
+left join ProductTypes pt on pt.ProductTypeID=p.ProductTypeID
+left join Stocks s on s.StockID=psio.StockID
+ where psio.DeleteTime is null and psio.InvoiceStockID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+
+    public Types.ProsesType ProductStockInputInsert(int StockID, int ProductOperationTypeID,
+      int StockOperationReasonID,int InvoiceStatusID,  string RegisterTime, string Notes)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"insert into InvoiceStock 
+(UserID,StockID,ProductOperationTypeID,StockOperationReasonID,InvoiceStatusID,RegisterTime,Notes) values 
+(@UserID,@StockID,@ProductOperationTypeID,@StockOperationReasonID,@InvoiceStatusID,@RegisterTime,@Notes)", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@StockID", StockID);
+        cmd.Parameters.AddWithValue("@ProductOperationTypeID", ProductOperationTypeID);
+        cmd.Parameters.AddWithValue("@StockOperationReasonID", StockOperationReasonID);
+        cmd.Parameters.AddWithValue("@InvoiceStatusID", InvoiceStatusID);
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        cmd.Parameters.AddWithValue("@Notes", Notes);
+        //try
+        //{
+        cmd.Connection.Open();
+        cmd.ExecuteNonQuery();
+        return Types.ProsesType.Succes;
+        //}
+        //catch (Exception ex)
+        //{
+        //    return Types.ProsesType.Error;
+        //}
+        //finally
+        //{
+        //    cmd.Connection.Close();
+        //    cmd.Dispose();
+        //}
+    }
+
+
+    public Types.ProsesType ProductStockInputUpdate(int InvoiceStockID, int StockID, int ProductOperationTypeID,
+      int StockOperationReasonID, int InvoiceStatusID, string RegisterTime, string Notes)
+    {
+        SqlCommand cmd = new SqlCommand(@"update InvoiceStock set UserID=@UserID,
+ProductOperationTypeID=@ProductOperationTypeID,StockID=@StockID,StockOperationReasonID=@StockOperationReasonID,
+InvoiceStatusID=@InvoiceStatusID,
+RegisterTime=@RegisterTime,Notes=@Notes,UpdateTime=getdate() where InvoiceStockID=@InvoiceStockID", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@InvoiceStockID", InvoiceStockID);
+        cmd.Parameters.AddWithValue("@StockID", StockID);
+        cmd.Parameters.AddWithValue("@ProductOperationTypeID", ProductOperationTypeID);
+        cmd.Parameters.AddWithValue("@StockOperationReasonID", StockOperationReasonID);
+        cmd.Parameters.AddWithValue("@InvoiceStatusID", InvoiceStatusID);
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        cmd.Parameters.AddWithValue("@Notes", Notes);
+        //try
+        //{
+        cmd.Connection.Open();
+        cmd.ExecuteNonQuery();
+        return Types.ProsesType.Succes;
+        //}
+        //catch (Exception ex)
+        //{
+        //    return Types.ProsesType.Error;
+        //}
+        //finally
+        //{
+        //    cmd.Connection.Close();
+        //    cmd.Dispose();
+        //}
+    }
+
+
+    public Types.ProsesType DeleteProductStockInput(int id)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"Update InvoiceStock set deletetime=getdate(),UserID=@UserID 
+where InvoiceStockID=@InvoiceStockID;", SqlConn);
+        cmd.Parameters.AddWithValue("@InvoiceStockID", id);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            //LogInsert(Utils.Tables.pages, Utils.LogType.delete, String.Format("IndicatorsDelete () "), ex.Message, "", true);
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+
+
+
 
 
     public DataTable GetProductStockInputOutput()

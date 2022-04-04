@@ -13,7 +13,7 @@ public partial class OperationStock : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        _loadGridFromDb();
+        _loadGridInvoiceInput();
         if (IsPostBack) return;
     }
     void ClearComponents()
@@ -21,15 +21,17 @@ public partial class OperationStock : System.Web.UI.Page
         txtAmount.Text = "";
         txtAmountDiscount.Text = "";
         txtNote.Text = "";
+        txtnotesinv.Text = "";
         txtPrice.Text = "";
         txtPriceDiscount.Text = "";
         txtProductSize.Text = "";
         cmbregistertime.Text = "";
-       
+        cmbregistertime1.Text = "";
+
     }
-    void _loadGridFromDb()
+    void _loadGridFromDb(int id)
     {
-        DataTable dt = _db.GetProductStockInputOutput();
+        DataTable dt = _db.GetProductStockInputByInvoiceID(id);
         if (dt != null)
         {
             Grid.SettingsPager.Summary.Text = "Cari səhifə: {0}, Ümumi səhifələrin sayı: {1}, Tapılmış məlumatların sayı: {2}";
@@ -38,15 +40,26 @@ public partial class OperationStock : System.Web.UI.Page
         }
     }
 
+    void _loadGridInvoiceInput()
+    {
+        DataTable dt1 = _db.GetInvoiceInput();
+        if (dt1 != null)
+        {
+            GridInvoice.SettingsPager.Summary.Text = "Cari səhifə: {0}, Ümumi səhifələrin sayı: {1}, Tapılmış məlumatların sayı: {2}";
+            GridInvoice.DataSource = dt1;
+            GridInvoice.DataBind();
+        }
+    }
 
-   
 
-   
+
+
+
 
     void productcomponentload()
     {
         cmbProducts.Items.Clear();
-        DataTable dt6 = _db.GetProductByModelProductId(cmbmodel.Value.ToParseInt(),cmbproducttype.Value.ToParseInt());
+        DataTable dt6 = _db.GetProductByModelProductId(cmbmodel.Value.ToParseInt(), cmbproducttype.Value.ToParseInt());
         cmbProducts.ValueField = "ProductID";
         cmbProducts.TextField = "ProductsName";
         cmbProducts.DataSource = dt6;
@@ -70,7 +83,7 @@ public partial class OperationStock : System.Web.UI.Page
     void componentsload()
     {
 
-        
+
 
         cmbstock.Items.Clear();
         DataTable d2t1 = _db.GetStocks();
@@ -81,9 +94,16 @@ public partial class OperationStock : System.Web.UI.Page
         cmbstock.Items.Insert(0, new ListEditItem("Seçin", "-1"));
         cmbstock.SelectedIndex = 0;
 
+        cmbInvoiceStatus.Items.Clear();
+        DataTable dt23 = _db.GetInvoiceStatus();
+        cmbInvoiceStatus.ValueField = "InvoiceStatusID";
+        cmbInvoiceStatus.TextField = "InvoiceStatusName";
+        cmbInvoiceStatus.DataSource = dt23;
+        cmbInvoiceStatus.DataBind();
+        cmbInvoiceStatus.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmbInvoiceStatus.SelectedIndex = 0;
 
 
-       
 
 
 
@@ -110,9 +130,59 @@ public partial class OperationStock : System.Web.UI.Page
 
 
 
-       
+
         productcomponentload();
         modelcomponentload();
+    }
+    protected void lnkProducts_Click(object sender, EventArgs e)
+    {
+        LinkButton btn = sender as LinkButton;
+        int id = btn.CommandArgument.ToParseInt();
+        Session["InvoiceStockID"] = id;
+        _loadGridFromDb(id);
+    }
+    protected void lnkEditInvoice_Click(object sender, EventArgs e)
+    {
+        int id = (sender as LinkButton).CommandArgument.ToParseInt();
+        DataTable dt = _db.GetProductStockInputByID(id: id);
+        componentsload();
+        cmbstock.Value = dt.Rows[0]["StockID"].ToParseStr();
+     cmbInvoiceStatus.Value = dt.Rows[0]["InvoiceStatusID"].ToParseStr();
+
+
+
+        cmbStockOperationReason.Value = dt.Rows[0]["StockOperationReasonID"].ToParseStr();
+
+
+
+        txtnotesinv.Text = dt.Rows[0]["Notes"].ToParseStr();
+        
+
+
+
+
+        DateTime datevalue;
+        if (DateTime.TryParse(dt.Rows[0]["RegisterTime"].ToParseStr(), out datevalue))
+        {
+            cmbregistertime1.Text = DateTime.Parse(dt.Rows[0]["RegisterTime"].ToParseStr()).ToString("dd.MM.yyyy");
+        }
+        else
+        {
+            cmbregistertime1.Text = "";
+        }
+
+
+
+
+        btnInvoice.CommandName = "update";
+        btnInvoice.CommandArgument = id.ToString();
+        popupVoice.ShowOnPageLoad = true;
+    }
+    protected void lnkDeleteInvoice_Click(object sender, EventArgs e)
+    {
+        int _id = (sender as LinkButton).CommandArgument.ToParseInt();
+        Types.ProsesType val = _db.DeleteProductStockInput(id: _id);
+        _loadGridInvoiceInput();
     }
     protected void lnkEdit_Click(object sender, EventArgs e)
     {
@@ -121,17 +191,17 @@ public partial class OperationStock : System.Web.UI.Page
         DataTable dt = _db.GetProductStockInputOutputByID(id: id);
         componentsload();
         cmbstock.Value = dt.Rows[0]["StockID"].ToParseStr();
-      
+
         cmbproducttype.Value = dt.Rows[0]["ProductTypeID"].ToParseStr();
 
-      
-    
+
+
         cmbStockOperationReason.Value = dt.Rows[0]["StockOperationReasonID"].ToParseStr();
 
         modelcomponentload();
         cmbmodel.Value = dt.Rows[0]["ModelID"].ToParseStr();
         productcomponentload();
-       
+
         cmbProducts.Value = dt.Rows[0]["ProductID"].ToParseStr();
 
         txtAmount.Text = dt.Rows[0]["Amount"].ToParseStr();
@@ -165,8 +235,23 @@ public partial class OperationStock : System.Web.UI.Page
     {
         int _id = (sender as LinkButton).CommandArgument.ToParseInt();
         Types.ProsesType val = _db.DeleteProductStockInputOutput(id: _id);
-        _loadGridFromDb();
+        _loadGridFromDb(Session["InvoiceStockID"].ToParseInt());
     }
+    protected void LnkInvoice_Click(object sender, EventArgs e)
+    {
+
+        componentsload();
+        ClearComponents();
+        LinkButton btn = sender as LinkButton;
+        switch (btn.CommandArgument)
+        {
+            case "add":
+                btnInvoice.CommandName = "insert";
+                popupVoice.ShowOnPageLoad = true;
+                break;
+        }
+    }
+
     protected void LnkPnlMenu_Click(object sender, EventArgs e)
     {
 
@@ -185,10 +270,7 @@ public partial class OperationStock : System.Web.UI.Page
     {
         lblPopError.Text = "";
         Types.ProsesType val = Types.ProsesType.Error;
-        if (Session["UserID"] != null)
-        {
-            Session["UserID"] = 1;
-        }
+       
 
 
 
@@ -231,7 +313,7 @@ public partial class OperationStock : System.Web.UI.Page
             return;
         }
 
-        _loadGridFromDb();
+        _loadGridFromDb(Session["InvoiceStockID"].ToParseInt());
         popupEdit.ShowOnPageLoad = false;
     }
     protected void btnCancel_Click(object sender, EventArgs e)
@@ -239,7 +321,55 @@ public partial class OperationStock : System.Web.UI.Page
         popupEdit.ShowOnPageLoad = false;
     }
 
-    
+
+
+
+    protected void btninvoice_Click(object sender, EventArgs e)
+    {
+        lblerrorinv.Text = "";
+        Types.ProsesType val = Types.ProsesType.Error;
+
+
+
+
+        if (btnInvoice.CommandName == "insert")
+        {
+            val = _db.ProductStockInputInsert(
+                StockID: cmbstock.Value.ToParseInt(),
+                ProductOperationTypeID: 1,
+                StockOperationReasonID: cmbStockOperationReason.Value.ToParseInt(),
+                InvoiceStatusID: cmbInvoiceStatus.Value.ToParseInt(),
+                RegisterTime: cmbregistertime1.Text.ToParseStr(),
+                Notes: txtnotesinv.Text.ToParseStr()
+                );
+        }
+        else
+        {
+            val = _db.ProductStockInputUpdate(InvoiceStockID: btnInvoice.CommandArgument.ToParseInt(),
+                StockID: cmbstock.Value.ToParseInt(),
+                ProductOperationTypeID: 1,
+                StockOperationReasonID: cmbStockOperationReason.Value.ToParseInt(),
+                InvoiceStatusID: cmbInvoiceStatus.Value.ToParseInt(),                
+                RegisterTime: cmbregistertime1.Text.ToParseStr(),
+                Notes: txtnotesinv.Text.ToParseStr()
+                );
+        }
+
+        if (val == Types.ProsesType.Error)
+        {
+            lblerrorinv.Text = "XƏTA! Yadda saxlamaq mümkün olmadı.";
+            return;
+        }
+
+        _loadGridInvoiceInput();
+        popupVoice.ShowOnPageLoad = false;
+    }
+    protected void btninvoiceCancel_Click(object sender, EventArgs e)
+    {
+        popupVoice.ShowOnPageLoad = false;
+    }
+
+
 
     protected void cmbproducttype_SelectedIndexChanged(object sender, EventArgs e)
     {
@@ -247,15 +377,12 @@ public partial class OperationStock : System.Web.UI.Page
         productcomponentload();
     }
 
-   
+
 
     protected void cmbmodel_SelectedIndexChanged(object sender, EventArgs e)
     {
         productcomponentload();
     }
 
-    protected void btnQaime_Click(object sender, EventArgs e)
-    {
-
-    }
+   
 }
