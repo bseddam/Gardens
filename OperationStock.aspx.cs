@@ -14,6 +14,7 @@ public partial class OperationStock : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         _loadGridInvoiceInput();
+        pnlprint.Visible = false;
         if (IsPostBack) return;
     }
     void ClearComponents()
@@ -80,7 +81,8 @@ public partial class OperationStock : System.Web.UI.Page
         cmbmodel.SelectedIndex = 0;
     }
 
-    void componentsload()
+
+    void componentsloadinvoice()
     {
 
 
@@ -105,6 +107,26 @@ public partial class OperationStock : System.Web.UI.Page
 
 
 
+        cmbStockOperationReason.Items.Clear();
+        DataTable dt3 = _db.GetStockOperationReasonsByProductOperationTypeID(1);
+        cmbStockOperationReason.ValueField = "StockOperationReasonID";
+        cmbStockOperationReason.TextField = "ReasonName";
+        cmbStockOperationReason.DataSource = dt3;
+        cmbStockOperationReason.DataBind();
+        cmbStockOperationReason.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmbStockOperationReason.SelectedIndex = 0;
+
+    }
+
+        void componentsload()
+    {
+
+
+
+        
+
+
+
 
 
         cmbproducttype.Items.Clear();
@@ -118,14 +140,6 @@ public partial class OperationStock : System.Web.UI.Page
 
 
 
-        cmbStockOperationReason.Items.Clear();
-        DataTable dt3 = _db.GetStockOperationReasonsByProductOperationTypeID(1);
-        cmbStockOperationReason.ValueField = "StockOperationReasonID";
-        cmbStockOperationReason.TextField = "ReasonName";
-        cmbStockOperationReason.DataSource = dt3;
-        cmbStockOperationReason.DataBind();
-        cmbStockOperationReason.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        cmbStockOperationReason.SelectedIndex = 0;
 
 
 
@@ -140,14 +154,15 @@ public partial class OperationStock : System.Web.UI.Page
         int id = btn.CommandArgument.ToParseInt();
         Session["InvoiceStockID"] = id;
         _loadGridFromDb(id);
+        
     }
     protected void lnkEditInvoice_Click(object sender, EventArgs e)
     {
         int id = (sender as LinkButton).CommandArgument.ToParseInt();
         DataTable dt = _db.GetProductStockInputByID(id: id);
-        componentsload();
+        componentsloadinvoice();
         cmbstock.Value = dt.Rows[0]["StockID"].ToParseStr();
-     cmbInvoiceStatus.Value = dt.Rows[0]["InvoiceStatusID"].ToParseStr();
+        cmbInvoiceStatus.Value = dt.Rows[0]["InvoiceStatusID"].ToParseStr();
 
 
 
@@ -156,7 +171,7 @@ public partial class OperationStock : System.Web.UI.Page
 
 
         txtnotesinv.Text = dt.Rows[0]["Notes"].ToParseStr();
-        
+
 
 
 
@@ -190,13 +205,10 @@ public partial class OperationStock : System.Web.UI.Page
         int id = (sender as LinkButton).CommandArgument.ToParseInt();
         DataTable dt = _db.GetProductStockInputOutputByID(id: id);
         componentsload();
-        cmbstock.Value = dt.Rows[0]["StockID"].ToParseStr();
-
+        
         cmbproducttype.Value = dt.Rows[0]["ProductTypeID"].ToParseStr();
 
 
-
-        cmbStockOperationReason.Value = dt.Rows[0]["StockOperationReasonID"].ToParseStr();
 
         modelcomponentload();
         cmbmodel.Value = dt.Rows[0]["ModelID"].ToParseStr();
@@ -240,7 +252,7 @@ public partial class OperationStock : System.Web.UI.Page
     protected void LnkInvoice_Click(object sender, EventArgs e)
     {
 
-        componentsload();
+        componentsloadinvoice();
         ClearComponents();
         LinkButton btn = sender as LinkButton;
         switch (btn.CommandArgument)
@@ -250,6 +262,20 @@ public partial class OperationStock : System.Web.UI.Page
                 popupVoice.ShowOnPageLoad = true;
                 break;
         }
+    }
+
+    protected void lnkPrint_Click(object sender, EventArgs e)
+    {
+        LinkButton btn = sender as LinkButton;
+        int id = btn.CommandArgument.ToParseInt();
+
+
+        pnlprint.Visible = true;
+        DataTable dt = _db.GetProductStockInputByInvoiceID(id);
+        rpprint.DataSource = dt;
+        rpprint.DataBind();
+        Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "PrintPanel()", true);
+        
     }
 
     protected void LnkPnlMenu_Click(object sender, EventArgs e)
@@ -270,16 +296,15 @@ public partial class OperationStock : System.Web.UI.Page
     {
         lblPopError.Text = "";
         Types.ProsesType val = Types.ProsesType.Error;
-       
-
-
-
+        DataTable dt = _db.GetProductStockInputByID(id: Session["InvoiceStockID"].ToParseInt());
+        
         if (btnSave.CommandName == "insert")
         {
             val = _db.ProductStockInputOutputInsert(
-                StockID: cmbstock.Value.ToParseInt(),
+                StockID: dt.Rows[0]["StockID"].ToParseInt(),
+                InvoiceStockID: Session["InvoiceStockID"].ToParseInt(),
                 ProductOperationTypeID: 1,
-                StockOperationReasonID: cmbStockOperationReason.Value.ToParseInt(),
+                StockOperationReasonID: dt.Rows[0]["StockOperationReasonID"].ToParseInt(),
                 ProductID: cmbProducts.Value.ToParseInt(),
                 ProductSize: txtProductSize.Text.ToParseStr(),
                 Price: txtPrice.Text.ToParseStr(),
@@ -293,9 +318,10 @@ public partial class OperationStock : System.Web.UI.Page
         else
         {
             val = _db.ProductStockInputOutputUpdate(ProductStockInputOutputID: btnSave.CommandArgument.ToParseInt(),
-                StockID: cmbstock.Value.ToParseInt(),
+                StockID: dt.Rows[0]["StockID"].ToParseInt(),
+                InvoiceStockID: Session["InvoiceStockID"].ToParseInt(),
                 ProductOperationTypeID: 1,
-                StockOperationReasonID: cmbStockOperationReason.Value.ToParseInt(),
+                StockOperationReasonID: dt.Rows[0]["StockOperationReasonID"].ToParseInt(),
                 ProductID: cmbProducts.Value.ToParseInt(),
                 ProductSize: txtProductSize.Text.ToParseStr(),
                 Price: txtPrice.Text.ToParseStr(),
@@ -349,7 +375,7 @@ public partial class OperationStock : System.Web.UI.Page
                 StockID: cmbstock.Value.ToParseInt(),
                 ProductOperationTypeID: 1,
                 StockOperationReasonID: cmbStockOperationReason.Value.ToParseInt(),
-                InvoiceStatusID: cmbInvoiceStatus.Value.ToParseInt(),                
+                InvoiceStatusID: cmbInvoiceStatus.Value.ToParseInt(),
                 RegisterTime: cmbregistertime1.Text.ToParseStr(),
                 Notes: txtnotesinv.Text.ToParseStr()
                 );
@@ -384,5 +410,5 @@ public partial class OperationStock : System.Web.UI.Page
         productcomponentload();
     }
 
-   
+
 }

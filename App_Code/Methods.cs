@@ -4189,22 +4189,22 @@ left join Stocks s on s.StockID=psio.StockID
     }
 
 
-    public Types.ProsesType ProductStockInputOutputInsert(int StockID, int ProductOperationTypeID,
+    public Types.ProsesType ProductStockInputOutputInsert(int StockID,int InvoiceStockID, int ProductOperationTypeID,
         int StockOperationReasonID, int ProductID, string ProductSize,
         string Price, string PriceDiscount, string Amount, string AmountDiscount, string RegisterTime, string Notes)
     {
 
         SqlCommand cmd = new SqlCommand(@"insert into ProductStockInputOutput 
-(UserID,StockID,ProductOperationTypeID,StockOperationReasonID,ProductID,
+(UserID,StockID,InvoiceStockID,ProductOperationTypeID,StockOperationReasonID,ProductID,
 ProductSize,Price,PriceDiscount,Amount,AmountDiscount,RegisterTime,Notes) values 
-(@UserID,@StockID,@ProductOperationTypeID,@StockOperationReasonID,@ProductID,
+(@UserID,@StockID,@InvoiceStockID,@ProductOperationTypeID,@StockOperationReasonID,@ProductID,
 @ProductSize,@Price,@PriceDiscount,@Amount,@AmountDiscount,@RegisterTime,@Notes)", SqlConn);
         cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
         cmd.Parameters.AddWithValue("@StockID", StockID);
+        cmd.Parameters.AddWithValue("@InvoiceStockID", InvoiceStockID);
         cmd.Parameters.AddWithValue("@ProductOperationTypeID", ProductOperationTypeID);
         cmd.Parameters.AddWithValue("@StockOperationReasonID", StockOperationReasonID);
         cmd.Parameters.AddWithValue("@ProductID", ProductID);
-        
         cmd.Parameters.AddWithValue("@ProductSize", ConvertTypes.ToParseFloat(ProductSize));
         cmd.Parameters.AddWithValue("@Price", ConvertTypes.ToParseFloat(Price));
         cmd.Parameters.AddWithValue("@PriceDiscount", ConvertTypes.ToParseFloat(PriceDiscount));
@@ -4231,19 +4231,20 @@ ProductSize,Price,PriceDiscount,Amount,AmountDiscount,RegisterTime,Notes) values
 
 
 
-    public Types.ProsesType ProductStockInputOutputUpdate(int ProductStockInputOutputID,int StockID,
+    public Types.ProsesType ProductStockInputOutputUpdate(int ProductStockInputOutputID,int StockID,int InvoiceStockID,
         int ProductOperationTypeID, int StockOperationReasonID, int ProductID, 
         string ProductSize, string Price, string PriceDiscount, string Amount,
         string AmountDiscount, string RegisterTime, string Notes)
     {
         SqlCommand cmd = new SqlCommand(@"update ProductStockInputOutput set UserID=@UserID,
-ProductOperationTypeID=@ProductOperationTypeID,StockID=@StockID,StockOperationReasonID=@StockOperationReasonID,
+ProductOperationTypeID=@ProductOperationTypeID,StockID=@StockID,InvoiceStockID=@InvoiceStockID,StockOperationReasonID=@StockOperationReasonID,
 ProductID=@ProductID,ProductSize=@ProductSize,
 Price=@Price,PriceDiscount=@PriceDiscount,Amount=@Amount,AmountDiscount=@AmountDiscount,
 RegisterTime=@RegisterTime,Notes=@Notes,UpdateTime=getdate() where ProductStockInputOutputID=@ProductStockInputOutputID", SqlConn);
         cmd.Parameters.AddWithValue("@ProductStockInputOutputID", ProductStockInputOutputID);
         cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
         cmd.Parameters.AddWithValue("@StockID", StockID);
+        cmd.Parameters.AddWithValue("@InvoiceStockID", InvoiceStockID);
         cmd.Parameters.AddWithValue("@ProductOperationTypeID", ProductOperationTypeID);
         cmd.Parameters.AddWithValue("@StockOperationReasonID", StockOperationReasonID);
         cmd.Parameters.AddWithValue("@ProductID", ProductID);
