@@ -3978,7 +3978,7 @@ left join StockOperationReasons sor on invs.StockOperationReasonID=sor.StockOper
 and sor.ProductOperationTypeID=pot.ProductOperationTypeID
 left join Stocks s on s.StockID=invs.StockID
 left join InvoiceStatus st on invs.InvoiceStatusID=st.InvoiceStatusID
- where invs.DeleteTime is null", SqlConn);
+ where invs.DeleteTime is null and invs.ProductOperationTypeID=1", SqlConn);
             da.Fill(dt);
             return dt;
         }
@@ -4002,7 +4002,7 @@ and sor.ProductOperationTypeID=pot.ProductOperationTypeID
 left join Stocks s on s.StockID=invs.StockID
 left join InvoiceStatus st on invs.InvoiceStatusID=st.InvoiceStatusID
  where invs.DeleteTime is null
- and InvoiceStockID=@id", SqlConn);
+ and InvoiceStockID=@id and invs.ProductOperationTypeID=1", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
             da.Fill(dt);
             return dt;
@@ -4027,7 +4027,28 @@ left join Models m on m.ModelID=p.ModelID
 left join UnitMeasurements um on p.UnitMeasurementID=um.UnitMeasurementID
 left join ProductTypes pt on pt.ProductTypeID=p.ProductTypeID
 left join Stocks s on s.StockID=psio.StockID
- where psio.DeleteTime is null and psio.InvoiceStockID=@id", SqlConn);
+ where psio.DeleteTime is null and psio.ProductOperationTypeID=1 and psio.InvoiceStockID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+
+
+    public DataTable GetSumProductStockInputByInvoiceID(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT sum(ProductSize) ProductSize,sum(Amount) Amount,
+sum(AmountDiscount) AmountDiscount FROM [ProductStockInputOutput] psio 
+ where psio.DeleteTime is null and psio.ProductOperationTypeID=1 and psio.InvoiceStockID=@id
+ group by psio.InvoiceStockID ", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
             da.Fill(dt);
             return dt;

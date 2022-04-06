@@ -271,6 +271,29 @@ public partial class OperationStock : System.Web.UI.Page
 
 
         pnlprint.Visible = true;
+        DataTable dt1 = _db.GetSumProductStockInputByInvoiceID(id);
+        if(dt1!=null)
+        {
+            if(dt1.Rows.Count > 0)
+            {
+                lblProductSize.Text = dt1.Rows[0]["ProductSize"].ToParseStr();
+                lblAmount.Text = dt1.Rows[0]["Amount"].ToParseStr();
+                lblAmountDiscount.Text = dt1.Rows[0]["AmountDiscount"].ToParseStr();
+            }
+            else
+            {
+                lblProductSize.Text = "";
+                lblAmount.Text = "";
+                lblAmountDiscount.Text = "";
+            }
+        }
+        else
+        {
+            lblProductSize.Text = "";
+            lblAmount.Text = "";
+            lblAmountDiscount.Text = "";
+        }
+        
         DataTable dt = _db.GetProductStockInputByInvoiceID(id);
         rpprint.DataSource = dt;
         rpprint.DataBind();

@@ -15,7 +15,7 @@
             printWindow.document.write('</head><body >');
             printWindow.document.write(panel.innerHTML);
             printWindow.document.write('</body></html>');
-            printWindow.document.write(panel.hidden = true);
+            panel.hidden = true;
             printWindow.document.close();
             setTimeout(function () {
                 printWindow.print();
