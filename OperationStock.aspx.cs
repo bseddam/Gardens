@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -297,8 +299,30 @@ public partial class OperationStock : System.Web.UI.Page
         DataTable dt = _db.GetProductStockInputByInvoiceID(id);
         rpprint.DataSource = dt;
         rpprint.DataBind();
-        Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "PrintPanel()", true);
-        
+        //Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "PrintPanel()", false);
+
+
+        StringWriter sw = new StringWriter();
+        HtmlTextWriter hw = new HtmlTextWriter(sw);
+        pnlprint.RenderControl(hw);
+        string gridHTML = sw.ToString().Replace("\"", "'")
+            .Replace(System.Environment.NewLine, "");
+        StringBuilder sb = new StringBuilder();
+        sb.Append("<script type = 'text/javascript'>");
+        sb.Append("window.onload = new function(){");
+        sb.Append("var printWin = window.open('', '', 'left=0");
+        sb.Append(",top=0,width=1000,height=600,status=0');");
+        sb.Append("printWin.document.write(\"");
+        sb.Append(gridHTML);
+        sb.Append("\");");
+        sb.Append("printWin.document.close();");
+        sb.Append("printWin.focus();");
+        sb.Append("printWin.print();");
+        sb.Append("printWin.close();};");
+        sb.Append("</script>");
+        ScriptManager.RegisterStartupScript(sender as Control, this.GetType(), "GridPrint", sb.ToString(), false);
+        pnlprint.Visible = false;
+
     }
 
     protected void LnkPnlMenu_Click(object sender, EventArgs e)

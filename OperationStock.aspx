@@ -7,26 +7,11 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
 
-    <script type="text/javascript">
-        function PrintPanel() {
-            var panel = document.getElementById("<%=pnlprint.ClientID %>");
-            var printWindow = window.open('', '', 'height=400,width=800');
-            printWindow.document.write('<html><head><title></title>');
-            printWindow.document.write('</head><body >');
-            printWindow.document.write(panel.innerHTML);
-            printWindow.document.write('</body></html>');
-            panel.hidden = true;
-            printWindow.document.close();
-            setTimeout(function () {
-                printWindow.print();
-            }, 500);
-            return false;
-        }
-    </script>
+  
 
-    <%-- <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+     <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-        <ContentTemplate>--%>
+        <ContentTemplate>
     <div class="content-wrapper">
         <div class="card">
             <div class="card-body">
@@ -495,7 +480,7 @@
         }
     </style>
 
-    <%--   </ContentTemplate>
-    </asp:UpdatePanel>--%>
+       </ContentTemplate>
+    </asp:UpdatePanel>
 </asp:Content>
 
