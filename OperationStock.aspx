@@ -1,14 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="OperationStock.aspx.cs" Inherits="OperationStock" %>
-
-
-
-<%@ Register Assembly="DevExpress.Web.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web" TagPrefix="dx" %>
-<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
-</asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-
-  
-
+﻿
      <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
         <ContentTemplate>
@@ -282,13 +272,13 @@
 
                                     <dx:GridViewDataColumn VisibleIndex="1">
                                         <DataItemTemplate>
-                                            <asp:LinkButton ID="lnkEdit" OnClick="lnkEdit_Click" CommandArgument='<%#Eval("ProductStockInputOutputID") %>' Text="Düzəliş" runat="server" />
+                                            <asp:LinkButton ID="LinkButton2" OnClick="lnkEdit_Click" CommandArgument='<%#Eval("ProductStockInputOutputID") %>' Text="Düzəliş" runat="server" />
                                         </DataItemTemplate>
                                     </dx:GridViewDataColumn>
 
                                     <dx:GridViewDataColumn VisibleIndex="1">
                                         <DataItemTemplate>
-                                            <asp:LinkButton ID="lnkDelete" OnClick="lnkDelete_Click" OnClientClick="return confirm('Silmək istədiyinizə əminsinizmi?');" CommandArgument='<%#Eval("ProductStockInputOutputID") %>' Text="Sil" runat="server" />
+                                            <asp:LinkButton ID="LinkButton3" OnClick="lnkDelete_Click" OnClientClick="return confirm('Silmək istədiyinizə əminsinizmi?');" CommandArgument='<%#Eval("ProductStockInputOutputID") %>' Text="Sil" runat="server" />
                                         </DataItemTemplate>
                                     </dx:GridViewDataColumn>
 
