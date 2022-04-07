@@ -3966,7 +3966,7 @@ where EntryExitID=@EntryExitID;", SqlConn);
         }
     }
 
-    public DataTable GetInvoiceInput()
+    public DataTable GetInvoiceInputOutput(int ProductOperationTypeID)
     {
         try
         {
@@ -3978,7 +3978,8 @@ left join StockOperationReasons sor on invs.StockOperationReasonID=sor.StockOper
 and sor.ProductOperationTypeID=pot.ProductOperationTypeID
 left join Stocks s on s.StockID=invs.StockID
 left join InvoiceStatus st on invs.InvoiceStatusID=st.InvoiceStatusID
- where invs.DeleteTime is null and invs.ProductOperationTypeID=1", SqlConn);
+ where invs.DeleteTime is null and invs.ProductOperationTypeID=@ProductOperationTypeID", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("ProductOperationTypeID", ProductOperationTypeID);
             da.Fill(dt);
             return dt;
         }
@@ -3989,7 +3990,7 @@ left join InvoiceStatus st on invs.InvoiceStatusID=st.InvoiceStatusID
     }
 
 
-    public DataTable GetProductStockInputByID(int id)
+    public DataTable GetInvoiceStockInputOutputByID(int id,int ProductOperationTypeID)
     {
         try
         {
@@ -4000,10 +4001,10 @@ left join ProductOperationTypes pot on invs.ProductOperationTypeID=pot.ProductOp
 left join StockOperationReasons sor on invs.StockOperationReasonID=sor.StockOperationReasonID 
 and sor.ProductOperationTypeID=pot.ProductOperationTypeID
 left join Stocks s on s.StockID=invs.StockID
-left join InvoiceStatus st on invs.InvoiceStatusID=st.InvoiceStatusID
- where invs.DeleteTime is null
- and InvoiceStockID=@id and invs.ProductOperationTypeID=1", SqlConn);
+left join InvoiceStatus st on invs.InvoiceStatusID=st.InvoiceStatusID where invs.DeleteTime is null 
+and InvoiceStockID=@id and invs.ProductOperationTypeID=@ProductOperationTypeID", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.SelectCommand.Parameters.AddWithValue("ProductOperationTypeID", ProductOperationTypeID);
             da.Fill(dt);
             return dt;
         }
@@ -4013,7 +4014,7 @@ left join InvoiceStatus st on invs.InvoiceStatusID=st.InvoiceStatusID
         }
     }
 
-    public DataTable GetProductStockInputByInvoiceID(int id)
+    public DataTable GetProductStockInputOutputByInvoiceID(int id,int ProductOperationTypeID)
     {
         try
         {
@@ -4027,8 +4028,9 @@ left join Models m on m.ModelID=p.ModelID
 left join UnitMeasurements um on p.UnitMeasurementID=um.UnitMeasurementID
 left join ProductTypes pt on pt.ProductTypeID=p.ProductTypeID
 left join Stocks s on s.StockID=psio.StockID
- where psio.DeleteTime is null and psio.ProductOperationTypeID=1 and psio.InvoiceStockID=@id", SqlConn);
+ where psio.DeleteTime is null and psio.ProductOperationTypeID=@ProductOperationTypeID and psio.InvoiceStockID=@id", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.SelectCommand.Parameters.AddWithValue("ProductOperationTypeID", ProductOperationTypeID);
             da.Fill(dt);
             return dt;
         }
@@ -4040,16 +4042,17 @@ left join Stocks s on s.StockID=psio.StockID
 
 
 
-    public DataTable GetSumProductStockInputByInvoiceID(int id)
+    public DataTable GetSumProductStockInputOutputByInvoiceID(int id,int ProductOperationTypeID)
     {
         try
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"SELECT sum(ProductSize) ProductSize,sum(Amount) Amount,
 sum(AmountDiscount) AmountDiscount FROM [ProductStockInputOutput] psio 
- where psio.DeleteTime is null and psio.ProductOperationTypeID=1 and psio.InvoiceStockID=@id
+ where psio.DeleteTime is null and psio.ProductOperationTypeID=@ProductOperationTypeID and psio.InvoiceStockID=@id
  group by psio.InvoiceStockID ", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.SelectCommand.Parameters.AddWithValue("ProductOperationTypeID", ProductOperationTypeID);
             da.Fill(dt);
             return dt;
         }
@@ -4060,7 +4063,7 @@ sum(AmountDiscount) AmountDiscount FROM [ProductStockInputOutput] psio
     }
 
 
-    public Types.ProsesType ProductStockInputInsert(int StockID, int ProductOperationTypeID,
+    public Types.ProsesType InvoiceStockInputOutputInsert(int StockID, int ProductOperationTypeID,
       int StockOperationReasonID,int InvoiceStatusID,  string RegisterTime, string Notes)
     {
 
@@ -4092,7 +4095,7 @@ sum(AmountDiscount) AmountDiscount FROM [ProductStockInputOutput] psio
     }
 
 
-    public Types.ProsesType ProductStockInputUpdate(int InvoiceStockID, int StockID, int ProductOperationTypeID,
+    public Types.ProsesType InvoiceStockInputOutputUpdate(int InvoiceStockID, int StockID, int ProductOperationTypeID,
       int StockOperationReasonID, int InvoiceStatusID, string RegisterTime, string Notes)
     {
         SqlCommand cmd = new SqlCommand(@"update InvoiceStock set UserID=@UserID,
@@ -4125,7 +4128,7 @@ RegisterTime=@RegisterTime,Notes=@Notes,UpdateTime=getdate() where InvoiceStockI
     }
 
 
-    public Types.ProsesType DeleteProductStockInput(int id)
+    public Types.ProsesType DeleteInvoiceStock(int id)
     {
 
         SqlCommand cmd = new SqlCommand(@"Update InvoiceStock set deletetime=getdate(),UserID=@UserID 

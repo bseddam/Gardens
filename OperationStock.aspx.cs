@@ -15,7 +15,8 @@ public partial class OperationStock : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        _loadGridInvoiceInput();
+        _loadGridInvoiceInputOutput();
+        _loadGridFromDb(Session["InvoiceStockID"].ToParseInt());
         pnlprint.Visible = false;
         if (IsPostBack) return;
     }
@@ -34,7 +35,7 @@ public partial class OperationStock : System.Web.UI.Page
     }
     void _loadGridFromDb(int id)
     {
-        DataTable dt = _db.GetProductStockInputByInvoiceID(id);
+        DataTable dt = _db.GetProductStockInputOutputByInvoiceID(id,1);
         if (dt != null)
         {
             Grid.SettingsPager.Summary.Text = "Cari səhifə: {0}, Ümumi səhifələrin sayı: {1}, Tapılmış məlumatların sayı: {2}";
@@ -43,9 +44,9 @@ public partial class OperationStock : System.Web.UI.Page
         }
     }
 
-    void _loadGridInvoiceInput()
+    void _loadGridInvoiceInputOutput()
     {
-        DataTable dt1 = _db.GetInvoiceInput();
+        DataTable dt1 = _db.GetInvoiceInputOutput(1);
         if (dt1 != null)
         {
             GridInvoice.SettingsPager.Summary.Text = "Cari səhifə: {0}, Ümumi səhifələrin sayı: {1}, Tapılmış məlumatların sayı: {2}";
@@ -123,14 +124,6 @@ public partial class OperationStock : System.Web.UI.Page
         void componentsload()
     {
 
-
-
-        
-
-
-
-
-
         cmbproducttype.Items.Clear();
         DataTable dt2 = _db.GetProductTypes();
         cmbproducttype.ValueField = "ProductTypeID";
@@ -161,7 +154,7 @@ public partial class OperationStock : System.Web.UI.Page
     protected void lnkEditInvoice_Click(object sender, EventArgs e)
     {
         int id = (sender as LinkButton).CommandArgument.ToParseInt();
-        DataTable dt = _db.GetProductStockInputByID(id: id);
+        DataTable dt = _db.GetInvoiceStockInputOutputByID(id: id, ProductOperationTypeID: 1);
         componentsloadinvoice();
         cmbstock.Value = dt.Rows[0]["StockID"].ToParseStr();
         cmbInvoiceStatus.Value = dt.Rows[0]["InvoiceStatusID"].ToParseStr();
@@ -198,8 +191,8 @@ public partial class OperationStock : System.Web.UI.Page
     protected void lnkDeleteInvoice_Click(object sender, EventArgs e)
     {
         int _id = (sender as LinkButton).CommandArgument.ToParseInt();
-        Types.ProsesType val = _db.DeleteProductStockInput(id: _id);
-        _loadGridInvoiceInput();
+        Types.ProsesType val = _db.DeleteInvoiceStock(id: _id);
+        _loadGridInvoiceInputOutput();
     }
     protected void lnkEdit_Click(object sender, EventArgs e)
     {
@@ -273,8 +266,8 @@ public partial class OperationStock : System.Web.UI.Page
 
 
         pnlprint.Visible = true;
-        DataTable dt1 = _db.GetSumProductStockInputByInvoiceID(id);
-        if(dt1!=null)
+        DataTable dt1 = _db.GetSumProductStockInputOutputByInvoiceID(id, 1);
+        if (dt1!=null)
         {
             if(dt1.Rows.Count > 0)
             {
@@ -296,7 +289,7 @@ public partial class OperationStock : System.Web.UI.Page
             lblAmountDiscount.Text = "";
         }
         
-        DataTable dt = _db.GetProductStockInputByInvoiceID(id);
+        DataTable dt = _db.GetProductStockInputOutputByInvoiceID(id,1);
         rpprint.DataSource = dt;
         rpprint.DataBind();
         //Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "PrintPanel()", false);
@@ -338,13 +331,14 @@ public partial class OperationStock : System.Web.UI.Page
                 popupEdit.ShowOnPageLoad = true;
                 break;
         }
+       
     }
     protected void btntesdiq_Click(object sender, EventArgs e)
     {
         lblPopError.Text = "";
         Types.ProsesType val = Types.ProsesType.Error;
-        DataTable dt = _db.GetProductStockInputByID(id: Session["InvoiceStockID"].ToParseInt());
-        
+        DataTable dt = _db.GetInvoiceStockInputOutputByID(id: Session["InvoiceStockID"].ToParseInt(), ProductOperationTypeID: 1);
+
         if (btnSave.CommandName == "insert")
         {
             val = _db.ProductStockInputOutputInsert(
@@ -407,7 +401,7 @@ public partial class OperationStock : System.Web.UI.Page
 
         if (btnInvoice.CommandName == "insert")
         {
-            val = _db.ProductStockInputInsert(
+            val = _db.InvoiceStockInputOutputInsert(
                 StockID: cmbstock.Value.ToParseInt(),
                 ProductOperationTypeID: 1,
                 StockOperationReasonID: cmbStockOperationReason.Value.ToParseInt(),
@@ -418,7 +412,7 @@ public partial class OperationStock : System.Web.UI.Page
         }
         else
         {
-            val = _db.ProductStockInputUpdate(InvoiceStockID: btnInvoice.CommandArgument.ToParseInt(),
+            val = _db.InvoiceStockInputOutputUpdate(InvoiceStockID: btnInvoice.CommandArgument.ToParseInt(),
                 StockID: cmbstock.Value.ToParseInt(),
                 ProductOperationTypeID: 1,
                 StockOperationReasonID: cmbStockOperationReason.Value.ToParseInt(),
@@ -434,7 +428,7 @@ public partial class OperationStock : System.Web.UI.Page
             return;
         }
 
-        _loadGridInvoiceInput();
+        _loadGridInvoiceInputOutput();
         popupVoice.ShowOnPageLoad = false;
     }
     protected void btninvoiceCancel_Click(object sender, EventArgs e)
@@ -458,4 +452,21 @@ public partial class OperationStock : System.Web.UI.Page
     }
 
 
+    protected void GridInvoice_HtmlRowPrepared(object sender, ASPxGridViewTableRowEventArgs e)
+    {
+
+        //Grid.Selection.SelectRow
+        //GridView1.Rows[1].ForeColor = ColorTranslator.FromHtml("#CCFF99");
+
+        //if (e.RowType != GridViewRowType.Data) return;
+        //int price = Convert.ToInt32(e.GetValue("UnitPrice"));
+        //if (price < 20)
+        //    e.Row.BackColor = System.Drawing.Color.LightCyan;
+        //Label1.Text = e.Row.ClientID.ToParseStr();
+        //Response.Write(a);
+        e.Row.BackColor = System.Drawing.Color.Red;
+        //object myRow = Grid.GetRow(e.VisibleIndex);
+        e.Row.TabIndex = 1;
+
+    }
 }
