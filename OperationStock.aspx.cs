@@ -35,7 +35,7 @@ public partial class OperationStock : System.Web.UI.Page
     }
     void _loadGridFromDb(int id)
     {
-        DataTable dt = _db.GetProductStockInputOutputByInvoiceID(id,1);
+        DataTable dt = _db.GetProductStockInputOutputByInvoiceID(id, 1);
         if (dt != null)
         {
             Grid.SettingsPager.Summary.Text = "Cari səhifə: {0}, Ümumi səhifələrin sayı: {1}, Tapılmış məlumatların sayı: {2}";
@@ -123,14 +123,6 @@ public partial class OperationStock : System.Web.UI.Page
 
     void componentsload()
     {
-
-
-
-        
-
-
-
-
 
         cmbproducttype.Items.Clear();
         DataTable dt2 = _db.GetProductTypes();
@@ -296,8 +288,8 @@ public partial class OperationStock : System.Web.UI.Page
             lblAmount.Text = "";
             lblAmountDiscount.Text = "";
         }
-        
-        DataTable dt = _db.GetProductStockInputByInvoiceID(id);
+
+        DataTable dt = _db.GetProductStockInputOutputByInvoiceID(id, 1);
         rpprint.DataSource = dt;
         rpprint.DataBind();
         //Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "PrintPanel()", false);
@@ -339,14 +331,14 @@ public partial class OperationStock : System.Web.UI.Page
                 popupEdit.ShowOnPageLoad = true;
                 break;
         }
-       
+
     }
     protected void btntesdiq_Click(object sender, EventArgs e)
     {
         lblPopError.Text = "";
         Types.ProsesType val = Types.ProsesType.Error;
-        DataTable dt = _db.GetProductStockInputByID(id: Session["InvoiceStockID"].ToParseInt());
-        
+        DataTable dt = _db.GetInvoiceStockInputOutputByID(id: Session["InvoiceStockID"].ToParseInt(), ProductOperationTypeID: 1);
+
         if (btnSave.CommandName == "insert")
         {
             val = _db.ProductStockInputOutputInsert(
