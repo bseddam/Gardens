@@ -121,8 +121,16 @@ public partial class OperationStock : System.Web.UI.Page
 
     }
 
-        void componentsload()
+    void componentsload()
     {
+
+
+
+        
+
+
+
+
 
         cmbproducttype.Items.Clear();
         DataTable dt2 = _db.GetProductTypes();
@@ -149,7 +157,7 @@ public partial class OperationStock : System.Web.UI.Page
         int id = btn.CommandArgument.ToParseInt();
         Session["InvoiceStockID"] = id;
         _loadGridFromDb(id);
-        
+
     }
     protected void lnkEditInvoice_Click(object sender, EventArgs e)
     {
@@ -200,7 +208,7 @@ public partial class OperationStock : System.Web.UI.Page
         int id = (sender as LinkButton).CommandArgument.ToParseInt();
         DataTable dt = _db.GetProductStockInputOutputByID(id: id);
         componentsload();
-        
+
         cmbproducttype.Value = dt.Rows[0]["ProductTypeID"].ToParseStr();
 
 
@@ -267,9 +275,9 @@ public partial class OperationStock : System.Web.UI.Page
 
         pnlprint.Visible = true;
         DataTable dt1 = _db.GetSumProductStockInputOutputByInvoiceID(id, 1);
-        if (dt1!=null)
+        if (dt1 != null)
         {
-            if(dt1.Rows.Count > 0)
+            if (dt1.Rows.Count > 0)
             {
                 lblProductSize.Text = dt1.Rows[0]["ProductSize"].ToParseStr();
                 lblAmount.Text = dt1.Rows[0]["Amount"].ToParseStr();
@@ -289,7 +297,7 @@ public partial class OperationStock : System.Web.UI.Page
             lblAmountDiscount.Text = "";
         }
         
-        DataTable dt = _db.GetProductStockInputOutputByInvoiceID(id,1);
+        DataTable dt = _db.GetProductStockInputByInvoiceID(id);
         rpprint.DataSource = dt;
         rpprint.DataBind();
         //Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "PrintPanel()", false);
@@ -337,8 +345,8 @@ public partial class OperationStock : System.Web.UI.Page
     {
         lblPopError.Text = "";
         Types.ProsesType val = Types.ProsesType.Error;
-        DataTable dt = _db.GetInvoiceStockInputOutputByID(id: Session["InvoiceStockID"].ToParseInt(), ProductOperationTypeID: 1);
-
+        DataTable dt = _db.GetProductStockInputByID(id: Session["InvoiceStockID"].ToParseInt());
+        
         if (btnSave.CommandName == "insert")
         {
             val = _db.ProductStockInputOutputInsert(
