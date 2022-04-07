@@ -455,6 +455,26 @@
                         <td style="border: 1px solid black; text-align: center; width: 10%; white-space: normal; font-weight: bold">
                             <asp:Label ID="lblAmountDiscount" runat="server"></asp:Label></td>
                     </tr>
+                     <tr style="height:150px;">
+                <td colspan="4">
+                    Tehvil verdi:____________________
+                </td>
+                <td colspan="4">
+                    Tehvil aldı:____________________
+                </td>
+            </tr>
+            <tr style="height:100px;">
+                <td colspan="8">
+                    Anbardar:____________________
+                </td>
+                
+            </tr>
+            <tr style="height:100px;">
+                
+                <td colspan="8">
+                    Nəzarət:____________________
+                </td>
+            </tr>
                 </table>
             </asp:Panel>
 
