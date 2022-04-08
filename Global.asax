@@ -27,7 +27,7 @@
         routes.MapPageRoute("operationwateringsystems", "operationwateringsystems", "~/OperationWateringSystems.aspx");
         routes.MapPageRoute("operationtechniques", "operationtechniques", "~/OperationTechniques.aspx");
         routes.MapPageRoute("operationcadres", "operationcadres", "~/OperationCadres.aspx");
-        routes.MapPageRoute("operationstock", "operationstock", "~/OperationStock.aspx");
+        routes.MapPageRoute("operationstockinput", "operationstockinput", "~/OperationStockInput.aspx");
         routes.MapPageRoute("operationstocktransfer", "operationstocktransfer", "~/OperationStockTransfer.aspx");
         routes.MapPageRoute("operationtechniqueservices", "operationtechniqueservices", "~/OperationTechniqueServices.aspx");
         routes.MapPageRoute("otherexpenses", "otherexpenses", "~/OtherExpenses.aspx");

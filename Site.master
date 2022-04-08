@@ -104,7 +104,7 @@
                             <li><a href="/operationcadres">Kadrların gördüyü işlər</a></li>
                             <li><a href="/operationtechniques">Texnikaların gördüyü işlər</a></li>
                             <li><a href="/operationwateringsystems">Suvarma sistemlərinin gördüyü işlər</a></li>
-                            <li><a href="/operationstock">Anbara mədaxil</a></li>
+                            <li><a href="/operationstockinput">Anbara mədaxil</a></li>
                             <li><a href="/productsexit">Anbardan məxaric</a></li>
                             
                             <li><a href="/operationstocktransfer">Anbarlar üzrə mal köçürmələri </a></li>

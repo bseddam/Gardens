@@ -3966,6 +3966,36 @@ where EntryExitID=@EntryExitID;", SqlConn);
         }
     }
 
+
+
+
+    public DataTable GetInvoiceTransfer()
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by InvoiceStockTransferID desc) sn,
+invs.*,Sf.StockName StockFromName,Sto.StockName StockToName,st.InvoiceStatusName from InvoiceStockTransfer invs
+left join Stocks sf on sf.StockID=invs.StockFromID
+left join Stocks sto on sto.StockID=invs.StockToID
+left join InvoiceStatus st on invs.InvoiceStatusID=st.InvoiceStatusID
+ where invs.DeleteTime is null ", SqlConn);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+
+
+
+
+
+
+
     public DataTable GetInvoiceInputOutput(int ProductOperationTypeID)
     {
         try
@@ -3988,6 +4018,31 @@ left join InvoiceStatus st on invs.InvoiceStatusID=st.InvoiceStatusID
             return null;
         }
     }
+
+
+
+
+    public DataTable GetInvoiceStockTransferByID(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by InvoiceStockTransferID desc) sn,
+invs.*,Sf.StockName StockFromName,Sto.StockName StockToName,st.InvoiceStatusName from InvoiceStockTransfer invs
+left join Stocks sf on sf.StockID=invs.StockFromID
+left join Stocks sto on sto.StockID=invs.StockToID
+left join InvoiceStatus st on invs.InvoiceStatusID=st.InvoiceStatusID
+ where invs.DeleteTime is null and InvoiceStockTransferID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
 
 
     public DataTable GetInvoiceStockInputOutputByID(int id,int ProductOperationTypeID)
@@ -4013,6 +4068,36 @@ and InvoiceStockID=@id and invs.ProductOperationTypeID=@ProductOperationTypeID",
             return null;
         }
     }
+
+
+
+    public DataTable GetProductStockTransferByInvoiceID(int id)
+    {
+        try
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by ProductStockTransferID desc) sn,psio.*,sf.StockName StockFromName, sf.StockName StockToName,
+pt.ProductTypeID,pt.ProductTypeName,
+p.ProductsName,um.UnitMeasurementName,m.ModelID,m.ModelName FROM ProductStockTransfer psio 
+left join Products p on psio.ProductID=p.ProductID
+left join Models m on m.ModelID=p.ModelID
+left join UnitMeasurements um on p.UnitMeasurementID=um.UnitMeasurementID
+left join ProductTypes pt on pt.ProductTypeID=p.ProductTypeID
+left join Stocks sf on sf.StockID=psio.StockFromID
+left join Stocks st on st.StockID=psio.StockToID
+ where psio.DeleteTime is null and psio.InvoiceStockTransferID=@id", SqlConn);
+            da.SelectCommand.Parameters.AddWithValue("id", id);
+         
+            da.Fill(dt);
+            return dt;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+
 
     public DataTable GetProductStockInputOutputByInvoiceID(int id,int ProductOperationTypeID)
     {
@@ -4042,6 +4127,8 @@ left join Stocks s on s.StockID=psio.StockID
 
 
 
+
+
     public DataTable GetSumProductStockInputOutputByInvoiceID(int id,int ProductOperationTypeID)
     {
         try
@@ -4061,6 +4148,127 @@ sum(AmountDiscount) AmountDiscount FROM [ProductStockInputOutput] psio
             return null;
         }
     }
+
+
+
+
+
+//    public DataTable GetSumProductStockTransferByInvoiceID(int id)
+//    {
+//        try
+//        {
+//            DataTable dt = new DataTable();
+//            SqlDataAdapter da = new SqlDataAdapter(@"SELECT sum(ProductSize) ProductSize,sum(Amount) Amount,
+//sum(AmountDiscount) AmountDiscount FROM [ProductStockTransfer] psio 
+// where psio.DeleteTime is null  and psio.ProductStockTransferID=@id
+// group by psio.ProductStockTransferID ", SqlConn);
+//            da.SelectCommand.Parameters.AddWithValue("id", id);
+         
+//            da.Fill(dt);
+//            return dt;
+//        }
+//        catch (Exception ex)
+//        {
+//            return null;
+//        }
+//    }
+
+
+
+
+    public Types.ProsesType InvoiceStockTransferInsert(int StockFromID, int StockToID, 
+        int InvoiceStatusID, string RegisterTime, string Notes)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"insert into InvoiceStockTransfer 
+(UserID,StockFromID,StockToID,InvoiceStatusID,RegisterTime,Notes) values 
+(@UserID,@StockFromID,@StockToID,@InvoiceStatusID,@RegisterTime,@Notes)", SqlConn);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@StockFromID", StockFromID);
+        cmd.Parameters.AddWithValue("@StockToID", StockToID);
+        cmd.Parameters.AddWithValue("@InvoiceStatusID", InvoiceStatusID);
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        cmd.Parameters.AddWithValue("@Notes", Notes);
+        //try
+        //{
+        cmd.Connection.Open();
+        cmd.ExecuteNonQuery();
+        return Types.ProsesType.Succes;
+        //}
+        //catch (Exception ex)
+        //{
+        //    return Types.ProsesType.Error;
+        //}
+        //finally
+        //{
+        //    cmd.Connection.Close();
+        //    cmd.Dispose();
+        //}
+    }
+
+    public Types.ProsesType InvoiceStockTransferUpdate(int InvoiceStockTransferID, int StockFromID, int StockToID,
+     int InvoiceStatusID, string RegisterTime, string Notes)
+    {
+        SqlCommand cmd = new SqlCommand(@"update InvoiceStockTransfer set UserID=@UserID,
+StockFromID=@StockFromID,StockToID=@StockToID,
+InvoiceStatusID=@InvoiceStatusID,
+RegisterTime=@RegisterTime,Notes=@Notes,UpdateTime=getdate() where InvoiceStockTransferID=@InvoiceStockTransferID", SqlConn);
+        cmd.Parameters.AddWithValue("@InvoiceStockTransferID", InvoiceStockTransferID);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        cmd.Parameters.AddWithValue("@StockFromID", StockFromID);
+        cmd.Parameters.AddWithValue("@StockToID", StockToID);
+        cmd.Parameters.AddWithValue("@InvoiceStatusID", InvoiceStatusID);
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        cmd.Parameters.AddWithValue("@Notes", Notes);
+        //try
+        //{
+        cmd.Connection.Open();
+        cmd.ExecuteNonQuery();
+        return Types.ProsesType.Succes;
+        //}
+        //catch (Exception ex)
+        //{
+        //    return Types.ProsesType.Error;
+        //}
+        //finally
+        //{
+        //    cmd.Connection.Close();
+        //    cmd.Dispose();
+        //}
+    }
+
+
+    public Types.ProsesType DeleteInvoiceStockTransfer(int id)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"Update InvoiceStockTransfer set deletetime=getdate(),UserID=@UserID 
+where InvoiceStockTransferID=@InvoiceStockTransferID;", SqlConn);
+        cmd.Parameters.AddWithValue("@InvoiceStockTransferID", id);
+        cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            //LogInsert(Utils.Tables.pages, Utils.LogType.delete, String.Format("IndicatorsDelete () "), ex.Message, "", true);
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
+    }
+
+
+
+
+
+
+
 
 
     public Types.ProsesType InvoiceStockInputOutputInsert(int StockID, int ProductOperationTypeID,
@@ -4093,6 +4301,8 @@ sum(AmountDiscount) AmountDiscount FROM [ProductStockInputOutput] psio
         //    cmd.Dispose();
         //}
     }
+
+ 
 
 
     public Types.ProsesType InvoiceStockInputOutputUpdate(int InvoiceStockID, int StockID, int ProductOperationTypeID,
@@ -5425,32 +5635,32 @@ where OrderProductID=@OrderProductID", SqlConn);
 
     
 
-    public DataTable GetProductTransfer()
-    {
-        try
-        {
-            DataTable dt = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter(@"
-SELECT row_number() over(order by pst.ProductStockTransferID desc) sn,
-pst.*,p.ProductsName,m.ModelName,um.UnitMeasurementName,pt.ProductTypeName,
-s.StockName StockFromName,s1.StockName StockToName
+//    public DataTable GetProductTransfer()
+//    {
+//        try
+//        {
+//            DataTable dt = new DataTable();
+//            SqlDataAdapter da = new SqlDataAdapter(@"
+//SELECT row_number() over(order by pst.ProductStockTransferID desc) sn,
+//pst.*,p.ProductsName,m.ModelName,um.UnitMeasurementName,pt.ProductTypeName,
+//s.StockName StockFromName,s1.StockName StockToName
 
-  FROM ProductStockTransfer pst
-left join Products p on pst.ProductID=p.ProductID
-left join Models m on m.ModelID=p.ModelID
-left join UnitMeasurements um on p.UnitMeasurementID=um.UnitMeasurementID
-left join ProductTypes pt on pt.ProductTypeID=p.ProductTypeID
-left join Stocks s on s.StockID=pst.StockFromID
-left join Stocks s1 on s1.StockID=pst.StockToID where pst.DeleteTime is null", SqlConn);
+//  FROM ProductStockTransfer pst
+//left join Products p on pst.ProductID=p.ProductID
+//left join Models m on m.ModelID=p.ModelID
+//left join UnitMeasurements um on p.UnitMeasurementID=um.UnitMeasurementID
+//left join ProductTypes pt on pt.ProductTypeID=p.ProductTypeID
+//left join Stocks s on s.StockID=pst.StockFromID
+//left join Stocks s1 on s1.StockID=pst.StockToID where pst.DeleteTime is null", SqlConn);
 
-            da.Fill(dt);
-            return dt;
-        }
-        catch (Exception ex)
-        {
-            return null;
-        }
-    }
+//            da.Fill(dt);
+//            return dt;
+//        }
+//        catch (Exception ex)
+//        {
+//            return null;
+//        }
+//    }
 
 
     public DataTable GetProductTransferByID(int id)

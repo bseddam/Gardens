@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="OperationStock.aspx.cs" Inherits="OperationStock" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="OperationStockInput.aspx.cs" Inherits="OperationStock" %>
 
 
 
@@ -149,7 +149,7 @@
                                             <div class="row mb-2">
                                                 <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Qaimənin statusu</label>
                                                 <div class="col-sm-7">
-                                                    <dx:ASPxComboBox ID="cmbInvoiceStatus" runat="server" Width="100%" Height="30px" AutoPostBack="True" OnSelectedIndexChanged="cmbproducttype_SelectedIndexChanged">
+                                                    <dx:ASPxComboBox ID="cmbInvoiceStatus" runat="server" Width="100%" Height="30px">
                                                     </dx:ASPxComboBox>
                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" ControlToValidate="cmbInvoiceStatus" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup2" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
                                                 </div>

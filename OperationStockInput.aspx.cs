@@ -238,6 +238,8 @@ public partial class OperationStock : System.Web.UI.Page
         btnSave.CommandArgument = id.ToString();
         popupEdit.ShowOnPageLoad = true;
     }
+
+
     protected void lnkDelete_Click(object sender, EventArgs e)
     {
         int _id = (sender as LinkButton).CommandArgument.ToParseInt();
@@ -438,11 +440,7 @@ public partial class OperationStock : System.Web.UI.Page
 
 
 
-    protected void cmbproducttype_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        modelcomponentload();
-        productcomponentload();
-    }
+   
 
 
 
@@ -451,7 +449,11 @@ public partial class OperationStock : System.Web.UI.Page
         productcomponentload();
     }
 
-
+    protected void cmbproducttype_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        modelcomponentload();
+        productcomponentload();
+    }
     protected void GridInvoice_HtmlRowPrepared(object sender, ASPxGridViewTableRowEventArgs e)
     {
 
