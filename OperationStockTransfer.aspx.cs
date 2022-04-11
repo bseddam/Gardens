@@ -22,19 +22,9 @@ public partial class OperationStockTransfer : System.Web.UI.Page
         pnlprint.Visible = false;
         if (IsPostBack) return;
     }
-    void _loadGridInvoiceTransfer()
-    {
-        DataTable dt1 = _db.GetInvoiceTransfer();
-        if (dt1 != null)
-        {
-            GridInvoice.SettingsPager.Summary.Text = "Cari səhifə: {0}, Ümumi səhifələrin sayı: {1}, Tapılmış məlumatların sayı: {2}";
-            GridInvoice.DataSource = dt1;
-            GridInvoice.DataBind();
-        }
-    }
     void ClearComponents()
     {
-      
+
         txtnotesinv.Text = "";
         txtProductSize.Text = "";
         cmbregistertime1.Text = "";
@@ -52,15 +42,58 @@ public partial class OperationStockTransfer : System.Web.UI.Page
             Grid.DataBind();
         }
     }
+    void _loadGridInvoiceTransfer()
+    {
+        DataTable dt1 = _db.GetInvoiceTransfer();
+        if (dt1 != null)
+        {
+            GridInvoice.SettingsPager.Summary.Text = "Cari səhifə: {0}, Ümumi səhifələrin sayı: {1}, Tapılmış məlumatların sayı: {2}";
+            GridInvoice.DataSource = dt1;
+            GridInvoice.DataBind();
+        }
+    }
 
 
+
+    void productcomponentload()
+    {
+        cmbProducts.Items.Clear();
+        DataTable dt6 = _db.GetProductByModelProductId(cmbmodel.Value.ToParseInt(), cmbproducttype.Value.ToParseInt());
+        cmbProducts.ValueField = "ProductID";
+        cmbProducts.TextField = "ProductsName";
+        cmbProducts.DataSource = dt6;
+        cmbProducts.DataBind();
+        cmbProducts.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmbProducts.SelectedIndex = 0;
+    }
+    void modelcomponentload()
+    {
+        cmbmodel.Items.Clear();
+        DataTable dt4x = _db.GetModelsByProductTypeID(cmbproducttype.Value.ToParseInt().ToParseInt());
+        cmbmodel.ValueField = "ModelID";
+        cmbmodel.TextField = "ModelName";
+        cmbmodel.DataSource = dt4x;
+        cmbmodel.DataBind();
+        cmbmodel.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmbmodel.Items.Insert(1, new ListEditItem("Yoxdur", "0"));
+        cmbmodel.SelectedIndex = 0;
+    }
 
     void componentsload()
     {
-       
+
+        cmbproducttype.Items.Clear();
+        DataTable dt2 = _db.GetProductTypes();
+        cmbproducttype.ValueField = "ProductTypeID";
+        cmbproducttype.TextField = "ProductTypeName";
+        cmbproducttype.DataSource = dt2;
+        cmbproducttype.DataBind();
+        cmbproducttype.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmbproducttype.SelectedIndex = 0;
 
 
-
+        productcomponentload();
+        modelcomponentload();
     }
     void componentsloadinvoice()
     {
@@ -103,7 +136,7 @@ public partial class OperationStockTransfer : System.Web.UI.Page
         LinkButton btn = sender as LinkButton;
         int id = btn.CommandArgument.ToParseInt();
         Session["InvoiceStockTransferID"] = id;
-        //_loadGridFromDb(id);
+        _loadGridFromDb(id);
 
     }
     protected void LnkInvoice_Click(object sender, EventArgs e)
@@ -127,28 +160,28 @@ public partial class OperationStockTransfer : System.Web.UI.Page
 
 
         pnlprint.Visible = true;
-        DataTable dt1 = _db.GetSumProductStockInputOutputByInvoiceID(id, 1);
-        if (dt1 != null)
-        {
-            if (dt1.Rows.Count > 0)
-            {
-                lblProductSize.Text = dt1.Rows[0]["ProductSize"].ToParseStr();
-                lblAmount.Text = dt1.Rows[0]["Amount"].ToParseStr();
-                lblAmountDiscount.Text = dt1.Rows[0]["AmountDiscount"].ToParseStr();
-            }
-            else
-            {
-                lblProductSize.Text = "";
-                lblAmount.Text = "";
-                lblAmountDiscount.Text = "";
-            }
-        }
-        else
-        {
-            lblProductSize.Text = "";
-            lblAmount.Text = "";
-            lblAmountDiscount.Text = "";
-        }
+        //DataTable dt1 = _db.GetSumProductStockInputOutputByInvoiceID(id, 1);
+        //if (dt1 != null)
+        //{
+        //    if (dt1.Rows.Count > 0)
+        //    {
+        //        lblProductSize.Text = dt1.Rows[0]["ProductSize"].ToParseStr();
+        //        lblAmount.Text = dt1.Rows[0]["Amount"].ToParseStr();
+        //        lblAmountDiscount.Text = dt1.Rows[0]["AmountDiscount"].ToParseStr();
+        //    }
+        //    else
+        //    {
+        //        lblProductSize.Text = "";
+        //        lblAmount.Text = "";
+        //        lblAmountDiscount.Text = "";
+        //    }
+        //}
+        //else
+        //{
+        //    lblProductSize.Text = "";
+        //    lblAmount.Text = "";
+        //    lblAmountDiscount.Text = "";
+        //}
 
         DataTable dt = _db.GetProductStockTransferByInvoiceID(id);
         rpprint.DataSource = dt;
@@ -277,29 +310,7 @@ public partial class OperationStockTransfer : System.Web.UI.Page
     }
 
 
-    void productcomponentload()
-    {
-        cmbProducts.Items.Clear();
-        DataTable dt6 = _db.GetProductByModelProductId(cmbmodel.Value.ToParseInt(), cmbproducttype.Value.ToParseInt());
-        cmbProducts.ValueField = "ProductID";
-        cmbProducts.TextField = "ProductsName";
-        cmbProducts.DataSource = dt6;
-        cmbProducts.DataBind();
-        cmbProducts.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        cmbProducts.SelectedIndex = 0;
-    }
-    void modelcomponentload()
-    {
-        cmbmodel.Items.Clear();
-        DataTable dt4x = _db.GetModelsByProductTypeID(cmbproducttype.Value.ToParseInt().ToParseInt());
-        cmbmodel.ValueField = "ModelID";
-        cmbmodel.TextField = "ModelName";
-        cmbmodel.DataSource = dt4x;
-        cmbmodel.DataBind();
-        cmbmodel.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        cmbmodel.Items.Insert(1, new ListEditItem("Yoxdur", "0"));
-        cmbmodel.SelectedIndex = 0;
-    }
+    
     protected void cmbmodel_SelectedIndexChanged(object sender, EventArgs e)
     {
         productcomponentload();
@@ -313,20 +324,28 @@ public partial class OperationStockTransfer : System.Web.UI.Page
 
 
 
-    protected void lnkInsert_Click(object sender, EventArgs e)
-    {
-        string commandArgs = (sender as LinkButton).CommandArgument.ToString();
-        componentsload();
-        ClearComponents();
-        btnSave.CommandName = "insert";
-        btnSave.CommandArgument = commandArgs.ToString();
-        popupEdit.ShowOnPageLoad = true;
-    }
+    
     protected void lnkEdit_Click(object sender, EventArgs e)
     {
         int id = (sender as LinkButton).CommandArgument.ToParseInt();
         DataTable dt = _db.GetProductTransferByID(id: id);
         componentsload();
+       
+
+        cmbproducttype.Value = dt.Rows[0]["ProductTypeID"].ToParseStr();
+
+
+
+        modelcomponentload();
+        cmbmodel.Value = dt.Rows[0]["ModelID"].ToParseStr();
+        productcomponentload();
+
+        cmbProducts.Value = dt.Rows[0]["ProductID"].ToParseStr();
+
+
+
+
+
 
         txtProductSize.Text = dt.Rows[0]["ProductSize"].ToParseStr();
         
@@ -354,34 +373,29 @@ public partial class OperationStockTransfer : System.Web.UI.Page
 
     protected void btntesdiq_Click(object sender, EventArgs e)
     {
+
         lblPopError.Text = "";
         Types.ProsesType val = Types.ProsesType.Error;
-
-        string[] cma = btnSave.CommandArgument.ToString().Split(new char[] { ',' });
-        string StockFromID = cma[0];
-        string ProductID = cma[1];
+        
         if (btnSave.CommandName == "insert")
         {
-
-
-            //val = _db.ProductStockInsertTransfer(StockFromID: StockFromID.ToParseInt(),
-            //    UserID: Session["UserID"].ToParseInt(),
-            //    ProductID: ProductID.ToParseInt(),
-            //    StockToID: cmbstock.Value.ToParseInt(),
-            //    ProductSize: txtProductSize.Text.ToParseStr(),
-            //    RegisterTime: cmbregistertime.Text.ToParseStr()
-            //    );
+            val = _db.ProductStockInsertTransfer(
+                InvoiceStockTransferID: Session["InvoiceStockTransferID"].ToParseInt(),
+                UserID: Session["UserID"].ToParseInt(),
+                ProductID: cmbProducts.Value.ToParseInt(),
+                ProductSize: txtProductSize.Text.ToParseStr(),
+                RegisterTime: cmbregistertime.Text.ToParseStr()
+                );
         }
         else
         {
-            //val = _db.ProductStockUpdateTransfer(ProductStockTransferID: btnSave.CommandArgument.ToParseInt(),
-            //    StockFromID: StockFromID.ToParseInt(),
-            //    UserID: Session["UserID"].ToParseInt(),
-            //    ProductID: ProductID.ToParseInt(),
-            //    StockToID: cmbstock.Value.ToParseInt(),
-            //    ProductSize: txtProductSize.Text.ToParseStr(),
-            //    RegisterTime: cmbregistertime.Text.ToParseStr()
-            //    );
+            val = _db.ProductStockUpdateTransfer(ProductStockTransferID: btnSave.CommandArgument.ToParseInt(),
+                InvoiceStockTransferID: Session["InvoiceStockTransferID"].ToParseInt(),
+                UserID: Session["UserID"].ToParseInt(),
+                ProductID: cmbProducts.Value.ToParseInt(),
+                ProductSize: txtProductSize.Text.ToParseStr(),
+                RegisterTime: cmbregistertime.Text.ToParseStr()
+                );
         }
 
         if (val == Types.ProsesType.Error)

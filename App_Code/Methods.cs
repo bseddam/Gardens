@@ -3844,8 +3844,8 @@ c2.DeleteTime is null and u.DeleteTime is null and g.DeleteTime is null
         try
         {
             DataTable dt = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter(@"SELECT  CadreID,c2.CardNumber,c1.Sname+' '+c1.Name+' '+c1.FName fullname from   Cadres c1 
-left join Cards c2 on c2.CardID=c1.CardID  where c1.DeleteTime is null
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT  CadreID,c2.CardNumber,c1.Sname+' '+c1.Name+' '+c1.FName fullname 
+from   Cadres c1 left join Cards c2 on c2.CardID=c1.CardID  where c1.DeleteTime is null
 and c2.DeleteTime is null and c2.CardNumber=@cardnumber", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("cardnumber", cardnumber);
             da.Fill(dt);
@@ -4071,20 +4071,26 @@ and InvoiceStockID=@id and invs.ProductOperationTypeID=@ProductOperationTypeID",
 
 
 
+
+
+
+
     public DataTable GetProductStockTransferByInvoiceID(int id)
     {
         try
         {
             DataTable dt = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by ProductStockTransferID desc) sn,psio.*,sf.StockName StockFromName, sf.StockName StockToName,
-pt.ProductTypeID,pt.ProductTypeName,
-p.ProductsName,um.UnitMeasurementName,m.ModelID,m.ModelName FROM ProductStockTransfer psio 
+            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by ProductStockTransferID desc) sn,
+psio.*,sf.StockName StockFromName, st.StockName StockToName,
+pt.ProductTypeID,pt.ProductTypeName,p.ProductsName,um.UnitMeasurementName,m.ModelID,m.ModelName 
+FROM ProductStockTransfer psio 
+left join InvoiceStockTransfer ist on psio.InvoiceStockTransferID=ist.InvoiceStockTransferID
 left join Products p on psio.ProductID=p.ProductID
 left join Models m on m.ModelID=p.ModelID
 left join UnitMeasurements um on p.UnitMeasurementID=um.UnitMeasurementID
 left join ProductTypes pt on pt.ProductTypeID=p.ProductTypeID
-left join Stocks sf on sf.StockID=psio.StockFromID
-left join Stocks st on st.StockID=psio.StockToID
+left join Stocks sf on sf.StockID=ist.StockFromID
+left join Stocks st on st.StockID=ist.StockToID
  where psio.DeleteTime is null and psio.InvoiceStockTransferID=@id", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
          
@@ -4106,14 +4112,15 @@ left join Stocks st on st.StockID=psio.StockToID
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by ProductStockInputOutputID desc) sn,psio.*,s.StockName,pot.ProductOperationTypeName,pt.ProductTypeID,pt.ProductTypeName,
 sor.ReasonName,p.ProductsName,um.UnitMeasurementName,m.ModelID,m.ModelName FROM [ProductStockInputOutput] psio 
-left join ProductOperationTypes pot on psio.ProductOperationTypeID=pot.ProductOperationTypeID
-left join StockOperationReasons sor on psio.StockOperationReasonID=sor.StockOperationReasonID and sor.ProductOperationTypeID=pot.ProductOperationTypeID
+left join (select * from InvoiceStock where productoperationtypeid=@ProductOperationTypeID)  ist on psio.InvoiceStockID=ist.InvoiceStockID
+left join ProductOperationTypes pot on ist.ProductOperationTypeID=pot.ProductOperationTypeID
+left join StockOperationReasons sor on ist.StockOperationReasonID=sor.StockOperationReasonID and sor.ProductOperationTypeID=pot.ProductOperationTypeID
 left join Products p on psio.ProductID=p.ProductID
 left join Models m on m.ModelID=p.ModelID
 left join UnitMeasurements um on p.UnitMeasurementID=um.UnitMeasurementID
 left join ProductTypes pt on pt.ProductTypeID=p.ProductTypeID
-left join Stocks s on s.StockID=psio.StockID
- where psio.DeleteTime is null and psio.ProductOperationTypeID=@ProductOperationTypeID and psio.InvoiceStockID=@id", SqlConn);
+left join Stocks s on s.StockID=ist.StockID
+ where psio.DeleteTime is null and ist.ProductOperationTypeID=@ProductOperationTypeID and ist.InvoiceStockID=@id", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
             da.SelectCommand.Parameters.AddWithValue("ProductOperationTypeID", ProductOperationTypeID);
             da.Fill(dt);
@@ -4153,25 +4160,7 @@ sum(AmountDiscount) AmountDiscount FROM [ProductStockInputOutput] psio
 
 
 
-//    public DataTable GetSumProductStockTransferByInvoiceID(int id)
-//    {
-//        try
-//        {
-//            DataTable dt = new DataTable();
-//            SqlDataAdapter da = new SqlDataAdapter(@"SELECT sum(ProductSize) ProductSize,sum(Amount) Amount,
-//sum(AmountDiscount) AmountDiscount FROM [ProductStockTransfer] psio 
-// where psio.DeleteTime is null  and psio.ProductStockTransferID=@id
-// group by psio.ProductStockTransferID ", SqlConn);
-//            da.SelectCommand.Parameters.AddWithValue("id", id);
-         
-//            da.Fill(dt);
-//            return dt;
-//        }
-//        catch (Exception ex)
-//        {
-//            return null;
-//        }
-//    }
+  
 
 
 
@@ -4368,30 +4357,6 @@ where InvoiceStockID=@InvoiceStockID;", SqlConn);
 
 
 
-    public DataTable GetProductStockInputOutput()
-    {
-        try
-        {
-            DataTable dt = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by ProductStockInputOutputID desc) sn,psio.*,s.StockName,pot.ProductOperationTypeName,pt.ProductTypeID,pt.ProductTypeName,
-sor.ReasonName,p.ProductsName,um.UnitMeasurementName,m.ModelID,m.ModelName FROM [ProductStockInputOutput] psio 
-left join ProductOperationTypes pot on psio.ProductOperationTypeID=pot.ProductOperationTypeID
-left join StockOperationReasons sor on psio.StockOperationReasonID=sor.StockOperationReasonID and sor.ProductOperationTypeID=pot.ProductOperationTypeID
-left join Products p on psio.ProductID=p.ProductID
-left join Models m on m.ModelID=p.ModelID
-left join UnitMeasurements um on p.UnitMeasurementID=um.UnitMeasurementID
-left join ProductTypes pt on pt.ProductTypeID=p.ProductTypeID
-left join Stocks s on s.StockID=psio.StockID
- where psio.DeleteTime is null
-", SqlConn);
-            da.Fill(dt);
-            return dt;
-        }
-        catch (Exception ex)
-        {
-            return null;
-        }
-    }
 
 
 
@@ -4401,16 +4366,16 @@ left join Stocks s on s.StockID=psio.StockID
         {
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"SELECT row_number() over(order by ProductStockInputOutputID desc) sn,psio.*,s.StockName,pot.ProductOperationTypeName,pt.ProductTypeID,pt.ProductTypeName,
-sor.ReasonName,p.ProductsName,um.UnitMeasurementID,um.UnitMeasurementName,case when m.ModelID is null then 0 else m.ModelID end ModelID,
-m.ModelName FROM [ProductStockInputOutput] psio 
-left join ProductOperationTypes pot on psio.ProductOperationTypeID=pot.ProductOperationTypeID
-left join StockOperationReasons sor on psio.StockOperationReasonID=sor.StockOperationReasonID and sor.ProductOperationTypeID=pot.ProductOperationTypeID
+sor.ReasonName,p.ProductsName,um.UnitMeasurementName,m.ModelID,m.ModelName FROM [ProductStockInputOutput] psio 
+left join (select * from InvoiceStock where productoperationtypeid=1)  ist on psio.InvoiceStockID=ist.InvoiceStockID
+left join ProductOperationTypes pot on ist.ProductOperationTypeID=pot.ProductOperationTypeID
+left join StockOperationReasons sor on ist.StockOperationReasonID=sor.StockOperationReasonID and sor.ProductOperationTypeID=pot.ProductOperationTypeID
 left join Products p on psio.ProductID=p.ProductID
 left join Models m on m.ModelID=p.ModelID
 left join UnitMeasurements um on p.UnitMeasurementID=um.UnitMeasurementID
 left join ProductTypes pt on pt.ProductTypeID=p.ProductTypeID
-left join Stocks s on s.StockID=psio.StockID
- where psio.DeleteTime is null
+left join Stocks s on s.StockID=ist.StockID
+ where psio.DeleteTime is null 
  and ProductStockInputOutputID=@id", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
             da.Fill(dt);
@@ -4423,21 +4388,19 @@ left join Stocks s on s.StockID=psio.StockID
     }
 
 
-    public Types.ProsesType ProductStockInputOutputInsert(int StockID,int InvoiceStockID, int ProductOperationTypeID,
-        int StockOperationReasonID, int ProductID, string ProductSize,
+    public Types.ProsesType ProductStockInputOutputInsert(int InvoiceStockID, int ProductID, string ProductSize,
         string Price, string PriceDiscount, string Amount, string AmountDiscount, string RegisterTime, string Notes)
     {
 
         SqlCommand cmd = new SqlCommand(@"insert into ProductStockInputOutput 
-(UserID,StockID,InvoiceStockID,ProductOperationTypeID,StockOperationReasonID,ProductID,
+(UserID,InvoiceStockID,ProductID,
 ProductSize,Price,PriceDiscount,Amount,AmountDiscount,RegisterTime,Notes) values 
-(@UserID,@StockID,@InvoiceStockID,@ProductOperationTypeID,@StockOperationReasonID,@ProductID,
+(@UserID,@InvoiceStockID,@ProductID,
 @ProductSize,@Price,@PriceDiscount,@Amount,@AmountDiscount,@RegisterTime,@Notes)", SqlConn);
         cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
-        cmd.Parameters.AddWithValue("@StockID", StockID);
+      
         cmd.Parameters.AddWithValue("@InvoiceStockID", InvoiceStockID);
-        cmd.Parameters.AddWithValue("@ProductOperationTypeID", ProductOperationTypeID);
-        cmd.Parameters.AddWithValue("@StockOperationReasonID", StockOperationReasonID);
+      
         cmd.Parameters.AddWithValue("@ProductID", ProductID);
         cmd.Parameters.AddWithValue("@ProductSize", ConvertTypes.ToParseFloat(ProductSize));
         cmd.Parameters.AddWithValue("@Price", ConvertTypes.ToParseFloat(Price));
@@ -4465,22 +4428,20 @@ ProductSize,Price,PriceDiscount,Amount,AmountDiscount,RegisterTime,Notes) values
 
 
 
-    public Types.ProsesType ProductStockInputOutputUpdate(int ProductStockInputOutputID,int StockID,int InvoiceStockID,
-        int ProductOperationTypeID, int StockOperationReasonID, int ProductID, 
+    public Types.ProsesType ProductStockInputOutputUpdate(int ProductStockInputOutputID,int InvoiceStockID,
+         int ProductID, 
         string ProductSize, string Price, string PriceDiscount, string Amount,
         string AmountDiscount, string RegisterTime, string Notes)
     {
-        SqlCommand cmd = new SqlCommand(@"update ProductStockInputOutput set UserID=@UserID,
-ProductOperationTypeID=@ProductOperationTypeID,StockID=@StockID,InvoiceStockID=@InvoiceStockID,StockOperationReasonID=@StockOperationReasonID,
+        SqlCommand cmd = new SqlCommand(@"update ProductStockInputOutput set UserID=@UserID,InvoiceStockID=@InvoiceStockID,
 ProductID=@ProductID,ProductSize=@ProductSize,
 Price=@Price,PriceDiscount=@PriceDiscount,Amount=@Amount,AmountDiscount=@AmountDiscount,
 RegisterTime=@RegisterTime,Notes=@Notes,UpdateTime=getdate() where ProductStockInputOutputID=@ProductStockInputOutputID", SqlConn);
         cmd.Parameters.AddWithValue("@ProductStockInputOutputID", ProductStockInputOutputID);
         cmd.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
-        cmd.Parameters.AddWithValue("@StockID", StockID);
+      
         cmd.Parameters.AddWithValue("@InvoiceStockID", InvoiceStockID);
-        cmd.Parameters.AddWithValue("@ProductOperationTypeID", ProductOperationTypeID);
-        cmd.Parameters.AddWithValue("@StockOperationReasonID", StockOperationReasonID);
+    
         cmd.Parameters.AddWithValue("@ProductID", ProductID);
         cmd.Parameters.AddWithValue("@ProductSize", ConvertTypes.ToParseFloat(ProductSize));
         cmd.Parameters.AddWithValue("@Price", ConvertTypes.ToParseFloat(Price));
@@ -5115,16 +5076,15 @@ left join Stocks s on s.StockID=ps.StockID", SqlConn);
     }
 
 
-    public Types.ProsesType ProductStockInsertTransfer(int StockFromID, int UserID,int ProductID, int StockToID, 
+    public Types.ProsesType ProductStockInsertTransfer(int InvoiceStockTransferID,  int UserID,int ProductID, 
         string ProductSize,string RegisterTime)
     {
     
-        SqlCommand cmd2 = new SqlCommand(@"Insert into ProductStockTransfer (UserID,StockFromID,StockToID,ProductID,
+        SqlCommand cmd2 = new SqlCommand(@"Insert into ProductStockTransfer (UserID,InvoiceStockTransferID,ProductID,
 ProductSize,RegisterTime) 
-Values (@UserID,@StockFromID,@StockToID,@ProductID,@ProductSize,@RegisterTime)", SqlConn);
+Values (@UserID,@InvoiceStockTransferID,@ProductID,@ProductSize,@RegisterTime)", SqlConn);
+        cmd2.Parameters.AddWithValue("@InvoiceStockTransferID", InvoiceStockTransferID);
         cmd2.Parameters.AddWithValue("@UserID", UserID);
-        cmd2.Parameters.AddWithValue("@StockFromID", StockFromID);
-        cmd2.Parameters.AddWithValue("@StockToID", StockToID);
         cmd2.Parameters.AddWithValue("@ProductID", ProductID);
         cmd2.Parameters.AddWithValue("@ProductSize", ConvertTypes.ToParseFloat(ProductSize));
         cmd2.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
@@ -5147,6 +5107,35 @@ Values (@UserID,@StockFromID,@StockToID,@ProductID,@ProductSize,@RegisterTime)",
         //    cmd2.Connection.Close();
         //    cmd2.Dispose();
         //}
+    }
+    public Types.ProsesType ProductStockUpdateTransfer(int InvoiceStockTransferID, int ProductStockTransferID, 
+        int UserID, int ProductID,  string ProductSize, string RegisterTime)
+    {
+
+        SqlCommand cmd = new SqlCommand(@"update ProductStockTransfer set UserID=@UserID,
+InvoiceStockTransferID=@InvoiceStockTransferID,ProductID=@ProductID,ProductSize=@ProductSize,RegisterTime=@RegisterTime,
+UpdateTime=getdate() where ProductStockTransferID=@ProductStockTransferID", SqlConn);
+        cmd.Parameters.AddWithValue("@InvoiceStockTransferID", InvoiceStockTransferID);
+        cmd.Parameters.AddWithValue("@ProductStockTransferID", ProductStockTransferID);
+        cmd.Parameters.AddWithValue("@UserID", UserID);
+        cmd.Parameters.AddWithValue("@ProductID", ProductID);
+        cmd.Parameters.AddWithValue("@ProductSize", ConvertTypes.ToParseFloat(ProductSize));
+        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
+        try
+        {
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception ex)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            cmd.Connection.Close();
+            cmd.Dispose();
+        }
     }
 
     public Types.ProsesType DeleteGardenInformation(int id)
@@ -5670,16 +5659,16 @@ where OrderProductID=@OrderProductID", SqlConn);
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"
 SELECT row_number() over(order by pst.ProductStockTransferID desc) sn,
-pst.*,p.ProductsName,m.ModelName,um.UnitMeasurementName,pt.ProductTypeName,
+pst.*,p.ProductsName,m.ModelName,um.UnitMeasurementName,pt.ProductTypeName,pt.ProductTypeID,m.ModelID,
 s.StockName StockFromName,s1.StockName StockToName
-
   FROM ProductStockTransfer pst
+left join InvoiceStockTransfer ist on pst.InvoiceStockTransferID=ist.InvoiceStockTransferID
 left join Products p on pst.ProductID=p.ProductID
 left join Models m on m.ModelID=p.ModelID
 left join UnitMeasurements um on p.UnitMeasurementID=um.UnitMeasurementID
 left join ProductTypes pt on pt.ProductTypeID=p.ProductTypeID
-left join Stocks s on s.StockID=pst.StockFromID
-left join Stocks s1 on s1.StockID=pst.StockToID where pst.DeleteTime is null and 
+left join Stocks s on s.StockID=ist.StockFromID
+left join Stocks s1 on s1.StockID=ist.StockToID where pst.DeleteTime is null and
 pst.ProductStockTransferID=@id", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
             da.Fill(dt);
@@ -5713,37 +5702,7 @@ pst.ProductStockTransferID=@id", SqlConn);
     }
 
 
-    public Types.ProsesType ProductStockUpdateTransfer(int ProductStockTransferID, int StockFromID, int UserID, int ProductID, int StockToID,
-       string ProductSize, string RegisterTime)
-    {
-
-
-        SqlCommand cmd = new SqlCommand(@"update ProductStockTransfer set UserID=@UserID,
-StockFromID=@StockFromID,StockToID=@StockToID,ProductID=@ProductID,ProductSize=@ProductSize,RegisterTime=@RegisterTime,
-UpdateTime=getdate() where ProductStockTransferID=@ProductStockTransferID", SqlConn);
-        cmd.Parameters.AddWithValue("@ProductStockTransferID", ProductStockTransferID);
-        cmd.Parameters.AddWithValue("@UserID", UserID);
-        cmd.Parameters.AddWithValue("@StockFromID", StockFromID);
-        cmd.Parameters.AddWithValue("@StockToID", StockToID);
-        cmd.Parameters.AddWithValue("@ProductID", ProductID);
-        cmd.Parameters.AddWithValue("@ProductSize", ConvertTypes.ToParseFloat(ProductSize));
-        cmd.Parameters.AddWithValue("@RegisterTime", ConvertTypes.ToParseDatetime(RegisterTime));
-        try
-        {
-            cmd.Connection.Open();
-            cmd.ExecuteNonQuery();
-            return Types.ProsesType.Succes;
-        }
-        catch (Exception ex)
-        {
-            return Types.ProsesType.Error;
-        }
-        finally
-        {
-            cmd.Connection.Close();
-            cmd.Dispose();
-        }
-    }
+   
 
 
 

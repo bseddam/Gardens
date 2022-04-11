@@ -341,10 +341,7 @@ public partial class OperationProductsExit : System.Web.UI.Page
         if (btnSave.CommandName == "insert")
         {
             val = _db.ProductStockInputOutputInsert(
-                StockID: dt.Rows[0]["StockID"].ToParseInt(),
                 InvoiceStockID: Session["InvoiceStockID"].ToParseInt(),
-                ProductOperationTypeID: 2,
-                StockOperationReasonID: dt.Rows[0]["StockOperationReasonID"].ToParseInt(),
                 ProductID: cmbProducts.Value.ToParseInt(),
                 ProductSize: txtProductSize.Text.ToParseStr(),
                 Price: txtPrice.Text.ToParseStr(),
@@ -358,10 +355,7 @@ public partial class OperationProductsExit : System.Web.UI.Page
         else
         {
             val = _db.ProductStockInputOutputUpdate(ProductStockInputOutputID: btnSave.CommandArgument.ToParseInt(),
-                StockID: dt.Rows[0]["StockID"].ToParseInt(),
                 InvoiceStockID: Session["InvoiceStockID"].ToParseInt(),
-                ProductOperationTypeID: 2,
-                StockOperationReasonID: dt.Rows[0]["StockOperationReasonID"].ToParseInt(),
                 ProductID: cmbProducts.Value.ToParseInt(),
                 ProductSize: txtProductSize.Text.ToParseStr(),
                 Price: txtPrice.Text.ToParseStr(),

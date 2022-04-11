@@ -211,7 +211,7 @@
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
 
-                                    <dx:GridViewDataColumn Caption="Qiyməti" FieldName="Price" VisibleIndex="1">
+                                    <%--<dx:GridViewDataColumn Caption="Qiyməti" FieldName="Price" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
                                     <dx:GridViewDataColumn Caption="Endirimli qiyməti" FieldName="PriceDiscount" VisibleIndex="1">
@@ -225,7 +225,7 @@
                                     </dx:GridViewDataColumn>
                                     <dx:GridViewDataColumn Caption="Qeyd" FieldName="Notes" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
-                                    </dx:GridViewDataColumn>
+                                    </dx:GridViewDataColumn>--%>
 
                                     <dx:GridViewDataColumn Caption="Qeydiyyat tarixi" FieldName="RegisterTime" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
@@ -233,13 +233,13 @@
 
                                     <dx:GridViewDataColumn VisibleIndex="1">
                                         <DataItemTemplate>
-                                            <asp:LinkButton ID="lnkEdit" OnClick="lnkEdit_Click" CommandArgument='<%#Eval("ProductStockInputOutputID") %>' Text="Düzəliş" runat="server" />
+                                            <asp:LinkButton ID="lnkEdit" OnClick="lnkEdit_Click" CommandArgument='<%#Eval("ProductStockTransferID") %>' Text="Düzəliş" runat="server" />
                                         </DataItemTemplate>
                                     </dx:GridViewDataColumn>
 
                                     <dx:GridViewDataColumn VisibleIndex="1">
                                         <DataItemTemplate>
-                                            <asp:LinkButton ID="lnkDelete" OnClick="lnkDelete_Click" OnClientClick="return confirm('Silmək istədiyinizə əminsinizmi?');" CommandArgument='<%#Eval("ProductStockInputOutputID") %>' Text="Sil" runat="server" />
+                                            <asp:LinkButton ID="lnkDelete" OnClick="lnkDelete_Click" OnClientClick="return confirm('Silmək istədiyinizə əminsinizmi?');" CommandArgument='<%#Eval("ProductStockTransferID") %>' Text="Sil" runat="server" />
                                         </DataItemTemplate>
                                     </dx:GridViewDataColumn>
 
@@ -259,14 +259,11 @@
                                 HeaderText="Redaktə"
                                 PopupHorizontalAlign="WindowCenter"
                                 PopupVerticalAlign="WindowCenter"
-                                Height="300"
+                                Height="500"
                                 ScrollBars="Vertical">
                                 <ContentCollection>
                                     <dx:PopupControlContentControl>
                                         <div class="container">
-                                           
-
-                                            
                                             <div class="row mb-2">
                                                 <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Malın kateqoriyası</label>
                                                 <div class="col-sm-7">
@@ -309,21 +306,6 @@
                                                 </div>
                                             </div>
 
-
-
-                                             <div class="row mb-2">
-                                                <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Qeyd</label>
-                                                <div class="col-sm-7">
-                                                    <asp:TextBox ID="txtNote" class="form-control mb-0 mt-0" runat="server" placeholder="Mətni daxil edin..." TextMode="MultiLine">
-                                                    </asp:TextBox>
-                                                </div>
-                                            </div>
-
-                                           
-
-
-
-
                                             <div class="row  mb-2">
                                                 <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Qeydiyyat tarixi</label>
                                                 <div class="col-sm-7">
@@ -356,41 +338,31 @@
         <table style="border-collapse: collapse; width: 100%;">
             <tr>
                 <td style="border: 1px solid black; text-align: center; width: 10%; white-space: normal; font-weight: bold">Sıra №</td>
-                <td style="border: 1px solid black; text-align: center; width: 30%; white-space: normal; font-weight: bold">Məhsulun Adı</td>
+                <td style="border: 1px solid black; text-align: center; width: 10%; white-space: normal; font-weight: bold">Anbardan</td>
+                <td style="border: 1px solid black; text-align: center; width: 10%; white-space: normal; font-weight: bold">Anbara</td>
+                <td style="border: 1px solid black; text-align: center; width: 10%; white-space: normal; font-weight: bold">Mal kateqoriyası</td>
+                <td style="border: 1px solid black; text-align: center; width: 20%; white-space: normal; font-weight: bold">Model</td>
+                <td style="border: 1px solid black; text-align: center; width: 20%; white-space: normal; font-weight: bold">Məhsulun Adı</td>
                 <td style="border: 1px solid black; text-align: center; width: 10%; white-space: normal; font-weight: bold">Ölçü vahidi</td>
                 <td style="border: 1px solid black; text-align: center; width: 10%; white-space: normal; font-weight: bold">Miqdarı</td>
-                <td style="border: 1px solid black; text-align: center; width: 10%; white-space: normal; font-weight: bold">Qiyməti</td>
-                <td style="border: 1px solid black; text-align: center; width: 10%; white-space: normal; font-weight: bold">Məbləğ</td>
-                <td style="border: 1px solid black; text-align: center; width: 10%; white-space: normal; font-weight: bold">Endirimli qiymət</td>
-                <td style="border: 1px solid black; text-align: center; width: 10%; white-space: normal; font-weight: bold">Endirimli məbləğ</td>
+               
             </tr>
             <asp:Repeater ID="rpprint" runat="server">
                 <ItemTemplate>
                     <tr>
                         <td style="border: 1px solid black; text-align: center; width: 10%; white-space: normal;"><%#Container.ItemIndex+1 %></td>
-                        <td style="border: 1px solid black; text-align: center; width: 30%; white-space: normal;"><%#Eval("ProductsName")%></td>
+                        <td style="border: 1px solid black; text-align: center; width: 10%; white-space: normal;"><%#Eval("StockFromName")%></td>
+                        <td style="border: 1px solid black; text-align: center; width: 10%; white-space: normal;"><%#Eval("StockToName")%></td>
+                        <td style="border: 1px solid black; text-align: center; width: 10%; white-space: normal;"><%#Eval("ProductTypeName")%></td>
+                        <td style="border: 1px solid black; text-align: center; width: 20%; white-space: normal;"><%#Eval("ModelName")%></td>
+                        <td style="border: 1px solid black; text-align: center; width: 20%; white-space: normal;"><%#Eval("ProductsName")%></td>
                         <td style="border: 1px solid black; text-align: center; width: 10%; white-space: normal;"><%#Eval("UnitMeasurementName")%></td>
                         <td style="border: 1px solid black; text-align: center; width: 10%; white-space: normal;"><%#Eval("ProductSize")%></td>
-                        <td style="border: 1px solid black; text-align: center; width: 10%; white-space: normal;"><%#Eval("Price")%></td>
-                        <td style="border: 1px solid black; text-align: center; width: 10%; white-space: normal;"><%#Eval("Amount")%></td>
-                        <td style="border: 1px solid black; text-align: center; width: 10%; white-space: normal;"><%#Eval("PriceDiscount")%></td>
-                        <td style="border: 1px solid black; text-align: center; width: 10%; white-space: normal;"><%#Eval("AmountDiscount")%></td>
+                    
                     </tr>
                 </ItemTemplate>
             </asp:Repeater>
-            <tr>
-                <td style="border: 1px solid black; text-align: center; width: 10%; white-space: normal; font-weight: bold">&nbsp;</td>
-                <td style="border: 1px solid black; text-align: center; width: 30%; white-space: normal; font-weight: bold">Sifarişin məbləği</td>
-                <td style="border: 1px solid black; text-align: center; width: 10%; white-space: normal; font-weight: bold">&nbsp;</td>
-                <td style="border: 1px solid black; text-align: center; width: 10%; white-space: normal; font-weight: bold">
-                    <asp:Label ID="lblProductSize" runat="server"></asp:Label></td>
-                <td style="border: 1px solid black; text-align: center; width: 10%; white-space: normal; font-weight: bold">&nbsp;</td>
-                <td style="border: 1px solid black; text-align: center; width: 10%; white-space: normal; font-weight: bold">
-                    <asp:Label ID="lblAmount" runat="server"></asp:Label></td>
-                <td style="border: 1px solid black; text-align: center; width: 10%; white-space: normal; font-weight: bold">&nbsp;</td>
-                <td style="border: 1px solid black; text-align: center; width: 10%; white-space: normal; font-weight: bold">
-                    <asp:Label ID="lblAmountDiscount" runat="server"></asp:Label></td>
-            </tr>
+            
              <tr style="height:150px;">
                 <td colspan="4">
                     Tehvil verdi:____________________
