@@ -46,7 +46,7 @@
         routes.MapPageRoute("stock", "stock", "~/Stock.aspx");
         routes.MapPageRoute("productsexit", "productsexit", "~/OperationProductsExit.aspx");
         routes.MapPageRoute("polescount", "polescount", "~/PolesCount.aspx");
-
+        routes.MapPageRoute("productstocks", "productstocks", "~/ProductStocks.aspx");
 
     }
 
