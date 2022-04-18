@@ -73,8 +73,7 @@ public partial class Lines : System.Web.UI.Page
         ddlgardens.Items.Insert(0, new ListItem("Seçin", "-1"));
         ddlgardens.SelectedIndex = 0;  
 
-        zonacomponentload();
-        sectorcomponentload();
+        
     }
     protected void lnkEdit_Click(object sender, EventArgs e)
     {
@@ -117,6 +116,8 @@ public partial class Lines : System.Web.UI.Page
     protected void LnkPnlMenu_Click(object sender, EventArgs e)
     {
         componentsload();
+        zonacomponentload();
+        sectorcomponentload();
         ClearComponents();
         LinkButton btn = sender as LinkButton;
         switch (btn.CommandArgument)
