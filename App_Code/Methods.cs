@@ -1434,8 +1434,8 @@ where TreeTypeID=@TreeTypeID;", SqlConn);
     //Mallar
     public DataTable GetProducts()
     {
-        try
-        {
+        //try
+        //{
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by ProductID desc) sn,
        [ProductID],p.[UserID],[ProductsName],p.[ProductTypeID],pt.ProductTypeName
@@ -1449,16 +1449,16 @@ where TreeTypeID=@TreeTypeID;", SqlConn);
 m.DeleteTime is null and u.DeleteTime is null", SqlConn);
             da.Fill(dt);
             return dt;
-        }
-        catch (Exception ex)
-        {
-            return null;
-        }
+        //}
+        //catch (Exception ex)
+        //{
+        //    return null;
+        //}
     }
     public DataTable GetProductById(int id)
     {
-        try
-        {
+        //try
+        //{
             DataTable dt = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(@"select row_number() over(order by ProductID desc) sn,
        [ProductID],p.[UserID],[ProductsName],p.[ProductTypeID],pt.ProductTypeName
@@ -1472,11 +1472,11 @@ m.DeleteTime is null and u.DeleteTime is null and p.ProductID=@id", SqlConn);
             da.SelectCommand.Parameters.AddWithValue("id", id);
             da.Fill(dt);
             return dt;
-        }
-        catch (Exception ex)
-        {
-            return null;
-        }
+        //}
+        //catch (Exception ex)
+        //{
+        //    return null;
+        //}
     }
     public Types.ProsesType ProductInsert(string ProductsName, int ProductTypeID,
         int ModelID, string Code, int UnitMeasurementID,  string Notes)

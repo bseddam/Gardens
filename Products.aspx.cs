@@ -71,7 +71,7 @@ public partial class Products : System.Web.UI.Page
 
 
 
-        modelcomponentload();
+        //modelcomponentload();
     }
     protected void lnkEdit_Click(object sender, EventArgs e)
     {
@@ -85,10 +85,14 @@ public partial class Products : System.Web.UI.Page
    
        
         modelcomponentload();
+
         if (dt.Rows[0]["ModelID"].ToParseStr() != "")
         {
             ddlmodel.SelectedValue = dt.Rows[0]["ModelID"].ToParseStr();
         }
+        
+
+        
         txtcode.Text = dt.Rows[0]["Code"].ToParseStr();
         if (dt.Rows[0]["UnitMeasurementID"].ToParseStr() != "")
         {
@@ -110,6 +114,7 @@ public partial class Products : System.Web.UI.Page
     protected void LnkPnlMenu_Click(object sender, EventArgs e)
     {
         componentsload();
+        modelcomponentload();
         ClearComponents();
         LinkButton btn = sender as LinkButton;
         switch (btn.CommandArgument)
