@@ -5,7 +5,7 @@ using System.Web;
 
 public class Methods
 {
-    public static SqlConnection SqlConn = new SqlConnection(@"Data Source = (local)\MSSQL19; Initial Catalog = Gardens; User Id = sa; Password = ra1490qif");
+    public static SqlConnection SqlConn = new SqlConnection(@"Data Source = SQL5109.site4now.net; Initial Catalog = db_a85441_garden; User Id = db_a85441_garden_admin; Password = @Garden123");
 
     public DataTable User(string Login, string Pass)
     {
