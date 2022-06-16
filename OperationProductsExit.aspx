@@ -297,11 +297,16 @@
                                         PopupHorizontalAlign="WindowCenter"
                                         PopupVerticalAlign="WindowCenter"
                                         Height="600"
-                                        ScrollBars="Vertical">
-                                        <ContentCollection>
-                                            <dx:PopupControlContentControl>
+                                        ScrollBars="Vertical" EnableHierarchyRecreation="false">
+                                <ContentCollection>
+                                    <dx:PopupControlContentControl>
 
-                                                <div class="container">
+
+                                        <div class="container">
+
+                                            <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                                                <ContentTemplate>
+
 
 
 
@@ -398,6 +403,8 @@
 
                                                         </div>
                                                     </div>
+                                                    </ContentTemplate>
+                                                </asp:UpdatePanel>
                                                     <div>
                                                         <asp:Label Text="" ForeColor="Red" ID="lblPopError" runat="server" />
                                                     </div>

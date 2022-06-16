@@ -6,9 +6,8 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-  <%--  <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
-       <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-        <ContentTemplate>--%>
+  <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+ 
     <div class="content-wrapper">
         <div class="card">
             <div class="card-body">
@@ -130,10 +129,16 @@
                                 PopupHorizontalAlign="WindowCenter"
                                 PopupVerticalAlign="WindowCenter"
                                 Height="600"
-                                ScrollBars="Vertical">
+                                ScrollBars="Vertical" EnableHierarchyRecreation="false">
                                 <ContentCollection>
                                     <dx:PopupControlContentControl>
+
+
                                         <div class="container">
+
+                                            <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                                                <ContentTemplate>
+
                                             <%--<div class="row mb-2">
                                                 <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Servis növü</label>
                                                 <div class="col-sm-7">
@@ -301,6 +306,8 @@
 
                                                 </div>
                                             </div>
+                                                    </ContentTemplate>
+                                                </asp:UpdatePanel>
                                              <div>
                                                 <asp:Label Text="" ForeColor="Red" ID="lblPopError" runat="server" />
                                             </div>
@@ -329,7 +336,6 @@
         }
     </style>
 
-         <%--  </ContentTemplate>
-    </asp:UpdatePanel>--%>
+    
 </asp:Content>
 

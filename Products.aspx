@@ -6,8 +6,7 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
-         <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-        <ContentTemplate>
+   
     <!-- ======= Default Section ======= -->
     <section id="about" class="about section-bg">
 
@@ -109,10 +108,16 @@
                             PopupHorizontalAlign="WindowCenter"
                             PopupVerticalAlign="WindowCenter"
                             Height="600"
-                            ScrollBars="Vertical">
-                            <ContentCollection>
-                                <dx:PopupControlContentControl>
-                                    <div class="container">
+                            ScrollBars="Vertical"  EnableHierarchyRecreation="false">
+                                <ContentCollection>
+                                    <dx:PopupControlContentControl>
+
+
+                                        <div class="container">
+
+                                            <asp:UpdatePanel ID="UpdatePanel2" runat="server">
+                                                <ContentTemplate>
+
                                    
 
 
@@ -194,7 +199,8 @@
                                                 </asp:TextBox>
                                             </div>
                                         </div>
-
+</ContentTemplate>
+                                                </asp:UpdatePanel>
 
                                         <div>
                                             <asp:Label Text="" ForeColor="Red" ID="lblPopError" runat="server" />
@@ -311,8 +317,7 @@
 
     </section>
     <!-- End Default -->
-                </ContentTemplate>
-    </asp:UpdatePanel>
+
 
 
 </asp:Content>
