@@ -29,7 +29,7 @@ public partial class OperationStock : System.Web.UI.Page
         txtPrice.Text = "";
         txtPriceDiscount.Text = "";
         txtProductSize.Text = "";
-        cmbregistertime.Text = "";
+        txtExchangeRate.Text = "";
         cmbregistertime1.Text = "";
 
     }
@@ -46,7 +46,7 @@ public partial class OperationStock : System.Web.UI.Page
 
     void _loadGridInvoiceInputOutput()
     {
-        DataTable dt1 = _db.GetInvoiceInputOutput(1);
+        DataTable dt1 = _db.GetInvoiceInputOutput(1, Session["InvoiceStockID"].ToParseInt());
         if (dt1 != null)
         {
             GridInvoice.SettingsPager.Summary.Text = "Cari səhifə: {0}, Ümumi səhifələrin sayı: {1}, Tapılmış məlumatların sayı: {2}";
@@ -65,11 +65,23 @@ public partial class OperationStock : System.Web.UI.Page
         cmbProducts.Items.Clear();
         DataTable dt6 = _db.GetProductByModelProductId(cmbmodel.Value.ToParseInt(), cmbproducttype.Value.ToParseInt());
         cmbProducts.ValueField = "ProductID";
-        cmbProducts.TextField = "ProductsName";
+        cmbProducts.TextField = "ddlname";
         cmbProducts.DataSource = dt6;
         cmbProducts.DataBind();
         cmbProducts.Items.Insert(0, new ListEditItem("Seçin", "-1"));
         cmbProducts.SelectedIndex = 0;
+    }
+  
+    void Currencycomponentload()
+    {
+        cmbCurrency.Items.Clear();
+        DataTable dt6 = _db.GetCurrency();
+        cmbCurrency.ValueField = "CurrencyID";
+        cmbCurrency.TextField = "CurrencyName";
+        cmbCurrency.DataSource = dt6;
+        cmbCurrency.DataBind();
+        cmbCurrency.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        cmbCurrency.SelectedIndex = 0;
     }
     void modelcomponentload()
     {
@@ -134,12 +146,6 @@ public partial class OperationStock : System.Web.UI.Page
         cmbproducttype.SelectedIndex = 0;
 
 
-
-
-
-
-
-
         productcomponentload();
         modelcomponentload();
     }
@@ -148,7 +154,10 @@ public partial class OperationStock : System.Web.UI.Page
         LinkButton btn = sender as LinkButton;
         int id = btn.CommandArgument.ToParseInt();
         Session["InvoiceStockID"] = id;
+
         _loadGridFromDb(id);
+        btn.BackColor = System.Drawing.Color.Yellow;
+        _loadGridInvoiceInputOutput();
 
     }
     protected void lnkEditInvoice_Click(object sender, EventArgs e)
@@ -207,7 +216,8 @@ public partial class OperationStock : System.Web.UI.Page
         productcomponentload();
 
         cmbProducts.Value = dt.Rows[0]["ProductID"].ToParseStr();
-
+        cmbCurrency.Value = dt.Rows[0]["CurrencyID"].ToParseStr();
+        txtExchangeRate.Text = dt.Rows[0]["ExchangeRate"].ToParseStr();
         txtAmount.Text = dt.Rows[0]["Amount"].ToParseStr();
         txtAmountDiscount.Text = dt.Rows[0]["AmountDiscount"].ToParseStr();
         txtNote.Text = dt.Rows[0]["Notes"].ToParseStr();
@@ -218,15 +228,15 @@ public partial class OperationStock : System.Web.UI.Page
 
 
 
-        DateTime datevalue;
-        if (DateTime.TryParse(dt.Rows[0]["RegisterTime"].ToParseStr(), out datevalue))
-        {
-            cmbregistertime.Text = DateTime.Parse(dt.Rows[0]["RegisterTime"].ToParseStr()).ToString("dd.MM.yyyy");
-        }
-        else
-        {
-            cmbregistertime.Text = "";
-        }
+        //DateTime datevalue;
+        //if (DateTime.TryParse(dt.Rows[0]["RegisterTime"].ToParseStr(), out datevalue))
+        //{
+        //    cmbregistertime.Text = DateTime.Parse(dt.Rows[0]["RegisterTime"].ToParseStr()).ToString("dd.MM.yyyy");
+        //}
+        //else
+        //{
+        //    cmbregistertime.Text = "";
+        //}
 
 
 
@@ -348,8 +358,9 @@ public partial class OperationStock : System.Web.UI.Page
                 PriceDiscount: txtPriceDiscount.Text.ToParseStr(),
                 Amount: txtAmount.Text.ToParseStr(),
                 AmountDiscount: txtAmountDiscount.Text.ToParseStr(),
-                RegisterTime: cmbregistertime.Text.ToParseStr(),
-                Notes: txtNote.Text.ToParseStr()
+                Notes: txtNote.Text.ToParseStr(),
+                CurrencyID: cmbCurrency.Value.ToParseInt(),
+                ExchangeRate: txtExchangeRate.Text.ToParseStr()
                 );
         }
         else
@@ -363,8 +374,9 @@ public partial class OperationStock : System.Web.UI.Page
                 PriceDiscount: txtPriceDiscount.Text.ToParseStr(),
                 Amount: txtAmount.Text.ToParseStr(),
                 AmountDiscount: txtAmountDiscount.Text.ToParseStr(),
-                RegisterTime: cmbregistertime.Text.ToParseStr(),
-                Notes: txtNote.Text.ToParseStr()
+                Notes: txtNote.Text.ToParseStr(),
+                CurrencyID: cmbCurrency.Value.ToParseInt(),
+                ExchangeRate: txtExchangeRate.Text.ToParseStr()
                 );
         }
 
@@ -373,17 +385,15 @@ public partial class OperationStock : System.Web.UI.Page
             lblPopError.Text = "XƏTA! Yadda saxlamaq mümkün olmadı.";
             return;
         }
-
+        
         _loadGridFromDb(Session["InvoiceStockID"].ToParseInt());
+        _loadGridInvoiceInputOutput();
         popupEdit.ShowOnPageLoad = false;
     }
     protected void btnCancel_Click(object sender, EventArgs e)
     {
         popupEdit.ShowOnPageLoad = false;
     }
-
-
-
 
     protected void btninvoice_Click(object sender, EventArgs e)
     {
@@ -430,21 +440,21 @@ public partial class OperationStock : System.Web.UI.Page
         popupVoice.ShowOnPageLoad = false;
     }
 
-
-
-   
-
-
-
     protected void cmbmodel_SelectedIndexChanged(object sender, EventArgs e)
     {
         productcomponentload();
     }
-
+    protected void cmbCurrency_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        txtExchangeRate.Text=_db.GetCurrencyBYID(cmbCurrency.Value.ToParseStr()).Rows[0]["ExchangeRate"].ToParseStr();
+        CalcPrice_TextChanged(null,null);
+    }
+    
     protected void cmbproducttype_SelectedIndexChanged(object sender, EventArgs e)
     {
         modelcomponentload();
         productcomponentload();
+        Currencycomponentload();
     }
     protected void GridInvoice_HtmlRowPrepared(object sender, ASPxGridViewTableRowEventArgs e)
     {
@@ -463,4 +473,29 @@ public partial class OperationStock : System.Web.UI.Page
         e.Row.TabIndex = 1;
 
     }
+    protected void CalcPrice_TextChanged(object sender, EventArgs e)
+    {
+        float ExchangeRate = 0;
+        if (txtExchangeRate.Text != "")
+        {
+            float.TryParse(txtExchangeRate.Text, out ExchangeRate);
+        }
+        float Price = 0;
+        if (txtPrice.Text != "")
+        {
+            float.TryParse(txtPrice.Text, out Price);
+        }
+        float ProductSize = 0;
+        if (txtProductSize.Text != "")
+        {
+            float.TryParse(txtProductSize.Text, out ProductSize);
+        }
+        float PriceDiscount = 0;
+        if (txtPriceDiscount.Text != "")
+        {
+            float.TryParse(txtPriceDiscount.Text, out PriceDiscount);
+        }
+        txtAmount.Text = (ProductSize * Price * ExchangeRate).ToParseStr();
+        txtAmountDiscount.Text = (ProductSize * PriceDiscount * ExchangeRate).ToParseStr();
+;    }
 }

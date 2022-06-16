@@ -6,8 +6,8 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
-        <%-- <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-        <ContentTemplate>--%>
+         <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+        <ContentTemplate>
     <!-- ======= Default Section ======= -->
     <section id="about" class="about section-bg">
 
@@ -118,17 +118,26 @@
 
                                             <div class="row mb-2">
                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Malın kateqoriyası</label>
-                                            <div class="col-sm-7">
+                                            <div class="col-sm-6">
                                                 <asp:DropDownList ID="ddlproducttype" class="form-control" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlproducttype_SelectedIndexChanged"></asp:DropDownList>
                                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator21" runat="server" ControlToValidate="ddlProductType" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
                                             </div>
+                                                <div class="col-sm-1">
+            <asp:LinkButton ID="lnkbtnproducttype" runat="server" CommandArgument="addproducttype" OnClick="lnkbtnproducttype_Click" CssClass="btn btn-dark">...</asp:LinkButton>
+
+                                            </div>
+
                                         </div>
                                        
                                         <div class="row mb-2">
                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Modeli</label>
-                                            <div class="col-sm-7">
+                                            <div class="col-sm-6">
                                                 <asp:DropDownList ID="ddlmodel" class="form-control" runat="server"></asp:DropDownList>
                                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="ddlmodel" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
+                                            </div>
+                                            <div class="col-sm-1">
+            <asp:LinkButton ID="lnkbtnModels" runat="server" CommandArgument="addModels" OnClick="lnkbtnModels_Click" CssClass="btn btn-dark">...</asp:LinkButton>
+
                                             </div>
                                         </div>
 
@@ -198,6 +207,102 @@
                         </dx:ASPxPopupControl>
 
 
+
+                        <dx:ASPxPopupControl ID="PopupProductType"
+                            runat="server"
+                            ClientInstanceName="popup"
+                            AllowDragging="true"
+                            AllowResize="true"
+                            Modal="true"
+                            DragElement="Header"
+                            Width="600"
+                            HeaderText="Redaktə"
+                            PopupHorizontalAlign="WindowCenter"
+                            PopupVerticalAlign="WindowCenter"
+                            Height="200"
+                            ScrollBars="Vertical">
+                            <ContentCollection>
+                                <dx:PopupControlContentControl>
+                                    <div class="container">
+                                                   
+
+
+
+                                        <div class="row mb-2">
+                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Malın kateqoriyası</label>
+                                            <div class="col-sm-7">
+                                                <asp:TextBox ID="txtproducttypename" runat="server" class="form-control"  placeholder="Mətni daxil edin..."></asp:TextBox>
+                                                <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup2" ControlToValidate="txtproducttypename" ID="RequiredFieldValidator2" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>
+                                            </div>
+                                        </div>
+
+
+                                                                   
+
+
+                                        <div>
+                                            <asp:Label Text="" ForeColor="Red" ID="lblPopErrorProducttype" runat="server" />
+                                        </div>
+                                        <asp:Button ID="btnProductTypeSave" runat="server" ValidationGroup="qrup2" CssClass="btn btn-success mr-2" Text="Yadda saxla" OnClick="btnProductTypeSave_Click" />
+                                        <asp:Button ID="btnProductTypeCancel" runat="server" CssClass="btn btn-light" Text="Ləğv et" OnClick="btnProductTypeCancel_Click" />
+                                    </div>
+                                </dx:PopupControlContentControl>
+                            </ContentCollection>
+                        </dx:ASPxPopupControl>
+
+
+                        <dx:ASPxPopupControl ID="PopupModels"
+                            runat="server"
+                            ClientInstanceName="popup"
+                            AllowDragging="true"
+                            AllowResize="true"
+                            Modal="true"
+                            DragElement="Header"
+                            Width="600"
+                            HeaderText="Redaktə"
+                            PopupHorizontalAlign="WindowCenter"
+                            PopupVerticalAlign="WindowCenter"
+                            Height="200"
+                            ScrollBars="Vertical">
+                            <ContentCollection>
+                                <dx:PopupControlContentControl>
+                                    <div class="container">
+                                   
+                               <%--            <div class="row mb-2">
+                                                        <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Malın kateqoriyası</label>
+                                                        <div class="col-sm-7">
+                                                            <dx:ASPxComboBox ID="cmbproducttype" runat="server" Width="100%" Height="30px">
+                                                            </dx:ASPxComboBox>
+                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ControlToValidate="cmbproducttype" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup3" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
+                                                        </div>
+                                                    </div>--%>
+
+
+                                        <div class="row mb-2">
+                                            <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Model adı</label>
+                                            <div class="col-sm-7">
+                                                <asp:TextBox ID="txtmodelname" runat="server" class="form-control"  placeholder="Mətni daxil edin..."></asp:TextBox>
+                                                <asp:RegularExpressionValidator ValidationGroup="qrup3" Display="Dynamic" ControlToValidate="txtmodelname" ID="RegularExpressionValidator1" ValidationExpression="^[\s\S]{3,500}$" runat="server" ForeColor="Red" ErrorMessage="Mətn 3 simvoldan cox olmalıdır."></asp:RegularExpressionValidator>
+                                                <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup3" ControlToValidate="txtmodelname" ID="RequiredFieldValidator6" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>
+                                            </div>
+                                        </div>
+
+
+                                       
+                                       
+                                      
+
+
+                                        <div>
+                                            <asp:Label Text="" ForeColor="Red" ID="ErrorModel" runat="server" />
+                                        </div>
+                                        <asp:Button ID="btnModelsSave" runat="server" ValidationGroup="qrup3" CssClass="btn btn-success mr-2" Text="Yadda saxla" OnClick="btnModelsSave_Click" />
+                                        <asp:Button ID="btnModelsCancel" runat="server" CssClass="btn btn-light" Text="Ləğv et" OnClick="btnModelsCancel_Click" />
+                                    </div>
+                                </dx:PopupControlContentControl>
+                            </ContentCollection>
+                        </dx:ASPxPopupControl>
+
                     </div>
                 </div>
             </div>
@@ -206,7 +311,9 @@
 
     </section>
     <!-- End Default -->
-              <%--  </ContentTemplate>
-    </asp:UpdatePanel>--%>
+                </ContentTemplate>
+    </asp:UpdatePanel>
+
+
 </asp:Content>
 

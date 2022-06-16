@@ -173,4 +173,82 @@ public partial class Products : System.Web.UI.Page
     {
         modelcomponentload();
     }
+    protected void lnkbtnproducttype_Click(object sender, EventArgs e)
+    {
+        LinkButton btn = sender as LinkButton;
+        switch (btn.CommandArgument)
+        {
+            case "addproducttype":
+                btnProductTypeSave.CommandName = "insert";
+                PopupProductType.ShowOnPageLoad = true;
+                break;
+        }        
+    }
+    protected void btnProductTypeCancel_Click(object sender, EventArgs e)
+    {
+        PopupProductType.ShowOnPageLoad = false;
+    }
+
+    protected void btnProductTypeSave_Click(object sender, EventArgs e)
+    {
+        lblPopErrorProducttype.Text = "";
+        Types.ProsesType val = Types.ProsesType.Error;
+        if (btnProductTypeSave.CommandName == "insert")
+        {
+            val = _db.ProductTypeInsert(
+                ProductTypeName: txtproducttypename.Text.ToParseStr()
+                ) ;
+        }
+        
+
+        if (val == Types.ProsesType.Error)
+        {
+            lblPopErrorProducttype.Text = "XƏTA! Yadda saxlamaq mümkün olmadı.";
+            return;
+        }
+
+        componentsload();
+        PopupProductType.ShowOnPageLoad = false;
+    }
+
+    protected void lnkbtnModels_Click(object sender, EventArgs e)
+    {
+        LinkButton btn = sender as LinkButton;
+        switch (btn.CommandArgument)
+        {
+            case "addModels":
+                btnModelsSave.CommandName = "insert";
+                PopupModels.ShowOnPageLoad = true;
+                break;
+        }
+    }
+
+    protected void btnModelsCancel_Click(object sender, EventArgs e)
+    {
+        PopupModels.ShowOnPageLoad = false;
+    }
+
+    protected void btnModelsSave_Click(object sender, EventArgs e)
+    {
+        ErrorModel.Text = "";
+        Types.ProsesType val = Types.ProsesType.Error;
+        if (btnModelsSave.CommandName == "insert")
+        {
+            val = _db.ModelInsert(
+                ProductTypeID: ddlproducttype.SelectedValue.ToParseInt(),
+                ModelName: txtmodelname.Text.ToParseStr()
+
+                );
+        }
+        
+
+        if (val == Types.ProsesType.Error)
+        {
+            ErrorModel.Text = "XƏTA! Yadda saxlamaq mümkün olmadı.";
+            return;
+        }
+
+        modelcomponentload();
+        PopupModels.ShowOnPageLoad = false;
+    }
 }
