@@ -6,8 +6,8 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
 
-<%--<asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
-    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+<asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+   <%--<asp:UpdatePanel ID="UpdatePanel1" runat="server">
         <ContentTemplate>--%>
             <div class="content-wrapper">
                 <div class="card">
@@ -72,10 +72,15 @@
                                             <dx:GridViewDataColumn Caption="Qeydiyyat tarixi" FieldName="RegisterTime" VisibleIndex="1">
                                                 <EditFormSettings VisibleIndex="1" />
                                             </dx:GridViewDataColumn>
-
+                                            <dx:GridViewDataColumn Caption="Qaimə üzrə məbləğ" FieldName="cem" VisibleIndex="1">
+                                                <EditFormSettings VisibleIndex="1" />
+                                            </dx:GridViewDataColumn>
+                                            <dx:GridViewDataColumn Caption="Qaimə üzrə endrimli məbləğ" FieldName="cemEndirim" VisibleIndex="1">
+                                               <EditFormSettings VisibleIndex="1" />
+                                            </dx:GridViewDataColumn>
                                             <dx:GridViewDataColumn VisibleIndex="1">
                                                 <DataItemTemplate>
-                                                    <asp:LinkButton ID="lnkProducts" OnClick="lnkProducts_Click" CommandArgument='<%#Eval("InvoiceStockID") %>' Text="Mallar" runat="server" />
+                                                    <asp:LinkButton ID="lnkProducts" CssClass='<%#Eval("reng") %>' OnClick="lnkProducts_Click" CommandArgument='<%#Eval("InvoiceStockID") %>' Text="Mallar" runat="server" />
                                                 </DataItemTemplate>
                                             </dx:GridViewDataColumn>
 
@@ -243,6 +248,13 @@
                                             <dx:GridViewDataColumn Caption="Malın kateqoriyası" FieldName="ProductTypeName" VisibleIndex="1">
                                                 <EditFormSettings VisibleIndex="1" />
                                             </dx:GridViewDataColumn>
+                                            <dx:GridViewDataColumn Caption="Valyuta" FieldName="CurrencyName" VisibleIndex="1">
+                                                <EditFormSettings VisibleIndex="1" />
+                                            </dx:GridViewDataColumn>
+                                            <dx:GridViewDataColumn Caption="Məzənnə" FieldName="ExchangeRate" VisibleIndex="1">
+                                                <EditFormSettings VisibleIndex="1" />
+                                            </dx:GridViewDataColumn>
+
                                             <dx:GridViewDataColumn Caption="Ölçüsü" FieldName="ProductSize" VisibleIndex="1">
                                                 <EditFormSettings VisibleIndex="1" />
                                             </dx:GridViewDataColumn>
@@ -296,7 +308,7 @@
                                         HeaderText="Redaktə"
                                         PopupHorizontalAlign="WindowCenter"
                                         PopupVerticalAlign="WindowCenter"
-                                        Height="600"
+                                        Height="650"
                                         ScrollBars="Vertical" EnableHierarchyRecreation="false">
                                 <ContentCollection>
                                     <dx:PopupControlContentControl>
@@ -340,9 +352,29 @@
                                                     </div>
 
                                                     <div class="row mb-2">
-                                                        <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ölçü</label>
+                                                        <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Valyuta</label>
                                                         <div class="col-sm-7">
-                                                            <asp:TextBox ID="txtProductSize" class="form-control mb-0 mt-0" runat="server" placeholder="Mətni daxil edin...">
+                                                            <dx:ASPxComboBox ID="cmbCurrency" runat="server" Width="100%" Height="30px" OnSelectedIndexChanged="cmbCurrency_SelectedIndexChanged" AutoPostBack="true">
+                                                            </dx:ASPxComboBox>
+                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="cmbCurrency" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row mb-2">
+                                                        <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Məzənnə</label>
+                                                        <div class="col-sm-7">
+                                                            <asp:TextBox ID="txtExchangeRate" class="form-control mb-0 mt-0" runat="server" placeholder="Məzənnə daxil edin..." AutoPostBack="true" OnTextChanged="CalcPrice_TextChanged">
+                                                            </asp:TextBox>
+                                                            <asp:CompareValidator ID="CompareValidator5" runat="server" ControlToValidate="txtExchangeRate" ErrorMessage="Format düzgün deyil." Operator="DataTypeCheck" Type="Double" ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red" AutoPostBack="true" OnTextChanged="CalcPrice_TextChanged" />
+                                                            <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txtProductSize" ID="RequiredFieldValidator2" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>
+
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row mb-2">
+                                                        <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Ölçü (miqdar)</label>
+                                                        <div class="col-sm-7">
+                                                            <asp:TextBox ID="txtProductSize" class="form-control mb-0 mt-0" runat="server" placeholder="Mətni daxil edin..." AutoPostBack="true" OnTextChanged="CalcPrice_TextChanged">
                                                             </asp:TextBox>
                                                             <asp:CompareValidator ID="cv6" runat="server" ControlToValidate="txtProductSize" ErrorMessage="Format düzgün deyil." Operator="DataTypeCheck" Type="Double" ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red" />
                                                             <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txtProductSize" ID="RequiredFieldValidator7" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>
@@ -352,7 +384,7 @@
                                                     <div class="row mb-2">
                                                         <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Qiyməti</label>
                                                         <div class="col-sm-7">
-                                                            <asp:TextBox ID="txtPrice" class="form-control mb-0 mt-0" runat="server" placeholder="Mətni daxil edin...">
+                                                            <asp:TextBox ID="txtPrice" class="form-control mb-0 mt-0" runat="server" placeholder="Mətni daxil edin..." AutoPostBack="true" OnTextChanged="CalcPrice_TextChanged">
                                                             </asp:TextBox>
                                                             <asp:CompareValidator ID="CompareValidator1" runat="server" ControlToValidate="txtPrice" ErrorMessage="Format düzgün deyil." Operator="DataTypeCheck" Type="Double" ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red" />
                                                             <%-- <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txtPrice" ID="RequiredFieldValidator8" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>--%>
@@ -361,7 +393,7 @@
                                                     <div class="row mb-2">
                                                         <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Endirimli qiyməti</label>
                                                         <div class="col-sm-7">
-                                                            <asp:TextBox ID="txtPriceDiscount" class="form-control mb-0 mt-0" runat="server" placeholder="Mətni daxil edin...">
+                                                            <asp:TextBox ID="txtPriceDiscount" class="form-control mb-0 mt-0" runat="server" placeholder="Mətni daxil edin..." AutoPostBack="true" OnTextChanged="CalcPrice_TextChanged">
                                                             </asp:TextBox>
                                                             <asp:CompareValidator ID="CompareValidator2" runat="server" ControlToValidate="txtPriceDiscount" ErrorMessage="Format düzgün deyil." Operator="DataTypeCheck" Type="Double" ValidationGroup="qrup1" Display="Dynamic" ForeColor="Red" />
                                                             <%--  <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="txtPriceDiscount" ID="RequiredFieldValidator9" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>--%>
@@ -390,17 +422,6 @@
                                                         <div class="col-sm-7">
                                                             <asp:TextBox ID="txtNote" class="form-control mb-0 mt-0" runat="server" placeholder="Mətni daxil edin..." TextMode="MultiLine">
                                                             </asp:TextBox>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="row  mb-2">
-                                                        <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Qeydiyyat tarixi</label>
-                                                        <div class="col-sm-7">
-
-                                                            <dx:ASPxDateEdit ID="cmbregistertime" runat="server" DisplayFormatString="dd.MM.yyyy" EditFormat="Custom" EditFormatString="dd.MM.yyyy" Width="100%" Height="30px">
-                                                            </dx:ASPxDateEdit>
-                                                            <asp:RequiredFieldValidator CssClass="requiredstyle" ValidationGroup="qrup1" ControlToValidate="cmbregistertime" ID="RequiredFieldValidator12" runat="server" ErrorMessage="Mütləq doldurulmalıdır." ForeColor="Red"></asp:RequiredFieldValidator>
-
                                                         </div>
                                                     </div>
                                                     </ContentTemplate>

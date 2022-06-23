@@ -3306,10 +3306,10 @@ public class Methods
             DataTable dataTable = new DataTable();
             SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(@"select row_number() over(order by InvoiceStockID desc) sn, invs.*,sor.ReasonName,S.StockName,st.InvoiceStatusName,
                    case when invs.InvoiceStockID=" + InvoiceStockID.ToParseStr()+ @" then 'btn btn-success' else 'btn btn-primary' end reng,
-(select sum(Amount) cem from ProductStockInputOutput z where z.InvoiceStockID=invs.InvoiceStockID and z.DeleteTime is null) cem from InvoiceStock invs left join 
+(select sum(Amount) cem from ProductStockInputOutput z where z.InvoiceStockID=invs.InvoiceStockID and z.DeleteTime is null) cem,(select sum(AmountDiscount) cem from ProductStockInputOutput z where z.InvoiceStockID=invs.InvoiceStockID and z.DeleteTime is null) cemEndirim from InvoiceStock invs left join 
 ProductOperationTypes pot on invs.ProductOperationTypeID=pot.ProductOperationTypeID left join StockOperationReasons sor on invs.StockOperationReasonID=sor.StockOperationReasonID 
 and sor.ProductOperationTypeID=pot.ProductOperationTypeID left join Stocks s on s.StockID=invs.StockID left join InvoiceStatus st on invs.InvoiceStatusID=st.InvoiceStatusID 
-where invs.DeleteTime is null and invs.ProductOperationTypeID=@ProductOperationTypeID", SqlConn);
+where invs.DeleteTime is null and invs.InvoiceStatusID=1 and invs.ProductOperationTypeID=@ProductOperationTypeID", SqlConn);
             sqlDataAdapter.SelectCommand.Parameters.AddWithValue("ProductOperationTypeID", ProductOperationTypeID);
             sqlDataAdapter.Fill(dataTable);
             return dataTable;
@@ -3480,11 +3480,45 @@ where invs.DeleteTime is null and invs.ProductOperationTypeID=@ProductOperationT
         sqlCommand.Parameters.AddWithValue("@InvoiceStatusID", InvoiceStatusID);
         sqlCommand.Parameters.AddWithValue("@RegisterTime", RegisterTime.ToParseDatetime());
         sqlCommand.Parameters.AddWithValue("@Notes", Notes);
-        sqlCommand.Connection.Open();
-        sqlCommand.ExecuteNonQuery();
-        return Types.ProsesType.Succes;
+        try
+        {
+            sqlCommand.Connection.Open();
+            sqlCommand.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            sqlCommand.Connection.Close();
+            sqlCommand.Dispose();
+        }
     }
 
+    public Types.ProsesType InvoiceStockInputOutputUpdateOK(int InvoiceStockID, int InvoiceStatusID)
+    {
+        SqlCommand sqlCommand = new SqlCommand("update InvoiceStock set UserID=@UserID,InvoiceStatusID=@InvoiceStatusID where InvoiceStockID=@InvoiceStockID", SqlConn);
+        sqlCommand.Parameters.AddWithValue("@UserID", HttpContext.Current.Session["UserID"].ToParseStr());
+        sqlCommand.Parameters.AddWithValue("@InvoiceStockID", InvoiceStockID);
+        sqlCommand.Parameters.AddWithValue("@InvoiceStatusID", InvoiceStatusID);
+        try
+        {
+            sqlCommand.Connection.Open();
+            sqlCommand.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            sqlCommand.Connection.Close();
+            sqlCommand.Dispose();
+        }
+    }
     public Types.ProsesType DeleteInvoiceStock(int id)
     {
         SqlCommand sqlCommand = new SqlCommand("Update InvoiceStock set deletetime=getdate(),UserID=@UserID \r\nwhere InvoiceStockID=@InvoiceStockID;", SqlConn);
@@ -3537,9 +3571,21 @@ where invs.DeleteTime is null and invs.ProductOperationTypeID=@ProductOperationT
         sqlCommand.Parameters.AddWithValue("@Notes", Notes);
         sqlCommand.Parameters.AddWithValue("@CurrencyID", CurrencyID);
         sqlCommand.Parameters.AddWithValue("@ExchangeRate", ExchangeRate.ToParseFloat());
-        sqlCommand.Connection.Open();
-        sqlCommand.ExecuteNonQuery();
-        return Types.ProsesType.Succes;
+        try
+        {
+            sqlCommand.Connection.Open();
+            sqlCommand.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            sqlCommand.Connection.Close();
+            sqlCommand.Dispose();
+        }
     }
 
     public Types.ProsesType ProductStockInputOutputUpdate(int ProductStockInputOutputID, int InvoiceStockID, int ProductID, string ProductSize, string Price, string PriceDiscount, string Amount, string AmountDiscount, string Notes, int CurrencyID, string ExchangeRate)
@@ -3557,9 +3603,21 @@ where invs.DeleteTime is null and invs.ProductOperationTypeID=@ProductOperationT
         sqlCommand.Parameters.AddWithValue("@Notes", Notes);
         sqlCommand.Parameters.AddWithValue("@CurrencyID", CurrencyID);
         sqlCommand.Parameters.AddWithValue("@ExchangeRate", ExchangeRate.ToParseFloat());
-        sqlCommand.Connection.Open();
-        sqlCommand.ExecuteNonQuery();
-        return Types.ProsesType.Succes;
+        try
+        {
+            sqlCommand.Connection.Open();
+            sqlCommand.ExecuteNonQuery();
+            return Types.ProsesType.Succes;
+        }
+        catch (Exception)
+        {
+            return Types.ProsesType.Error;
+        }
+        finally
+        {
+            sqlCommand.Connection.Close();
+            sqlCommand.Dispose();
+        }
     }
 
     public Types.ProsesType DeleteProductStockInputOutput(int id)

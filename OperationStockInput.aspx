@@ -60,9 +60,9 @@
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
 
-                                    <dx:GridViewDataColumn Caption="Qaimənin statusu" FieldName="InvoiceStatusName" VisibleIndex="1">
+<%--                                    <dx:GridViewDataColumn Caption="Qaimənin statusu" FieldName="InvoiceStatusName" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
-                                    </dx:GridViewDataColumn>
+                                    </dx:GridViewDataColumn>--%>
                                     <dx:GridViewDataColumn Caption="Əməliyyat" FieldName="ReasonName" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
@@ -78,7 +78,9 @@
                                     <dx:GridViewDataColumn Caption="Qaimə üzrə məbləğ" FieldName="cem" VisibleIndex="1">
                                         <EditFormSettings VisibleIndex="1" />
                                     </dx:GridViewDataColumn>
-
+                                    <dx:GridViewDataColumn Caption="Qaimə üzrə endrimli məbləğ" FieldName="cemEndirim" VisibleIndex="1">
+                                        <EditFormSettings VisibleIndex="1" />
+                                    </dx:GridViewDataColumn>
                                     <dx:GridViewDataColumn VisibleIndex="1">
                                         <DataItemTemplate>
                                             <asp:LinkButton ID="lnkProducts" CssClass='<%#Eval("reng") %>' OnClick="lnkProducts_Click" CommandArgument='<%#Eval("InvoiceStockID") %>' Text="Mallar" runat="server" />
@@ -90,7 +92,6 @@
                                             <asp:LinkButton ID="lnkPrint" OnClick="lnkPrint_Click" CommandArgument='<%#Eval("InvoiceStockID") %>' Text="Çap et" runat="server" />
                                         </DataItemTemplate>
                                     </dx:GridViewDataColumn>
-
 
                                     <dx:GridViewDataColumn VisibleIndex="1">
                                         <DataItemTemplate>
@@ -104,6 +105,11 @@
                                         </DataItemTemplate>
                                     </dx:GridViewDataColumn>
 
+                                    <dx:GridViewDataColumn VisibleIndex="1">
+                                        <DataItemTemplate>
+                                            <asp:LinkButton ID="lnkOK" CssClass="btn btn-warning" OnClick="lnkOK_Click" CommandArgument='<%#Eval("InvoiceStockID") %>' Text="Təsdiqlə" runat="server" />
+                                        </DataItemTemplate>
+                                    </dx:GridViewDataColumn>
 
                                 </Columns>
                             </dx:ASPxGridView>
@@ -118,15 +124,11 @@
                                 HeaderText="Redaktə"
                                 PopupHorizontalAlign="WindowCenter"
                                 PopupVerticalAlign="WindowCenter"
-                                Height="400"
-                                ScrollBars="Vertical" >
+                                Height="300"
+                                ScrollBars="Vertical">
                                 <ContentCollection>
                                     <dx:PopupControlContentControl>
-
                                         <div class="container">
-
-                                       
-
                                                     <div class="row mb-2">
                                                         <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Anbar adı</label>
                                                         <div class="col-sm-7">
@@ -135,10 +137,6 @@
                                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator13" runat="server" ControlToValidate="cmbstock" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup2" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
                                                         </div>
                                                     </div>
-
-
-
-
 
                                                     <div class="row mb-2">
                                                         <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Əməliyyatın səbəbi</label>
@@ -150,14 +148,14 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="row mb-2">
+<%--                                                    <div class="row mb-2">
                                                         <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Qaimənin statusu</label>
                                                         <div class="col-sm-7">
                                                             <dx:ASPxComboBox ID="cmbInvoiceStatus" runat="server" Width="100%" Height="30px">
                                                             </dx:ASPxComboBox>
                                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" ControlToValidate="cmbInvoiceStatus" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup2" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
                                                         </div>
-                                                    </div>
+                                                    </div>--%>
 
 
                                                     <div class="row mb-2">
@@ -318,7 +316,7 @@
                                 HeaderText="Redaktə"
                                 PopupHorizontalAlign="WindowCenter"
                                 PopupVerticalAlign="WindowCenter"
-                                Height="600"
+                                Height="650"
                                 ScrollBars="Vertical" EnableHierarchyRecreation="false">
                                 <ContentCollection>
                                     <dx:PopupControlContentControl>
