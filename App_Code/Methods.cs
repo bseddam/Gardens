@@ -3284,12 +3284,12 @@ public class Methods
         }
     }
 
-    public DataTable GetInvoiceTransfer()
+    public DataTable GetInvoiceTransfer(int InvoiceStockTransferID)
     {
         try
         {
             DataTable dataTable = new DataTable();
-            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter("select row_number() over(order by InvoiceStockTransferID desc) sn,\r\ninvs.*,Sf.StockName StockFromName,Sto.StockName StockToName,st.InvoiceStatusName from InvoiceStockTransfer invs\r\nleft join Stocks sf on sf.StockID=invs.StockFromID\r\nleft join Stocks sto on sto.StockID=invs.StockToID\r\nleft join InvoiceStatus st on invs.InvoiceStatusID=st.InvoiceStatusID\r\n where invs.DeleteTime is null ", SqlConn);
+            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter("select row_number() over(order by InvoiceStockTransferID desc) sn,\r\ninvs.*,Sf.StockName StockFromName,Sto.StockName StockToName,st.InvoiceStatusName,case when invs.InvoiceStockTransferID=" + InvoiceStockTransferID.ToParseStr() + @" then 'btn btn-success' else 'btn btn-primary' end reng,  from InvoiceStockTransfer invs left join Stocks sf on sf.StockID=invs.StockFromID\r\nleft join Stocks sto on sto.StockID=invs.StockToID\r\nleft join InvoiceStatus st on invs.InvoiceStatusID=st.InvoiceStatusID\r\n where invs.InvoiceStatusID=1 and invs.DeleteTime is null ", SqlConn);
             sqlDataAdapter.Fill(dataTable);
             return dataTable;
         }

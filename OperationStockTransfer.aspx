@@ -55,7 +55,7 @@
                                     </dx:GridViewDataColumn>
                                     <dx:GridViewDataColumn VisibleIndex="1">
                                         <DataItemTemplate>
-                                            <asp:LinkButton ID="lnkProducts" OnClick="lnkProducts_Click" CommandArgument='<%#Eval("InvoiceStockTransferID") %>' Text="Mallar" runat="server" />
+                                            <asp:LinkButton ID="lnkProducts" CssClass='<%#Eval("reng") %>' OnClick="lnkProducts_Click" CommandArgument='<%#Eval("InvoiceStockTransferID") %>' Text="Mallar" runat="server" />
                                         </DataItemTemplate>
                                     </dx:GridViewDataColumn>
                                     <dx:GridViewDataColumn VisibleIndex="1">
@@ -71,6 +71,11 @@
                                     <dx:GridViewDataColumn VisibleIndex="1">
                                         <DataItemTemplate>
                                             <asp:LinkButton ID="lnkDelete" OnClick="lnkDeleteInvoice_Click" OnClientClick="return confirm('Silmək istədiyinizə əminsinizmi?');" CommandArgument='<%#Eval("InvoiceStockTransferID") %>' Text="Sil" runat="server" />
+                                        </DataItemTemplate>
+                                    </dx:GridViewDataColumn>
+                                    <dx:GridViewDataColumn VisibleIndex="1">
+                                        <DataItemTemplate>
+                                            <asp:LinkButton ID="lnkOK" CssClass="btn btn-warning" OnClick="lnkOK_Click" CommandArgument='<%#Eval("InvoiceStockTransferID") %>' Text="Təsdiqlə" runat="server" />
                                         </DataItemTemplate>
                                     </dx:GridViewDataColumn>
                                 </Columns>

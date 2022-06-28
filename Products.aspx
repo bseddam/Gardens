@@ -72,13 +72,6 @@
                                     <EditFormSettings VisibleIndex="1" />
                                 </dx:GridViewDataColumn>
 
-
-
-
-
-
-
-
                                 <dx:GridViewDataColumn VisibleIndex="1">
                                     <DataItemTemplate>
                                         <asp:LinkButton ID="lnkEdit" OnClick="lnkEdit_Click" CommandArgument='<%#Eval("ProductID") %>' Text="Düzəliş" runat="server" />
@@ -117,9 +110,6 @@
 
                                             <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                                                 <ContentTemplate>
-
-                                   
-
 
                                             <div class="row mb-2">
                                             <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Malın kateqoriyası</label>

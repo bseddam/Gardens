@@ -17,7 +17,10 @@ public partial class OperationStockTransfer : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         _loadGridInvoiceTransfer();
-        
+        if (Session["InvoiceStockTransferID"] == null)
+        {
+            Session["InvoiceStockTransferID"] = 0;
+        }
         _loadGridFromDb(Session["InvoiceStockTransferID"].ToParseInt());
         pnlprint.Visible = false;
         if (IsPostBack) return;
@@ -44,7 +47,7 @@ public partial class OperationStockTransfer : System.Web.UI.Page
     }
     void _loadGridInvoiceTransfer()
     {
-        DataTable dt1 = _db.GetInvoiceTransfer();
+        DataTable dt1 = _db.GetInvoiceTransfer(Session["InvoiceStockTransferID"].ToParseInt());
         if (dt1 != null)
         {
             GridInvoice.SettingsPager.Summary.Text = "Cari səhifə: {0}, Ümumi səhifələrin sayı: {1}, Tapılmış məlumatların sayı: {2}";
@@ -410,5 +413,15 @@ public partial class OperationStockTransfer : System.Web.UI.Page
     protected void btnCancel_Click(object sender, EventArgs e)
     {
         popupEdit.ShowOnPageLoad = false;
+    }
+
+    protected void lnkOK_Click(object sender, EventArgs e)
+    {
+        Types.ProsesType val = Types.ProsesType.Error;
+        int id = (sender as LinkButton).CommandArgument.ToParseInt();
+        val = _db.InvoiceStockInputOutputUpdateOK(InvoiceStockID: id, InvoiceStatusID: 2);
+        _loadGridInvoiceTransfer();
+        Session["InvoiceStockTransferID"] = 0;
+        _loadGridFromDb(0);
     }
 }

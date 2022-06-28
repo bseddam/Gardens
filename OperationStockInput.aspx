@@ -129,7 +129,18 @@
                                 <ContentCollection>
                                     <dx:PopupControlContentControl>
                                         <div class="container">
-                                                    <div class="row mb-2">
+                                            <%--<asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                                                <ContentTemplate>--%>
+                                             <div class="row mb-2">
+                                                        <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Əməliyyatın səbəbi</label>
+                                                        <div class="col-sm-7">
+
+                                                            <dx:ASPxComboBox ID="cmbStockOperationReason" runat="server" Width="100%" Height="30px" AutoPostBack="true" OnSelectedIndexChanged="cmbStockOperationReason_SelectedIndexChanged">
+                                                            </dx:ASPxComboBox>
+                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="cmbStockOperationReason" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup2" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
+                                                        </div>
+                                                    </div>
+                                             <div class="row mb-2">
                                                         <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Anbar adı</label>
                                                         <div class="col-sm-7">
                                                             <dx:ASPxComboBox ID="cmbstock" runat="server" Width="100%" Height="30px">
@@ -138,15 +149,7 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="row mb-2">
-                                                        <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Əməliyyatın səbəbi</label>
-                                                        <div class="col-sm-7">
-
-                                                            <dx:ASPxComboBox ID="cmbStockOperationReason" runat="server" Width="100%" Height="30px">
-                                                            </dx:ASPxComboBox>
-                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="cmbStockOperationReason" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup2" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
-                                                        </div>
-                                                    </div>
+                                                   
 
 <%--                                                    <div class="row mb-2">
                                                         <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Qaimənin statusu</label>
@@ -158,7 +161,7 @@
                                                     </div>--%>
 
 
-                                                    <div class="row mb-2">
+                                             <div class="row mb-2">
                                                         <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Qeyd</label>
                                                         <div class="col-sm-7">
                                                             <asp:TextBox ID="txtnotesinv" class="form-control mb-0 mt-0" runat="server" placeholder="Mətni daxil edin..." TextMode="MultiLine">
@@ -166,7 +169,7 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="row  mb-2">
+                                             <div class="row  mb-2">
                                                         <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Qeydiyyat tarixi</label>
                                                         <div class="col-sm-7">
 
@@ -176,9 +179,8 @@
 
                                                         </div>
                                                     </div>
-                                            
-
-
+                                                    <%--</ContentTemplate>
+                                            </asp:UpdatePanel>--%>
                                             <div>
                                                 <asp:Label Text="" ForeColor="Red" ID="lblerrorinv" runat="server" />
                                             </div>

@@ -57,9 +57,9 @@
                                                 <EditFormSettings VisibleIndex="1" />
                                             </dx:GridViewDataColumn>
 
-                                            <dx:GridViewDataColumn Caption="Qaimənin statusu" FieldName="InvoiceStatusName" VisibleIndex="1">
+                                            <%--<dx:GridViewDataColumn Caption="Qaimənin statusu" FieldName="InvoiceStatusName" VisibleIndex="1">
                                                 <EditFormSettings VisibleIndex="1" />
-                                            </dx:GridViewDataColumn>
+                                            </dx:GridViewDataColumn>--%>
                                             <dx:GridViewDataColumn Caption="Əməliyyat" FieldName="ReasonName" VisibleIndex="1">
                                                 <EditFormSettings VisibleIndex="1" />
                                             </dx:GridViewDataColumn>
@@ -103,7 +103,11 @@
                                                 </DataItemTemplate>
                                             </dx:GridViewDataColumn>
 
-
+                                            <dx:GridViewDataColumn VisibleIndex="1">
+                                        <DataItemTemplate>
+                                            <asp:LinkButton ID="lnkOK" CssClass="btn btn-warning" OnClick="lnkOK_Click" CommandArgument='<%#Eval("InvoiceStockID") %>' Text="Təsdiqlə" runat="server" />
+                                        </DataItemTemplate>
+                                    </dx:GridViewDataColumn>
 
                                         </Columns>
                                     </dx:ASPxGridView>
@@ -136,6 +140,26 @@
 
                                                 <div class="container">
 
+                                                    
+                                                   <%-- <div class="row mb-2">
+                                                        <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Əməliyyatın səbəbi</label>
+                                                        <div class="col-sm-7">
+
+                                                            <dx:ASPxComboBox ID="cmbStockOperationReason" runat="server" Width="100%" Height="30px">
+                                                            </dx:ASPxComboBox>
+                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" ControlToValidate="cmbStockOperationReason" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup2" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
+                                                        </div>
+                                                    </div>--%>
+
+                                                  <%--  <div class="row mb-2">
+                                                        <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Qaimənin statusu</label>
+                                                        <div class="col-sm-7">
+                                                            <dx:ASPxComboBox ID="cmbInvoiceStatus" runat="server" Width="100%" Height="30px">
+                                                            </dx:ASPxComboBox>
+                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" ControlToValidate="cmbInvoiceStatus" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup2" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
+                                                        </div>
+                                                    </div>--%>
+
                                                     <div class="row mb-2">
                                                         <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Anbar adı</label>
                                                         <div class="col-sm-7">
@@ -144,30 +168,6 @@
                                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator13" runat="server" ControlToValidate="cmbstock" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup2" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
                                                         </div>
                                                     </div>
-
-
-
-
-
-                                                 <%--   <div class="row mb-2">
-                                                        <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Əməliyyatın səbəbi</label>
-                                                        <div class="col-sm-7">
-
-                                                            <dx:ASPxComboBox ID="cmbStockOperationReason" runat="server" Width="100%" Height="30px">
-                                                            </dx:ASPxComboBox>
-                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="cmbStockOperationReason" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup2" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
-                                                        </div>
-                                                    </div>--%>
-
-                                                    <div class="row mb-2">
-                                                        <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Qaimənin statusu</label>
-                                                        <div class="col-sm-7">
-                                                            <dx:ASPxComboBox ID="cmbInvoiceStatus" runat="server" Width="100%" Height="30px">
-                                                            </dx:ASPxComboBox>
-                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" ControlToValidate="cmbInvoiceStatus" ErrorMessage="Mütləq seçilməlidir." InitialValue="-1" Text="Mütləq seçilməlidir." ValidationGroup="qrup2" Display="Dynamic" ForeColor="Red"></asp:RequiredFieldValidator>
-                                                        </div>
-                                                    </div>
-
 
                                                     <div class="row mb-2">
                                                         <label for="exampleInputUsername3" class="col-sm-5 col-form-label">Qeyd</label>

@@ -505,4 +505,18 @@ public partial class OperationStock : System.Web.UI.Page
         Session["InvoiceStockID"] = 0;
         _loadGridFromDb(0);
     }
+
+    protected void cmbStockOperationReason_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (cmbStockOperationReason.Value.ToString() == "1")
+        {
+            cmbstock.SelectedIndex = 1;
+            cmbstock.Enabled = false;
+        }
+        else
+        {
+            cmbstock.SelectedIndex = 1;
+            cmbstock.Enabled = true;
+        }
+    }
 }

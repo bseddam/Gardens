@@ -97,14 +97,14 @@ public partial class OperationProductsExit : System.Web.UI.Page
         cmbstock.Items.Insert(0, new ListEditItem("Seçin", "-1"));
         cmbstock.SelectedIndex = 0;
 
-        cmbInvoiceStatus.Items.Clear();
-        DataTable dt23 = _db.GetInvoiceStatus();
-        cmbInvoiceStatus.ValueField = "InvoiceStatusID";
-        cmbInvoiceStatus.TextField = "InvoiceStatusName";
-        cmbInvoiceStatus.DataSource = dt23;
-        cmbInvoiceStatus.DataBind();
-        cmbInvoiceStatus.Items.Insert(0, new ListEditItem("Seçin", "-1"));
-        cmbInvoiceStatus.SelectedIndex = 0;
+        //cmbInvoiceStatus.Items.Clear();
+        //DataTable dt23 = _db.GetInvoiceStatus();
+        //cmbInvoiceStatus.ValueField = "InvoiceStatusID";
+        //cmbInvoiceStatus.TextField = "InvoiceStatusName";
+        //cmbInvoiceStatus.DataSource = dt23;
+        //cmbInvoiceStatus.DataBind();
+        //cmbInvoiceStatus.Items.Insert(0, new ListEditItem("Seçin", "-1"));
+        //cmbInvoiceStatus.SelectedIndex = 0;
 
 
 
@@ -162,7 +162,7 @@ public partial class OperationProductsExit : System.Web.UI.Page
         DataTable dt = _db.GetInvoiceStockInputOutputByID(id: id,ProductOperationTypeID:2);
         componentsloadinvoice();
         cmbstock.Value = dt.Rows[0]["StockID"].ToParseStr();
-        cmbInvoiceStatus.Value = dt.Rows[0]["InvoiceStatusID"].ToParseStr();
+        //cmbInvoiceStatus.Value = dt.Rows[0]["InvoiceStatusID"].ToParseStr();
 
 
 
@@ -395,7 +395,7 @@ public partial class OperationProductsExit : System.Web.UI.Page
                 StockID: cmbstock.Value.ToParseInt(),
                 ProductOperationTypeID: 2,
                 StockOperationReasonID: 4,
-                InvoiceStatusID: cmbInvoiceStatus.Value.ToParseInt(),
+                InvoiceStatusID: 1,
                 RegisterTime: cmbregistertime1.Text.ToParseStr(),
                 Notes: txtnotesinv.Text.ToParseStr()
                 );
@@ -406,7 +406,7 @@ public partial class OperationProductsExit : System.Web.UI.Page
                 StockID: cmbstock.Value.ToParseInt(),
                 ProductOperationTypeID: 2,
                 StockOperationReasonID: 4,
-                InvoiceStatusID: cmbInvoiceStatus.Value.ToParseInt(),
+                InvoiceStatusID: 1,
                 RegisterTime: cmbregistertime1.Text.ToParseStr(),
                 Notes: txtnotesinv.Text.ToParseStr()
                 );
@@ -491,5 +491,15 @@ public partial class OperationProductsExit : System.Web.UI.Page
         txtAmount.Text = (ProductSize * Price * ExchangeRate).ToParseStr();
         txtAmountDiscount.Text = (ProductSize * PriceDiscount * ExchangeRate).ToParseStr();
         ;
+    }
+
+    protected void lnkOK_Click(object sender, EventArgs e)
+    {
+        Types.ProsesType val = Types.ProsesType.Error;
+        int id = (sender as LinkButton).CommandArgument.ToParseInt();
+        val = _db.InvoiceStockInputOutputUpdateOK(InvoiceStockID: id, InvoiceStatusID: 2);
+        _loadGridInvoiceInputOutput();
+        Session["InvoiceStockID"] = 0;
+        _loadGridFromDb(0);
     }
 }
